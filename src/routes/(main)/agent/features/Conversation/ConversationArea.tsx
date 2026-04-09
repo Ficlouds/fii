@@ -11,7 +11,7 @@ import { useOperationState } from '@/hooks/useOperationState';
 import { useChatStore } from '@/store/chat';
 import { messageMapKey } from '@/store/chat/utils/messageMapKey';
 
-import WelcomeChatItem from './AgentWelcome';
+import AgentHome from '@/features/AgentHome';
 import ChatHydration from './ChatHydration';
 import MainChatInput from './MainChatInput';
 import MessageFromUrl from './MainChatInput/MessageFromUrl';
@@ -71,7 +71,7 @@ const Conversation = memo(() => {
           position: 'relative',
         }}
       >
-        <ChatList welcome={<WelcomeChatItem />} />
+        <ChatList welcome={<AgentHome />} />
       </Flexbox>
       <TodoProgress />
       <MainChatInput />

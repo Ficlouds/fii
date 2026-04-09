@@ -480,6 +480,7 @@ export default {
   'tab.audio': 'Audio',
   'tab.chat': 'Chat',
   'tab.community': 'Community',
+  'tab.create': 'Create',
   'tab.discover': 'Discover',
   'tab.eval': 'Eval Lab',
   'tab.files': 'Files',

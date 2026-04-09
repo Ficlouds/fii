@@ -2,6 +2,8 @@ import isEqual from 'fast-deep-equal';
 import { type SWRResponse } from 'swr';
 
 import { useClientDataSWRWithSync } from '@/libs/swr';
+import { recentService } from '@/services/recent';
+import { type RecentItem } from '@/server/routers/lambda/recent';
 import { fileService } from '@/services/file';
 import { topicService } from '@/services/topic';
 import { type HomeStore } from '@/store/home/store';
@@ -15,6 +17,7 @@ const n = setNamespace('recent');
 const FETCH_RECENT_TOPICS_KEY = 'fetchRecentTopics';
 const FETCH_RECENT_RESOURCES_KEY = 'fetchRecentResources';
 const FETCH_RECENT_PAGES_KEY = 'fetchRecentPages';
+const FETCH_RECENTS_KEY = 'fetchRecents';
 
 type Setter = StoreSetter<HomeStore>;
 export const createRecentSlice = (set: Setter, get: () => HomeStore, _api?: unknown) =>
@@ -29,6 +32,24 @@ export class RecentActionImpl {
     this.#set = set;
     this.#get = get;
   }
+
+  useFetchRecents = (isLogin: boolean | undefined): SWRResponse<RecentItem[]> => {
+    return useClientDataSWRWithSync<RecentItem[]>(
+      isLogin === true ? [FETCH_RECENTS_KEY, isLogin] : null,
+      async () => recentService.getAll(10),
+      {
+        onData: (data) => {
+          if (this.#get().isRecentsInit && isEqual(this.#get().recents, data)) return;
+
+          this.#set(
+            { isRecentsInit: true, recents: data },
+            false,
+            n('useFetchRecents/onData'),
+          );
+        },
+      },
+    );
+  };
 
   useFetchRecentPages = (isLogin: boolean | undefined): SWRResponse<any[]> => {
     return useClientDataSWRWithSync<any[]>(

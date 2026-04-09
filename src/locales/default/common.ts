@@ -479,6 +479,7 @@ export default {
   'tab.image': 'Image',
   'tab.audio': 'Audio',
   'tab.chat': 'Chat',
+  recents: 'Recents',
   'tab.community': 'Community',
   'tab.create': 'Create',
   'tab.discover': 'Discover',

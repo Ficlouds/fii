@@ -14,6 +14,7 @@ import InputArea from './InputArea';
 import RecentPage from './RecentPage';
 import RecentResource from './RecentResource';
 import RecentTopic from './RecentTopic';
+import Recents from './Recents';
 import WelcomeText from './WelcomeText';
 
 const Home = memo(() => {
@@ -34,6 +35,7 @@ const Home = memo(() => {
       <InputArea />
       {/* Use CSS visibility to hide instead of unmounting to prevent data re-fetching */}
       <Flexbox gap={40} style={{ display: hideOtherModules ? 'none' : undefined }}>
+        {isLogin && <Recents />}
         {isDevMode && isLogin && (
           <>
             <RecentTopic />

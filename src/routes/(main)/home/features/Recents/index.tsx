@@ -1,10 +1,14 @@
-import { AccordionItem, Flexbox, Text } from '@lobehub/ui';
-import { memo, Suspense } from 'react';
+import { type MenuProps } from '@lobehub/ui';
+import { AccordionItem, ActionIcon, DropdownMenu, Flexbox, Icon, Text } from '@lobehub/ui';
+import { Hash, LucideCheck, MoreHorizontalIcon } from 'lucide-react';
+import { memo, Suspense, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import NeuralNetworkLoading from '@/components/NeuralNetworkLoading';
 import SkeletonList from '@/features/NavPanel/components/SkeletonList';
 import { useInitRecents } from '@/hooks/useInitRecents';
+import { useGlobalStore } from '@/store/global';
+import { systemStatusSelectors } from '@/store/global/selectors';
 import { useHomeStore } from '@/store/home';
 import { homeRecentSelectors } from '@/store/home/selectors';
 import { useUserStore } from '@/store/user';
@@ -23,6 +27,32 @@ const Recents = memo<RecentsProps>(({ itemKey }) => {
   const isLogin = useUserStore(authSelectors.isLogin);
   const { isRevalidating } = useInitRecents();
 
+  const [recentPageSize, updateSystemStatus] = useGlobalStore((s) => [
+    systemStatusSelectors.recentPageSize(s),
+    s.updateSystemStatus,
+  ]);
+
+  const dropdownMenu = useMemo(() => {
+    const pageSizeOptions = [5, 10, 15, 20];
+    const pageSizeItems = pageSizeOptions.map((size) => ({
+      icon: recentPageSize === size ? <Icon icon={LucideCheck} /> : <div />,
+      key: `pageSize-${size}`,
+      label: t('pageSizeItem', { count: size }),
+      onClick: () => {
+        updateSystemStatus({ recentPageSize: size });
+      },
+    }));
+
+    return [
+      {
+        children: pageSizeItems,
+        icon: <Icon icon={Hash} />,
+        key: 'displayItems',
+        label: t('navPanel.displayItems'),
+      },
+    ] as MenuProps['items'];
+  }, [recentPageSize, updateSystemStatus, t]);
+
   if (!isLogin) return null;
   if (isInit && (!recents || recents.length === 0)) return null;
 
@@ -31,6 +61,11 @@ const Recents = memo<RecentsProps>(({ itemKey }) => {
       itemKey={itemKey}
       paddingBlock={4}
       paddingInline={'8px 4px'}
+      action={
+        <DropdownMenu items={dropdownMenu} nativeButton={false}>
+          <ActionIcon icon={MoreHorizontalIcon} size={'small'} style={{ flex: 'none' }} />
+        </DropdownMenu>
+      }
       title={
         <Flexbox horizontal align="center" gap={4}>
           <Text ellipsis fontSize={12} type={'secondary'} weight={500}>

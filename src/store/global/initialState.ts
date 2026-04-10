@@ -154,6 +154,10 @@ export interface SystemStatus {
   portalWidth: number;
   readNotificationSlugs?: string[];
   /**
+   * number of recent items to display
+   */
+  recentPageSize?: number;
+  /**
    * Resource Manager column widths
    */
   resourceManagerColumnWidths?: {
@@ -222,6 +226,7 @@ export const INITIAL_STATUS = {
   agentBuilderPanelWidth: 360,
   agentPageSize: 10,
   chatInputHeight: 64,
+  recentPageSize: 10,
   disabledModelProvidersSortType: 'default',
   disabledModelsSortType: 'default',
   expandInputActionbar: true,

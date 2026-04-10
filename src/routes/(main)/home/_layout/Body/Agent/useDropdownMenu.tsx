@@ -37,7 +37,7 @@ export const useAgentActionsDropdownMenu = ({
     const createSessionGroupItem = createSessionGroupMenuItem();
     const configItem = configMenuItem(openConfigGroupModal);
 
-    const pageSizeOptions = [10, 15, 20, 40];
+    const pageSizeOptions = [5, 10, 15, 20];
     const pageSizeItems = pageSizeOptions.map((size) => ({
       icon: agentPageSize === size ? <Icon icon={LucideCheck} /> : <div />,
       key: `pageSize-${size}`,

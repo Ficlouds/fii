@@ -14,6 +14,8 @@ const topicPageSize = (s: GlobalState): number => s.status.topicPageSize || 20;
 
 const agentPageSize = (s: GlobalState): number => s.status.agentPageSize || 10;
 
+const recentPageSize = (s: GlobalState): number => s.status.recentPageSize || 10;
+
 const pagePageSize = (s: GlobalState): number => s.status.pagePageSize || 20;
 
 const showSystemRole = (s: GlobalState) => s.status.showSystemRole;
@@ -101,6 +103,7 @@ export const systemStatusSelectors = {
   pageAgentPanelWidth,
   pagePageSize,
   portalWidth,
+  recentPageSize,
   sessionGroupKeys,
   showChatHeader,
   showFilePanel,

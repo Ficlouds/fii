@@ -2,9 +2,9 @@ import isEqual from 'fast-deep-equal';
 import { type SWRResponse } from 'swr';
 
 import { useClientDataSWRWithSync } from '@/libs/swr';
-import { recentService } from '@/services/recent';
 import { type RecentItem } from '@/server/routers/lambda/recent';
 import { fileService } from '@/services/file';
+import { recentService } from '@/services/recent';
 import { topicService } from '@/services/topic';
 import { type HomeStore } from '@/store/home/store';
 import { type StoreSetter } from '@/store/types';
@@ -33,19 +33,18 @@ export class RecentActionImpl {
     this.#get = get;
   }
 
-  useFetchRecents = (isLogin: boolean | undefined): SWRResponse<RecentItem[]> => {
+  useFetchRecents = (
+    isLogin: boolean | undefined,
+    limit: number = 10,
+  ): SWRResponse<RecentItem[]> => {
     return useClientDataSWRWithSync<RecentItem[]>(
-      isLogin === true ? [FETCH_RECENTS_KEY, isLogin] : null,
-      async () => recentService.getAll(10),
+      isLogin === true ? [FETCH_RECENTS_KEY, isLogin, limit] : null,
+      async () => recentService.getAll(limit),
       {
         onData: (data) => {
           if (this.#get().isRecentsInit && isEqual(this.#get().recents, data)) return;
 
-          this.#set(
-            { isRecentsInit: true, recents: data },
-            false,
-            n('useFetchRecents/onData'),
-          );
+          this.#set({ isRecentsInit: true, recents: data }, false, n('useFetchRecents/onData'));
         },
       },
     );

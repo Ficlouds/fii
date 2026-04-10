@@ -74,7 +74,6 @@ const Recents = memo<RecentsProps>(({ itemKey }) => {
         label: t('navPanel.moveDown'),
         onClick: () => moveSection('down'),
       },
-      { type: 'divider' as const },
       {
         children: pageSizeItems,
         icon: <Icon icon={Hash} />,

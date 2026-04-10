@@ -81,7 +81,6 @@ export const useAgentActionsDropdownMenu = ({
         label: t('navPanel.moveDown'),
         onClick: () => moveSection('down'),
       },
-      { type: 'divider' as const },
       {
         children: pageSizeItems,
         icon: <Icon icon={Hash} />,

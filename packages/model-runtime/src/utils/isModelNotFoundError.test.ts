@@ -17,12 +17,37 @@ describe('isModelNotFoundError', () => {
     expect(isModelNotFoundError('Error: model_not_found')).toBe(true);
   });
 
-  it('should detect "does not exist" errors (Volcengine/Azure)', () => {
+  it('should detect "model ... does not exist" (OpenAI)', () => {
+    expect(
+      isModelNotFoundError('The model `gpt-5` does not exist or you do not have access to it.'),
+    ).toBe(true);
+  });
+
+  it('should detect "model or endpoint ... does not exist" (Volcengine/doubao)', () => {
     expect(
       isModelNotFoundError(
         'The model or endpoint doubao-seed-2.0-pro does not exist or you do not have access to it.',
       ),
     ).toBe(true);
+  });
+
+  it('should NOT match "does not exist" without model context', () => {
+    // API key errors that incidentally say "does not exist"
+    expect(isModelNotFoundError('Your API key does not exist')).toBe(false);
+    // Deployment/endpoint errors
+    expect(isModelNotFoundError('The deployment for this resource does not exist')).toBe(false);
+    // Generic resource errors
+    expect(isModelNotFoundError('This user does not exist')).toBe(false);
+    expect(isModelNotFoundError('The organization does not exist')).toBe(false);
+  });
+
+  it('should NOT match when "model" and "does not exist" are in different sentences', () => {
+    expect(
+      isModelNotFoundError(
+        'This feature does not exist in your plan. Contact support to enable the model.',
+      ),
+    ).toBe(false);
+    expect(isModelNotFoundError('The model is fine. Your account does not exist.')).toBe(false);
   });
 
   it('should detect "no such model" errors', () => {

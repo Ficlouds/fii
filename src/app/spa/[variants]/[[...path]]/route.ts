@@ -155,6 +155,24 @@ function buildAnalyticsConfig(): AnalyticsConfig {
   return config;
 }
 
+function buildAnalyticsScripts(): string {
+  if (!analyticsEnv.ENABLE_GOOGLE_ANALYTICS || !analyticsEnv.GOOGLE_ANALYTICS_MEASUREMENT_ID) {
+    return '';
+  }
+
+  const measurementId = serializeForHtml(analyticsEnv.GOOGLE_ANALYTICS_MEASUREMENT_ID);
+
+  return [
+    `<script async src="https://www.googletagmanager.com/gtag/js?id=${analyticsEnv.GOOGLE_ANALYTICS_MEASUREMENT_ID}"></script>`,
+    `<script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', ${measurementId});
+    </script>`,
+  ].join('\n    ');
+}
+
 function buildClientEnv(): SPAClientEnv {
   return {
     marketBaseUrl: appEnv.MARKET_BASE_URL,
@@ -216,7 +234,7 @@ export async function GET(
 
   const seoMeta = await buildSeoMeta(locale);
   html = html.replace('<!--SEO_META-->', seoMeta);
-  html = html.replace('<!--ANALYTICS_SCRIPTS-->', '');
+  html = html.replace('<!--ANALYTICS_SCRIPTS-->', buildAnalyticsScripts());
 
   return new Response(html, {
     headers: {

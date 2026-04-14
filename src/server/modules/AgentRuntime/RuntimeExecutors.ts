@@ -118,6 +118,29 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const getLLMRetryDelayMs = (attempt: number) =>
   Math.min(LLM_RETRY_BASE_DELAY_MS * 2 ** Math.max(attempt - 1, 0), LLM_RETRY_MAX_DELAY_MS);
 
+const MESSAGE_PARENT_FK_CONSTRAINT = 'messages_parent_id_messages_id_fk';
+
+const getErrorValue = (error: unknown, key: string) => {
+  if (!error || typeof error !== 'object') return;
+
+  return (error as Record<string, unknown>)[key];
+};
+
+const isMissingMessageParentError = (error: unknown) =>
+  getErrorValue(error, 'code') === '23503' &&
+  getErrorValue(error, 'constraint') === MESSAGE_PARENT_FK_CONSTRAINT;
+
+const createMissingMessageError = (messageId: string) => {
+  const error = new Error(
+    `Message "${messageId}" no longer exists. The conversation changed while this operation was running.`,
+  ) as Error & { code?: string; errorType?: string };
+
+  error.code = 'MESSAGE_PARENT_MISSING';
+  error.errorType = 'MessageParentMissing';
+
+  return error;
+};
+
 const isOperationInterrupted = async (ctx: RuntimeExecutorContext) => {
   if (!ctx.loadAgentState) return false;
 
@@ -334,10 +357,22 @@ export const createRuntimeExecutors = (
     let assistantMessageItem: { id: string };
 
     if (existingAssistantMessageId) {
+      const existingAssistantMessage = await ctx.messageModel.findById(existingAssistantMessageId);
+      if (!existingAssistantMessage) {
+        throw createMissingMessageError(existingAssistantMessageId);
+      }
+
       // Use existing assistant message (created by execAgent)
       assistantMessageItem = { id: existingAssistantMessageId };
       log(`${stagePrefix} Using existing assistant message: %s`, existingAssistantMessageId);
     } else {
+      if (parentId) {
+        const parentMessage = await ctx.messageModel.findById(parentId);
+        if (!parentMessage) {
+          throw createMissingMessageError(parentId);
+        }
+      }
+
       // Create new assistant message (legacy behavior)
       assistantMessageItem = await ctx.messageModel.create({
         agentId: state.metadata!.agentId!,
@@ -1729,6 +1764,11 @@ export const createRuntimeExecutors = (
 
           // Create tool message in database
           try {
+            const parentMessage = await ctx.messageModel.findById(parentMessageId);
+            if (!parentMessage) {
+              throw createMissingMessageError(parentMessageId);
+            }
+
             const toolMessage = await ctx.messageModel.create({
               agentId: state.metadata!.agentId!,
               content: executionResult.content,
@@ -1745,6 +1785,13 @@ export const createRuntimeExecutors = (
             toolMessageIds.push(toolMessage.id);
             log(`[${operationLogId}] Created tool message ${toolMessage.id} for ${toolName}`);
           } catch (error) {
+            if (
+              isMissingMessageParentError(error) ||
+              getErrorValue(error, 'code') === 'MESSAGE_PARENT_MISSING'
+            ) {
+              throw error;
+            }
+
             console.error(
               `[${operationLogId}] Failed to create tool message for ${toolName}:`,
               error,
@@ -1771,6 +1818,13 @@ export const createRuntimeExecutors = (
             toolName,
           };
         } catch (error) {
+          if (
+            isMissingMessageParentError(error) ||
+            getErrorValue(error, 'code') === 'MESSAGE_PARENT_MISSING'
+          ) {
+            throw error;
+          }
+
           console.error(`[${operationLogId}] Tool execution failed for ${toolName}:`, error);
 
           // Publish error event

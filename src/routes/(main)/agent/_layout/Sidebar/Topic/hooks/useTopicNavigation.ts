@@ -20,12 +20,22 @@ export const useTopicNavigation = () => {
   const switchTopic = useChatStore((s) => s.switchTopic);
   const routeAgentId = params.aid ?? activeAgentId;
   const routeTopicId = params.topicId ?? activeTopicId ?? undefined;
+  const topicBasePath =
+    routeAgentId && routeTopicId ? SESSION_CHAT_TOPIC_URL(routeAgentId, routeTopicId) : undefined;
+
+  const isInTopicContextRoute = useCallback(() => {
+    if (!topicBasePath) return false;
+
+    return (
+      pathname === topicBasePath ||
+      pathname === `${topicBasePath}/` ||
+      pathname.startsWith(`${topicBasePath}/`)
+    );
+  }, [pathname, topicBasePath]);
 
   const isInAgentSubRoute = useCallback(() => {
     if (!routeAgentId) return false;
-    const agentBasePath = routeTopicId
-      ? SESSION_CHAT_TOPIC_URL(routeAgentId, routeTopicId)
-      : SESSION_CHAT_URL(routeAgentId);
+    const agentBasePath = topicBasePath ?? SESSION_CHAT_URL(routeAgentId);
 
     // If pathname has more segments after /agent/:aid, it's a sub-route
     return (
@@ -57,6 +67,8 @@ export const useTopicNavigation = () => {
 
   return {
     isInAgentSubRoute: isInAgentSubRoute(),
+    isInTopicContextRoute: isInTopicContextRoute(),
     navigateToTopic,
+    routeTopicId,
   };
 };

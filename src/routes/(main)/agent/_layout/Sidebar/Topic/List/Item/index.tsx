@@ -87,7 +87,12 @@ const TopicItem = memo<TopicItemProps>(({ id, title, fav, active, threadId, meta
     id ? operationSelectors.isTopicUnreadCompleted(id) : () => false,
   );
 
-  const { navigateToTopic, isInAgentSubRoute } = useTopicNavigation();
+  const { navigateToTopic, isInAgentSubRoute, isInTopicContextRoute, routeTopicId } =
+    useTopicNavigation();
+  const isRouteTopicActive = Boolean(id && routeTopicId === id && isInTopicContextRoute);
+  const isTopicActive = Boolean(
+    (active || isRouteTopicActive) && !threadId && (!isInAgentSubRoute || isRouteTopicActive),
+  );
 
   const toggleEditing = useCallback(
     (visible?: boolean) => {
@@ -176,7 +181,7 @@ const TopicItem = memo<TopicItemProps>(({ id, title, fav, active, threadId, meta
   if (!id) {
     return (
       <NavItem
-        active={active && !isInAgentSubRoute}
+        active={Boolean(active && !isInAgentSubRoute && !isInTopicContextRoute)}
         loading={isLoading}
         icon={
           <Icon color={cssVar.colorTextDescription} icon={MessageSquareDashed} size={'small'} />
@@ -204,7 +209,7 @@ const TopicItem = memo<TopicItemProps>(({ id, title, fav, active, threadId, meta
     <Flexbox data-testid="topic-item" style={{ position: 'relative' }}>
       <NavItem
         actions={<Actions dropdownMenu={dropdownMenu} />}
-        active={active && !threadId && !isInAgentSubRoute}
+        active={isTopicActive}
         contextMenuItems={dropdownMenu}
         disabled={editing}
         href={href}
@@ -228,7 +233,7 @@ const TopicItem = memo<TopicItemProps>(({ id, title, fav, active, threadId, meta
         onDoubleClick={handleDoubleClick}
       />
       <Editing id={id} title={title} toggleEditing={toggleEditing} />
-      {active && (
+      {isTopicActive && (
         <Suspense
           fallback={
             <Flexbox gap={8} paddingBlock={8} paddingInline={24} width={'100%'}>

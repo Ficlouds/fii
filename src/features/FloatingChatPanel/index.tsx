@@ -2,6 +2,7 @@
 
 import { type UIChatMessage } from '@lobechat/types';
 import { FloatingSheet, type FloatingSheetProps } from '@lobehub/ui/base-ui';
+import { createStaticStyles, cx } from 'antd-style';
 import { memo, useMemo } from 'react';
 
 import { type ActionsBarConfig, ConversationProvider } from '@/features/Conversation';
@@ -13,6 +14,16 @@ import { messageMapKey } from '@/store/chat/utils/messageMapKey';
 
 import ChatBody from './ChatBody';
 import { useSingleInstanceGuard } from './guard';
+
+const styles = createStaticStyles(({ css }) => ({
+  sheet: css`
+    > div:last-child {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+  `,
+}));
 
 export interface FloatingChatPanelProps extends Pick<
   FloatingSheetProps,
@@ -112,7 +123,7 @@ const FloatingChatPanel = memo<FloatingChatPanelProps>(
     return (
       <FloatingSheet
         activeSnapPoint={activeSnapPoint}
-        className={className}
+        className={cx(styles.sheet, className)}
         dismissible={dismissible}
         headerActions={headerActions}
         maxHeight={maxHeight}

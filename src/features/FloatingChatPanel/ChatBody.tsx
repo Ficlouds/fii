@@ -18,7 +18,7 @@ const ChatBody = memo(() => {
       data-testid="floating-chat-panel-body"
       flex={1}
       height={'100%'}
-      style={{ minHeight: 0 }}
+      style={{ minHeight: 0, overflow: 'hidden' }}
       width={'100%'}
     >
       <Flexbox
@@ -27,8 +27,7 @@ const ChatBody = memo(() => {
         width={'100%'}
         style={{
           minHeight: 0,
-          overflowX: 'hidden',
-          overflowY: 'auto',
+          overflow: 'hidden',
           position: 'relative',
         }}
       >

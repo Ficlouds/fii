@@ -44,7 +44,7 @@ vi.mock('@/routes/(main)/agent/features/Conversation/MainChatInput', () => ({
 }));
 
 describe('FloatingChatPanel ChatBody', () => {
-  it('keeps the chat input after the scrollable list inside a full-height body wrapper', () => {
+  it('keeps the chat input after the list while leaving scroll ownership to the virtual list', () => {
     render(<ChatBody />);
 
     const body = screen.getByTestId('floating-chat-panel-body');
@@ -56,6 +56,8 @@ describe('FloatingChatPanel ChatBody', () => {
     expect(list).toHaveAttribute('data-flex', '1');
     expect(body).toContainElement(list);
     expect(body).toContainElement(input);
+    expect(body).toHaveStyle({ overflow: 'hidden' });
+    expect(list).toHaveStyle({ overflow: 'hidden' });
     expect(list.compareDocumentPosition(input)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 });

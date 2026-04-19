@@ -219,15 +219,22 @@ const PlatformDetail = memo<PlatformDetailProps>(
       }
     }, [agentId, currentConfig, mapRuntimeStatusToResult, msg, refreshBotRuntimeStatus]);
 
-    // Reset form and status when switching platforms
+    // Reset form and status when switching platforms. Must NOT depend on
+    // runtimeStatus — otherwise background status refreshes would wipe
+    // in-progress form edits and cancel the connect-status polling loop.
     useEffect(() => {
       form.resetFields();
       setSaveResult(undefined);
       setConnectResult(undefined);
       setTestResult(undefined);
-      setObservedStatus(runtimeStatus);
       stopConnectPolling();
-    }, [platformDef.id, form, stopConnectPolling, runtimeStatus]);
+    }, [platformDef.id, form, stopConnectPolling]);
+
+    // Keep the displayed status in sync with the latest snapshot from the
+    // parent (initial load, bulk refresh, SWR revalidation).
+    useEffect(() => {
+      setObservedStatus(runtimeStatus);
+    }, [runtimeStatus]);
 
     // Sync form with saved config
     useEffect(() => {

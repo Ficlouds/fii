@@ -1,8 +1,8 @@
 import type { BusinessEdgeConfigData } from '@lobechat/business-config/server';
 
 /**
- * Billboard 单条 item 的可本地化字段。
- * cover / linkUrl / 顺序 / 时间窗口不翻译。
+ * Localizable fields for a single Billboard item.
+ * cover / linkUrl / ordering / time window are not translated.
  */
 export interface BillboardItemLocaleFields {
   description?: string;
@@ -11,14 +11,14 @@ export interface BillboardItemLocaleFields {
 }
 
 /**
- * Billboard 轮播项（Home sidebar 左下角运营卡片的单条内容）
+ * Billboard carousel item (single content entry of the operational card in the bottom-left of the Home sidebar)
  */
 export interface BillboardItem {
   cover?: string | null;
   description: string;
   /**
-   * 每个 locale 的覆盖文案。缺失时回退到默认字段（title / description / linkLabel）。
-   * key 采用 LobeHub locale code（如 `zh-CN`、`en-US`、`ja-JP`）。
+   * Locale-specific overrides. Falls back to default fields (title / description / linkLabel) when missing.
+   * Keys use LobeHub locale codes (e.g. `zh-CN`, `en-US`, `ja-JP`).
    */
   i18n?: Record<string, BillboardItemLocaleFields>;
   id: number;
@@ -28,36 +28,36 @@ export interface BillboardItem {
 }
 
 /**
- * Billboard 级别的可本地化字段（当前仅 title）。
+ * Localizable fields at the Billboard level (currently only title).
  */
 export interface BillboardLocaleFields {
   title?: string;
 }
 
 /**
- * Billboard set（一组 items 在前端轮播）。
- * 在 Sprint-style 模型下，每个 env 最多 1 个 set；
- * 实际展示还受 startAt / endAt 时间窗口约束。
+ * Billboard set (a group of items displayed as a carousel on the frontend).
+ * In Sprint-style model, each env has at most 1 set;
+ * actual display is also constrained by the startAt / endAt time window.
  */
 export interface BillboardSet {
-  /** ISO timestamp — 时间窗口结束，到点后 LobeHub 不再展示 */
+  /** ISO timestamp — end of time window; LobeHub stops displaying after this point */
   endAt: string;
   /**
-   * 按 locale 覆盖 billboard 级别的文案（当前仅 title，用于 ? 菜单）。
+   * Locale overrides for billboard-level copy (currently only title, used for the ? menu).
    */
   i18n?: Record<string, BillboardLocaleFields>;
   id: number;
   items: BillboardItem[];
-  /** 唯一标识符 */
+  /** Unique identifier */
   slug: string;
-  /** ISO timestamp — 时间窗口开始，未到时 LobeHub 不展示 */
+  /** ISO timestamp — start of time window; LobeHub does not display before this point */
   startAt: string;
-  /** 用于 ? 菜单展示 */
+  /** Used for ? menu display */
   title: string;
 }
 
 /**
- * Edge Config 中存放的 Billboard 纯内容。Sprint-style 每个 env 只有 1 条或 null。
+ * Pure Billboard content stored in Edge Config. Sprint-style: each env has at most 1 entry or null.
  */
 export type BillboardSnapshot = BillboardSet | null;
 
@@ -75,8 +75,8 @@ export interface EdgeConfigData extends BusinessEdgeConfigData {
   assistant_whitelist?: string[];
 
   /**
-   * Billboard snapshot. 每个 Vercel 部署读自己 store 里的 `billboards` key——
-   * dev 部署指向 dev store，prod 部署指向 prod store，LobeHub 侧无感知。
+   * Billboard snapshot. Each Vercel deployment reads the `billboards` key from its own store —
+   * dev deployment points to dev store, prod deployment points to prod store, transparent to LobeHub.
    */
   billboards?: BillboardSnapshot;
 

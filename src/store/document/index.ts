@@ -1,3 +1,5 @@
+// Events
+export { type DocumentChangeEvent, type DocumentChangeOperation, documentEvents } from './events';
 // Selectors
 export { editorSelectors } from './slices/editor';
 

@@ -6,6 +6,7 @@ import {
 
 import { mutate } from '@/libs/swr';
 import { lambdaClient } from '@/libs/trpc/client';
+import { type DocumentChangeOperation, documentEvents } from '@/store/document/events';
 
 export const agentDocumentSWRKeys = {
   documents: (agentId: string) => ['agent-documents', agentId] as const,
@@ -42,6 +43,19 @@ const revalidateReadDocument = async (agentId: string, id: string) => {
   await mutate(agentDocumentSWRKeys.readDocument(agentId, id));
 };
 
+const emitDocumentChange = (
+  operation: DocumentChangeOperation,
+  documentId: string | undefined | null,
+  agentId?: string,
+) => {
+  if (!documentId) return;
+
+  console.info(
+    `[AgentDocumentService] Emitting document change event: ${operation} (agentId: ${agentId}, documentId: ${documentId})`,
+  );
+  documentEvents.emit({ agentId, documentId, operation });
+};
+
 class AgentDocumentService {
   getTemplates = async () => {
     return lambdaClient.agentDocument.getTemplates.query();
@@ -73,6 +87,7 @@ class AgentDocumentService {
   }) => {
     const result = await lambdaClient.agentDocument.upsertDocumentByFilename.mutate(params);
     await revalidateAgentDocuments(params.agentId);
+    emitDocumentChange('upsert', result?.documentId, params.agentId);
 
     return result;
   };
@@ -87,6 +102,20 @@ class AgentDocumentService {
   createDocument = async (params: { agentId: string; content: string; title: string }) => {
     const result = await lambdaClient.agentDocument.createDocument.mutate(params);
     await revalidateAgentDocuments(params.agentId);
+    emitDocumentChange('create', result?.documentId, params.agentId);
+
+    return result;
+  };
+
+  createForTopic = async (params: {
+    agentId: string;
+    content: string;
+    title: string;
+    topicId: string;
+  }) => {
+    const result = await lambdaClient.agentDocument.createForTopic.mutate(params);
+    await revalidateAgentDocuments(params.agentId);
+    emitDocumentChange('create', result?.documentId, params.agentId);
 
     return result;
   };
@@ -98,6 +127,7 @@ class AgentDocumentService {
   editDocument = async (params: { agentId: string; content: string; id: string }) => {
     const result = await lambdaClient.agentDocument.editDocument.mutate(params);
     await revalidateAgentDocuments(params.agentId);
+    emitDocumentChange('edit', result?.documentId, params.agentId);
 
     return result;
   };
@@ -112,6 +142,7 @@ class AgentDocumentService {
   copyDocument = async (params: { agentId: string; id: string; newTitle?: string }) => {
     const result = await lambdaClient.agentDocument.copyDocument.mutate(params);
     await revalidateAgentDocuments(params.agentId);
+    emitDocumentChange('copy', result?.documentId, params.agentId);
 
     return result;
   };
@@ -120,6 +151,7 @@ class AgentDocumentService {
     const result = await lambdaClient.agentDocument.renameDocument.mutate(params);
     await revalidateAgentDocuments(params.agentId);
     await revalidateReadDocument(params.agentId, params.id);
+    emitDocumentChange('rename', result?.documentId, params.agentId);
 
     return result;
   };
@@ -143,6 +175,7 @@ class AgentDocumentService {
   }) => {
     const result = await lambdaClient.agentDocument.updateLoadRule.mutate(params);
     await revalidateAgentDocuments(params.agentId);
+    emitDocumentChange('updateLoadRule', result?.documentId, params.agentId);
 
     return result;
   };

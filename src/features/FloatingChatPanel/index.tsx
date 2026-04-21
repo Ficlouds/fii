@@ -6,7 +6,11 @@ import { createStaticStyles } from 'antd-style';
 import type { ReactNode } from 'react';
 import { memo, useMemo, useState } from 'react';
 
-import { type ActionsBarConfig, ConversationProvider } from '@/features/Conversation';
+import {
+  type ActionsBarConfig,
+  type ConversationHooks,
+  ConversationProvider,
+} from '@/features/Conversation';
 import { type ConversationContext } from '@/features/Conversation/types';
 import { useOperationState } from '@/hooks/useOperationState';
 import { useActionsBarConfig } from '@/routes/(main)/agent/features/Conversation/useActionsBarConfig';
@@ -15,6 +19,10 @@ import { messageMapKey } from '@/store/chat/utils/messageMapKey';
 
 import ChatBody from './ChatBody';
 import { useSingleInstanceGuard } from './guard';
+
+const SNAP_POINTS = [180, 320, 520, 800] as const;
+const MAX_SNAP_POINT = SNAP_POINTS.at(-1)!;
+const REST_SNAP_POINT = SNAP_POINTS[0];
 
 const styles = createStaticStyles(({ css }) => ({
   sheet: css`
@@ -59,13 +67,23 @@ export interface FloatingChatPanelProps {
   agentId: string;
   className?: string;
   dismissible?: boolean;
+  /** Current document identifier for page-scoped conversations. */
+  documentId?: string;
   headerActions?: ReactNode;
+  /**
+   * Conversation lifecycle hooks. Forwarded into the internal
+   * `ConversationProvider`. The panel wraps `onAfterSendMessage` to auto-expand
+   * the sheet to its tallest snap point on send.
+   */
+  hooks?: ConversationHooks;
   maxHeight?: number;
   minHeight?: number;
   mode?: 'embedded' | 'overlay';
   onOpenChange?: (open: boolean) => void;
   onSnapPointChange?: (point: number) => void;
   open?: boolean;
+  /** Optional conversation scope override for non-thread contexts. */
+  scope?: 'main' | 'page';
   snapPoints?: number[];
   /** Optional thread identifier. When provided, scope becomes `'thread'`. */
   threadId?: string | null;
@@ -96,10 +114,13 @@ const FloatingChatPanel = memo<FloatingChatPanelProps>(
     agentId,
     topicId,
     threadId = null,
+    documentId,
+    scope,
     actionsBar,
+    hooks,
 
-    minHeight = 240,
-    maxHeight = 0.9,
+    minHeight: _minHeight = 240,
+    maxHeight: _maxHeight = 0.9,
 
     width = '100%',
 
@@ -111,11 +132,12 @@ const FloatingChatPanel = memo<FloatingChatPanelProps>(
     const context = useMemo<ConversationContext>(
       () => ({
         agentId,
-        scope: threadId ? 'thread' : 'main',
+        documentId,
+        scope: threadId ? 'thread' : (scope ?? 'main'),
         threadId,
         topicId,
       }),
-      [agentId, topicId, threadId],
+      [agentId, documentId, scope, topicId, threadId],
     );
 
     const chatKey = useMemo(() => messageMapKey(context), [context]);
@@ -134,22 +156,41 @@ const FloatingChatPanel = memo<FloatingChatPanelProps>(
     );
 
     const [open, setOpen] = useState(true);
+    const [activeSnapPoint, setActiveSnapPoint] = useState<number>(REST_SNAP_POINT);
+
+    const mergedHooks = useMemo<ConversationHooks>(
+      () => ({
+        ...hooks,
+        // Expand the sheet the moment the user presses Send, so the chat grows
+        // into view before the AI response streams in — not after it finishes.
+        onBeforeSendMessage: async (params) => {
+          setActiveSnapPoint(MAX_SNAP_POINT);
+          return hooks?.onBeforeSendMessage?.(params);
+        },
+      }),
+      [hooks],
+    );
+
     const sheetProps: FloatingSheetProps = {
+      activeSnapPoint,
       className: 'floating-sheet-demo-inline',
       closeThreshold: 0.3,
       defaultOpen: true,
       dismissible: false,
+      headerActions,
 
-      maxHeight: 520,
-      minHeight: 320,
+      maxHeight: MAX_SNAP_POINT,
+      minHeight: SNAP_POINTS[1],
       mode: 'inline',
       onOpenChange: setOpen,
+      onSnapPointChange: setActiveSnapPoint,
       open,
-      restingHeight: 180,
-      snapPoints: [180, 320, 520],
+      restingHeight: REST_SNAP_POINT,
+      snapPoints: [...SNAP_POINTS],
+      title,
 
       variant: 'embedded',
-      width: '100%',
+      width,
     };
 
     return (
@@ -159,6 +200,7 @@ const FloatingChatPanel = memo<FloatingChatPanelProps>(
             actionsBar={resolvedActionsBar}
             context={context}
             hasInitMessages={!!messages}
+            hooks={mergedHooks}
             messages={messages}
             operationState={operationState}
             onMessagesChange={handleMessagesChange}

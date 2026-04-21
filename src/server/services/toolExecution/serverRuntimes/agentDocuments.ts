@@ -21,7 +21,12 @@ export const agentDocumentsRuntime: ServerRuntimeRegistration = {
       editDocument: ({ agentId, content, id }) => service.editDocumentById(id, content, agentId),
       listDocuments: async ({ agentId }) => {
         const docs = await service.listDocuments(agentId);
-        return docs.map((d) => ({ filename: d.filename, id: d.id, title: d.title }));
+        return docs.map((d) => ({
+          documentId: d.documentId,
+          filename: d.filename,
+          id: d.id,
+          title: d.title,
+        }));
       },
       readDocument: ({ agentId, id }) => service.getDocumentById(id, agentId),
       readDocumentByFilename: ({ agentId, filename }) =>

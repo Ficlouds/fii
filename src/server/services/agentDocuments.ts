@@ -315,6 +315,7 @@ export class AgentDocumentsService {
   async listDocuments(agentId: string) {
     const docs = await this.agentDocumentModel.findByAgent(agentId);
     return docs.map((d) => ({
+      documentId: d.documentId,
       filename: d.filename,
       id: d.id,
       loadPosition: d.policy?.context?.position,

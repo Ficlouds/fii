@@ -1435,7 +1435,9 @@ export const createRuntimeExecutors = (
             toolExecutionService.executeTool(chatToolPayload, {
               activeDeviceId: state.metadata?.activeDeviceId,
               agentId: state.metadata?.agentId,
+              documentId: state.metadata?.documentId,
               memoryToolPermission: agentConfig?.chatConfig?.memory?.toolPermission,
+              scope: state.metadata?.scope,
               serverDB: ctx.serverDB,
               taskId: state.metadata?.taskId,
               toolManifestMap: effectiveManifestMap,
@@ -1776,7 +1778,9 @@ export const createRuntimeExecutors = (
                 toolExecutionService.executeTool(chatToolPayload, {
                   activeDeviceId: state.metadata?.activeDeviceId,
                   agentId: state.metadata?.agentId,
+                  documentId: state.metadata?.documentId,
                   memoryToolPermission: batchAgentConfig?.chatConfig?.memory?.toolPermission,
+                  scope: state.metadata?.scope,
                   serverDB: ctx.serverDB,
                   taskId: state.metadata?.taskId,
                   toolManifestMap: batchManifestMap,

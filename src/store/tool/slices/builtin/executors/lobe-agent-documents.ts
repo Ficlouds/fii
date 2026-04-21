@@ -13,7 +13,12 @@ const runtime = new AgentDocumentsExecutionRuntime({
     agentDocumentService.editDocument({ agentId, content, id }),
   listDocuments: async ({ agentId }) => {
     const docs = await agentDocumentService.listDocuments({ agentId });
-    return docs.map((d) => ({ filename: d.filename, id: d.id, title: d.title }));
+    return docs.map((d) => ({
+      documentId: d.documentId,
+      filename: d.filename,
+      id: d.id,
+      title: d.title,
+    }));
   },
   readDocument: ({ agentId, id }) => agentDocumentService.readDocument({ agentId, id }),
   readDocumentByFilename: ({ agentId, filename }) =>

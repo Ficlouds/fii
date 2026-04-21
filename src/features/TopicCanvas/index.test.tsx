@@ -1,0 +1,109 @@
+import { render, screen } from '@testing-library/react';
+import type { ReactNode } from 'react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
+import TopicCanvas from './index';
+
+const mockEditor = {
+  focus: vi.fn(),
+  getDocument: vi.fn(() => ({ root: true })),
+} as const;
+
+const runtimeSpies = vi.hoisted(() => ({
+  setBeforeMutateHandler: vi.fn(),
+  setCurrentDocId: vi.fn(),
+  setEditor: vi.fn(),
+  setTitleHandlers: vi.fn(),
+}));
+
+vi.mock('@lobehub/editor/react', () => ({
+  EditorProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
+  useEditor: () => mockEditor,
+}));
+
+vi.mock('@lobehub/ui', () => ({
+  Flexbox: ({ children, ...props }: { children?: ReactNode; [key: string]: unknown }) => (
+    <div {...props}>{children}</div>
+  ),
+  TextArea: ({
+    value,
+    onChange,
+  }: {
+    onChange?: (event: { target: { value: string } }) => void;
+    value?: string;
+  }) => (
+    <textarea
+      data-testid="topic-title-input"
+      value={value ?? ''}
+      onChange={(event) => onChange?.({ target: { value: event.target.value } })}
+    />
+  ),
+}));
+
+vi.mock('@/features/EditorCanvas', () => ({
+  DiffAllToolbar: ({ documentId, editor }: { documentId: string; editor: typeof mockEditor }) => (
+    <div
+      data-document-id={documentId}
+      data-editor={editor === mockEditor ? 'shared' : 'other'}
+      data-testid="diff-toolbar"
+    />
+  ),
+  EditorCanvas: ({ documentId, editor }: { documentId?: string; editor?: typeof mockEditor }) => (
+    <div
+      data-document-id={documentId ?? ''}
+      data-editor={editor === mockEditor ? 'shared' : 'other'}
+      data-testid="editor-canvas"
+    />
+  ),
+}));
+
+vi.mock('@/features/WideScreenContainer', () => ({
+  default: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+}));
+
+vi.mock('@/hooks/useHotkeys', () => ({
+  useRegisterFilesHotkeys: vi.fn(),
+}));
+
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+}));
+
+vi.mock('@/services/documentHistoryQueue', () => ({
+  documentHistoryQueueService: {
+    enqueue: vi.fn(),
+    flush: vi.fn(),
+  },
+}));
+
+vi.mock('@/store/tool/slices/builtin/executors/lobe-page-agent', () => ({
+  pageAgentRuntime: runtimeSpies,
+}));
+
+afterEach(() => {
+  vi.clearAllMocks();
+});
+
+describe('TopicCanvas', () => {
+  it('mounts diff toolbar and page-agent runtime bridge for the current document', () => {
+    const { unmount } = render(
+      <TopicCanvas documentId="doc-1" title="Topic Title" onTitleChange={vi.fn()} />,
+    );
+
+    expect(screen.getByTestId('editor-canvas')).toHaveAttribute('data-document-id', 'doc-1');
+    expect(screen.getByTestId('diff-toolbar')).toHaveAttribute('data-document-id', 'doc-1');
+    expect(screen.getByTestId('diff-toolbar')).toHaveAttribute('data-editor', 'shared');
+
+    expect(runtimeSpies.setEditor).toHaveBeenCalledWith(mockEditor);
+    expect(runtimeSpies.setCurrentDocId).toHaveBeenCalledWith('doc-1');
+    expect(runtimeSpies.setTitleHandlers).toHaveBeenCalledTimes(1);
+    expect(runtimeSpies.setBeforeMutateHandler).toHaveBeenCalledWith(expect.any(Function));
+
+    unmount();
+
+    expect(runtimeSpies.setCurrentDocId).toHaveBeenLastCalledWith(undefined);
+    expect(runtimeSpies.setTitleHandlers).toHaveBeenLastCalledWith(null, null);
+    expect(runtimeSpies.setBeforeMutateHandler).toHaveBeenLastCalledWith(null);
+    expect(runtimeSpies.setEditor).toHaveBeenLastCalledWith(null);
+  });
+});

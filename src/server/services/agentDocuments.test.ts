@@ -87,10 +87,24 @@ describe('AgentDocumentsService', () => {
   });
 
   describe('listDocuments', () => {
-    it('should return a list of documents with filename, id, and title', async () => {
+    it('should return a list of documents with documentId, filename, id, and title', async () => {
       mockModel.findByAgent.mockResolvedValue([
-        { content: 'c1', filename: 'a.md', id: 'doc-1', policy: null, title: 'A' },
-        { content: 'c2', filename: 'b.md', id: 'doc-2', policy: null, title: 'B' },
+        {
+          content: 'c1',
+          documentId: 'documents-1',
+          filename: 'a.md',
+          id: 'doc-1',
+          policy: null,
+          title: 'A',
+        },
+        {
+          content: 'c2',
+          documentId: 'documents-2',
+          filename: 'b.md',
+          id: 'doc-2',
+          policy: null,
+          title: 'B',
+        },
       ]);
 
       const service = new AgentDocumentsService(db, userId);
@@ -98,8 +112,20 @@ describe('AgentDocumentsService', () => {
 
       expect(mockModel.findByAgent).toHaveBeenCalledWith('agent-1');
       expect(result).toEqual([
-        { filename: 'a.md', id: 'doc-1', loadPosition: undefined, title: 'A' },
-        { filename: 'b.md', id: 'doc-2', loadPosition: undefined, title: 'B' },
+        {
+          documentId: 'documents-1',
+          filename: 'a.md',
+          id: 'doc-1',
+          loadPosition: undefined,
+          title: 'A',
+        },
+        {
+          documentId: 'documents-2',
+          filename: 'b.md',
+          id: 'doc-2',
+          loadPosition: undefined,
+          title: 'B',
+        },
       ]);
     });
   });

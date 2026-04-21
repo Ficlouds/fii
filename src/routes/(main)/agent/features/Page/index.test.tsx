@@ -25,6 +25,12 @@ vi.mock('swr', () => ({
   mutate: vi.fn(),
 }));
 
+vi.mock('@/features/EditorCanvas', () => ({
+  AutoSaveHint: ({ documentId }: { documentId: string }) => (
+    <div data-document-id={documentId} data-testid="autosave-hint" />
+  ),
+}));
+
 vi.mock('@/libs/swr', () => ({
   useClientDataSWR: () => ({ data: null, error: undefined, isLoading: false }),
 }));
@@ -38,6 +44,21 @@ vi.mock('@/services/document', () => ({
 
 vi.mock('@/services/agentDocument', () => ({
   agentDocumentSWRKeys: { documentsList: (id: string) => ['agent-documents-list', id] },
+}));
+
+vi.mock('@/store/document', () => ({
+  documentEvents: { subscribe: vi.fn(() => vi.fn()) },
+  useDocumentStore: Object.assign(
+    vi.fn(() => undefined),
+    {
+      getState: () => ({
+        activeDocumentId: 'doc_test',
+        editor: undefined,
+        onEditorInit: vi.fn(),
+        performSave: vi.fn(),
+      }),
+    },
+  ),
 }));
 
 vi.mock('@/store/agent', () => ({
@@ -62,20 +83,26 @@ vi.mock('@lobehub/ui', () => ({
 vi.mock('@/features/FloatingChatPanel', () => ({
   default: ({
     agentId,
+    documentId,
     open,
+    scope,
     title,
     topicId,
     variant,
   }: {
     agentId: string;
+    documentId?: string;
     open?: boolean;
+    scope?: string;
     title?: string;
     topicId: string | null;
     variant?: string;
   }) => (
     <div
       data-agent-id={agentId}
+      data-document-id={documentId ?? ''}
       data-open={String(open)}
+      data-scope={scope ?? ''}
       data-testid="floating-chat-panel"
       data-title={title ?? ''}
       data-topic-id={topicId ?? 'null'}
@@ -119,9 +146,11 @@ describe('Topic page route', () => {
     expect(screen.getByTestId('topic-canvas')).toHaveAttribute('data-document-id', 'doc_test');
     expect(screen.getByTestId('floating-chat-panel')).toHaveAttribute('data-agent-id', 'agt_test');
     expect(screen.getByTestId('floating-chat-panel')).toHaveAttribute(
-      'data-title',
-      'Floating Chat Panel',
+      'data-document-id',
+      'doc_test',
     );
+    expect(screen.getByTestId('floating-chat-panel')).toHaveAttribute('data-scope', 'page');
+
     expect(screen.getByTestId('floating-chat-panel')).toHaveAttribute('data-topic-id', 'tpc_test');
     expect(screen.getByTestId('floating-chat-panel')).toHaveAttribute('data-variant', 'embedded');
   });

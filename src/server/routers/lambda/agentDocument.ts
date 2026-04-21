@@ -6,6 +6,8 @@ import {
 import { z } from 'zod';
 
 import { AgentDocumentModel } from '@/database/models/agentDocuments';
+import { TopicModel } from '@/database/models/topic';
+import { TopicDocumentModel } from '@/database/models/topicDocument';
 import { authedProcedure, router } from '@/libs/trpc/lambda';
 import { serverDatabase } from '@/libs/trpc/lambda/middleware';
 import { AgentDocumentsService } from '@/server/services/agentDocuments';
@@ -37,6 +39,8 @@ const agentDocumentProcedure = authedProcedure.use(serverDatabase).use(async (op
     ctx: {
       agentDocumentModel: new AgentDocumentModel(ctx.serverDB, ctx.userId),
       agentDocumentService: new AgentDocumentsService(ctx.serverDB, ctx.userId),
+      topicModel: new TopicModel(ctx.serverDB, ctx.userId),
+      topicDocumentModel: new TopicDocumentModel(ctx.serverDB, ctx.userId),
     },
   });
 });
@@ -257,6 +261,36 @@ export const agentDocumentRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       return ctx.agentDocumentService.createDocument(input.agentId, input.title, input.content);
+    }),
+
+  /**
+   * Create an agent document and associate it with a topic in one call.
+   * Used by the topic → page flow to replace the legacy notebook entry point.
+   */
+  createForTopic: agentDocumentProcedure
+    .input(
+      z.object({
+        agentId: z.string(),
+        content: z.string(),
+        title: z.string(),
+        topicId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const topic = input.title.trim() ? undefined : await ctx.topicModel.findById(input.topicId);
+      const title = input.title.trim() || topic?.title || '';
+      const doc = await ctx.agentDocumentService.createDocument(
+        input.agentId,
+        title,
+        input.content,
+      );
+
+      await ctx.topicDocumentModel.associate({
+        documentId: doc.documentId,
+        topicId: input.topicId,
+      });
+
+      return doc;
     }),
 
   /**

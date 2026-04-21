@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import urlJoin from 'url-join';
 
+import { SESSION_CHAT_URL } from '@/const/url';
 import NavItem from '@/features/NavPanel/components/NavItem';
 import { useQueryRoute } from '@/hooks/useQueryRoute';
 import { usePathname } from '@/libs/router/navigation';
@@ -37,9 +38,8 @@ const Nav = memo(() => {
 
   const { mutate } = useActionSWR('openNewTopicOrSaveTopic', openNewTopicOrSaveTopic);
   const handleNewTopic = () => {
-    // If in agent sub-route, navigate back to agent chat first
-    if ((isProfileActive || isChannelActive) && agentId) {
-      router.push(urlJoin('/agent', agentId));
+    if (agentId) {
+      router.push(SESSION_CHAT_URL(agentId));
     }
     mutate();
   };

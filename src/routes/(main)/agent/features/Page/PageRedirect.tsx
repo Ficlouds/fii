@@ -10,12 +10,12 @@ const PageRedirect = memo(() => {
   const { aid, topicId } = useParams<{ aid?: string; topicId?: string }>();
   const navigate = useNavigate();
 
-  const { document } = useAutoCreateTopicDocument(topicId);
+  const { documentId } = useAutoCreateTopicDocument(topicId, aid);
 
   useEffect(() => {
-    if (!aid || !topicId || !document?.id) return;
-    navigate(`/agent/${aid}/${topicId}/page/${document.id}`, { replace: true });
-  }, [aid, topicId, document?.id, navigate]);
+    if (!aid || !topicId || !documentId) return;
+    navigate(`/agent/${aid}/${topicId}/page/${documentId}`, { replace: true });
+  }, [aid, topicId, documentId, navigate]);
 
   return <BrandTextLoading debugId={'PageRedirect'} />;
 });

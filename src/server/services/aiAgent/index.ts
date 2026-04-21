@@ -3,6 +3,7 @@ import { BUILTIN_AGENT_SLUGS, getAgentRuntimeConfig } from '@lobechat/builtin-ag
 import { builtinSkills } from '@lobechat/builtin-skills';
 import { LocalSystemManifest } from '@lobechat/builtin-tool-local-system';
 import { MessageToolIdentifier } from '@lobechat/builtin-tool-message';
+import { PageAgentIdentifier } from '@lobechat/builtin-tool-page-agent';
 import {
   type DeviceAttachment,
   generateSystemPrompt,
@@ -353,6 +354,29 @@ export class AiAgentService {
           log('execAgent: merged builtin agent runtime plugins for slug=%s', agentSlug);
         }
       }
+    }
+
+    if (appContext?.scope === 'page' && agentSlug !== BUILTIN_AGENT_SLUGS.pageAgent) {
+      const pageAgentRuntime = getAgentRuntimeConfig(BUILTIN_AGENT_SLUGS.pageAgent, {
+        model: agentConfig.model,
+        plugins: agentConfig.plugins ?? [],
+      });
+      const pageAgentSystemRole = pageAgentRuntime?.systemRole || '';
+
+      if (pageAgentSystemRole) {
+        agentConfig.systemRole = agentConfig.systemRole
+          ? `${agentConfig.systemRole}\n\n${pageAgentSystemRole}`
+          : pageAgentSystemRole;
+      }
+
+      agentConfig.plugins = agentConfig.plugins?.includes(PageAgentIdentifier)
+        ? agentConfig.plugins
+        : [PageAgentIdentifier, ...(agentConfig.plugins ?? [])];
+      agentConfig.chatConfig = {
+        ...agentConfig.chatConfig,
+        enableHistoryCount: false,
+      };
+      log('execAgent: injected page-agent runtime for page scope');
     }
 
     await throwIfExecutionAborted('agent configuration');
@@ -1438,7 +1462,9 @@ export class AiAgentService {
         userTimezone,
         appContext: {
           agentId: resolvedAgentId,
+          documentId: appContext?.documentId,
           groupId: appContext?.groupId,
+          scope: appContext?.scope,
           taskId,
           threadId: appContext?.threadId,
           topicId,

@@ -65,4 +65,93 @@ describe('AgentDocumentsExecutionRuntime.createDocument', () => {
     expect(result.success).toBe(false);
     expect(stub.createDocument).not.toHaveBeenCalled();
   });
+
+  it('blocks editDocument for the current page document', async () => {
+    const stub = makeStub();
+    stub.readDocument.mockResolvedValue({
+      content: 'body',
+      documentId: 'documents-row-id',
+      id: 'agent-doc-assoc-id',
+      title: 'Daily Brief',
+    });
+
+    const runtime = new AgentDocumentsExecutionRuntime(stub);
+    const result = await runtime.editDocument(
+      { content: 'updated', id: 'agent-doc-assoc-id' },
+      {
+        agentId: 'agent-1',
+        currentDocumentId: 'documents-row-id',
+        scope: 'page',
+      },
+    );
+
+    expect(result.success).toBe(false);
+    expect(result.error).toMatchObject({
+      code: 'CURRENT_PAGE_DOCUMENT_WRITE_FORBIDDEN',
+      kind: 'replan',
+    });
+    expect(stub.editDocument).not.toHaveBeenCalled();
+  });
+
+  it('blocks upsertDocumentByFilename when the filename resolves to the current page document', async () => {
+    const stub = makeStub();
+    stub.listDocuments.mockResolvedValue([
+      {
+        documentId: 'documents-row-id',
+        filename: 'current-doc.md',
+        id: 'agent-doc-assoc-id',
+        title: 'Current Doc',
+      },
+    ]);
+
+    const runtime = new AgentDocumentsExecutionRuntime(stub);
+    const result = await runtime.upsertDocumentByFilename(
+      { content: 'updated', filename: 'current-doc.md' },
+      {
+        agentId: 'agent-1',
+        currentDocumentId: 'documents-row-id',
+        scope: 'page',
+      },
+    );
+
+    expect(result.success).toBe(false);
+    expect(result.error).toMatchObject({
+      code: 'CURRENT_PAGE_DOCUMENT_WRITE_FORBIDDEN',
+      kind: 'replan',
+    });
+    expect(stub.upsertDocumentByFilename).not.toHaveBeenCalled();
+  });
+
+  it('still allows editing a different agent document in page scope', async () => {
+    const stub = makeStub();
+    stub.readDocument.mockResolvedValue({
+      content: 'body',
+      documentId: 'documents-row-id-2',
+      id: 'agent-doc-assoc-id-2',
+      title: 'Other Doc',
+    });
+    stub.editDocument.mockResolvedValue({
+      content: 'updated',
+      documentId: 'documents-row-id-2',
+      id: 'agent-doc-assoc-id-2',
+      title: 'Other Doc',
+    });
+
+    const runtime = new AgentDocumentsExecutionRuntime(stub);
+    const result = await runtime.editDocument(
+      { content: 'updated', id: 'agent-doc-assoc-id-2' },
+      {
+        agentId: 'agent-1',
+        currentDocumentId: 'documents-row-id',
+        scope: 'page',
+      },
+    );
+
+    expect(result.success).toBe(true);
+    expect(stub.editDocument).toHaveBeenCalledWith({
+      agentId: 'agent-1',
+      content: 'updated',
+      id: 'agent-doc-assoc-id-2',
+    });
+  });
 });

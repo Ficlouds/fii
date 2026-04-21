@@ -35,7 +35,12 @@ interface AgentDocumentRecord {
 
 interface AgentDocumentOperationContext {
   agentId?: string | null;
+  currentDocumentId?: string | null;
+  scope?: string | null;
 }
+
+const CURRENT_PAGE_DOCUMENT_WRITE_ERROR_CODE = 'CURRENT_PAGE_DOCUMENT_WRITE_FORBIDDEN';
+const CURRENT_PAGE_DOCUMENT_WRITE_ERROR_TYPE = 'CurrentPageDocumentWriteForbidden';
 
 export interface AgentDocumentsRuntimeService {
   copyDocument: (
@@ -98,6 +103,52 @@ export class AgentDocumentsExecutionRuntime {
     return context.agentId;
   }
 
+  private getCurrentDocumentId(context?: AgentDocumentOperationContext) {
+    if (context?.scope !== 'page') return;
+    return context.currentDocumentId ?? undefined;
+  }
+
+  private buildCurrentPageDocumentWriteBlockedResult(apiName: string): BuiltinServerRuntimeOutput {
+    const message =
+      `Cannot use lobe-agent-documents.${apiName} on the current page document ` +
+      `while page scope is active. Use lobe-page-agent so the open editor shows a diff node ` +
+      `for review instead of writing directly to the database.`;
+
+    return {
+      content: message,
+      error: {
+        code: CURRENT_PAGE_DOCUMENT_WRITE_ERROR_CODE,
+        kind: 'replan',
+        message,
+        type: CURRENT_PAGE_DOCUMENT_WRITE_ERROR_TYPE,
+      },
+      success: false,
+    };
+  }
+
+  private isCurrentPageDocument(
+    doc: AgentDocumentRecord | undefined,
+    context?: AgentDocumentOperationContext,
+  ) {
+    const currentDocumentId = this.getCurrentDocumentId(context);
+    if (!currentDocumentId || !doc?.documentId) return false;
+
+    return doc.documentId === currentDocumentId;
+  }
+
+  private async shouldBlockUpsertForCurrentPageDocument(
+    agentId: string,
+    filename: string,
+    context?: AgentDocumentOperationContext,
+  ) {
+    const currentDocumentId = this.getCurrentDocumentId(context);
+    if (!currentDocumentId) return false;
+
+    const docs = await this.service.listDocuments({ agentId });
+
+    return docs.some((doc) => doc.documentId === currentDocumentId && doc.filename === filename);
+  }
+
   async listDocuments(
     _args: ListDocumentsArgs,
     context?: AgentDocumentOperationContext,
@@ -156,6 +207,10 @@ export class AgentDocumentsExecutionRuntime {
         content: 'Cannot upsert agent document without agentId context.',
         success: false,
       };
+    }
+
+    if (await this.shouldBlockUpsertForCurrentPageDocument(agentId, args.filename, context)) {
+      return this.buildCurrentPageDocumentWriteBlockedResult('upsertDocumentByFilename');
     }
 
     const doc = await this.service.upsertDocumentByFilename({ ...args, agentId });
@@ -224,8 +279,15 @@ export class AgentDocumentsExecutionRuntime {
       };
     }
 
+    const existing = await this.service.readDocument({ agentId, id: args.id });
+    if (!existing) return { content: `Document not found: ${args.id}`, success: false };
+
+    if (this.isCurrentPageDocument(existing, context)) {
+      return this.buildCurrentPageDocumentWriteBlockedResult('editDocument');
+    }
+
     const doc = await this.service.editDocument({ ...args, agentId });
-    if (!doc) return { content: `Document not found: ${args.id}`, success: false };
+    if (!doc) return { content: `Failed to update document ${args.id}.`, success: false };
 
     return {
       content: `Updated document ${args.id}.`,
@@ -248,6 +310,10 @@ export class AgentDocumentsExecutionRuntime {
 
     const doc = await this.service.readDocument({ agentId, id: args.id });
     if (!doc) return { content: `Document not found: ${args.id}`, success: false };
+
+    if (this.isCurrentPageDocument(doc, context)) {
+      return this.buildCurrentPageDocumentWriteBlockedResult('patchDocument');
+    }
 
     const patched = applyMarkdownPatch(doc.content ?? '', args.hunks);
     if (!patched.ok) {
@@ -308,8 +374,15 @@ export class AgentDocumentsExecutionRuntime {
       };
     }
 
+    const existing = await this.service.readDocument({ agentId, id: args.id });
+    if (!existing) return { content: `Document not found: ${args.id}`, success: false };
+
+    if (this.isCurrentPageDocument(existing, context)) {
+      return this.buildCurrentPageDocumentWriteBlockedResult('renameDocument');
+    }
+
     const doc = await this.service.renameDocument({ ...args, agentId });
-    if (!doc) return { content: `Document not found: ${args.id}`, success: false };
+    if (!doc) return { content: `Failed to rename document ${args.id}.`, success: false };
 
     return {
       content: `Renamed document ${args.id} to "${args.newTitle}".`,

@@ -94,11 +94,13 @@ export class ClientToolExecutionActionImpl {
         const operation = this.#get().operations[operationId];
         const ctx: BuiltinToolContext = {
           agentId: operation?.context?.agentId,
+          documentId: operation?.context?.documentId,
           groupId: operation?.context?.groupId,
           // Gateway-side tool messages are persisted on the server; the client
           // has no local message id, so reuse toolCallId as the context key.
           messageId: toolCallId,
           operationId,
+          scope: operation?.context?.scope,
           signal: operation?.abortController?.signal,
           topicId: operation?.context?.topicId ?? undefined,
         };

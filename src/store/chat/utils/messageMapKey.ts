@@ -41,12 +41,7 @@ export interface MessageMapKeyInput {
  * Handles mapping from agentId/threadId to scopeId/subTopicId format
  */
 const toMessageMapContext = (input: MessageMapKeyInput): MessageMapContext => {
-  const { agentId, topicId, threadId, isNew, groupId, subAgentId } = input;
-
-  // 'page' is a surfacing/capability marker, not a conversation partition.
-  // Collapse it up-front so /agent/:topicId and /agent/:topicId/page share
-  // one key; threadId/groupId still win below, keeping threads isolated.
-  const scope = input.scope === 'page' ? undefined : input.scope;
+  const { agentId, topicId, threadId, isNew, groupId, subAgentId, scope } = input;
 
   // If threadId is present and scope is explicitly 'thread', use thread scope
   // Thread scope takes priority when explicitly requested, even with groupId

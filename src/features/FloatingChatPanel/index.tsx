@@ -140,7 +140,19 @@ const FloatingChatPanel = memo<FloatingChatPanelProps>(
       [agentId, documentId, scope, topicId, threadId],
     );
 
-    const chatKey = useMemo(() => messageMapKey(context), [context]);
+    // Read from the same messagesMap slot as the main agent conversation
+    // (/agent/:topicId) so the floating panel on /page/:docId shows messages
+    // written by the main surface. `context.scope` stays 'page' so the
+    // downstream capability layer (PageAgent tool injection, pageEditor
+    // initialContext) still fires — only the slot lookup is collapsed.
+    const chatKey = useMemo(
+      () =>
+        messageMapKey({
+          ...context,
+          scope: context.scope === 'page' ? 'main' : context.scope,
+        }),
+      [context],
+    );
     const messages = useChatStore((s) => s.dbMessagesMap[chatKey]);
     const replaceMessages = useChatStore((s) => s.replaceMessages);
 

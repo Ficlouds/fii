@@ -818,6 +818,7 @@ describe('StreamingExecutor actions', () => {
           tools: [],
         }),
       } as any);
+      vi.spyOn(pageAgentRuntime, 'isReady').mockReturnValue(true);
       vi.spyOn(pageAgentRuntime, 'getPageContentContext').mockReturnValue({
         markdown: '# Test Document',
         xml: '<root><h1>Test</h1></root>',

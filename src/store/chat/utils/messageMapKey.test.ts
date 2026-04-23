@@ -270,6 +270,44 @@ describe('messageMapKey', () => {
     });
   });
 
+  describe('Page scope (collapses to main)', () => {
+    it('should reuse the main key for page scope on an existing topic', () => {
+      const result = messageMapKey({
+        scope: 'page',
+        agentId: 'agt_xxx',
+        topicId: 'tpc_yyy',
+      });
+      expect(result).toBe('main_agt_xxx_tpc_yyy');
+    });
+
+    it('should collapse page scope to main for a new topic', () => {
+      const result = messageMapKey({ scope: 'page', agentId: 'agt_xxx' });
+      expect(result).toBe('main_agt_xxx_new');
+    });
+
+    it('should produce the same key for scope=main and scope=page on the same topic', () => {
+      const mainKey = messageMapKey({ agentId: 'agt_xxx', topicId: 'tpc_yyy' });
+      const pageKey = messageMapKey({
+        scope: 'page',
+        agentId: 'agt_xxx',
+        topicId: 'tpc_yyy',
+      });
+      expect(pageKey).toBe(mainKey);
+    });
+
+    it('should still promote to thread scope when both page scope and threadId are present', () => {
+      // threadId wins over the page→main collapse, so thread-scoped messages
+      // (e.g. a thread opened from inside the page editor) stay isolated.
+      const result = messageMapKey({
+        scope: 'page',
+        agentId: 'agt_xxx',
+        topicId: 'tpc_yyy',
+        threadId: 'thd_zzz',
+      });
+      expect(result).toBe('thread_agt_xxx_tpc_yyy_thd_zzz');
+    });
+  });
+
   describe('Edge cases', () => {
     it('should handle null topicId as no topic (new)', () => {
       const result = messageMapKey({ agentId: 'agt_xxx', topicId: null });

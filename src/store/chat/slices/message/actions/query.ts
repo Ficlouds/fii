@@ -111,8 +111,25 @@ export class MessageQueryActionImpl {
     // Skip fetch when skipFetch is true or required fields are missing
     const shouldFetch = !skipFetch && !!context.agentId && !!context.topicId;
 
+    // Only identity fields partition the server-side fetch. Keeping `scope`
+    // out of the SWR key lets main (`/agent/:topicId`) and page
+    // (`/agent/:topicId/page`) share one cache — the TRPC `getMessages`
+    // endpoint already ignores scope (see `MessageQueryContext`), so there's
+    // no reason to refetch per surface.
+    const swrKey = shouldFetch
+      ? [
+          'CHAT_STORE_FETCH_MESSAGES',
+          {
+            agentId: context.agentId,
+            groupId: context.groupId,
+            threadId: context.threadId,
+            topicId: context.topicId,
+          },
+        ]
+      : null;
+
     return useClientDataSWRWithSync<UIChatMessage[]>(
-      shouldFetch ? ['CHAT_STORE_FETCH_MESSAGES', context] : null,
+      swrKey,
       () => messageService.getMessages(context),
       {
         onData: (data) => {

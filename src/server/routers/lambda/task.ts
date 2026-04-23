@@ -9,7 +9,7 @@ import type {
   WorkspaceData,
 } from '@lobechat/types';
 import { TRPCError } from '@trpc/server';
-import z, { z } from 'zod';
+import { z } from 'zod';
 
 import { AgentModel } from '@/database/models/agent';
 import { BriefModel } from '@/database/models/brief';

@@ -26,6 +26,7 @@ describe('useConversationSpacer helpers', () => {
         hasPrevOffset: true,
         isAIGenerating: true,
         isMounted: true,
+        isUserScrollIntent: true,
       }),
     ).toEqual({
       cancelPin: true,
@@ -40,10 +41,41 @@ describe('useConversationSpacer helpers', () => {
         hasPrevOffset: true,
         isAIGenerating: false,
         isMounted: true,
+        isUserScrollIntent: true,
       }),
     ).toEqual({
       cancelPin: true,
       shrinkSpacer: true,
+    });
+  });
+
+  it('should keep pin retries for programmatic upward scroll while AI is still streaming', () => {
+    expect(
+      getConversationSpacerScrollEffect({
+        delta: -24,
+        hasPrevOffset: true,
+        isAIGenerating: true,
+        isMounted: true,
+        isUserScrollIntent: false,
+      }),
+    ).toEqual({
+      cancelPin: false,
+      shrinkSpacer: false,
+    });
+  });
+
+  it('should not shrink the spacer for programmatic upward scroll after streaming stops', () => {
+    expect(
+      getConversationSpacerScrollEffect({
+        delta: -24,
+        hasPrevOffset: true,
+        isAIGenerating: false,
+        isMounted: true,
+        isUserScrollIntent: false,
+      }),
+    ).toEqual({
+      cancelPin: false,
+      shrinkSpacer: false,
     });
   });
 });

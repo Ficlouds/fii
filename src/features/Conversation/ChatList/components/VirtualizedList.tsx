@@ -1,9 +1,9 @@
 'use client';
 
 import isEqual from 'fast-deep-equal';
-import { type ReactElement, type ReactNode } from 'react';
+import type { KeyboardEvent, ReactElement, ReactNode, TouchEvent, WheelEvent } from 'react';
 import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
-import { type VListHandle } from 'virtua';
+import type { VListHandle } from 'virtua';
 import { VList } from 'virtua';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -31,6 +31,17 @@ interface VirtualizedListProps {
   itemContent: (index: number, data: string) => ReactNode;
 }
 
+const USER_SCROLL_INTENT_WINDOW_MS = 800;
+const USER_SCROLL_KEYS = new Set([
+  'ArrowDown',
+  'ArrowUp',
+  'End',
+  'Home',
+  'PageDown',
+  'PageUp',
+  ' ',
+]);
+
 /**
  * VirtualizedList for Conversation
  *
@@ -39,6 +50,7 @@ interface VirtualizedListProps {
 const VirtualizedList = memo<VirtualizedListProps>(({ dataSource, itemContent }) => {
   const virtuaRef = useRef<VListHandle>(null);
   const didInitialScrollRef = useRef(false);
+  const lastUserScrollIntentAtRef = useRef(0);
   const scrollEndTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const {
     cancelPinMessageIndex,
@@ -89,7 +101,10 @@ const VirtualizedList = memo<VirtualizedListProps>(({ dataSource, itemContent })
     // Shrink spacer on scroll up when not streaming
     const ref = virtuaRef.current;
     if (ref) {
-      handleScrollOffset(ref.scrollOffset);
+      handleScrollOffset(ref.scrollOffset, {
+        isUserScrollIntent:
+          Date.now() - lastUserScrollIntentAtRef.current <= USER_SCROLL_INTENT_WINDOW_MS,
+      });
     }
 
     // Check if at bottom
@@ -182,6 +197,33 @@ const VirtualizedList = memo<VirtualizedListProps>(({ dataSource, itemContent })
     return [...merged].sort((a, b) => a - b);
   }, [dataSource, streamingIndices, selectionMessageIds]);
 
+  const markUserScrollIntent = useCallback(() => {
+    lastUserScrollIntentAtRef.current = Date.now();
+  }, []);
+
+  const handleUserWheel = useCallback(
+    (event: WheelEvent<HTMLElement>) => {
+      if (event.ctrlKey || event.deltaY === 0) return;
+      markUserScrollIntent();
+    },
+    [markUserScrollIntent],
+  );
+
+  const handleUserTouchMove = useCallback(
+    (_event: TouchEvent<HTMLElement>) => {
+      markUserScrollIntent();
+    },
+    [markUserScrollIntent],
+  );
+
+  const handleUserKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLElement>) => {
+      if (!USER_SCROLL_KEYS.has(event.key)) return;
+      markUserScrollIntent();
+    },
+    [markUserScrollIntent],
+  );
+
   // Auto scroll to user message when user sends a new message
   // Only scroll when 2 new messages are added and second-to-last is from user
   useScrollToUserMessage({
@@ -206,7 +248,12 @@ const VirtualizedList = memo<VirtualizedListProps>(({ dataSource, itemContent })
   const scrollToBottom = useConversationStore((s) => s.scrollToBottom);
 
   return (
-    <div style={{ height: '100%', position: 'relative' }}>
+    <div
+      style={{ height: '100%', position: 'relative' }}
+      onKeyDownCapture={handleUserKeyDown}
+      onTouchMoveCapture={handleUserTouchMove}
+      onWheelCapture={handleUserWheel}
+    >
       {/* Debug Inspector - placed outside VList so it won't be recycled by the virtual list */}
       {OPEN_DEV_INSPECTOR && <DebugInspector />}
       <VList

@@ -1,4 +1,4 @@
-import { type AssistantContentBlock, type UIChatMessage } from '@lobechat/types';
+import type { AssistantContentBlock, UIChatMessage } from '@lobechat/types';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { dataSelectors, messageStateSelectors, useConversationStore } from '../../store';
@@ -17,6 +17,7 @@ interface ConversationSpacerScrollEffectOptions {
   hasPrevOffset: boolean;
   isAIGenerating: boolean;
   isMounted: boolean;
+  isUserScrollIntent: boolean;
 }
 
 export const getConversationSpacerScrollEffect = ({
@@ -24,14 +25,19 @@ export const getConversationSpacerScrollEffect = ({
   hasPrevOffset,
   isAIGenerating,
   isMounted,
+  isUserScrollIntent,
 }: ConversationSpacerScrollEffectOptions) => {
-  const cancelPin = isMounted && hasPrevOffset && delta < 0;
+  const cancelPin = isMounted && hasPrevOffset && isUserScrollIntent && delta < 0;
 
   return {
     cancelPin,
     shrinkSpacer: cancelPin && !isAIGenerating,
   };
 };
+
+interface HandleScrollOffsetOptions {
+  isUserScrollIntent?: boolean;
+}
 
 const getMessageElement = (messageId: string | null) => {
   if (!messageId) return null;
@@ -180,32 +186,39 @@ export const useConversationSpacer = (dataSource: string[]) => {
   }, [getScrollOffset, isAIGenerating]);
 
   // Stable scroll handler for shrinking spacer on scroll-up when not streaming
-  const handleScrollOffset = useCallback((currentScrollOffset: number) => {
-    const prevOffset = prevScrollOffsetRef.current;
-    prevScrollOffsetRef.current = currentScrollOffset;
+  const handleScrollOffset = useCallback(
+    (
+      currentScrollOffset: number,
+      { isUserScrollIntent = false }: HandleScrollOffsetOptions = {},
+    ) => {
+      const prevOffset = prevScrollOffsetRef.current;
+      prevScrollOffsetRef.current = currentScrollOffset;
 
-    const delta = prevOffset === null ? 0 : currentScrollOffset - prevOffset;
-    const { cancelPin, shrinkSpacer } = getConversationSpacerScrollEffect({
-      delta,
-      hasPrevOffset: prevOffset !== null,
-      isAIGenerating: isAIGeneratingRef.current,
-      isMounted: mountedRef.current,
-    });
+      const delta = prevOffset === null ? 0 : currentScrollOffset - prevOffset;
+      const { cancelPin, shrinkSpacer } = getConversationSpacerScrollEffect({
+        delta,
+        hasPrevOffset: prevOffset !== null,
+        isAIGenerating: isAIGeneratingRef.current,
+        isMounted: mountedRef.current,
+        isUserScrollIntent,
+      });
 
-    if (!cancelPin) return;
+      if (!cancelPin) return;
 
-    if (userMessageIndexRef.current !== null) {
-      setCancelPinMessageIndex(userMessageIndexRef.current);
-    }
-    if (!shrinkSpacer) return;
+      if (userMessageIndexRef.current !== null) {
+        setCancelPinMessageIndex(userMessageIndexRef.current);
+      }
+      if (!shrinkSpacer) return;
 
-    setScrollReduction((prev) => prev + Math.abs(delta));
+      setScrollReduction((prev) => prev + Math.abs(delta));
 
-    if (scrollShrinkEndTimerRef.current) clearTimeout(scrollShrinkEndTimerRef.current);
-    scrollShrinkEndTimerRef.current = setTimeout(() => {
-      scrollShrinkEndTimerRef.current = null;
-    }, 150);
-  }, []);
+      if (scrollShrinkEndTimerRef.current) clearTimeout(scrollShrinkEndTimerRef.current);
+      scrollShrinkEndTimerRef.current = setTimeout(() => {
+        scrollShrinkEndTimerRef.current = null;
+      }, 150);
+    },
+    [],
+  );
 
   // Unmount when rendered height reaches zero via scroll reduction
   useEffect(() => {

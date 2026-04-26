@@ -2,11 +2,11 @@
 
 import { memo, useLayoutEffect, useRef } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { createStoreUpdater } from 'zustand-utils';
 
 import { SESSION_CHAT_TOPIC_URL, SESSION_CHAT_URL } from '@/const/url';
 import { useQueryState } from '@/hooks/useQueryParam';
 import { useChatStore } from '@/store/chat';
+import { createStoreUpdater } from '@/store/utils/createStoreUpdater';
 
 const getSearchSuffix = (searchParams: URLSearchParams) => {
   const search = searchParams.toString();
@@ -25,8 +25,8 @@ const ChatHydration = memo(() => {
   const [thread, setThread] = useQueryState('thread', { history: 'replace', throttleMs: 500 });
   const routeTopicId = params.topicId ?? searchParams.get('topic');
 
-  useStoreUpdater('activeTopicId', routeTopicId ?? undefined);
-  useStoreUpdater('activeThreadId', thread!);
+  useStoreUpdater('activeTopicId', routeTopicId ?? null);
+  useStoreUpdater('activeThreadId', thread ?? null);
 
   const locationRef = useRef(location);
   const paramsRef = useRef(params);
@@ -84,7 +84,7 @@ const ChatHydration = memo(() => {
     const unsubscribeThread = useChatStore.subscribe(
       (s) => s.activeThreadId,
       (state) => {
-        setThread(!state ? null : state);
+        setThread(state || null);
       },
     );
 

@@ -18,6 +18,9 @@ export const disableStreamModels = new Set([
   */
   'computer-use-preview',
   'computer-use-preview-2025-03-11',
+  // gpt-5.5-pro docs explicitly state "Streaming: Not supported"
+  // (gpt-5-pro / gpt-5.4-pro both document streaming as supported, hence omitted)
+  'gpt-5.5-pro',
 ]);
 
 /**

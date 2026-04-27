@@ -129,6 +129,8 @@ table agent_documents {
   user_id text [not null]
   agent_id text [not null]
   document_id varchar(255) [not null]
+  parent_id uuid
+  filename text
   template_id varchar(100)
   access_self integer [not null, default: 31]
   access_shared integer [not null, default: 0]
@@ -160,6 +162,7 @@ table agent_documents {
     deleted_at [name: 'agent_documents_deleted_at_idx']
     (agent_id, deleted_at, policy_load) [name: 'agent_documents_agent_autoload_deleted_idx']
     document_id [name: 'agent_documents_document_id_idx']
+    parent_id [name: 'agent_documents_parent_id_idx']
     (agent_id, document_id, user_id) [name: 'agent_documents_agent_document_user_unique', unique]
   }
 }

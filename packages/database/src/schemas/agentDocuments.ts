@@ -1,3 +1,4 @@
+import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import {
   index,
   integer,
@@ -61,6 +62,22 @@ export const agentDocuments = pgTable(
     documentId: varchar('document_id', { length: 255 })
       .notNull()
       .references(() => documents.id, { onDelete: 'cascade' }),
+    /**
+     * Parent VFS entry inside the same agent document tree.
+     *
+     * Null means the entry is at the ordinary VFS root. This references
+     * `agent_documents.id`, not `documents.id`.
+     */
+    parentId: uuid('parent_id').references((): AnyPgColumn => agentDocuments.id, {
+      onDelete: 'cascade',
+    }),
+    /**
+     * Ordinary VFS segment name owned by this agent document entry.
+     *
+     * This starts nullable for the schema-expansion PR and becomes non-null in the
+     * backfill/constraint PR after existing rows are migrated.
+     */
+    filename: text('filename'),
 
     /**
      * Template source label (e.g. 'claw', 'custom').
@@ -171,6 +188,7 @@ export const agentDocuments = pgTable(
       table.policyLoad,
     ),
     index('agent_documents_document_id_idx').on(table.documentId),
+    index('agent_documents_parent_id_idx').on(table.parentId),
     uniqueIndex('agent_documents_agent_document_user_unique').on(
       table.agentId,
       table.documentId,

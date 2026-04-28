@@ -9,6 +9,9 @@ import {
   buildSandboxWrapperCommand,
   CloudCCMessagePersistence,
 } from '@/server/services/cloudClaudeCode';
+import { FileService } from '@/server/services/file';
+import { MarketService } from '@/server/services/market';
+import { ServerSandboxService } from '@/server/services/sandbox';
 
 const log = debug('lobe-server:cloud-claude-code-router');
 
@@ -94,13 +97,23 @@ export const cloudClaudeCodeRouter = router({
 
     log('start: command length=%d', fullCommand.length);
 
-    // 4. TODO: Call sandbox runCommand
-    // For now, return the command so it can be tested manually
-    // In production, this will call:
-    //   await sandboxService.callTool('runCommand', { command: fullCommand });
+    // 4. Call sandbox runCommand (fire-and-forget)
+    const marketService = new MarketService({ userInfo: { userId: ctx.userId } });
+    const fileService = new FileService(ctx.serverDB, ctx.userId);
+    const sandboxService = new ServerSandboxService({
+      fileService,
+      marketService,
+      topicId,
+      userId: ctx.userId,
+    });
+
+    // Fire-and-forget: don't await — CC runs asynchronously in sandbox,
+    // results come back via ingest POST callbacks
+    sandboxService.callTool('runCommand', { command: fullCommand }).catch((error: unknown) => {
+      log('start: sandbox runCommand failed: %O', error);
+    });
 
     return {
-      command: fullCommand,
       serverUrl,
       topicId,
     };

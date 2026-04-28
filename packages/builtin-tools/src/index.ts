@@ -33,6 +33,7 @@ import { type LobeBuiltinTool } from '@lobechat/types';
  */
 export const defaultToolIds = [
   LobeActivatorManifest.identifier,
+  ClarifyManifest.identifier,
   SkillsManifest.identifier,
   SkillStoreManifest.identifier,
   WebBrowsingManifest.identifier,
@@ -52,6 +53,7 @@ export const defaultToolIds = [
  */
 export const alwaysOnToolIds = [
   LobeActivatorManifest.identifier,
+  ClarifyManifest.identifier,
   SkillsManifest.identifier,
   SkillStoreManifest.identifier,
 ];

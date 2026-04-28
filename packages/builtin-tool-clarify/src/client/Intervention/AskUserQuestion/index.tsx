@@ -1,9 +1,9 @@
 'use client';
 
 import type { BuiltinInterventionProps } from '@lobechat/types';
-import { Button, Flexbox, Icon, Markdown, Text, TextArea } from '@lobehub/ui';
+import { Button, Flexbox, Icon, Input, Markdown, Text } from '@lobehub/ui';
 import { cx } from 'antd-style';
-import { Check, PenLine, SendHorizontal } from 'lucide-react';
+import { ChevronLeft, ChevronRight, PenLine, SendHorizontal } from 'lucide-react';
 import { memo, useCallback, useMemo, useState } from 'react';
 
 import type {
@@ -36,6 +36,8 @@ const getSelectedOption = (question: ClarifyQuestion, answer?: DraftAnswer) => {
 const isAnswered = (answer?: DraftAnswer) =>
   !!answer && (answer.selected.length > 0 || !!answer.other?.trim());
 
+const getOptionLetter = (index: number) => String.fromCharCode(65 + index);
+
 const QuestionBlock = memo<{
   answer: DraftAnswer;
   onChange: (questionId: string, answer: DraftAnswer) => void;
@@ -54,6 +56,10 @@ const QuestionBlock = memo<{
 
       onChange(question.id, {
         ...answer,
+        // Single-select: picking an option means "Other" no longer applies — clear it
+        // so we don't submit both `selected` and `other` as two parallel answers.
+        // Multi-select keeps `other` as an additive custom entry alongside selections.
+        other: question.multiSelect ? answer.other : undefined,
         selected,
         selectedPreview: question.multiSelect
           ? undefined
@@ -63,60 +69,71 @@ const QuestionBlock = memo<{
     [answer, onChange, question],
   );
 
-  return (
-    <Flexbox className={styles.questionBlock} gap={12}>
-      <Flexbox gap={6}>
-        <Text className={styles.header}>{question.header}</Text>
-        <Text style={{ fontWeight: 500 }}>{question.question}</Text>
-      </Flexbox>
+  const handleOtherChange = useCallback(
+    (value: string) => {
+      // Mirror of the rule in handleToggleOption: in single-select, typing in
+      // Other replaces the selection. Multi-select keeps both.
+      const next: DraftAnswer = {
+        ...answer,
+        other: value,
+      };
+      if (!question.multiSelect && value.trim()) {
+        next.selected = [];
+        next.selectedPreview = undefined;
+      }
+      onChange(question.id, next);
+    },
+    [answer, onChange, question.id, question.multiSelect],
+  );
 
-      <Flexbox gap={8}>
-        {question.options.map((option) => {
+  return (
+    <Flexbox gap={4}>
+      <Text className={styles.questionText}>{question.question}</Text>
+
+      <Flexbox gap={2}>
+        {question.options.map((option, index) => {
           const selected = answer.selected.includes(option.label);
+          const letter = getOptionLetter(index);
 
           return (
             <Flexbox
+              horizontal
+              align={'flex-start'}
               aria-checked={selected}
               className={cx(styles.option, selected && styles.optionSelected)}
-              gap={4}
-              horizontal={false}
+              gap={10}
               key={option.label}
               role={question.multiSelect ? 'checkbox' : 'radio'}
               onClick={() => handleToggleOption(option.label)}
             >
-              <Flexbox horizontal align={'center'} gap={8}>
-                {selected && <Icon icon={Check} size={14} />}
-                <Text style={{ fontWeight: 500 }}>{option.label}</Text>
+              <span className={cx(styles.letter, selected && styles.letterSelected)}>{letter}</span>
+              <Flexbox flex={1} gap={0}>
+                <Text className={styles.optionLabel}>{option.label}</Text>
+                <Text className={styles.description}>{option.description}</Text>
               </Flexbox>
-              <Text style={{ fontSize: 13 }} type={'secondary'}>
-                {option.description}
-              </Text>
             </Flexbox>
           );
         })}
       </Flexbox>
 
-      <Flexbox gap={8}>
-        <Text className={styles.actionLink} type={'secondary'}>
-          <Icon icon={PenLine} /> Other
-        </Text>
-        <TextArea
-          autoSize={{ maxRows: 4, minRows: 2 }}
+      <Flexbox horizontal align={'center'} className={styles.otherRow} gap={10}>
+        <span className={styles.letter}>
+          <Icon icon={PenLine} size={12} />
+        </span>
+        <Text className={styles.otherLabel}>Other</Text>
+        <Input
+          className={styles.otherInput}
           placeholder={'Type another answer'}
+          size={'small'}
           value={answer.other ?? ''}
           variant={'filled'}
-          onChange={(event) =>
-            onChange(question.id, {
-              ...answer,
-              other: event.target.value,
-            })
-          }
+          onChange={(event) => handleOtherChange(event.target.value)}
         />
       </Flexbox>
 
       {preview && (
-        <Flexbox gap={8}>
-          <Text style={{ fontSize: 13 }} type={'secondary'}>
+        <Flexbox gap={6} style={{ marginBlockStart: 4 }}>
+          <Text style={{ fontSize: 12 }} type={'secondary'}>
             Preview
           </Text>
           <Flexbox className={styles.preview}>
@@ -124,9 +141,9 @@ const QuestionBlock = memo<{
               {preview}
             </Markdown>
           </Flexbox>
-          <TextArea
-            autoSize={{ maxRows: 4, minRows: 2 }}
+          <Input
             placeholder={'Optional notes for this choice'}
+            size={'small'}
             value={answer.notes ?? ''}
             variant={'filled'}
             onChange={(event) =>
@@ -142,6 +159,51 @@ const QuestionBlock = memo<{
   );
 });
 
+QuestionBlock.displayName = 'ClarifyQuestionBlock';
+
+const Stepper = memo<{
+  currentIndex: number;
+  onJump: (index: number) => void;
+  onNext: () => void;
+  onPrev: () => void;
+  total: number;
+}>(({ currentIndex, total, onPrev, onNext, onJump }) => (
+  <Flexbox horizontal align={'center'} className={styles.stepper} gap={8}>
+    <span
+      className={cx(styles.navArrow, currentIndex === 0 && styles.navArrowDisabled)}
+      onClick={onPrev}
+    >
+      <Icon icon={ChevronLeft} size={14} />
+    </span>
+    <Flexbox horizontal gap={4}>
+      {Array.from({ length: total }, (_, i) => (
+        <span
+          key={i}
+          style={{ cursor: 'pointer' }}
+          className={cx(
+            styles.dot,
+            i === currentIndex && styles.dotActive,
+            i < currentIndex && styles.dotDone,
+          )}
+          onClick={() => onJump(i)}
+        />
+      ))}
+    </Flexbox>
+    <Text className={styles.stepCount}>
+      {currentIndex + 1} / {total}
+    </Text>
+    <span
+      className={cx(styles.navArrow, currentIndex === total - 1 && styles.navArrowDisabled)}
+      style={{ marginInlineStart: 'auto' }}
+      onClick={onNext}
+    >
+      <Icon icon={ChevronRight} size={14} />
+    </span>
+  </Flexbox>
+));
+
+Stepper.displayName = 'ClarifyStepper';
+
 const AskUserQuestionIntervention = memo<BuiltinInterventionProps<AskUserQuestionArgs>>(
   ({ args, interactionMode, onInteractionAction }) => {
     const questions = args.questions ?? [];
@@ -150,6 +212,7 @@ const AskUserQuestionIntervention = memo<BuiltinInterventionProps<AskUserQuestio
       getInitialAnswers(questions),
     );
     const [submitting, setSubmitting] = useState(false);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
     const handleAnswerChange = useCallback((questionId: string, answer: DraftAnswer) => {
       setAnswers((prev) => ({ ...prev, [questionId]: answer }));
@@ -159,6 +222,9 @@ const AskUserQuestionIntervention = memo<BuiltinInterventionProps<AskUserQuestio
       () => questions.length > 0 && questions.every((question) => isAnswered(answers[question.id])),
       [answers, questions],
     );
+
+    const isLast = currentIndex === questions.length - 1;
+    const showStepper = questions.length > 1;
 
     const handleSubmit = useCallback(async () => {
       if (!onInteractionAction || !allAnswered) return;
@@ -196,6 +262,18 @@ const AskUserQuestionIntervention = memo<BuiltinInterventionProps<AskUserQuestio
       await onInteractionAction({ type: 'skip' });
     }, [onInteractionAction]);
 
+    const handleNext = useCallback(() => {
+      setCurrentIndex((i) => Math.min(i + 1, questions.length - 1));
+    }, [questions.length]);
+
+    const handlePrev = useCallback(() => {
+      setCurrentIndex((i) => Math.max(i - 1, 0));
+    }, []);
+
+    const handleJump = useCallback((index: number) => {
+      setCurrentIndex(index);
+    }, []);
+
     if (!isCustom) {
       return (
         <Flexbox gap={8}>
@@ -213,29 +291,54 @@ const AskUserQuestionIntervention = memo<BuiltinInterventionProps<AskUserQuestio
       );
     }
 
+    const currentQuestion = questions[currentIndex];
+
     return (
-      <Flexbox gap={16}>
-        {questions.map((question) => (
-          <QuestionBlock
-            answer={answers[question.id] ?? { selected: [] }}
-            key={question.id}
-            question={question}
-            onChange={handleAnswerChange}
-          />
-        ))}
+      <Flexbox gap={12}>
+        <Flexbox className={cx(submitting && styles.disabled)} gap={8}>
+          {showStepper && (
+            <Stepper
+              currentIndex={currentIndex}
+              total={questions.length}
+              onJump={handleJump}
+              onNext={handleNext}
+              onPrev={handlePrev}
+            />
+          )}
+          {currentQuestion && (
+            <QuestionBlock
+              answer={answers[currentQuestion.id] ?? { selected: [] }}
+              question={currentQuestion}
+              onChange={handleAnswerChange}
+            />
+          )}
+        </Flexbox>
         <Flexbox horizontal align={'center'} justify={'space-between'}>
           <Text className={styles.actionLink} type={'secondary'} onClick={handleSkip}>
-            Skip
+            {showStepper ? 'Skip All' : 'Skip'}
           </Text>
-          <Button
-            disabled={!allAnswered}
-            icon={SendHorizontal}
-            loading={submitting}
-            type={'primary'}
-            onClick={handleSubmit}
-          >
-            Send
-          </Button>
+          {showStepper && !isLast ? (
+            <Button
+              icon={ChevronRight}
+              iconPosition={'end'}
+              size={'small'}
+              type={'primary'}
+              onClick={handleNext}
+            >
+              Next
+            </Button>
+          ) : (
+            <Button
+              disabled={!allAnswered}
+              icon={SendHorizontal}
+              loading={submitting}
+              size={'small'}
+              type={'primary'}
+              onClick={handleSubmit}
+            >
+              Send
+            </Button>
+          )}
         </Flexbox>
       </Flexbox>
     );

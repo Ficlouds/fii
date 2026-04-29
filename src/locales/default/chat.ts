@@ -317,6 +317,7 @@ export default {
   'codexInstallGuide.title': 'Install Codex CLI',
   'newAgent': 'Create Agent',
   'newClaudeCodeAgent': 'Add Claude Code',
+  'newCloudClaudeCode': 'Add Cloud Claude Code',
   'newCodexAgent': 'Add Codex',
   'newGroupChat': 'Create Group',
   'newPage': 'Create Page',

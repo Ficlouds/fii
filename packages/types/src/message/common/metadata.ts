@@ -98,6 +98,11 @@ export const EmojiReactionSchema = z.object({
 
 export const MessageMetadataSchema = ModelUsageSchema.merge(ModelPerformanceSchema).extend({
   collapsed: z.boolean().optional(),
+  cloudClaudeCodeCompletedAt: z.string().optional(),
+  cloudClaudeCodeError: z.string().optional(),
+  cloudClaudeCodeRunId: z.string().optional(),
+  cloudClaudeCodeRunStatus: z.enum(['running', 'completed', 'failed']).optional(),
+  cloudClaudeCodeStartedAt: z.string().optional(),
   inspectExpanded: z.boolean().optional(),
   isMultimodal: z.boolean().optional(),
   isSupervisor: z.boolean().optional(),
@@ -150,6 +155,11 @@ export interface MessageMetadata {
   acceptedPredictionTokens?: number;
   activeBranchIndex?: number;
   activeColumn?: boolean;
+  cloudClaudeCodeCompletedAt?: string;
+  cloudClaudeCodeError?: string;
+  cloudClaudeCodeRunId?: string;
+  cloudClaudeCodeRunStatus?: 'running' | 'completed' | 'failed';
+  cloudClaudeCodeStartedAt?: string;
   /**
    * Message collapse state
    * true: collapsed, false/undefined: expanded

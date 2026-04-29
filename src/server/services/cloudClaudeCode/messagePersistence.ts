@@ -1,6 +1,5 @@
 import type {
   HeterogeneousAgentEvent,
-  StepCompleteData,
   StreamChunkData,
   ToolCallPayload,
   ToolResultData,
@@ -22,14 +21,51 @@ import { MessageModel } from '@/database/models/message';
  */
 export class CloudCCMessagePersistence {
   private messageModel: MessageModel;
+  private initialAssistantMessageId?: string;
+
+  private findLatestMessageId = async () => {
+    const messages = await this.messageModel.query({
+      agentId: this.agentId,
+      topicId: this.topicId,
+    });
+
+    return messages.at(-1)?.id;
+  };
+
+  private updateAssistantSnapshot = async (params: {
+    assistantMessageId: string;
+    content: string;
+    model?: string;
+    reasoning: string;
+    tools: ChatToolPayload[];
+  }) => {
+    const { assistantMessageId, content, model, reasoning, tools } = params;
+    const updatePayload: Record<string, any> = {};
+
+    if (content) updatePayload.content = content;
+    if (model) updatePayload.model = model;
+    if (tools.length > 0) updatePayload.tools = tools;
+
+    if (Object.keys(updatePayload).length > 0) {
+      await this.messageModel.update(assistantMessageId, updatePayload);
+    }
+
+    if (reasoning) {
+      await this.messageModel.updateMetadata(assistantMessageId, {
+        reasoning: { content: reasoning },
+      });
+    }
+  };
 
   constructor(
     private readonly serverDB: any,
     private readonly userId: string,
     private readonly topicId: string,
     private readonly agentId?: string,
+    initialAssistantMessageId?: string,
   ) {
     this.messageModel = new MessageModel(serverDB, userId);
+    this.initialAssistantMessageId = initialAssistantMessageId;
   }
 
   /**
@@ -53,13 +89,14 @@ export class CloudCCMessagePersistence {
     events.push(...adapter.flush());
 
     // 3. Process events into DB writes
-    let assistantMessageId: string | undefined;
+    let assistantMessageId = this.initialAssistantMessageId;
     let content = '';
     let reasoning = '';
     const tools: ChatToolPayload[] = [];
     const toolMessageIds: string[] = [];
     // Map toolCallId → tool message DB id, for updating tool_result
     const toolMsgIdByCallId = new Map<string, string>();
+    let hasMainAssistantActivity = false;
     let model: string | undefined;
     let provider: string | undefined;
 
@@ -70,23 +107,28 @@ export class CloudCCMessagePersistence {
           model = data.model;
           provider = data.provider || 'cloud-claude-code';
 
-          // Create assistant message placeholder
-          const msg = await this.messageModel.create({
-            agentId: this.agentId,
-            content: '',
-            model,
-            provider,
-            role: 'assistant',
-            topicId: this.topicId,
-          });
-          assistantMessageId = msg.id;
+          if (!assistantMessageId) {
+            const parentId = await this.findLatestMessageId();
+            const msg = await this.messageModel.create({
+              agentId: this.agentId,
+              content: '',
+              model,
+              parentId,
+              provider,
+              role: 'assistant',
+              topicId: this.topicId,
+            });
+            assistantMessageId = msg.id;
+          }
           break;
         }
 
         case 'stream_chunk': {
           const chunk = event.data as StreamChunkData;
+          if (chunk.subagent) break;
 
           if (chunk.chunkType === 'text' && chunk.content) {
+            hasMainAssistantActivity = true;
             content += chunk.content;
           }
 
@@ -96,15 +138,18 @@ export class CloudCCMessagePersistence {
 
           // tools_calling: register tool calls on the assistant message
           if (chunk.chunkType === 'tools_calling' && chunk.toolsCalling) {
+            hasMainAssistantActivity = true;
+            let hasFreshTool = false;
             for (const tc of chunk.toolsCalling) {
               // Only add if not already tracked
               if (!tools.some((t) => t.id === tc.id)) {
+                hasFreshTool = true;
                 tools.push({
                   apiName: tc.apiName,
                   arguments: tc.arguments,
                   id: tc.id,
                   identifier: tc.identifier,
-                  type: tc.type,
+                  type: tc.type as ChatToolPayload['type'],
                 });
               } else {
                 // Update arguments for existing tool (streaming partial → complete)
@@ -113,6 +158,16 @@ export class CloudCCMessagePersistence {
                   existing.arguments = tc.arguments;
                 }
               }
+            }
+
+            if (assistantMessageId && hasFreshTool) {
+              await this.updateAssistantSnapshot({
+                assistantMessageId,
+                content,
+                model,
+                reasoning,
+                tools,
+              });
             }
           }
           break;
@@ -137,7 +192,7 @@ export class CloudCCMessagePersistence {
               apiName: toolCalling.apiName,
               arguments: toolCalling.arguments || '',
               identifier: toolCalling.identifier,
-              type: toolCalling.type || 'default',
+              type: (toolCalling.type || 'default') as ChatToolPayload['type'],
             },
             role: 'tool',
             tool_call_id: toolCalling.id,
@@ -154,7 +209,7 @@ export class CloudCCMessagePersistence {
               arguments: toolCalling.arguments || '',
               id: toolCalling.id,
               identifier: toolCalling.identifier,
-              type: toolCalling.type || 'default',
+              type: (toolCalling.type || 'default') as ChatToolPayload['type'],
             });
           }
           break;
@@ -185,7 +240,7 @@ export class CloudCCMessagePersistence {
         }
 
         case 'step_complete': {
-          const stepData = event.data as StepCompleteData;
+          const stepData = event.data as { model?: string; usage?: Record<string, unknown> };
           // Update usage metadata on the assistant message
           if (assistantMessageId && stepData.usage) {
             await this.messageModel.updateMetadata(assistantMessageId, {
@@ -205,6 +260,7 @@ export class CloudCCMessagePersistence {
         }
 
         case 'error': {
+          hasMainAssistantActivity = true;
           // Persist error on assistant message
           if (assistantMessageId) {
             const errorData = event.data as { message?: string };
@@ -221,29 +277,27 @@ export class CloudCCMessagePersistence {
     }
 
     // 4. Finalize assistant message with accumulated content + tools
-    if (assistantMessageId) {
-      const updatePayload: Record<string, any> = {};
-
-      if (content) updatePayload.content = content;
-      if (model) updatePayload.model = model;
-
+    if (assistantMessageId && hasMainAssistantActivity) {
       // Write tools with result_msg_id backfilled
       if (tools.length > 0) {
         const toolsWithResultIds = tools.map((t) => ({
           ...t,
           result_msg_id: toolMsgIdByCallId.get(t.id),
         }));
-        updatePayload.tools = toolsWithResultIds;
-      }
-
-      if (Object.keys(updatePayload).length > 0) {
-        await this.messageModel.update(assistantMessageId, updatePayload);
-      }
-
-      // Write reasoning as metadata if present
-      if (reasoning) {
-        await this.messageModel.updateMetadata(assistantMessageId, {
-          reasoning: { content: reasoning },
+        await this.updateAssistantSnapshot({
+          assistantMessageId,
+          content,
+          model,
+          reasoning,
+          tools: toolsWithResultIds,
+        });
+      } else {
+        await this.updateAssistantSnapshot({
+          assistantMessageId,
+          content,
+          model,
+          reasoning,
+          tools,
         });
       }
     }

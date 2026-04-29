@@ -84,14 +84,17 @@ export const signInternalJWT = async (): Promise<string> => {
  * Used by server-side sandbox execution to authenticate CLI commands.
  * The token contains `sub: userId` and passes standard OIDC JWT validation.
  */
-export const signUserJWT = async (userId: string): Promise<string> => {
+export const signUserJWT = async (
+  userId: string,
+  expirationTime: string = '5m',
+): Promise<string> => {
   const { key, kid } = await getSigningKey();
 
   return new SignJWT({ purpose: 'cli-sandbox' })
     .setProtectedHeader({ alg: 'RS256', kid })
     .setSubject(userId)
     .setIssuedAt()
-    .setExpirationTime('5m')
+    .setExpirationTime(expirationTime)
     .sign(key);
 };
 

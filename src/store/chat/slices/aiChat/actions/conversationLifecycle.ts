@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // Disable the auto sort key eslint rule to make the code more logic and readable
 import { createCallAgentManifest } from '@lobechat/builtin-tool-agent-management';
 import { ENABLE_BUSINESS_FEATURES } from '@lobechat/business-const';
@@ -394,7 +395,10 @@ export class ConversationLifecycleActionImpl {
     const heterogeneousProvider = agentConfig?.agencyConfig?.heterogeneousProvider;
 
     // ── Cloud Claude Code: server-side sandbox execution ──
+    console.log('[CloudCC] heterogeneousProvider:', JSON.stringify(heterogeneousProvider));
     if (heterogeneousProvider?.type === 'cloud-claude-code') {
+      console.log('[CloudCC] ✅ Entering cloud-claude-code branch');
+      console.log('[CloudCC] 1. Persisting messages to DB...');
       // Persist messages to DB (same pattern as desktop hetero)
       let cloudData: SendMessageServerResponse | undefined;
       try {
@@ -433,6 +437,15 @@ export class ConversationLifecycleActionImpl {
         });
         return;
       }
+
+      console.log(
+        '[CloudCC] 2. sendMessageInServer result:',
+        cloudData ? 'OK' : 'EMPTY',
+        'topicId:',
+        cloudData?.topicId,
+        'assistantMsgId:',
+        cloudData?.assistantMessageId,
+      );
 
       if (!cloudData) return;
 
@@ -482,8 +495,21 @@ export class ConversationLifecycleActionImpl {
         type: 'execHeterogeneousAgent',
       });
 
-      this.#get().associateMessageWithOperation(cloudData.assistantMessageId, cloudOpId);
+      if (cloudData.assistantMessageId) {
+        this.#get().associateMessageWithOperation(cloudData.assistantMessageId, cloudOpId);
+      }
 
+      const hasCloudCCCompleted = (
+        messages: Array<{ id: string; metadata?: Record<string, any> }>,
+      ) =>
+        !!cloudData.assistantMessageId &&
+        messages.some(
+          (msg) =>
+            msg.id === cloudData.assistantMessageId &&
+            msg.metadata?.cloudClaudeCodeRunStatus === 'completed',
+        );
+
+      console.log('[CloudCC] 3. Operation created, calling cloudClaudeCode.start...');
       // Fire-and-forget: start CC in sandbox via TRPC
       const { lambdaClient } = await import('@/libs/trpc/client');
       const topicId = cloudContext.topicId!;
@@ -491,21 +517,43 @@ export class ConversationLifecycleActionImpl {
       lambdaClient.cloudClaudeCode.start
         .mutate({
           agentId,
+          assistantMessageId: cloudData.assistantMessageId,
           oauthToken: heterogeneousProvider.env?.CLAUDE_CODE_OAUTH_TOKEN,
           prompt: message,
           topicId,
         })
         .catch((e: unknown) => {
           console.error('[CloudClaudeCode] start failed:', e);
+          clearInterval(pollInterval);
+          if (this.#get().operations?.[cloudOpId]?.status === 'running') {
+            this.#get().failOperation(cloudOpId, {
+              message: e instanceof Error ? e.message : 'Cloud Claude Code start failed',
+              type: 'CloudClaudeCodeError',
+            });
+          }
         });
 
+      console.log('[CloudCC] 4. start mutation fired, starting polling...');
       // Start polling for new messages from sandbox CC
+      let isPolling = false;
       const pollInterval = setInterval(async () => {
+        if (isPolling) return;
+        isPolling = true;
+
         try {
           const msgs = await messageService.getMessages(cloudContext);
           this.#get().replaceMessages(msgs, { context: cloudContext });
+
+          if (hasCloudCCCompleted(msgs)) {
+            clearInterval(pollInterval);
+            if (this.#get().operations?.[cloudOpId]?.status === 'running') {
+              this.#get().completeOperation(cloudOpId);
+            }
+          }
         } catch {
           // Ignore polling errors
+        } finally {
+          isPolling = false;
         }
       }, 3000);
 

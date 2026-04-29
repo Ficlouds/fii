@@ -276,6 +276,40 @@ export const useCreateMenuItems = () => {
   );
 
   /**
+   * Create Cloud Claude Code agent menu item (Web only)
+   */
+  const createCloudClaudeCodeMenuItem = useCallback(
+    (options?: CreateAgentOptions): ItemType | null => {
+      if (isDesktop) return null;
+
+      return {
+        icon: <Icon icon={BotIcon} />,
+        key: 'newCloudClaudeCode',
+        label: t('newCloudClaudeCode'),
+        onClick: async (info) => {
+          info.domEvent?.stopPropagation();
+          const result = await storeCreateAgent({
+            config: {
+              agencyConfig: {
+                heterogeneousProvider: {
+                  type: 'cloud-claude-code',
+                },
+              },
+              avatar: '🤖',
+              systemRole: '',
+              title: 'Cloud Claude Code',
+            },
+            groupId: options?.groupId,
+          });
+          await refreshAgentList();
+          navigate(`/agent/${result.agentId}`);
+        },
+      };
+    },
+    [t, storeCreateAgent, refreshAgentList, navigate],
+  );
+
+  /**
    * Create group chat menu item
    * Creates an empty group and navigates to its profile page
    */
@@ -366,6 +400,7 @@ export const useCreateMenuItems = () => {
     configMenuItem,
     createAgent,
     createAgentMenuItem,
+    createCloudClaudeCodeMenuItem,
     createEmptyGroup,
     createGroupChatMenuItem,
     createGroupFromTemplate,

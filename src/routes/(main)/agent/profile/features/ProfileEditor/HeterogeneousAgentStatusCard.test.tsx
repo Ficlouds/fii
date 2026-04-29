@@ -641,7 +641,57 @@ describe('HeterogeneousAgentStatusCard', () => {
     });
   });
 
-  it('notifies preset changes so the agent avatar can follow the provider icon', async () => {
+  it('notifies preset changes only after environment edits are saved', async () => {
+    detectHeterogeneousAgentCommand.mockResolvedValue({ available: true });
+    getClaudeAuthStatus.mockResolvedValue(null);
+    const onProviderPresetChange = vi.fn();
+    const onEnvChange = vi.fn();
+
+    const provider = {
+      billingType: 'api',
+      command: 'claude',
+      type: 'claude-code',
+    } satisfies HeterogeneousProviderConfig;
+
+    render(
+      <MemoryRouter>
+        <HeterogeneousAgentStatusCard
+          provider={provider}
+          onEnvChange={onEnvChange}
+          onProviderPresetChange={onProviderPresetChange}
+        />
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Edit environment variables' }));
+    fireEvent.change(screen.getByRole('combobox', { name: 'Provider preset' }), {
+      target: { value: 'deepseek' },
+    });
+    fireEvent.change(screen.getByDisplayValue(''), {
+      target: { value: 'deepseek-token' },
+    });
+
+    expect(onProviderPresetChange).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Save environment variables' }));
+
+    await waitFor(() => {
+      expect(onEnvChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          ANTHROPIC_AUTH_TOKEN: 'deepseek-token',
+          ANTHROPIC_BASE_URL: 'https://api.deepseek.com/anthropic',
+        }),
+      );
+    });
+    expect(onProviderPresetChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        iconId: 'DeepSeek',
+        id: 'deepseek',
+      }),
+    );
+  });
+
+  it('does not notify preset changes when environment edits are canceled', async () => {
     detectHeterogeneousAgentCommand.mockResolvedValue({ available: true });
     getClaudeAuthStatus.mockResolvedValue(null);
     const onProviderPresetChange = vi.fn();
@@ -665,13 +715,9 @@ describe('HeterogeneousAgentStatusCard', () => {
     fireEvent.change(screen.getByRole('combobox', { name: 'Provider preset' }), {
       target: { value: 'deepseek' },
     });
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel environment changes' }));
 
-    expect(onProviderPresetChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        iconId: 'DeepSeek',
-        id: 'deepseek',
-      }),
-    );
+    expect(onProviderPresetChange).not.toHaveBeenCalled();
   });
 
   it('only masks credential-like environment values', async () => {

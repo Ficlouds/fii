@@ -222,6 +222,40 @@ describe('HeterogeneousAgentCtr', () => {
       vi.unstubAllGlobals();
     });
 
+    it('uses x-api-key when probing ANTHROPIC_API_KEY based configs', async () => {
+      const fetchMock = vi.fn(async () => ({
+        ok: true,
+        status: 200,
+        text: vi.fn(),
+      }));
+      vi.stubGlobal('fetch', fetchMock);
+
+      const ctr = new HeterogeneousAgentCtr({
+        appStoragePath,
+        storeManager: { get: vi.fn() },
+      } as any);
+
+      const result = await ctr.checkClaudeCodeApiConnection({
+        env: {
+          ANTHROPIC_API_KEY: 'test-api-key',
+          ANTHROPIC_BASE_URL: 'https://api.example.com/anthropic',
+        },
+      });
+
+      expect(result).toMatchObject({
+        ok: true,
+        status: 200,
+      });
+
+      const [, init] = fetchMock.mock.calls[0];
+      const headers = (init as RequestInit).headers as Record<string, string>;
+
+      expect(headers['x-api-key']).toBe('test-api-key');
+      expect(headers).not.toHaveProperty('authorization');
+
+      vi.unstubAllGlobals();
+    });
+
     it('maps provider authorization failures without exposing the token', async () => {
       vi.stubGlobal(
         'fetch',

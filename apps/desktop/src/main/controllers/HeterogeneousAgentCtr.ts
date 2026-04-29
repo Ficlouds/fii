@@ -123,6 +123,11 @@ interface CheckClaudeCodeApiConnectionResult {
   status?: number;
 }
 
+interface ClaudeCodeApiCredential {
+  headerName: 'authorization' | 'x-api-key';
+  headerValue: string;
+}
+
 // ─── Internal session tracking ───
 
 interface AgentSession {
@@ -262,8 +267,18 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
           : undefined;
   }
 
-  private getClaudeCodeApiConnectionToken(env: Record<string, string>): string | undefined {
-    return env.ANTHROPIC_AUTH_TOKEN?.trim() || env.ANTHROPIC_API_KEY?.trim();
+  private getClaudeCodeApiConnectionCredential(
+    env: Record<string, string>,
+  ): ClaudeCodeApiCredential | undefined {
+    const authToken = env.ANTHROPIC_AUTH_TOKEN?.trim();
+    if (authToken) {
+      return { headerName: 'authorization', headerValue: `Bearer ${authToken}` };
+    }
+
+    const apiKey = env.ANTHROPIC_API_KEY?.trim();
+    if (apiKey) {
+      return { headerName: 'x-api-key', headerValue: apiKey };
+    }
   }
 
   private getClaudeCodeApiConnectionModel(env: Record<string, string>): string {
@@ -860,13 +875,13 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
     params: CheckClaudeCodeApiConnectionParams,
   ): Promise<CheckClaudeCodeApiConnectionResult> {
     const baseUrl = params.env.ANTHROPIC_BASE_URL?.trim();
-    const token = this.getClaudeCodeApiConnectionToken(params.env);
+    const credential = this.getClaudeCodeApiConnectionCredential(params.env);
 
     if (!baseUrl) {
       return { message: 'ANTHROPIC_BASE_URL is required.', ok: false };
     }
 
-    if (!token) {
+    if (!credential) {
       return { message: 'ANTHROPIC_AUTH_TOKEN or ANTHROPIC_API_KEY is required.', ok: false };
     }
 
@@ -887,7 +902,7 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
           'accept': 'application/json',
           'anthropic-beta': 'claude-code-20250219,interleaved-thinking-2025-05-14',
           'anthropic-version': '2023-06-01',
-          'authorization': `Bearer ${token}`,
+          [credential.headerName]: credential.headerValue,
           'content-type': 'application/json',
         },
         method: 'POST',

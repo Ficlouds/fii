@@ -588,19 +588,15 @@ const HeterogeneousAgentStatusCard = memo<HeterogeneousAgentStatusCardProps>(
       setEnvRows((rows) => rows.filter((row) => row.id !== id));
     }, []);
 
-    const applyEnvPreset = useCallback(
-      (presetId: string) => {
-        const preset =
-          getClaudeCodeApiProviderPreset(presetId) ?? DEFAULT_CLAUDE_CODE_API_PROVIDER_PRESET;
+    const applyEnvPreset = useCallback((presetId: string) => {
+      const preset =
+        getClaudeCodeApiProviderPreset(presetId) ?? DEFAULT_CLAUDE_CODE_API_PROVIDER_PRESET;
 
-        setEnvPresetId(preset.id);
-        setEnvRows(envToRows(preset.env));
-        setEnvError(undefined);
-        setEnvConnectionResult(undefined);
-        void onProviderPresetChange?.(preset);
-      },
-      [onProviderPresetChange],
-    );
+      setEnvPresetId(preset.id);
+      setEnvRows(envToRows(preset.env));
+      setEnvError(undefined);
+      setEnvConnectionResult(undefined);
+    }, []);
 
     const commitEnv = useCallback(async () => {
       if (savingEnv) return;
@@ -622,13 +618,24 @@ const HeterogeneousAgentStatusCard = memo<HeterogeneousAgentStatusCardProps>(
       try {
         setSavingEnv(true);
         await onEnvChange?.(nextEnv);
+        if (isApiBilling) {
+          await onProviderPresetChange?.(selectedEnvPreset);
+        }
         setEnvError(undefined);
         setEnvConnectionResult(undefined);
         setIsEditingEnv(false);
       } finally {
         setSavingEnv(false);
       }
-    }, [envRows, isApiBilling, onEnvChange, savingEnv, selectedEnvPreset.required, t]);
+    }, [
+      envRows,
+      isApiBilling,
+      onEnvChange,
+      onProviderPresetChange,
+      savingEnv,
+      selectedEnvPreset,
+      t,
+    ]);
 
     const getEnvConnectionResultText = useCallback(
       (result: EnvConnectionResult) => {

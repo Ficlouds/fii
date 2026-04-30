@@ -8,6 +8,7 @@ export interface StreamEvent {
   type:
     | 'connected'
     | 'agent_runtime_init' // Agent runtime initialization
+    | 'agent_signal_source' // AgentSignal source emitted during runtime
     | 'agent_runtime_end' // Agent runtime finished (signals stream should close)
     | 'stream_start'
     | 'stream_chunk'

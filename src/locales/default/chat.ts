@@ -66,6 +66,8 @@ export default {
   'defaultGroupChat': 'Group',
   'defaultList': 'Default List',
   'defaultSession': 'Default Agent',
+  'agentSignal.notification.empty': 'No trigger payload',
+  'agentSignal.notification.triggered': 'Agent Signal · {{sourceType}}',
   'desktopNotification.aiReplyCompleted.body': 'Agent reply is ready',
   'desktopNotification.aiReplyCompleted.title': 'Reply completed',
   'desktopNotification.humanApprovalRequired.body': 'An Agent needs your approval to continue',

@@ -4,6 +4,7 @@ import type {
 } from '@lobechat/agent-signal/source';
 
 import { agentSignalService } from '@/services/agentSignal';
+import { showAgentSignalNotification } from '@/store/chat/utils/agentSignalNotification';
 import { labPreferSelectors, preferenceSelectors } from '@/store/user/selectors';
 import { getUserStoreState } from '@/store/user/store';
 
@@ -71,13 +72,22 @@ export const emitClientAgentSignalSourceEvent = async <
   const timestamp = input.timestamp ?? Date.now();
 
   try {
-    return await agentSignalService.emitClientGatewaySourceEvent({
+    const result = await agentSignalService.emitClientGatewaySourceEvent({
       payload: input.payload,
       scopeKey: input.scopeKey,
       sourceId: input.sourceId ?? createSourceId(input.sourceType, timestamp),
       sourceType: input.sourceType,
       timestamp,
     });
+
+    if (result?.accepted) {
+      showAgentSignalNotification({
+        payload: input.payload as Record<string, unknown>,
+        sourceType: input.sourceType,
+      });
+    }
+
+    return result;
   } catch (error) {
     console.error('[AgentSignal] Failed to emit client source event:', error);
     return undefined;

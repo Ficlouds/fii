@@ -209,6 +209,29 @@ export class AgentRuntimeService {
     }
   }
 
+  private async publishAgentSignalSourceEvent(
+    operationId: string,
+    stepIndex: number,
+    emission: Awaited<ReturnType<typeof emitAgentSignalSourceEvent>> | undefined,
+  ) {
+    if (!emission || emission.deduped) return;
+
+    try {
+      await this.streamManager.publishStreamEvent(operationId, {
+        data: {
+          payload: emission.source.payload,
+          scopeKey: emission.source.scopeKey,
+          sourceId: emission.source.sourceId,
+          sourceType: emission.source.sourceType,
+        },
+        stepIndex,
+        type: 'agent_signal_source',
+      });
+    } catch (error) {
+      log('[%s:%d] agent signal stream publish error: %O', operationId, stepIndex, error);
+    }
+  }
+
   // ==================== Operation Interruption ====================
 
   /**
@@ -543,6 +566,7 @@ export class AgentRuntimeService {
           { ignoreError: true },
         );
         beforeStepSignalEvents = toAgentSignalSnapshotEvents(beforeStepSignalEmission);
+        await this.publishAgentSignalSourceEvent(operationId, stepIndex, beforeStepSignalEmission);
         await hookDispatcher.dispatch(
           operationId,
           'beforeStep',
@@ -812,29 +836,30 @@ export class AgentRuntimeService {
           ? Date.now() - new Date(stepResult.newState.createdAt).getTime()
           : undefined;
         const stepLabel = metadata?._stepLabel;
-
-        afterStepSignalEvents = toAgentSignalSnapshotEvents(
-          await emitAgentSignalSourceEvent(
-            {
-              payload: {
-                agentId: metadata?.agentId,
-                operationId,
-                serializedContext: undefined,
-                stepIndex,
-                topicId: metadata?.topicId,
-                turnCount: stepResult.newState?.stepCount || 0,
-              },
-              sourceId: `${operationId}:after:${stepIndex}`,
-              sourceType: 'runtime.after_step',
-            },
-            {
+        const afterStepSignalEmission = await emitAgentSignalSourceEvent(
+          {
+            payload: {
               agentId: metadata?.agentId,
-              db: this.serverDB,
-              userId: metadata?.userId || this.userId,
+              operationId,
+              serializedContext: undefined,
+              stepIndex,
+              topicId: metadata?.topicId,
+              turnCount: stepResult.newState?.stepCount || 0,
             },
-            { ignoreError: true },
-          ),
+            sourceId: `${operationId}:after:${stepIndex}`,
+            sourceType: 'runtime.after_step',
+          },
+          {
+            agentId: metadata?.agentId,
+            db: this.serverDB,
+            userId: metadata?.userId || this.userId,
+          },
+          { ignoreError: true },
         );
+
+        afterStepSignalEvents = toAgentSignalSnapshotEvents(afterStepSignalEmission);
+
+        await this.publishAgentSignalSourceEvent(operationId, stepIndex, afterStepSignalEmission);
 
         await hookDispatcher.dispatch(
           operationId,
@@ -1908,6 +1933,12 @@ export class AgentRuntimeService {
               },
               { ignoreError: true },
             );
+
+      await this.publishAgentSignalSourceEvent(
+        operationId,
+        state?.stepCount || 0,
+        completionSignalEmission,
+      );
 
       return toAgentSignalSnapshotEvents(completionSignalEmission);
     } catch (error) {

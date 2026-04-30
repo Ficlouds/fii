@@ -6,6 +6,10 @@ vi.mock('@/services/agentSignal', () => ({
   },
 }));
 
+vi.mock('@/store/chat/utils/agentSignalNotification', () => ({
+  showAgentSignalNotification: vi.fn(),
+}));
+
 vi.mock('@/store/user/store', () => ({
   getUserStoreState: vi.fn(),
 }));
@@ -97,6 +101,46 @@ describe('emitClientAgentSignalSourceEvent', () => {
       sourceId: 'op-1:client:complete',
       sourceType: 'client.runtime.complete',
       timestamp: 2,
+    });
+  });
+
+  it('shows a notification after the source event is accepted by the server', async () => {
+    const { agentSignalService } = await import('@/services/agentSignal');
+    const { showAgentSignalNotification } =
+      await import('@/store/chat/utils/agentSignalNotification');
+    const { getUserStoreState } = await import('@/store/user/store');
+    const { emitClientAgentSignalSourceEvent } = await import('./agentSignalBridge');
+
+    vi.mocked(getUserStoreState).mockReturnValue({
+      isUserStateInit: true,
+      preference: { lab: { enableAgentSelfIteration: true } },
+    } as never);
+    vi.mocked(agentSignalService.emitClientGatewaySourceEvent).mockResolvedValueOnce({
+      accepted: true,
+      scopeKey: 'topic:topic-1',
+      workflowRunId: 'wf-1',
+    } as never);
+
+    await emitClientAgentSignalSourceEvent({
+      payload: {
+        agentId: 'agent-1',
+        operationId: 'op-1',
+        parentMessageId: 'msg-1',
+        parentMessageType: 'user',
+      },
+      sourceId: 'op-1:client:start',
+      sourceType: 'client.runtime.start',
+      timestamp: 1,
+    });
+
+    expect(showAgentSignalNotification).toHaveBeenCalledWith({
+      payload: {
+        agentId: 'agent-1',
+        operationId: 'op-1',
+        parentMessageId: 'msg-1',
+        parentMessageType: 'user',
+      },
+      sourceType: 'client.runtime.start',
     });
   });
 

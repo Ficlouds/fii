@@ -24,6 +24,8 @@
   "agentProfile.knowledgeBases_other": "{{count}} 个知识库",
   "agentProfile.skills_one": "{{count}} 项技能",
   "agentProfile.skills_other": "{{count}} 项技能",
+  "agentSignal.notification.empty": "未附带触发内容",
+  "agentSignal.notification.triggered": "Agent Signal · {{sourceType}}",
   "agents": "助理",
   "artifact.generating": "生成中",
   "artifact.inThread": "子话题中暂不支持查看。请回到主对话区打开",

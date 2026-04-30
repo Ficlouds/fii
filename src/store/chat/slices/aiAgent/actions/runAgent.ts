@@ -8,6 +8,7 @@ import { agentRuntimeService } from '@/services/agentRuntime';
 import { getAgentStoreState } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
 import { type ChatStore } from '@/store/chat/store';
+import { showAgentSignalNotification } from '@/store/chat/utils/agentSignalNotification';
 import { notifyDesktopHumanApprovalRequired } from '@/store/chat/utils/desktopNotification';
 import { topicMapKey } from '@/store/chat/utils/topicMapKey';
 import { type StoreSetter } from '@/store/types';
@@ -113,6 +114,24 @@ export class AgentActionImpl {
       case 'agent_runtime_init': {
         // Agent runtime initialization event
         log(`Agent runtime initialized for ${assistantId}:`, event.data);
+        break;
+      }
+
+      case 'agent_signal_source': {
+        const data = event.data as
+          | {
+              payload?: Record<string, unknown>;
+              sourceType?: string;
+            }
+          | undefined;
+
+        if (data?.sourceType && data.payload) {
+          showAgentSignalNotification({
+            payload: data.payload,
+            sourceType: data.sourceType,
+          });
+        }
+
         break;
       }
 

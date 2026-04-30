@@ -46,6 +46,7 @@ export interface StreamEvent {
   timestamp: number;
   type:
     | 'agent_runtime_init'
+    | 'agent_signal_source'
     | 'agent_runtime_end'
     | 'stream_start'
     | 'stream_chunk'

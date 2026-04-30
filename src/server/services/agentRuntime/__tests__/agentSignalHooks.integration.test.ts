@@ -79,6 +79,7 @@ describe('AgentRuntimeService Agent Signal hook integration', () => {
       const { AgentRuntimeService } = await import('../AgentRuntimeService');
       const service = new AgentRuntimeService({} as any, 'user-1', { queueService: null });
       const coordinator = (service as any).coordinator;
+      const streamManager = (service as any).streamManager;
 
       vi.spyOn(coordinator, 'loadAgentState').mockResolvedValue({
         createdAt: new Date().toISOString(),
@@ -144,6 +145,30 @@ describe('AgentRuntimeService Agent Signal hook integration', () => {
         lastEventAt: expect.any(String),
         lastEventId: expect.stringContaining('runtime.before_step'),
       });
+      expect(streamManager.publishStreamEvent).toHaveBeenCalledWith(
+        'op-1',
+        expect.objectContaining({
+          data: expect.objectContaining({ sourceType: 'runtime.before_step' }),
+          stepIndex: 0,
+          type: 'agent_signal_source',
+        }),
+      );
+      expect(streamManager.publishStreamEvent).toHaveBeenCalledWith(
+        'op-1',
+        expect.objectContaining({
+          data: expect.objectContaining({ sourceType: 'runtime.after_step' }),
+          stepIndex: 0,
+          type: 'agent_signal_source',
+        }),
+      );
+      expect(streamManager.publishStreamEvent).toHaveBeenCalledWith(
+        'op-1',
+        expect.objectContaining({
+          data: expect.objectContaining({ sourceType: 'agent.execution.completed' }),
+          stepIndex: 1,
+          type: 'agent_signal_source',
+        }),
+      );
     },
   );
 

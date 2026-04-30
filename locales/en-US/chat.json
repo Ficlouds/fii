@@ -24,6 +24,8 @@
   "agentProfile.knowledgeBases_other": "{{count}} knowledge bases",
   "agentProfile.skills_one": "{{count}} skill",
   "agentProfile.skills_other": "{{count}} skills",
+  "agentSignal.notification.empty": "No trigger payload",
+  "agentSignal.notification.triggered": "Agent Signal · {{sourceType}}",
   "agents": "Agents",
   "artifact.generating": "Generating",
   "artifact.inThread": "Cannot view in subtopic, please switch to the main conversation area to open",

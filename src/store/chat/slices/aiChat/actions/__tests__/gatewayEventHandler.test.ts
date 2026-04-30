@@ -2,6 +2,7 @@ import type { AgentStreamEvent } from '@lobechat/agent-gateway-client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { messageService } from '@/services/message';
+import { showAgentSignalNotification } from '@/store/chat/utils/agentSignalNotification';
 import { notifyDesktopHumanApprovalRequired } from '@/store/chat/utils/desktopNotification';
 
 import { createGatewayEventHandler } from '../gatewayEventHandler';
@@ -14,6 +15,9 @@ vi.mock('@/services/message', () => ({
 }));
 vi.mock('@/store/chat/utils/desktopNotification', () => ({
   notifyDesktopHumanApprovalRequired: vi.fn().mockResolvedValue(undefined),
+}));
+vi.mock('@/store/chat/utils/agentSignalNotification', () => ({
+  showAgentSignalNotification: vi.fn(),
 }));
 
 // ─── Test Helpers ───
@@ -235,6 +239,25 @@ describe('createGatewayEventHandler', () => {
           topicId: 'topic-1',
         }),
       );
+    });
+  });
+
+  describe('agent_signal_source', () => {
+    it('shows a notification with the source payload', () => {
+      const store = createMockStore();
+      const handler = createHandler(store);
+
+      handler(
+        makeEvent('agent_signal_source', {
+          payload: { operationId: 'op-1', stepIndex: 0 },
+          sourceType: 'runtime.before_step',
+        }),
+      );
+
+      expect(showAgentSignalNotification).toHaveBeenCalledWith({
+        payload: { operationId: 'op-1', stepIndex: 0 },
+        sourceType: 'runtime.before_step',
+      });
     });
   });
 

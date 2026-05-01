@@ -43,6 +43,7 @@ packageExtensions:
       postcss-styled-syntax: ^0.7.1
 
 allowBuilds:
+  '@google/genai': true
   '@lobehub/editor': true
   '@vercel/speed-insights': true
   core-js: true

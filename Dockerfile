@@ -70,7 +70,6 @@ ENV NODE_OPTIONS="--max-old-space-size=8192"
 WORKDIR /app
 
 COPY package.json pnpm-workspace.yaml ./
-COPY .npmrc ./
 COPY packages ./packages
 COPY patches ./patches
 # bring in desktop workspace manifest so pnpm can resolve it
@@ -80,13 +79,19 @@ RUN set -e && \
     if [ "${USE_CN_MIRROR:-false}" = "true" ]; then \
         export SENTRYCLI_CDNURL="https://npmmirror.com/mirrors/sentry-cli"; \
         npm config set registry "https://registry.npmmirror.com/"; \
-        echo 'canvas_binary_host_mirror=https://npmmirror.com/mirrors/canvas' >> .npmrc; \
+        echo 'canvas_binary_host_mirror=https://npmmirror.com/mirrors/canvas' > .npmrc; \
     fi && \
     export COREPACK_NPM_REGISTRY=$(npm config get registry | sed 's/\/$//') && \
-    npm i -g corepack@latest && \
-    corepack enable && \
-    corepack use $(sed -n 's/.*"packageManager": "\(.*\)".*/\1/p' package.json) && \
+    rm -rf /usr/local/lib/node_modules/corepack /usr/local/bin/corepack /usr/local/bin/pnpm /usr/local/bin/pnpx \
+           /root/.local/share/pnpm/.tools && \
+    npm i -g pnpm@10.33.2 && \
+    sed -i '/"packageManager"/d' package.json && \
+    sed -i '/enableGlobalVirtualStore/d' pnpm-workspace.yaml && \
+    echo 'shamefully-hoist=true' >> .npmrc && \
+    pnpm --version && \
     pnpm i && \
+    rm -rf /root/.local/share/pnpm/.tools && \
+    readlink -f node_modules/next/package.json && \
     mkdir -p /deps && \
     cd /deps && \
     pnpm init && \
@@ -95,11 +100,19 @@ RUN set -e && \
 COPY . .
 
 # Prebuild: env checks (checkDeprecatedAuth, checkRequiredEnvVars, printEnvInfo) then remove desktop-only code
-RUN pnpm exec tsx scripts/dockerPrebuild.mts
+RUN CI=true npx tsx scripts/dockerPrebuild.mts
 RUN rm -rf src/app/desktop "src/app/(backend)/trpc/desktop"
 
 # run build standalone for docker version
-RUN npm run build:docker
+# Inline build commands to avoid pnpm run (which uses pnpm v11 global virtual store)
+RUN export PATH="/app/node_modules/.bin:${PATH}" && \
+    export CI=true && \
+    export NODE_OPTIONS="--max-old-space-size=8192" && \
+    rm -rf public/_spa && vite build && \
+    MOBILE=true vite build && \
+    tsx scripts/copySpaBuild.mts && tsx scripts/generateSpaTemplates.mts && \
+    export DOCKER=true && next build && \
+    tsx ./scripts/buildSitemapIndex/index.ts
 
 ## Application image, copy all the files for production
 FROM busybox:latest AS app

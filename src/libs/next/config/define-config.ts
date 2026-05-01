@@ -1,4 +1,4 @@
-import { existsSync, realpathSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, relative, resolve, sep } from 'node:path';
 
@@ -30,9 +30,29 @@ const getCommonDirectory = (paths: string[]) => {
 };
 
 const getTurbopackRoot = () => {
-  const nextPackageDirectory = dirname(require.resolve('next/package.json'));
+  // Resolve 'next' without following symlinks (important for pnpm v11 global virtual store).
+  // require.resolve + realpathSync follows symlinks to the global store, making the common
+  // directory resolve to '/' which breaks Turbopack.
+  let current = process.cwd();
 
-  return getCommonDirectory([realpathSync(process.cwd()), realpathSync(nextPackageDirectory)]);
+  while (true) {
+    const candidate = resolve(current, 'node_modules', 'next', 'package.json');
+
+    if (existsSync(candidate)) {
+      return current;
+    }
+
+    const parent = resolve(current, '..');
+
+    if (parent === current) break;
+
+    current = parent;
+  }
+
+  // Fallback: original behaviour (may fail with pnpm v11 global virtual store)
+  const nextPackageDirectory = dirname(require.resolve('next/package.json'));
+  const root = getCommonDirectory([process.cwd(), nextPackageDirectory]);
+  return root;
 };
 
 const resolvePackageDirectory = (packageName: string) => {
@@ -40,6 +60,26 @@ const resolvePackageDirectory = (packageName: string) => {
     resolve(process.cwd(), 'node_modules', packageName),
     resolve(process.cwd(), 'node_modules/.pnpm/node_modules', packageName),
   ];
+
+  // Also check pnpm v11 global virtual store entries (e.g. node_modules/.pnpm/<name>@<version>_.../node_modules/<name>)
+  const pnpmDir = resolve(process.cwd(), 'node_modules/.pnpm');
+
+  if (existsSync(pnpmDir)) {
+    try {
+      const { readdirSync } = require('node:fs');
+
+      for (const entry of readdirSync(pnpmDir)) {
+        if (
+          entry.startsWith(`${packageName.replace('/', '+')}@`) ||
+          entry.startsWith(`${packageName.replace('/', '+')}@`)
+        ) {
+          candidateDirectories.push(resolve(pnpmDir, entry, 'node_modules', packageName));
+        }
+      }
+    } catch {
+      // ignore directory read errors
+    }
+  }
 
   return candidateDirectories.find((directory) => existsSync(resolve(directory, 'package.json')));
 };

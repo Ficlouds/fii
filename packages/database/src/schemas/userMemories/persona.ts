@@ -22,6 +22,7 @@ export const userPersonaDocuments = pgTable(
 
     tagline: text('tagline'),
     persona: text('persona'),
+    editorData: jsonb('editor_data').$type<Record<string, unknown>>(),
 
     memoryIds: jsonb('memory_ids').$type<string[]>(),
     sourceIds: jsonb('source_ids').$type<string[]>(),
@@ -53,6 +54,7 @@ export const userPersonaDocumentHistories = pgTable(
 
     snapshotPersona: text('snapshot_persona'),
     snapshotTagline: text('snapshot_tagline'),
+    snapshotEditorData: jsonb('snapshot_editor_data').$type<Record<string, unknown>>(),
     reasoning: text('reasoning'),
     diffPersona: text('diff_persona'),
     diffTagline: text('diff_tagline'),

@@ -1902,6 +1902,7 @@ table user_memory_persona_document_histories {
   profile varchar(255) [not null, default: 'default']
   snapshot_persona text
   snapshot_tagline text
+  snapshot_editor_data jsonb
   reasoning text
   diff_persona text
   diff_tagline text
@@ -1931,6 +1932,7 @@ table user_memory_persona_documents {
   profile varchar(255) [not null, default: 'default']
   tagline text
   persona text
+  editor_data jsonb
   memory_ids jsonb
   source_ids jsonb
   metadata jsonb

@@ -7,8 +7,8 @@ export const longReasoning = defineCase({
   tags: ['reasoning', 'builtin'],
   steps: [
     llmStep({
-      reasoning: '思路'.repeat(1250),
-      text: '综上所述，结论是：A。',
+      reasoning: 'thinking'.repeat(625),
+      text: 'In summary, the conclusion is: A.',
       durationMs: 6000,
     }),
   ],

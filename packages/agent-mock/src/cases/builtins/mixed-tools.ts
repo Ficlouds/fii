@@ -6,7 +6,7 @@ export const mixedTools = defineCase({
   description: 'TodoWrite + Memory + Calculator interleaved',
   tags: ['mixed', 'builtin'],
   steps: [
-    llmStep({ text: '先记忆，再计算，最后规划。', durationMs: 500 }),
+    llmStep({ text: 'First remember, then calculate, then plan.', durationMs: 500 }),
     toolStep({
       identifier: 'lobe-memory',
       apiName: 'remember',
@@ -24,10 +24,10 @@ export const mixedTools = defineCase({
     toolStep({
       identifier: 'lobe-todo-write',
       apiName: 'addTodo',
-      arguments: JSON.stringify({ title: '验证结果' }),
+      arguments: JSON.stringify({ title: 'Verify results' }),
       result: { success: true, id: 'todo-1' },
       durationMs: 100,
     }),
-    llmStep({ text: '完成。', durationMs: 200 }),
+    llmStep({ text: 'Done.', durationMs: 200 }),
   ],
 });

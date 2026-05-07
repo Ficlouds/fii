@@ -6,7 +6,7 @@ export const errorMidStream = defineCase({
   description: 'Tool call fails halfway, then runtime errors',
   tags: ['error', 'builtin'],
   steps: [
-    llmStep({ text: '尝试调用工具。', durationMs: 400 }),
+    llmStep({ text: 'Trying to call tool.', durationMs: 400 }),
     toolStep({
       identifier: 'lobe-todo-write',
       apiName: 'addTodo',

@@ -24,11 +24,11 @@ export const subagentTreeGenerator = defineGenerator<SubagentTreeParams>({
             identifier: 'lobe-call-agent',
             apiName: 'callAgent',
             arguments: JSON.stringify({ agentId: `sub-${i}` }),
-            result: { success: true, output: `子代理 ${i} 完成` },
+            result: { success: true, output: `Subagent ${i} completed` },
             durationMs: 600,
           }),
         ),
-        llmStep({ text: '所有子代理完成。', durationMs: 200 }),
+        llmStep({ text: 'All subagents completed.', durationMs: 200 }),
       ],
     });
   },

@@ -6,8 +6,8 @@ import { useUserStore } from '@/store/user';
 import { userProfileSelectors } from '@/store/user/selectors';
 
 /**
- * onboarding stores localized labels in `user.interests` (e.g. "内容创作",
- * "Content Creation") plus occasional freeform text. Resolve each entry back
+ * onboarding stores localized labels in `user.interests` (e.g. "Content Creation"
+ * in en-US, or its locale-specific equivalent) plus occasional freeform text. Resolve each entry back
  * to an INTEREST_AREAS key via the current-locale onboarding translations so
  * the server can intersection-match against template.interests (which hold
  * canonical keys). Unresolved entries are lowercased passthroughs — server

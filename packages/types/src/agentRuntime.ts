@@ -8,6 +8,7 @@ export enum RequestTrigger {
   FileEmbedding = 'file_embedding',
   Image = 'image',
   Memory = 'memory',
+  Monitor = 'monitor',
   SemanticSearch = 'semantic_search',
   Topic = 'topic',
   Video = 'video',

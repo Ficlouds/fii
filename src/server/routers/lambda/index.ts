@@ -1,6 +1,7 @@
 /**
  * This file contains the root router of Lobe Chat tRPC-backend
  */
+import { businessHealthcheck } from '@/business/server/healthcheck';
 import { accountDeletionRouter } from '@/business/server/lambda-routers/accountDeletion';
 import { referralRouter } from '@/business/server/lambda-routers/referral';
 import { spendRouter } from '@/business/server/lambda-routers/spend';
@@ -98,7 +99,11 @@ export const lambdaRouter = router({
   generationBatch: generationBatchRouter,
   generationTopic: generationTopicRouter,
   group: agentGroupRouter,
-  healthcheck: publicProcedure.query(() => "i'm live!"),
+  healthcheck: publicProcedure.query(async () => {
+    await businessHealthcheck();
+
+    return "i'm live!";
+  }),
   home: homeRouter,
   image: imageRouter,
   importer: importerRouter,

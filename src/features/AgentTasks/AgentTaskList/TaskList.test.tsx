@@ -70,8 +70,16 @@ vi.mock('react-i18next', () => ({
 }));
 
 vi.mock('@/features/RecommendTaskTemplates/TaskTemplateRecommendationsView', () => ({
-  TaskTemplateRecommendationsView: ({ state }: { state: TaskTemplateRecommendationsUIState }) => (
-    <div data-testid="task-template-recommendations">{state.mode}</div>
+  TaskTemplateRecommendationsView: ({
+    state,
+    variant,
+  }: {
+    state: TaskTemplateRecommendationsUIState;
+    variant?: string;
+  }) => (
+    <div data-testid="task-template-recommendations">
+      {state.mode}:{variant}
+    </div>
   ),
 }));
 
@@ -142,9 +150,8 @@ describe('TaskList recommendations empty state', () => {
 
     render(<TaskList options={DEFAULT_TASK_LIST_VIEW_OPTIONS} />);
 
-    expect(screen.getByText('No tasks yet')).toBeInTheDocument();
     expect(screen.getByText('Try these tasks')).toBeInTheDocument();
-    expect(screen.getByTestId('task-template-recommendations')).toHaveTextContent('cards');
+    expect(screen.getByTestId('task-template-recommendations')).toHaveTextContent('cards:compact');
     expect(mocks.useTaskTemplateRecommendationsUI).toHaveBeenCalledWith({ enabled: true });
   });
 

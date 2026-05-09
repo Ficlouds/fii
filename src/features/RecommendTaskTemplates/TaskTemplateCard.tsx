@@ -59,10 +59,19 @@ interface TaskTemplateCardProps {
   recommendationBatchId: string;
   template: RecommendedTaskTemplate;
   userInterestCount: number;
+  variant?: 'compact' | 'default';
 }
 
 export const TaskTemplateCard = memo<TaskTemplateCardProps>(
-  ({ onCreated, onDismiss, position, recommendationBatchId, template, userInterestCount }) => {
+  ({
+    onCreated,
+    onDismiss,
+    position,
+    recommendationBatchId,
+    template,
+    userInterestCount,
+    variant = 'default',
+  }) => {
     const { t } = useTranslation('taskTemplate');
     const { t: tSetting } = useTranslation('setting');
     const { analytics } = useAnalytics();
@@ -355,6 +364,58 @@ export const TaskTemplateCard = memo<TaskTemplateCardProps>(
         </Text>
       </button>
     );
+
+    if (variant === 'compact') {
+      return (
+        <Block
+          className={cx(styles.card, styles.compactCard)}
+          gap={10}
+          padding={12}
+          ref={cardRef}
+          style={{ borderRadius: cssVar.borderRadiusLG }}
+          variant={'outlined'}
+        >
+          <Flexbox horizontal align={'flex-start'} gap={10} justify={'space-between'}>
+            <Flexbox gap={4} style={{ flex: 1, minWidth: 0 }}>
+              <Flexbox horizontal align={'center'} gap={8} style={{ minWidth: 0 }}>
+                <TemplateBriefIcon icon={IconComp} />
+                <Text ellipsis fontSize={15} weight={500}>
+                  {title}
+                </Text>
+              </Flexbox>
+              <Flexbox horizontal align={'center'} className={styles.meta} gap={4}>
+                <Icon icon={Clock} size={12} />
+                <Text fontSize={12} style={{ color: 'inherit' }}>
+                  {scheduleText}
+                </Text>
+              </Flexbox>
+            </Flexbox>
+            <ActionIcon
+              className={`${styles.dismissBtn} task-template-dismiss`}
+              icon={X}
+              size={'small'}
+              title={t('action.dismiss.tooltip')}
+              onClick={handleDismiss}
+            />
+          </Flexbox>
+
+          {description.trim().length > 0 ? (
+            <Text className={styles.compactDescription} fontSize={13} type={'secondary'}>
+              {description}
+            </Text>
+          ) : null}
+
+          <Flexbox horizontal align={'center'} gap={8} justify={'space-between'} wrap={'wrap'}>
+            <Flexbox horizontal align={'center'} gap={8} style={{ minWidth: 0 }}>
+              {hintNode}
+            </Flexbox>
+            <Flexbox horizontal align={'center'} gap={8}>
+              {primaryButton}
+            </Flexbox>
+          </Flexbox>
+        </Block>
+      );
+    }
 
     return (
       <Block

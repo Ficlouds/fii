@@ -268,6 +268,25 @@ afterEach(() => {
 });
 
 describe('TaskTemplateCard analytics', () => {
+  it('renders the compact variant for dense recommendation surfaces', () => {
+    render(
+      <TaskTemplateCard
+        position={0}
+        recommendationBatchId="batch-1"
+        template={makeTemplate()}
+        userInterestCount={1}
+        variant="compact"
+        onCreated={vi.fn()}
+        onDismiss={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText('Template A')).toBeInTheDocument();
+    expect(screen.getByText('Daily')).toBeInTheDocument();
+    expect(screen.getByText('Template description')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Create' })).toBeInTheDocument();
+  });
+
   it('does not mark an impression as tracked before analytics is ready', () => {
     mocks.analyticsEnabled = false;
     const { rerender } = render(

@@ -76,8 +76,16 @@ vi.mock('react-router-dom', () => ({
 }));
 
 vi.mock('@/features/RecommendTaskTemplates/TaskTemplateRecommendationsView', () => ({
-  TaskTemplateRecommendationsView: ({ state }: { state: TaskTemplateRecommendationsUIState }) => (
-    <div data-testid="task-template-recommendations">{state.mode}</div>
+  TaskTemplateRecommendationsView: ({
+    state,
+    variant,
+  }: {
+    state: TaskTemplateRecommendationsUIState;
+    variant?: string;
+  }) => (
+    <div data-testid="task-template-recommendations">
+      {state.mode}:{variant}
+    </div>
   ),
 }));
 
@@ -170,9 +178,8 @@ describe('KanbanBoard recommendations empty state', () => {
 
     render(<KanbanBoard />);
 
-    expect(screen.getByText('No tasks yet')).toBeInTheDocument();
     expect(screen.getByText('Try these tasks')).toBeInTheDocument();
-    expect(screen.getByTestId('task-template-recommendations')).toHaveTextContent('cards');
+    expect(screen.getByTestId('task-template-recommendations')).toHaveTextContent('cards:compact');
     expect(mocks.useTaskTemplateRecommendationsUI).toHaveBeenCalledWith({ enabled: true });
   });
 

@@ -26,18 +26,13 @@ export const RecommendedTaskTemplatesEmptyState = memo<RecommendedTaskTemplatesE
     return (
       <Flexbox
         gap={12}
-        paddingBlock={20}
+        paddingBlock={'16px 24px'}
         style={{ marginInline: 'auto', maxWidth: 720, width: '100%' }}
       >
-        <Flexbox gap={2} style={{ width: '100%' }}>
-          <Text fontSize={13} type={'secondary'}>
-            {t('taskList.empty')}
-          </Text>
-          <Text fontSize={16} weight={600}>
-            {tTaskTemplate('section.title')}
-          </Text>
-        </Flexbox>
-        <TaskTemplateRecommendationsView state={recommendationState} />
+        <Text fontSize={15} weight={600}>
+          {tTaskTemplate('section.title')}
+        </Text>
+        <TaskTemplateRecommendationsView state={recommendationState} variant={'compact'} />
       </Flexbox>
     );
   },

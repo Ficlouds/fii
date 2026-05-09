@@ -11,6 +11,22 @@ export const styles = createStaticStyles(({ css, cssVar }) => ({
       opacity: 1;
     }
   `,
+  compactCard: css`
+    min-height: 168px;
+
+    .ant-btn {
+      height: 32px;
+      padding-inline: 12px !important;
+    }
+  `,
+  compactDescription: css`
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    line-height: 1.5;
+  `,
   dismissBtn: css`
     pointer-events: none;
     flex-shrink: 0;

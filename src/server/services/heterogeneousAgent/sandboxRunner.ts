@@ -52,9 +52,12 @@ function buildRepoSetupScript(repos: string[], githubToken?: string): string | n
     const repoPath = repo.startsWith('http') ? (repo.split('github.com/')[1] ?? repo) : repo;
     // Use git's insteadOf rewrite (passed via -c, not stored in .git/config) so the token
     // never ends up in the cloned repo's remote URL.
+    // GIT_TERMINAL_PROMPT=0 prevents git from blocking on a credential prompt for
+    // private repos — it fails immediately instead of hanging the whole sandbox.
+    // timeout 120 provides a hard deadline so a slow clone never stalls the first message.
     const cloneCmd = githubToken
-      ? `git -c "url.https://oauth2:${githubToken}@github.com/.insteadOf=https://github.com/" clone -q https://github.com/${repoPath} '${dir}'`
-      : `git clone -q 'https://github.com/${repoPath}' '${dir}'`;
+      ? `GIT_TERMINAL_PROMPT=0 timeout 120 git -c "url.https://oauth2:${githubToken}@github.com/.insteadOf=https://github.com/" clone -q https://github.com/${repoPath} '${dir}'`
+      : `GIT_TERMINAL_PROMPT=0 timeout 120 git clone -q 'https://github.com/${repoPath}' '${dir}'`;
 
     // `|| true` makes clone failures non-fatal — CC still runs even if a repo can't be cloned.
     return `{ [ -d '${dir}' ] || ${cloneCmd}; } || true`;

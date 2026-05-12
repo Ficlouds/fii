@@ -200,8 +200,10 @@ describe('useOpenInApp', () => {
     (service.detectApps as ReturnType<typeof vi.fn>).mockResolvedValue({
       apps: [{ displayName: 'VS Code', id: 'vscode', installed: true }],
     });
+    // Match the actual main-process controller contract: `${appId} is not installed`
+    // (see apps/desktop/src/main/controllers/OpenInAppCtr.ts).
     (service.openInApp as ReturnType<typeof vi.fn>).mockResolvedValue({
-      error: 'VS Code is not installed',
+      error: 'vscode is not installed',
       success: false,
     });
 

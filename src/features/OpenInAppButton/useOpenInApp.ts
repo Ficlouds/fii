@@ -64,7 +64,7 @@ export const useOpenInApp = (workingDirectory: string): UseOpenInAppResult => {
       } else if (err.includes('is not installed')) {
         message.error(t('errors.appNotInstalled', { appName }));
       } else {
-        message.error(t('errors.launchFailed', { appName, error: err || 'unknown' }));
+        message.error(t('errors.launchFailed', { appName, error: err || t('errors.unknown') }));
       }
     },
     [displayNameMap, workingDirectory, userDefault, updatePreference, t],

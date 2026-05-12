@@ -22,6 +22,7 @@ import { getLLMConfig } from '@/envs/llm';
 import { KeyVaultsGateKeeper } from '../KeyVaultsEncrypt';
 import apiKeyManager from './apiKeyManager';
 
+export * from './findDeploymentName';
 export * from './trace';
 
 /**

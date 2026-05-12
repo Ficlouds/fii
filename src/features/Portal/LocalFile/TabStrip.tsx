@@ -1,5 +1,6 @@
 'use client';
 
+import { ScrollArea } from '@lobehub/ui/base-ui';
 import { createStaticStyles } from 'antd-style';
 import { XIcon } from 'lucide-react';
 import { memo } from 'react';
@@ -70,22 +71,28 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
     text-overflow: ellipsis;
     white-space: nowrap;
   `,
-  tabStrip: css`
-    scrollbar-width: none;
-
-    overflow-x: auto;
-    display: flex;
-    flex: 1;
-    gap: 4px;
-    align-items: center;
-
-    min-width: 0;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  `,
 }));
+
+const SCROLL_AREA_STYLE = {
+  background: 'transparent',
+  borderRadius: 0,
+  flex: 1,
+  minWidth: 0,
+};
+
+const SCROLL_AREA_CONTENT_STYLE = {
+  alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'row' as const,
+  gap: 4,
+  paddingBlock: 8,
+  paddingInlineStart: 8,
+  width: 'max-content',
+};
+
+const SCROLL_AREA_SCROLLBAR_STYLE = {
+  margin: 0,
+};
 
 const TabStrip = memo(() => {
   const openLocalFiles = useChatStore(chatPortalSelectors.openLocalFiles);
@@ -96,7 +103,12 @@ const TabStrip = memo(() => {
   if (openLocalFiles.length === 0) return null;
 
   return (
-    <div className={styles.tabStrip}>
+    <ScrollArea
+      contentProps={{ style: SCROLL_AREA_CONTENT_STYLE }}
+      scrollFade="horizontal"
+      scrollbarProps={{ orientation: 'horizontal', style: SCROLL_AREA_SCROLLBAR_STYLE }}
+      style={SCROLL_AREA_STYLE}
+    >
       {openLocalFiles.map(({ filePath }) => {
         const filename = filePath.split('/').at(-1) ?? filePath;
         const isActive = filePath === activeLocalFilePath;
@@ -132,7 +144,7 @@ const TabStrip = memo(() => {
           </div>
         );
       })}
-    </div>
+    </ScrollArea>
   );
 });
 

@@ -26,7 +26,7 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
     justify-content: space-between;
 
     padding-block: 4px 8px;
-    padding-inline: 8px;
+    padding-inline: 14px 6px;
   `,
   count: css`
     font-family: ${cssVar.fontFamilyCode};

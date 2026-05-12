@@ -1,4 +1,5 @@
 import { isDesktop } from '@lobechat/const';
+import type { OpenInAppId } from '@lobechat/electron-client-ipc';
 import { DropdownMenu, type DropdownMenuProps, Icon, Tooltip } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { ChevronDownIcon } from 'lucide-react';
@@ -7,6 +8,28 @@ import { useTranslation } from 'react-i18next';
 
 import { APP_ICONS } from './apps';
 import { useOpenInApp } from './useOpenInApp';
+
+interface AppIconProps {
+  icon?: string;
+  id: OpenInAppId;
+  size?: number;
+}
+
+const AppIcon = ({ id, icon, size = 14 }: AppIconProps) => {
+  if (icon) {
+    return (
+      <img
+        alt=""
+        height={size}
+        src={icon}
+        style={{ display: 'block', objectFit: 'contain' }}
+        width={size}
+      />
+    );
+  }
+  const Fallback = APP_ICONS[id];
+  return <Icon icon={Fallback} size={size} />;
+};
 
 const styles = createStaticStyles(({ css }) => ({
   dropdownItem: css`
@@ -70,15 +93,18 @@ const OpenInAppButton = memo<OpenInAppButtonProps>(({ workingDirectory, classNam
   const { t } = useTranslation('openInApp');
   const { defaultApp, installedApps, launch, ready } = useOpenInApp(workingDirectory);
 
-  const defaultDisplayName = useMemo(
-    () => installedApps.find((app) => app.id === defaultApp)?.displayName ?? defaultApp,
+  const defaultAppEntry = useMemo(
+    () => installedApps.find((app) => app.id === defaultApp),
     [installedApps, defaultApp],
   );
+
+  const defaultDisplayName = defaultAppEntry?.displayName ?? defaultApp;
+  const defaultIconSrc = defaultAppEntry?.icon;
 
   const dropdownItems = useMemo<DropdownMenuProps['items']>(
     () =>
       installedApps.map((app) => ({
-        icon: <Icon icon={APP_ICONS[app.id]} size={14} />,
+        icon: <AppIcon icon={app.icon} id={app.id} size={14} />,
         key: app.id,
         label: app.displayName,
         onClick: () => {
@@ -90,8 +116,6 @@ const OpenInAppButton = memo<OpenInAppButtonProps>(({ workingDirectory, classNam
 
   if (!isDesktop || !workingDirectory) return null;
   if (!ready) return null;
-
-  const DefaultIcon = APP_ICONS[defaultApp];
 
   const wrapperClassName = [styles.root, className].filter(Boolean).join(' ');
 
@@ -106,7 +130,7 @@ const OpenInAppButton = memo<OpenInAppButtonProps>(({ workingDirectory, classNam
             void launch(defaultApp);
           }}
         >
-          <Icon icon={DefaultIcon} size={14} />
+          <AppIcon icon={defaultIconSrc} id={defaultApp} size={14} />
         </div>
       </Tooltip>
       <DropdownMenu items={dropdownItems} trigger={['click']}>

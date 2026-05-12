@@ -7,7 +7,7 @@ import OpenInAppButton from './index';
 const launchMock = vi.fn();
 let hookReturn: {
   defaultApp: string;
-  installedApps: { displayName: string; id: string; installed: boolean }[];
+  installedApps: { displayName: string; icon?: string; id: string; installed: boolean }[];
   launch: typeof launchMock;
   ready: boolean;
 };
@@ -171,5 +171,62 @@ describe('<OpenInAppButton />', () => {
     fireEvent.click(screen.getByTestId('dropdown-item-finder'));
 
     expect(launchMock).toHaveBeenCalledWith('finder');
+  });
+
+  it('renders extracted base64 icon as an <img> for the default app', () => {
+    hookReturn = {
+      ...hookReturn,
+      installedApps: [
+        {
+          displayName: 'VS Code',
+          icon: 'data:image/png;base64,VSCODE',
+          id: 'vscode',
+          installed: true,
+        },
+        { displayName: 'Finder', id: 'finder', installed: true },
+      ],
+    };
+
+    render(<OpenInAppButton workingDirectory="/tmp/proj" />);
+
+    const leftButton = screen.getByLabelText(/tooltip/);
+    const img = leftButton.querySelector('img');
+    expect(img).not.toBeNull();
+    expect(img?.getAttribute('src')).toBe('data:image/png;base64,VSCODE');
+  });
+
+  it('falls back to the lucide icon when no base64 icon is available', () => {
+    // default hookReturn has no icon fields
+    render(<OpenInAppButton workingDirectory="/tmp/proj" />);
+
+    const leftButton = screen.getByLabelText(/tooltip/);
+    expect(leftButton.querySelector('img')).toBeNull();
+    expect(leftButton.querySelector('[data-testid="ui-icon"]')).not.toBeNull();
+  });
+
+  it('renders base64 icon for dropdown items when available', () => {
+    hookReturn = {
+      ...hookReturn,
+      installedApps: [
+        {
+          displayName: 'VS Code',
+          icon: 'data:image/png;base64,VSCODE',
+          id: 'vscode',
+          installed: true,
+        },
+        { displayName: 'Finder', id: 'finder', installed: true },
+      ],
+    };
+
+    render(<OpenInAppButton workingDirectory="/tmp/proj" />);
+
+    const vscodeItem = screen.getByTestId('dropdown-item-vscode');
+    const finderItem = screen.getByTestId('dropdown-item-finder');
+
+    expect(vscodeItem.querySelector('img')?.getAttribute('src')).toBe(
+      'data:image/png;base64,VSCODE',
+    );
+    expect(finderItem.querySelector('img')).toBeNull();
+    expect(finderItem.querySelector('[data-testid="ui-icon"]')).not.toBeNull();
   });
 });

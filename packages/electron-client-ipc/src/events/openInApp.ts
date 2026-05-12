@@ -13,6 +13,12 @@ export type OpenInAppId =
 
 export interface DetectedApp {
   displayName: string;
+  /**
+   * Base64-encoded PNG data URL (e.g. "data:image/png;base64,..."). Only set
+   * when the platform could extract a real icon from the installed app.
+   * Renderer falls back to a hard-coded lucide-react icon when absent.
+   */
+  icon?: string;
   id: OpenInAppId;
   installed: boolean;
 }

@@ -6,6 +6,7 @@ import type { DetectedApp, OpenInAppId } from '@lobechat/electron-client-ipc';
 
 import { createLogger } from '@/utils/logger';
 
+import { extractAllIcons } from './iconExtractor';
 import type { DetectStrategy } from './registry';
 import { ALWAYS_INSTALLED, APP_REGISTRY } from './registry';
 
@@ -83,15 +84,21 @@ export const detectAllApps = async (
   const entries = Object.entries(APP_REGISTRY) as Array<
     [OpenInAppId, (typeof APP_REGISTRY)[OpenInAppId]]
   >;
-  const results = await Promise.all(
-    entries.map(async ([id, descriptor]) => {
-      const installed = await detectApp(id, platform);
-      return {
-        displayName: descriptor.displayName,
-        id,
-        installed,
-      } satisfies DetectedApp;
-    }),
-  );
-  return results;
+  const installedFlags = await Promise.all(entries.map(([id]) => detectApp(id, platform)));
+
+  // Extract icons in parallel ONLY for installed apps — icon extraction is best-effort
+  // and must never break detection (extractAllIcons swallows errors).
+  const installedIds = entries.filter((_entry, i) => installedFlags[i]).map(([id]) => id);
+  const icons = await extractAllIcons(installedIds, platform);
+
+  return entries.map(([id, descriptor], i) => {
+    const installed = installedFlags[i];
+    const icon = installed ? icons.get(id) : undefined;
+    return {
+      displayName: descriptor.displayName,
+      id,
+      installed,
+      ...(icon ? { icon } : {}),
+    } satisfies DetectedApp;
+  });
 };

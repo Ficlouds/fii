@@ -81,23 +81,21 @@ vi.mock('antd-style', () => ({
   cssVar: new Proxy({}, { get: () => 'var(--placeholder)' }),
 }));
 
-vi.mock('lucide-react', () => ({
-  ChevronDownIcon: function ChevronDownIcon() {
-    return null;
-  },
-  CodeIcon: function CodeIcon() {
-    return null;
-  },
-  FolderIcon: function FolderIcon() {
-    return null;
-  },
-  FolderOpenIcon: function FolderOpenIcon() {
-    return null;
-  },
-  TerminalIcon: function TerminalIcon() {
-    return null;
-  },
-}));
+vi.mock('lucide-react', () => {
+  const Stub = () => null;
+  return {
+    AppleIcon: Stub,
+    ChevronDownIcon: Stub,
+    CodeIcon: Stub,
+    CodeXmlIcon: Stub,
+    FolderIcon: Stub,
+    FolderOpenIcon: Stub,
+    GhostIcon: Stub,
+    HammerIcon: Stub,
+    SquareTerminalIcon: Stub,
+    TerminalIcon: Stub,
+  };
+});
 
 vi.mock('@lobehub/icons', () => ({
   Cursor: function Cursor() {

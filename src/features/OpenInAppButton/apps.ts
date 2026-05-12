@@ -1,6 +1,16 @@
 import type { OpenInAppId } from '@lobechat/electron-client-ipc';
 import { Cursor } from '@lobehub/icons';
-import { CodeIcon, FolderIcon, FolderOpenIcon, TerminalIcon } from 'lucide-react';
+import {
+  AppleIcon,
+  CodeIcon,
+  CodeXmlIcon,
+  FolderIcon,
+  FolderOpenIcon,
+  GhostIcon,
+  HammerIcon,
+  SquareTerminalIcon,
+  TerminalIcon,
+} from 'lucide-react';
 import type { FC } from 'react';
 
 // Renderer-side mapping from AppId → icon component. The displayName comes from
@@ -14,13 +24,13 @@ export const APP_ICONS: Record<OpenInAppId, IconLike> = {
   explorer: FolderIcon,
   files: FolderOpenIcon,
   finder: FolderIcon,
-  ghostty: TerminalIcon,
-  iterm2: TerminalIcon,
+  ghostty: GhostIcon,
+  iterm2: SquareTerminalIcon,
   terminal: TerminalIcon,
   vscode: CodeIcon,
-  webstorm: CodeIcon,
-  xcode: CodeIcon,
-  zed: CodeIcon,
+  webstorm: HammerIcon,
+  xcode: AppleIcon,
+  zed: CodeXmlIcon,
 };
 
 // Platform fallback when no user pref or user's pref is uninstalled.

@@ -10,13 +10,10 @@ import { extractAllIcons } from './iconExtractor';
 import type { DetectStrategy } from './registry';
 import { ALWAYS_INSTALLED, APP_REGISTRY } from './registry';
 
-// Set `LOBE_OPEN_IN_APP_ENABLE_ICONS=1` to opt back into real icon extraction
-// via `app.getFileIcon`. Disabled by default because Electron 41 + macOS 26
-// crashes the entire process (EXC_BREAKPOINT inside [NSWorkspace
-// iconForContentType:] / [NSImage recache]) the moment getFileIcon resolves
-// a non-trivial .app bundle. Renderer falls back to lucide icons when the
-// `icon` field is absent — distinct per app category and stable.
-const ICON_EXTRACTION_ENABLED = process.env.LOBE_OPEN_IN_APP_ENABLE_ICONS === '1';
+// Icon extraction now runs in an isolated Swift child process
+// (see iconExtractor.ts) so Electron itself cannot crash on
+// `app.getFileIcon` regressions. Renderer falls back to lucide if extraction
+// returns undefined (e.g. swift CLI missing).
 
 const logger = createLogger('modules:openInApp:detectors');
 
@@ -94,14 +91,11 @@ export const detectAllApps = async (
   >;
   const installedFlags = await Promise.all(entries.map(([id]) => detectApp(id, platform)));
 
-  // Icon extraction is gated behind an env flag because it crashes Electron on
-  // macOS 26 (see ICON_EXTRACTION_ENABLED comment above).
-  const installedIds = ICON_EXTRACTION_ENABLED
-    ? entries.filter((_entry, i) => installedFlags[i]).map(([id]) => id)
-    : [];
-  const icons = ICON_EXTRACTION_ENABLED
-    ? await extractAllIcons(installedIds, platform)
-    : new Map<OpenInAppId, string>();
+  // Extract icons for installed apps only. Extraction runs in a JXA child
+  // process (see iconExtractor.ts) so it cannot crash the renderer; failures
+  // resolve to undefined and the renderer falls back to lucide icons.
+  const installedIds = entries.filter((_entry, i) => installedFlags[i]).map(([id]) => id);
+  const icons = await extractAllIcons(installedIds, platform);
 
   return entries.map(([id, descriptor], i) => {
     const installed = installedFlags[i];

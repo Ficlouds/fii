@@ -1,9 +1,10 @@
-import { execFile } from 'node:child_process';
-import { access } from 'node:fs/promises';
+import { execFile, spawn } from 'node:child_process';
+import { access, mkdtemp, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import { promisify } from 'node:util';
 
 import type { OpenInAppId } from '@lobechat/electron-client-ipc';
-import { app } from 'electron';
 
 import { createLogger } from '@/utils/logger';
 
@@ -13,21 +14,164 @@ const logger = createLogger('modules:openInApp:iconExtractor');
 
 const execFileAsync = promisify(execFile);
 
-/** Source request size from getFileIcon. macOS returns the canonical 128×128
- *  bundle icon at `large`; `normal` (32×32) often degrades to the generic
- *  application placeholder when the high-res rendition cannot be loaded. */
-const SOURCE_SIZE = 'large' as const;
-/** Output px — we downscale once on the main side so the IPC payload stays
- *  small while still looking crisp at the renderer's 16-20px display size. */
+/** Render dimensions for the extracted PNG. 64 keeps the payload tiny while
+ *  staying crisp at the renderer's 16-20 px display size on retina. */
 const ICON_SIZE = 64;
+/** Each JXA invocation is bounded to avoid pathological hangs. macOS's
+ *  IconServices generally responds within tens of ms. */
+const OSASCRIPT_TIMEOUT_MS = 5000;
+
+/**
+ * JXA (JavaScript for Automation) program that extracts a macOS app icon as a
+ * base64 PNG data URL. Runs via `osascript -l JavaScript` in an isolated
+ * child process so Electron itself cannot crash on `app.getFileIcon`
+ * regressions (Electron 41 + macOS 26 trips EXC_BREAKPOINT inside
+ * NSImage / IconServices when invoked from the Electron main process).
+ *
+ * osascript ships on every macOS install — no Xcode / Swift toolchain
+ * dependency, no electron-builder bundling required.
+ *
+ * argv: <bundlePath> <size>
+ * stdout: `data:image/png;base64,…` on success; empty / non-conforming on
+ * failure (caller treats anything other than a valid data URL as "no icon").
+ */
+const JXA_SOURCE = `function run(argv) {
+  ObjC.import('AppKit');
+  if (argv.length < 1) return '';
+  var bundlePath = argv[0];
+  var size = parseInt(argv[1], 10) || 64;
+
+  var fm = $.NSFileManager.defaultManager;
+  if (!fm.fileExistsAtPath(bundlePath)) return '';
+
+  var workspace = $.NSWorkspace.sharedWorkspace;
+  var icon = workspace.iconForFile(bundlePath);
+  if (!icon) return '';
+  icon.size = $.NSMakeSize(size, size);
+
+  // Re-draw into a fresh canvas at the target size so we get the resolved
+  // representation rather than the multi-rep NSImage's TIFF (which may be
+  // larger than needed).
+  var target = $.NSImage.alloc.initWithSize($.NSMakeSize(size, size));
+  target.lockFocus();
+  icon.drawInRectFromRectOperationFraction(
+    $.NSMakeRect(0, 0, size, size),
+    $.NSMakeRect(0, 0, 0, 0),
+    1, // NSCompositingOperationCopy
+    1.0
+  );
+  target.unlockFocus();
+
+  var tiff = target.tiffRepresentation;
+  if (!tiff) return '';
+  var rep = $.NSBitmapImageRep.imageRepWithData(tiff);
+  if (!rep) return '';
+  var png = rep.representationUsingTypeProperties(4 /* NSBitmapImageFileTypePNG */, $());
+  if (!png) return '';
+  var base64 = png.base64EncodedStringWithOptions(0);
+  return 'data:image/png;base64,' + ObjC.unwrap(base64);
+}
+`;
+
+let scriptPathPromise: Promise<string | undefined> | undefined;
+
+/**
+ * Write the JXA source to a tmp file once per process and reuse it for every
+ * extraction call. Returns undefined if the source can't be written (rare).
+ */
+const ensureScript = async (): Promise<string | undefined> => {
+  if (scriptPathPromise) return scriptPathPromise;
+  scriptPathPromise = (async () => {
+    try {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lobehub-openinapp-'));
+      const filePath = path.join(dir, 'extractIcon.js');
+      await writeFile(filePath, JXA_SOURCE, 'utf8');
+      logger.debug(`prepared JXA script at ${filePath}`);
+      return filePath;
+    } catch (error) {
+      logger.debug(`failed to prepare JXA script: ${(error as Error).message}`);
+      return undefined;
+    }
+  })();
+  return scriptPathPromise;
+};
+
+const runOsascript = (scriptPath: string, bundlePath: string): Promise<string | undefined> => {
+  return new Promise((resolve) => {
+    let stdout = '';
+    let stderr = '';
+    let settled = false;
+    const finish = (value: string | undefined) => {
+      if (settled) return;
+      settled = true;
+      resolve(value);
+    };
+
+    const proc = spawn(
+      'osascript',
+      ['-l', 'JavaScript', scriptPath, bundlePath, String(ICON_SIZE)],
+      {
+        stdio: ['ignore', 'pipe', 'pipe'],
+        timeout: OSASCRIPT_TIMEOUT_MS,
+      },
+    );
+    proc.stdout.on('data', (chunk) => {
+      stdout += chunk.toString();
+    });
+    proc.stderr.on('data', (chunk) => {
+      stderr += chunk.toString();
+    });
+    proc.on('error', (error) => {
+      logger.debug(`osascript spawn failed for ${bundlePath}: ${error.message}`);
+      finish(undefined);
+    });
+    proc.on('close', (code) => {
+      if (code !== 0) {
+        logger.debug(
+          `osascript exited code=${code} for ${bundlePath}: ${stderr.trim().slice(0, 200)}`,
+        );
+        finish(undefined);
+        return;
+      }
+      const trimmed = stdout.trim();
+      const prefix = 'data:image/png;base64,';
+      if (trimmed.startsWith(prefix) && trimmed.length > prefix.length) {
+        finish(trimmed);
+        return;
+      }
+      logger.debug(`osascript produced unexpected stdout for ${bundlePath}`);
+      finish(undefined);
+    });
+  });
+};
+
+let osascriptAvailablePromise: Promise<boolean> | undefined;
+
+/**
+ * Confirm `osascript` is on PATH. It ships with every macOS install so this is
+ * effectively a sanity check; cached for the process lifetime.
+ */
+const isOsascriptAvailable = (): Promise<boolean> => {
+  if (osascriptAvailablePromise) return osascriptAvailablePromise;
+  osascriptAvailablePromise = (async () => {
+    try {
+      await execFileAsync('/usr/bin/which', ['osascript']);
+      return true;
+    } catch {
+      logger.debug('osascript not found on PATH; falling back to renderer icons');
+      return false;
+    }
+  })();
+  return osascriptAvailablePromise;
+};
 
 const resolveDarwinBundlePath = async (id: OpenInAppId): Promise<string | undefined> => {
   const strategy = APP_REGISTRY[id]?.detect.darwin;
   if (!strategy || strategy.type !== 'appBundle') return undefined;
-  for (const path of strategy.paths) {
+  for (const candidate of strategy.paths) {
     try {
-      await access(path);
-      return path;
+      await access(candidate);
+      return candidate;
     } catch {
       // try next
     }
@@ -35,76 +179,23 @@ const resolveDarwinBundlePath = async (id: OpenInAppId): Promise<string | undefi
   return undefined;
 };
 
-const resolveWin32ExePath = async (id: OpenInAppId): Promise<string | undefined> => {
-  const strategy = APP_REGISTRY[id]?.detect.win32;
-  if (!strategy || strategy.type !== 'registryAppPaths') return undefined;
-  try {
-    const result = await execFileAsync('where', [strategy.exeName], { windowsHide: true });
-    // `promisify(execFile)` may resolve to `{ stdout, stderr }` (when the
-    // native `[util.promisify.custom]` symbol is present) or to `stdout`
-    // alone (when it is not — e.g. under a mocked module in tests).
-    const stdout =
-      typeof result === 'string' ? result : ((result as { stdout?: string })?.stdout ?? '');
-    const firstLine = stdout.split(/\r?\n/).find((line) => line.trim().length > 0);
-    return firstLine?.trim();
-  } catch (error) {
-    logger.debug(`where probe failed for ${strategy.exeName}: ${(error as Error).message}`);
-    return undefined;
-  }
-};
-
-const extractFromPath = async (filePath: string): Promise<string | undefined> => {
-  try {
-    const icon = await app.getFileIcon(filePath, { size: SOURCE_SIZE });
-    if (icon.isEmpty()) {
-      logger.debug(`getFileIcon returned empty image for ${filePath}`);
-      return undefined;
-    }
-    const sourceSize = icon.getSize();
-    const resized = icon.resize({ height: ICON_SIZE, quality: 'better', width: ICON_SIZE });
-    const dataUrl = resized.toDataURL();
-    logger.debug(
-      `extracted icon for ${filePath} (source ${sourceSize.width}x${sourceSize.height}, ` +
-        `payload ${Math.round(dataUrl.length / 1024)}KB)`,
-    );
-    return dataUrl;
-  } catch (error) {
-    logger.debug(`getFileIcon failed for ${filePath}: ${(error as Error).message}`);
-    return undefined;
-  }
-};
-
 /**
- * Extract the real app icon for the given AppId on the current platform,
- * returning a base64 PNG data URL. Returns undefined when extraction is not
- * supported or fails (renderer then falls back to a lucide-react icon).
- *
- * Strategy:
- *  - macOS: locate the .app bundle path from the registry's `appBundle.paths`
- *    entry, take the first one that exists, call `app.getFileIcon(...)`.
- *  - Windows: resolve the .exe path via `where.exe <exeName>` (cheap; we
- *    already use `where` for detection), call `app.getFileIcon(exePath)`.
- *  - Linux: not implemented (icon themes vary widely) — returns undefined.
- *
- * Result is resized to ICON_SIZE x ICON_SIZE. Never throws; failures resolve
- * to undefined so detection is unaffected.
+ * Extract the real macOS app icon for the given AppId via a JXA child process
+ * that calls `NSWorkspace.shared.icon(forFile:)`. macOS only (Windows / Linux
+ * fall back to the renderer's lucide icon table).
  */
 export const extractAppIcon = async (
   id: OpenInAppId,
   platform: NodeJS.Platform = process.platform,
 ): Promise<string | undefined> => {
+  if (platform !== 'darwin') return undefined;
   try {
-    if (platform === 'darwin') {
-      const bundlePath = await resolveDarwinBundlePath(id);
-      if (!bundlePath) return undefined;
-      return await extractFromPath(bundlePath);
-    }
-    if (platform === 'win32') {
-      const exePath = await resolveWin32ExePath(id);
-      if (!exePath) return undefined;
-      return await extractFromPath(exePath);
-    }
-    return undefined;
+    if (!(await isOsascriptAvailable())) return undefined;
+    const bundlePath = await resolveDarwinBundlePath(id);
+    if (!bundlePath) return undefined;
+    const scriptPath = await ensureScript();
+    if (!scriptPath) return undefined;
+    return await runOsascript(scriptPath, bundlePath);
   } catch (error) {
     logger.debug(`extractAppIcon error for ${id}: ${(error as Error).message}`);
     return undefined;
@@ -112,12 +203,8 @@ export const extractAppIcon = async (
 };
 
 /**
- * Resolve icons for a list of installed AppIds. Runs **sequentially** because
- * macOS's `NSWorkspace iconForContentType:` (which Electron's `getFileIcon`
- * delegates to) is not safe under heavy parallel load on macOS 26+ — running
- * 11 calls via Promise.all crashed the renderer with EXC_BREAKPOINT inside
- * `ISIconManager findOrRegisterIcon:`. Sequential is slower (~tens of ms per
- * app) but stable. Cached for the session, so the cost is paid once.
+ * Resolve icons for a list of installed AppIds. Sequential — keeps spawn
+ * pressure low and matches IconServices' single-thread behavior.
  */
 export const extractAllIcons = async (
   installedIds: OpenInAppId[],
@@ -133,4 +220,12 @@ export const extractAllIcons = async (
     }
   }
   return map;
+};
+
+/**
+ * Test-only: reset the module-level caches so each test starts fresh.
+ */
+export const __resetForTest = () => {
+  scriptPathPromise = undefined;
+  osascriptAvailablePromise = undefined;
 };

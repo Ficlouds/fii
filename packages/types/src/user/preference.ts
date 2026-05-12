@@ -63,6 +63,8 @@ export const UserLabSchema = z.object({
 export type UserLab = z.infer<typeof UserLabSchema>;
 
 export interface UserPreference {
+  /** Last-used app for "Open working directory in…" split button. Empty/unknown values fall back to platform default. */
+  defaultOpenInApp?: string;
   /**
    * disable markdown rendering in chat input editor
    * @deprecated Use lab.enableInputMarkdown instead

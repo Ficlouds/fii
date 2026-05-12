@@ -190,6 +190,7 @@ export class ConversationLifecycleActionImpl {
     parentId: inputParentId,
     pageSelections,
     onTopicCreated,
+    interruptMode,
   }: SendMessageWithContextParams): Promise<SendMessageResult | undefined> => {
     let editorData = inputEditorData;
     const { executeClientAgent, mainInputEditor } = this.#get();
@@ -621,6 +622,10 @@ export class ConversationLifecycleActionImpl {
           context: heteroContext,
           heterogeneousProvider,
           imageList: persistedImageList?.length ? persistedImageList : undefined,
+          // Carry the queued-drain interrupt mode through so the executor
+          // pushes the prompt onto the live SDK channel with the right
+          // priority (LOBE-8804). Non-drain sends leave it undefined.
+          interruptMode,
           message,
           operationId: heteroOpId,
           resumeSessionId,

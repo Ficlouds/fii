@@ -71,16 +71,58 @@ export interface HeterogeneousAgentStartStreamParams extends HeterogeneousAgentB
   pathToClaudeCodeExecutable: string;
 }
 
+/**
+ * Priority for a follow-up user message pushed via {@link
+ * HeterogeneousAgentStreamHandle.pushUserMessage}. Mirrors the SDK's
+ * `SDKUserMessage.priority` field but defined here so the IPC / controller
+ * layer doesn't need to import the SDK types.
+ *
+ * - `undefined`: first prompt or no-special-handling push. SDK starts a new
+ *   turn as soon as the channel produces; if a turn is in-flight, behaves
+ *   like `'later'`.
+ * - `'now'`: SDK lets the in-flight tool finish, then aborts the model's
+ *   pending reply and starts a new turn with this message. Used for the
+ *   "soft" interrupt — user wants to pivot, doesn't care about the prior
+ *   turn's verbal answer. **Verified in LOBE-8747 spike.**
+ * - `'later'`: queues the message strictly after the in-flight turn fully
+ *   completes (including the model's reply). Currently unused by LobeHub
+ *   — kept for completeness.
+ *
+ * `'next'` is deliberately **not** exposed: it makes the SDK merge two
+ * prompts into a single assistant turn, which is invisible-to-the-user
+ * behavior we don't want.
+ */
+export type HeterogeneousAgentPushPriority = 'now' | 'later';
+
+export interface HeterogeneousAgentPushUserMessageParams {
+  /** Image attachments accompanying this user message. */
+  imageList: HeterogeneousAgentImageAttachment[];
+  /** SDK priority — see {@link HeterogeneousAgentPushPriority}. */
+  priority?: HeterogeneousAgentPushPriority;
+  /** Text prompt for this turn. */
+  prompt: string;
+}
+
 export interface HeterogeneousAgentStreamHandle {
   /** Close the underlying transport and release resources. Idempotent. */
   close: () => void;
   /**
    * Cooperative interrupt (e.g. SDK `query.interrupt()`); for cancellation
-   * use the `abortSignal` passed at start time.
+   * use the `abortSignal` passed at start time. Used by the "hard" interrupt
+   * path — `interrupt()` then `pushUserMessage()` lands a synthetic
+   * tool_result rejection for any in-flight tool_use, then continues with
+   * the new user message in a fresh turn.
    */
   interrupt?: () => Promise<void>;
   /** Pre-parsed provider events ready to feed `AgentSdkEventPipeline.process`. */
   messages: AsyncIterable<unknown>;
+  /**
+   * Push a follow-up user message into the same long-lived query session
+   * (streaming-input mode). The handle creates the SDK channel on first
+   * `startStream` and reuses it across every subsequent call. Drivers that
+   * don't support streaming-input may omit this.
+   */
+  pushUserMessage?: (params: HeterogeneousAgentPushUserMessageParams) => Promise<void>;
 }
 
 /**

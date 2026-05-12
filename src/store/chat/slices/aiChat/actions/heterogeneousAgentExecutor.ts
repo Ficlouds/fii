@@ -191,6 +191,15 @@ export interface HeterogeneousAgentExecutorParams {
   heterogeneousProvider: HeterogeneousProviderConfig;
   /** Image attachments from user message — passed to Main for vision support */
   imageList?: Array<{ id: string; url: string }>;
+  /**
+   * Streaming-input pivot semantics passed to the SDK (LOBE-8804). Set by
+   * `sendMessage` when this op is the drain of a queued message — `'soft'`
+   * means "drop the in-flight reply, push now"; `'hard'` means "interrupt
+   * the active tool_use and inject a synthetic rejection". `undefined`
+   * means a fresh prompt with no in-flight turn to pivot from (first
+   * prompt of a session, or running op already finished).
+   */
+  interruptMode?: 'soft' | 'hard';
   message: string;
   operationId: string;
   /** CC session ID from previous execution in this topic (for --resume) */
@@ -1035,6 +1044,7 @@ export const executeHeterogeneousAgent = async (
     assistantMessageId,
     context,
     imageList,
+    interruptMode,
     message,
     operationId,
     resumeSessionId,
@@ -1793,8 +1803,18 @@ export const executeHeterogeneousAgent = async (
       },
     });
 
-    // Send the prompt — blocks until process exits
-    await heterogeneousAgentService.sendPrompt(agentSessionId, message, operationId, imageList);
+    // Send the prompt — blocks until *this turn's* result. Streaming-input
+    // mode (LOBE-8804) packs every follow-up into the same long-lived SDK
+    // query; `interruptMode` tells main whether to interrupt the current
+    // turn (`'hard'`) or push with `priority: 'now'` (`'soft'`) so the
+    // pivot is felt immediately. Spawn-mode drivers ignore it.
+    await heterogeneousAgentService.sendPrompt(
+      agentSessionId,
+      message,
+      operationId,
+      imageList,
+      interruptMode,
+    );
 
     // Persist heterogeneous-agent session id + the cwd it was created under,
     // for multi-turn resume. CC stores sessions per-cwd
@@ -1854,6 +1874,11 @@ export const executeHeterogeneousAgent = async (
               context: { ...context },
               editorData: merged.editorData,
               files: mergedFiles,
+              // SDK streaming-input mode (LOBE-8804): forward the strongest
+              // interruptMode from the queue so the next sendPrompt pushes
+              // onto the live channel with the matching SDK priority.
+              // Hetero CC SDK consumes it; spawn-mode agents ignore.
+              interruptMode: merged.interruptMode,
               message: merged.content,
               metadata: merged.metadata,
             })

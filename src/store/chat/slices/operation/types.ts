@@ -246,6 +246,14 @@ export interface MergedQueuedMessage {
   editorData?: Record<string, any>;
   files: string[];
   filesPreview: QueuedFile[];
+  /**
+   * Strongest interrupt mode from the messages being merged. Carried
+   * through to `sendMessage` → `executeHeterogeneousAgent` → SDK so a
+   * drained follow-up lands on the live CC channel with the right priority
+   * semantics (LOBE-8804): `'soft'` → SDK `priority: 'now'`, `'hard'` →
+   * `interrupt()` + push, `undefined` → plain push.
+   */
+  interruptMode?: 'soft' | 'hard';
   metadata?: MessageMetadata;
 }
 
@@ -348,11 +356,23 @@ export const mergeQueuedMessages = (messages: QueuedMessage[]): MergedQueuedMess
     };
   }, undefined);
 
+  // Strongest interrupt mode wins: any `'hard'` marks the whole batch as
+  // hard (SDK must cancel any active tool_use); otherwise `'soft'` if any
+  // message is soft; else undefined.
+  const hasHard = sorted.some((m) => m.interruptMode === 'hard');
+  const hasSoft = sorted.some((m) => m.interruptMode === 'soft');
+  const interruptMode: 'soft' | 'hard' | undefined = hasHard
+    ? 'hard'
+    : hasSoft
+      ? 'soft'
+      : undefined;
+
   return {
     content: sorted.map((m) => m.content).join('\n\n'),
     editorData: mergeQueuedEditorData(sorted),
     files: sorted.flatMap((m) => m.files ?? []),
     filesPreview: sorted.flatMap((m) => m.filesPreview ?? []),
+    interruptMode,
     metadata,
   };
 };

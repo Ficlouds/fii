@@ -31,7 +31,10 @@ import {
 import { app as electronApp, BrowserWindow } from 'electron';
 
 import { getHeterogeneousAgentDriver } from '@/modules/heterogeneousAgent';
-import type { HeterogeneousAgentImageAttachment } from '@/modules/heterogeneousAgent/types';
+import type {
+  HeterogeneousAgentImageAttachment,
+  HeterogeneousAgentStreamHandle,
+} from '@/modules/heterogeneousAgent/types';
 import { buildProxyEnv } from '@/modules/networkProxy/envBuilder';
 import { detectHeterogeneousCliCommand } from '@/modules/toolDetectors';
 import { createLogger } from '@/utils/logger';
@@ -93,6 +96,22 @@ interface SendPromptParams {
   /** Image attachments to include in the prompt (downloaded from url, cached by id) */
   imageList?: HeterogeneousAgentImageAttachment[];
   /**
+   * How this push should treat any turn that is already in flight on the
+   * SDK channel. Only meaningful on follow-up prompts in streaming-input
+   * mode (LOBE-8804); the first prompt of a session ignores this flag.
+   *
+   * - `'soft'` → push with SDK `priority: 'now'`. In-flight tool finishes
+   *   naturally, but the model's pending verbal reply is dropped and the
+   *   new prompt drives a fresh turn. This matches the renderer-side
+   *   "queue while running, drop in-flight reply on send" UX.
+   * - `'hard'` → `handle.interrupt()` then push. The active tool_use is
+   *   cancelled and the SDK injects a synthetic tool_result rejection so
+   *   the next turn's history stays well-formed.
+   * - `undefined` → plain push, no priority. Used for the first turn or
+   *   for follow-ups that didn't originate from a running operation.
+   */
+  interruptMode?: 'soft' | 'hard';
+  /**
    * Renderer-side operation id stamped onto every emitted `AgentStreamEvent`.
    * Required: producer-side conversion is the V3 contract — by the time events
    * reach the renderer they must already carry the operation they belong to.
@@ -132,16 +151,32 @@ interface SessionInfo {
 
 // ─── Internal session tracking ───
 
+/**
+ * Per-turn promise carried by {@link AgentSession.pendingTurns}.
+ *
+ * Streaming-input mode (LOBE-8804) packs multiple LobeHub-side operations
+ * into one long-lived SDK `query()`. Each `sendPrompt` IPC call registers
+ * an entry here and awaits its resolution; the background pump shifts the
+ * pending op queue on every `system:init` and resolves the entry on the
+ * matching `result` event so each renderer-side `sendPrompt` blocks until
+ * *its* turn finishes (not until the entire session ends).
+ */
+interface SdkPendingTurn {
+  reject: (err: Error) => void;
+  resolve: () => void;
+}
+
 interface AgentSession {
   agentSessionId?: string;
   agentType: string;
   args: string[];
   /**
-   * Cancel handle for the in-flight stream. Spawn-based agents (Codex) leave
+   * Cancel handle for the in-flight turn. Spawn-based agents (Codex) leave
    * this unset and rely on `process` + `killProcessTree`; SDK-driven agents
-   * (Claude Code) set this to the `AbortController.abort` of the active
-   * `query()` so cancelSession / stopSession can settle the iterator without
-   * touching the underlying subprocess directly.
+   * (Claude Code) set this to `handle.interrupt` once the SDK pump is up so
+   * `cancelSession` aborts only the current turn — the channel + query stay
+   * alive for the next pushed user message. `stopSession` instead closes the
+   * whole handle via {@link sdkHandle}.
    */
   cancel?: () => void;
   /**
@@ -153,11 +188,52 @@ interface AgentSession {
    * thrown by the iterator is treated as a clean shutdown.
    */
   cancelledByUs?: boolean;
+  /**
+   * Op ids cancelled by the user mid-turn via {@link cancelSession}. The
+   * pump emits the SDK's terminal `result` (which downgrades to a clean
+   * `heteroAgentSessionComplete` broadcast for these ids) and clears the
+   * entry on the way out.
+   */
+  cancelledTurnOps?: Set<string>;
   command: string;
+  /** Op currently consuming SDK output (between `system:init` and `result`). */
+  currentTurnOp?: string;
   cwd?: string;
   env?: Record<string, string>;
+  /**
+   * Op ids waiting for their `system:init` boundary, in push order. The
+   * pump shifts the head on every `init` to update which `operationId` the
+   * pipeline stamps onto subsequent events.
+   */
+  pendingTurnOpQueue?: string[];
+  /**
+   * Per-turn completion futures keyed by `operationId`. Resolved by the
+   * background pump on the matching `result`; rejected if the pump dies
+   * before the turn lands or {@link stopSession} tears down the session
+   * while a turn is in flight.
+   */
+  pendingTurns?: Map<string, SdkPendingTurn>;
   process?: ChildProcess;
   resumeSessionId?: string;
+  /**
+   * SDK driver handle returned by `driver.startStream`. Persisted on the
+   * session record so follow-up `sendPrompt` calls can `pushUserMessage`
+   * into the same channel instead of starting a new `query()`. Cleared in
+   * {@link stopSession} / pump teardown after `handle.close()`.
+   */
+  sdkHandle?: HeterogeneousAgentStreamHandle;
+  /**
+   * Pipeline for the currently active SDK turn. Recreated at every
+   * `system:init` so adapter-local step state starts clean for the next
+   * LobeHub operation while the underlying SDK query stays alive.
+   */
+  sdkPipeline?: AgentSdkEventPipeline;
+  /** Background pump promise; settled once the SDK iterator drains. */
+  sdkPump?: Promise<void>;
+  /** Stderr buffer shared across turns so error reporting has full context. */
+  sdkStderr?: string[];
+  /** Stream trace session shared across turns so each turn appends to one log. */
+  sdkTrace?: CliTraceSession;
   sessionId: string;
 }
 
@@ -637,13 +713,21 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
    *   it defensively in case the policy changes).
    */
   private buildCanUseToolCallback(
-    operationId: string,
+    operationId: string | (() => string | undefined),
     sessionId: string,
     agentType: string,
   ): CanUseTool {
     return async (toolName, input, callbackOptions) => {
       if (toolName !== 'AskUserQuestion') {
         return { behavior: 'allow', updatedInput: input };
+      }
+
+      const currentOperationId = typeof operationId === 'function' ? operationId() : operationId;
+      if (!currentOperationId) {
+        return {
+          behavior: 'deny',
+          message: 'No active LobeHub operation is available for this question.',
+        };
       }
 
       const toolCallId =
@@ -659,7 +743,7 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
           identifier,
           toolCallId,
         } satisfies AgentInterventionRequestData,
-        operationId,
+        operationId: currentOperationId,
         stepIndex: 0,
         timestamp: Date.now(),
         type: 'agent_intervention_request',
@@ -667,16 +751,16 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
       this.broadcast('heteroAgentEvent', { event: requestEvent, sessionId });
 
       const answer = await new Promise<AgentInterventionResponseData>((resolve) => {
-        let pending = this.opIdToInterventions.get(operationId);
+        let pending = this.opIdToInterventions.get(currentOperationId);
         if (!pending) {
           pending = new Map();
-          this.opIdToInterventions.set(operationId, pending);
+          this.opIdToInterventions.set(currentOperationId, pending);
         }
         const settle = (response: AgentInterventionResponseData) => {
           clearTimeout(timeoutHandle);
           callbackOptions.signal.removeEventListener('abort', onAbort);
           pending?.delete(toolCallId);
-          if (pending?.size === 0) this.opIdToInterventions.delete(operationId);
+          if (pending?.size === 0) this.opIdToInterventions.delete(currentOperationId);
           resolve(response);
         };
 
@@ -704,7 +788,7 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
           result: answer.result,
           toolCallId,
         } satisfies AgentInterventionResponseData,
-        operationId,
+        operationId: currentOperationId,
         stepIndex: 0,
         timestamp: Date.now(),
         type: 'agent_intervention_response',
@@ -745,6 +829,69 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
       entry.resolve({ cancelReason: 'session_ended', cancelled: true, toolCallId });
     }
     this.opIdToInterventions.delete(operationId);
+  }
+
+  private isSdkInitMessage(message: unknown): boolean {
+    return (
+      !!message &&
+      typeof message === 'object' &&
+      (message as { subtype?: unknown; type?: unknown }).type === 'system' &&
+      (message as { subtype?: unknown; type?: unknown }).subtype === 'init'
+    );
+  }
+
+  private isSdkResultMessage(message: unknown): boolean {
+    return (
+      !!message && typeof message === 'object' && (message as { type?: unknown }).type === 'result'
+    );
+  }
+
+  private registerSdkPendingTurn(session: AgentSession, operationId: string): Promise<void> {
+    session.pendingTurns ??= new Map();
+    session.pendingTurnOpQueue ??= [];
+
+    if (session.pendingTurns.has(operationId)) {
+      throw new Error(`SDK turn is already pending: ${operationId}`);
+    }
+
+    const promise = new Promise<void>((resolve, reject) => {
+      session.pendingTurns?.set(operationId, { reject, resolve });
+    });
+    session.pendingTurnOpQueue.push(operationId);
+
+    return promise;
+  }
+
+  private removeSdkPendingTurn(session: AgentSession, operationId: string): void {
+    session.pendingTurns?.delete(operationId);
+    const queueIndex = session.pendingTurnOpQueue?.indexOf(operationId) ?? -1;
+    if (queueIndex >= 0) session.pendingTurnOpQueue?.splice(queueIndex, 1);
+  }
+
+  private settleSdkPendingTurn(session: AgentSession, operationId: string, error?: Error): void {
+    const pending = session.pendingTurns?.get(operationId);
+    this.removeSdkPendingTurn(session, operationId);
+    session.cancelledTurnOps?.delete(operationId);
+    this.cleanupInterventionsForOp(operationId);
+
+    if (!pending) return;
+    if (error) pending.reject(error);
+    else pending.resolve();
+  }
+
+  private settleAllSdkPendingTurns(session: AgentSession, error?: Error): void {
+    const operationIds = [...(session.pendingTurns?.keys() ?? [])];
+    for (const operationId of operationIds) {
+      this.settleSdkPendingTurn(session, operationId, error);
+    }
+    session.pendingTurnOpQueue = [];
+    session.currentTurnOp = undefined;
+  }
+
+  private takeNextSdkTurnOperationId(session: AgentSession): string | undefined {
+    const queued = session.pendingTurnOpQueue?.shift();
+    if (queued) return queued;
+    return session.currentTurnOp ?? session.pendingTurns?.keys().next().value;
   }
 
   // ─── File cache ───
@@ -836,10 +983,41 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
    */
   @IpcMethod()
   async startSession(params: StartSessionParams): Promise<StartSessionResult> {
-    const sessionId = randomUUID();
     const agentType = params.agentType || 'claude-code';
     getHeterogeneousAgentDriver(agentType);
 
+    // Streaming-input reuse (LOBE-8804): if the renderer is resuming a CC
+    // session whose SDK channel is still live in this controller, return
+    // that existing renderer-side sessionId so the follow-up sendPrompt
+    // pushes onto the same `query()` instead of respawning the CLI with
+    // `--resume`. Each renderer-side `sendMessage` mints a fresh sessionId
+    // (the executor calls `startSession` per op), so without this branch
+    // the controller never sees `session.sdkHandle` set on the new entry
+    // and falls back to spawn-mode equivalence.
+    //
+    // Match by agentType + cwd + resumeSessionId so two parallel topics
+    // don't collide on the same `agentSessionId` once one happens to
+    // recycle a CC session id.
+    if (params.resumeSessionId) {
+      for (const [, existing] of this.sessions) {
+        if (
+          existing.agentType === agentType &&
+          existing.sdkHandle?.pushUserMessage &&
+          existing.sdkPump &&
+          existing.agentSessionId === params.resumeSessionId &&
+          (existing.cwd ?? '') === (params.cwd ?? '')
+        ) {
+          logger.info('Session reused (live SDK channel):', {
+            agentType,
+            sessionId: existing.sessionId,
+            agentSessionId: existing.agentSessionId,
+          });
+          return { sessionId: existing.sessionId };
+        }
+      }
+    }
+
+    const sessionId = randomUUID();
     this.sessions.set(sessionId, {
       // If resuming, pre-set the agent session ID so sendPrompt adds --resume
       agentSessionId: params.resumeSessionId,
@@ -868,16 +1046,19 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
     const session = this.sessions.get(params.sessionId);
     if (!session) throw new Error(`Session not found: ${params.sessionId}`);
 
-    const preflightError = await this.getSpawnPreflightError(session);
-    if (preflightError) {
-      this.broadcast('heteroAgentSessionError', {
-        error: preflightError,
-        sessionId: session.sessionId,
-      });
-      throw new Error(preflightError.message);
-    }
-
     const driver = getHeterogeneousAgentDriver(session.agentType);
+    const canReuseSdkStream = !!driver.startStream && !!session.sdkHandle?.pushUserMessage;
+
+    if (!canReuseSdkStream) {
+      const preflightError = await this.getSpawnPreflightError(session);
+      if (preflightError) {
+        this.broadcast('heteroAgentSessionError', {
+          error: preflightError,
+          sessionId: session.sessionId,
+        });
+        throw new Error(preflightError.message);
+      }
+    }
 
     // SDK-backed transport (Claude Code): the driver pumps already-parsed
     // provider messages, no child process to babysit here. `runSdkStream`
@@ -1082,11 +1263,11 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
    * `AgentSdkEventPipeline` (same adapter as the spawn path) and broadcast
    * the resulting `AgentStreamEvent`s.
    *
-   * Cancellation: `AbortController` plumbed into the SDK's `query()` via
-   * `session.cancel`. `cancelSession` / `stopSession` / `before-quit` flip
-   * `cancelledByUs` and abort; the resulting `AbortError` thrown by the
-   * iterator is treated as a clean shutdown (matches the spawn path's
-   * "signal-induced exit = complete" rule).
+   * Streaming-input mode keeps the SDK `query()` alive at session scope.
+   * Each `sendPrompt` registers a per-turn promise, pushes a user message
+   * through the driver's channel, and resolves when that turn's `result`
+   * arrives. `cancelSession` interrupts only the current turn; `stopSession`
+   * / app quit close the whole SDK handle.
    *
    * The SDK doesn't fall back to its bundled platform binary because
    * `apps/desktop/.pnpmfile.cjs` strips those optional deps at install — we
@@ -1099,6 +1280,50 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
     params: SendPromptParams,
     driver: ReturnType<typeof getHeterogeneousAgentDriver>,
   ): Promise<void> {
+    if (session.sdkHandle?.pushUserMessage && session.sdkPump) {
+      // Translate LobeHub's interruptMode to the right SDK control surface.
+      // Hard: interrupt() before push — aborts the active tool_use with a
+      // synthetic rejection so the next turn's history is well-formed.
+      // Soft: push with priority='now' — lets the tool finish, drops the
+      // model's in-flight verbal reply, pivots to the new prompt.
+      // Undefined: plain push (first prompt or no running op to pivot from).
+      let pushPriority: 'now' | 'later' | undefined;
+      if (params.interruptMode === 'hard') {
+        // Mark the about-to-be-aborted turn so its terminal `result` doesn't
+        // surface as an error toast; the user initiated this cancel via the
+        // hard-interrupt enqueue.
+        const interruptedOp = session.currentTurnOp ?? session.pendingTurnOpQueue?.[0];
+        if (interruptedOp) {
+          session.cancelledTurnOps ??= new Set();
+          session.cancelledTurnOps.add(interruptedOp);
+        }
+        try {
+          await session.sdkHandle.interrupt?.();
+        } catch (err) {
+          logger.warn('handle.interrupt threw on hard push (continuing):', err);
+        }
+      } else if (params.interruptMode === 'soft') {
+        pushPriority = 'now';
+      }
+
+      const pendingTurn = this.registerSdkPendingTurn(session, params.operationId);
+      try {
+        await session.sdkHandle.pushUserMessage({
+          imageList: params.imageList ?? [],
+          priority: pushPriority,
+          prompt: params.prompt,
+        });
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        this.removeSdkPendingTurn(session, params.operationId);
+        this.cleanupInterventionsForOp(params.operationId);
+        throw error;
+      }
+
+      await pendingTurn;
+      return;
+    }
+
     const cwd = session.cwd || electronApp.getPath('desktop');
     const command = this.resolveSessionCommand(session);
     const cliStatus = await detectHeterogeneousCliCommand(
@@ -1125,6 +1350,7 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
       session,
       stdinPayload: undefined,
     });
+    const pendingTurn = this.registerSdkPendingTurn(session, params.operationId);
 
     const ac = new AbortController();
     session.cancel = () => ac.abort();
@@ -1137,7 +1363,7 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
     );
 
     const canUseTool = this.buildCanUseToolCallback(
-      params.operationId,
+      () => session.currentTurnOp ?? session.pendingTurnOpQueue?.[0] ?? params.operationId,
       session.sessionId,
       session.agentType,
     );
@@ -1171,6 +1397,7 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
     } catch (err) {
       session.cancel = undefined;
       logger.error('SDK startStream failed:', err);
+      this.removeSdkPendingTurn(session, params.operationId);
       this.cleanupInterventionsForOp(params.operationId);
       void this.writeCliTraceJson(traceSession, 'process-error.json', {
         message: err instanceof Error ? err.message : String(err),
@@ -1187,17 +1414,27 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
       });
     }
 
-    const pipeline = new AgentSdkEventPipeline({
-      agentType: session.agentType,
-      operationId: params.operationId,
-    });
+    session.sdkHandle = handle;
+    session.sdkStderr = stderrChunks;
+    session.sdkTrace = traceSession;
+    session.cancel = () => {
+      const operationId = session.currentTurnOp ?? session.pendingTurnOpQueue?.[0];
+      if (operationId) {
+        session.cancelledTurnOps ??= new Set();
+        session.cancelledTurnOps.add(operationId);
+      }
+      void handle.interrupt?.();
+    };
 
     // Same ordering guarantee as the spawn path: serialize broadcast batches
     // so events emitted from in-flight `process()` calls land before flush()'s
     // final batch — `pipeline.process` is synchronous today but the chain is
     // free + keeps the codepaths shaped alike.
     let broadcastQueue: Promise<void> = Promise.resolve();
-    const enqueueBatch = (events: ReturnType<AgentSdkEventPipeline['process']>) => {
+    const enqueueBatch = (
+      events: ReturnType<AgentSdkEventPipeline['process']>,
+      pipeline: AgentSdkEventPipeline,
+    ) => {
       if (events.length === 0) return;
       broadcastQueue = broadcastQueue.then(() => {
         if (pipeline.sessionId && pipeline.sessionId !== session.agentSessionId) {
@@ -1209,69 +1446,131 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
       });
     };
 
-    try {
-      for await (const message of handle.messages) {
-        void this.appendCliTraceFile(
-          traceSession,
-          'messages.jsonl',
-          `${JSON.stringify(message)}\n`,
-        );
-        enqueueBatch(pipeline.process(message));
-      }
-      enqueueBatch(pipeline.flush());
-      await broadcastQueue;
-
-      void this.writeCliTraceJson(traceSession, 'exit.json', {
-        cancelledByUs: !!session.cancelledByUs,
-        finishedAt: new Date().toISOString(),
-      });
-      await this.flushCliTrace(traceSession);
-      this.broadcast('heteroAgentSessionComplete', { sessionId: session.sessionId });
-    } catch (err) {
-      await broadcastQueue.catch(() => {
-        /* already logged */
-      });
-
-      // AbortError or cancelledByUs → clean shutdown (mirrors the spawn path's
-      // signal-induced-exit treatment so user cancels and Electron quits don't
-      // pollute topics with misleading "Agent error" messages).
-      const isAbort =
-        err instanceof Error &&
-        (err.name === 'AbortError' || /aborted|cancelled/i.test(err.message));
-      if (session.cancelledByUs || isAbort) {
-        void this.writeCliTraceJson(traceSession, 'exit.json', {
-          cancelledByUs: true,
-          finishedAt: new Date().toISOString(),
-          reason: 'abort',
-        });
-        await this.flushCliTrace(traceSession);
-        this.broadcast('heteroAgentSessionComplete', { sessionId: session.sessionId });
-      } else {
-        logger.error('SDK stream iterator error:', err);
-        void this.writeCliTraceJson(traceSession, 'process-error.json', {
-          message: err instanceof Error ? err.message : String(err),
-          name: err instanceof Error ? err.name : 'Error',
-          stderrTail: stderrChunks.join('').slice(-1000),
-        });
-        await this.flushCliTrace(traceSession);
-        const sessionError = this.getSessionErrorPayload(err, session);
-        this.broadcast('heteroAgentSessionError', {
-          error: sessionError,
-          sessionId: session.sessionId,
-        });
-        throw new Error(typeof sessionError === 'string' ? sessionError : sessionError.message, {
-          cause: err,
-        });
-      }
-    } finally {
-      session.cancel = undefined;
+    session.sdkPump = (async () => {
       try {
-        handle.close();
-      } catch (closeErr) {
-        logger.warn('SDK handle close error:', closeErr);
+        for await (const message of handle.messages) {
+          void this.appendCliTraceFile(
+            traceSession,
+            'messages.jsonl',
+            `${JSON.stringify(message)}\n`,
+          );
+
+          if (this.isSdkInitMessage(message)) {
+            const operationId = this.takeNextSdkTurnOperationId(session);
+            if (operationId) {
+              session.currentTurnOp = operationId;
+              session.sdkPipeline = new AgentSdkEventPipeline({
+                agentType: session.agentType,
+                operationId,
+              });
+            }
+          }
+
+          if (!session.sdkPipeline) {
+            const operationId =
+              session.currentTurnOp ??
+              session.pendingTurns?.keys().next().value ??
+              params.operationId;
+            session.currentTurnOp = operationId;
+            session.sdkPipeline = new AgentSdkEventPipeline({
+              agentType: session.agentType,
+              operationId,
+            });
+          }
+
+          const pipeline = session.sdkPipeline;
+          const currentOperationId = session.currentTurnOp;
+          const isTurnResult = this.isSdkResultMessage(message);
+          const shouldSuppressCancelledError =
+            !!currentOperationId && !!session.cancelledTurnOps?.has(currentOperationId);
+          const events = pipeline
+            .process(message)
+            .filter((event) => !(shouldSuppressCancelledError && event.type === 'error'));
+          enqueueBatch(events, pipeline);
+
+          if (isTurnResult) {
+            await broadcastQueue;
+            if (currentOperationId) {
+              this.settleSdkPendingTurn(session, currentOperationId);
+            }
+            session.currentTurnOp = undefined;
+            session.sdkPipeline = undefined;
+            this.broadcast('heteroAgentSessionComplete', { sessionId: session.sessionId });
+          }
+        }
+
+        if (session.sdkPipeline) enqueueBatch(session.sdkPipeline.flush(), session.sdkPipeline);
+        await broadcastQueue;
+
+        void this.writeCliTraceJson(traceSession, 'exit.json', {
+          cancelledByUs: !!session.cancelledByUs,
+          finishedAt: new Date().toISOString(),
+        });
+        await this.flushCliTrace(traceSession);
+        this.settleAllSdkPendingTurns(
+          session,
+          new Error('Claude Code SDK stream ended before the pending turn completed.'),
+        );
+      } catch (err) {
+        await broadcastQueue.catch(() => {
+          /* already logged */
+        });
+
+        // AbortError or cancelledByUs → clean shutdown (mirrors the spawn path's
+        // signal-induced-exit treatment so user cancels and Electron quits don't
+        // pollute topics with misleading "Agent error" messages).
+        const isAbort =
+          err instanceof Error &&
+          (err.name === 'AbortError' || /aborted|cancelled/i.test(err.message));
+        if (session.cancelledByUs || isAbort) {
+          void this.writeCliTraceJson(traceSession, 'exit.json', {
+            cancelledByUs: true,
+            finishedAt: new Date().toISOString(),
+            reason: 'abort',
+          });
+          await this.flushCliTrace(traceSession);
+          this.settleAllSdkPendingTurns(session);
+          this.broadcast('heteroAgentSessionComplete', { sessionId: session.sessionId });
+        } else {
+          logger.error('SDK stream iterator error:', err);
+          void this.writeCliTraceJson(traceSession, 'process-error.json', {
+            message: err instanceof Error ? err.message : String(err),
+            name: err instanceof Error ? err.name : 'Error',
+            stderrTail: stderrChunks.join('').slice(-1000),
+          });
+          await this.flushCliTrace(traceSession);
+          const sessionError = this.getSessionErrorPayload(err, session);
+          this.broadcast('heteroAgentSessionError', {
+            error: sessionError,
+            sessionId: session.sessionId,
+          });
+          const error = new Error(
+            typeof sessionError === 'string' ? sessionError : sessionError.message,
+            { cause: err },
+          );
+          this.settleAllSdkPendingTurns(session, error);
+        }
+      } finally {
+        session.cancel = undefined;
+        try {
+          handle.close();
+        } catch (closeErr) {
+          logger.warn('SDK handle close error:', closeErr);
+        }
+        if (session.sdkHandle === handle) {
+          session.sdkHandle = undefined;
+          session.sdkPump = undefined;
+          session.sdkPipeline = undefined;
+          session.sdkStderr = undefined;
+          session.sdkTrace = undefined;
+        }
       }
-      this.cleanupInterventionsForOp(params.operationId);
-    }
+    })();
+    void session.sdkPump.catch(() => {
+      /* pump settles pending turn promises itself */
+    });
+
+    await pendingTurn;
   }
 
   /**
@@ -1330,6 +1629,20 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
     const session = this.sessions.get(params.sessionId);
     if (!session) return;
 
+    if (session.sdkHandle?.interrupt) {
+      const operationId = session.currentTurnOp ?? session.pendingTurnOpQueue?.[0];
+      if (operationId) {
+        session.cancelledTurnOps ??= new Set();
+        session.cancelledTurnOps.add(operationId);
+      }
+      try {
+        await session.sdkHandle.interrupt();
+      } catch (err) {
+        logger.warn('SDK interrupt handle threw:', err);
+      }
+      return;
+    }
+
     if (session.cancel) {
       session.cancelledByUs = true;
       try {
@@ -1360,7 +1673,15 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
     const session = this.sessions.get(params.sessionId);
     if (!session) return;
 
-    if (session.cancel) {
+    if (session.sdkHandle) {
+      session.cancelledByUs = true;
+      try {
+        session.sdkHandle.close();
+      } catch (err) {
+        logger.warn('SDK handle close threw on stopSession:', err);
+      }
+      this.settleAllSdkPendingTurns(session);
+    } else if (session.cancel) {
       session.cancelledByUs = true;
       try {
         session.cancel();
@@ -1423,7 +1744,15 @@ export default class HeterogeneousAgentCtr extends ControllerModule {
   afterAppReady() {
     electronApp.on('before-quit', () => {
       for (const [, session] of this.sessions) {
-        if (session.cancel) {
+        if (session.sdkHandle) {
+          session.cancelledByUs = true;
+          try {
+            session.sdkHandle.close();
+          } catch {
+            /* handle may already be closed — fine */
+          }
+          this.settleAllSdkPendingTurns(session);
+        } else if (session.cancel) {
           session.cancelledByUs = true;
           try {
             session.cancel();

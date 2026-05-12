@@ -73,7 +73,22 @@ const { detectCliMock, queryMock, sdkQueryCalls, sdkState } = vi.hoisted(() => {
     interruptSpy: vi.fn(async () => undefined),
     nextError: undefined as unknown,
     nextMessages: [] as any[],
+    nextTurnMessages: [] as any[][],
   };
+
+  const defaultTurnMessages = (turnIndex: number) => [
+    {
+      model: 'claude-3-5-sonnet',
+      session_id: `sess_cc_mock_${turnIndex + 1}`,
+      subtype: 'init',
+      type: 'system',
+    },
+    { is_error: false, result: 'done', type: 'result' },
+  ];
+  const withResultMessage = (messages: any[], turnIndex: number) =>
+    messages.some((message) => message?.type === 'result')
+      ? messages
+      : [...messages, { is_error: false, result: `done-${turnIndex + 1}`, type: 'result' }];
 
   const queryMock = vi.fn(({ options, prompt }: any) => {
     const call: QueryCall = { collectedUserMessages: [], options, prompt };
@@ -86,10 +101,25 @@ const { detectCliMock, queryMock, sdkQueryCalls, sdkState } = vi.hoisted(() => {
     const q: any = {
       async *[Symbol.asyncIterator]() {
         if (prompt && typeof prompt[Symbol.asyncIterator] === 'function') {
-          for await (const msg of prompt) call.collectedUserMessages.push(msg);
+          let turnIndex = 0;
+          for await (const msg of prompt) {
+            call.collectedUserMessages.push(msg);
+            if (errorForCall) throw errorForCall;
+
+            const turnMessages =
+              sdkState.nextTurnMessages.shift() ??
+              (turnIndex === 0 && messagesForCall.length > 0
+                ? withResultMessage(messagesForCall, turnIndex)
+                : defaultTurnMessages(turnIndex));
+            turnIndex++;
+            for (const m of turnMessages) yield m;
+          }
+          return;
         }
         if (errorForCall) throw errorForCall;
-        for (const m of messagesForCall) yield m;
+        for (const m of messagesForCall.length > 0 ? messagesForCall : defaultTurnMessages(0)) {
+          yield m;
+        }
       },
       close: sdkState.closeSpy,
       interrupt: sdkState.interruptSpy,
@@ -285,6 +315,7 @@ describe('HeterogeneousAgentCtr', () => {
       sdkState.interruptSpy.mockClear();
       queryMock.mockClear();
       detectCliMock.mockClear();
+      sdkState.nextTurnMessages = [];
     });
 
     const runSendPrompt = async (
@@ -426,6 +457,88 @@ describe('HeterogeneousAgentCtr', () => {
       await expect(ctr.getSessionInfo({ sessionId })).resolves.toEqual({
         agentSessionId: 'sess_cc_123',
       });
+    });
+
+    it('reuses one SDK query and stamps follow-up turns with their own operation ids', async () => {
+      const broadcasts: Array<{ channel: string; data: any }> = [];
+      mockGetAllWindows.mockReturnValue([
+        {
+          isDestroyed: () => false,
+          webContents: {
+            send: (channel: string, data: any) => broadcasts.push({ channel, data }),
+          },
+        },
+      ]);
+
+      try {
+        sdkState.nextMessages = [
+          {
+            model: 'claude-3-5-sonnet',
+            session_id: 'sess_cc_streaming',
+            subtype: 'init',
+            type: 'system',
+          },
+          { is_error: false, result: 'turn-1 done', type: 'result' },
+        ];
+
+        const ctr = new HeterogeneousAgentCtr({
+          appStoragePath,
+          storeManager: { get: vi.fn() },
+        } as any);
+        const { sessionId } = await ctr.startSession({
+          agentType: 'claude-code',
+          command: 'claude',
+        });
+
+        await ctr.sendPrompt({ operationId: 'op-1', prompt: 'first prompt', sessionId });
+
+        sdkState.nextTurnMessages.push([
+          {
+            model: 'claude-3-5-sonnet',
+            session_id: 'sess_cc_streaming',
+            subtype: 'init',
+            type: 'system',
+          },
+          { is_error: false, result: 'turn-2 done', type: 'result' },
+        ]);
+
+        await ctr.sendPrompt({ operationId: 'op-2', prompt: 'second prompt', sessionId });
+
+        expect(queryMock).toHaveBeenCalledTimes(1);
+        expect(detectCliMock).toHaveBeenCalledTimes(1);
+        const call = sdkQueryCalls[0];
+        expect(call.collectedUserMessages).toHaveLength(2);
+        expect(call.collectedUserMessages[0].message.content).toEqual([
+          { text: 'first prompt', type: 'text' },
+        ]);
+        expect(call.collectedUserMessages[1].message.content).toEqual([
+          { text: 'second prompt', type: 'text' },
+        ]);
+
+        const streamEvents = broadcasts
+          .filter((b) => b.channel === 'heteroAgentEvent')
+          .map((b) => b.data.event);
+        expect(streamEvents.some((event) => event.operationId === 'op-1')).toBe(true);
+        expect(streamEvents.some((event) => event.operationId === 'op-2')).toBe(true);
+        expect(
+          streamEvents.some(
+            (event) => event.operationId === 'op-2' && event.type === 'stream_start',
+          ),
+        ).toBe(true);
+        expect(
+          streamEvents.some(
+            (event) => event.operationId === 'op-2' && event.data?.newStep === true,
+          ),
+        ).toBe(false);
+        expect(broadcasts.filter((b) => b.channel === 'heteroAgentSessionComplete')).toHaveLength(
+          2,
+        );
+
+        await ctr.stopSession({ sessionId });
+      } finally {
+        mockGetAllWindows.mockReset();
+        mockGetAllWindows.mockReturnValue([]);
+      }
     });
 
     it('fails the SDK preflight when the resolved CLI is unavailable', async () => {

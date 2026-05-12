@@ -27,7 +27,7 @@ export interface AgentSdkEventPipelineOptions {
  */
 export class AgentSdkEventPipeline {
   private readonly adapter: AgentEventAdapter;
-  private readonly operationId: string;
+  private operationId: string;
 
   constructor(options: AgentSdkEventPipelineOptions) {
     this.adapter = createAdapter(options.agentType);
@@ -37,6 +37,19 @@ export class AgentSdkEventPipeline {
   /** CC session id extracted by the adapter (`adapter.sessionId`). */
   get sessionId(): string | undefined {
     return this.adapter.sessionId;
+  }
+
+  /**
+   * Update the operationId stamped onto subsequent emitted events.
+   *
+   * Used by streaming-input mode (LOBE-8804): a single long-lived `query()`
+   * carries multiple LobeHub-side turns/operations back-to-back. The
+   * controller switches the stamp at each turn boundary (CC `system:init`)
+   * so events emitted between two `result`s carry the operationId of the
+   * user message that drove that turn.
+   */
+  setOperationId(operationId: string): void {
+    this.operationId = operationId;
   }
 
   /** Convert a single SDK message into stamped `AgentStreamEvent`s. */

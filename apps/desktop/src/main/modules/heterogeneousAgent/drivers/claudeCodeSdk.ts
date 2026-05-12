@@ -6,6 +6,8 @@ import { normalizeImage } from '@lobechat/heterogeneous-agents/spawn';
 import type {
   HeterogeneousAgentDriver,
   HeterogeneousAgentImageAttachment,
+  HeterogeneousAgentPushPriority,
+  HeterogeneousAgentPushUserMessageParams,
   HeterogeneousAgentStartStreamParams,
   HeterogeneousAgentStreamHandle,
 } from '../types';
@@ -93,6 +95,80 @@ const parseExtraArgs = (args: string[]): Record<string, string | null> => {
   return out;
 };
 
+/**
+ * Deferred async iterable channel. Producer calls `push(msg)`; the consumer
+ * iterates via `iterator()`. Pending `next()` calls resolve on the next
+ * push; `close()` signals end-of-stream. Used to feed `SDKUserMessage`s
+ * into `query({ prompt: channel.iterator() })` from the LobeHub controller,
+ * which only sees the handle (not the channel).
+ *
+ * Streaming-input mode (LOBE-8804): the channel survives across multiple
+ * LobeHub-side turns/operations within one CC session, so each follow-up
+ * `sendPrompt` IPC call lands on the SAME live CC subprocess and reuses
+ * the SDK's prompt cache instead of paying respawn + cache_creation tax.
+ */
+interface PushChannel {
+  close: () => void;
+  iterator: () => AsyncGenerator<SDKUserMessage, void>;
+  push: (msg: SDKUserMessage) => void;
+}
+
+const createPushChannel = (): PushChannel => {
+  const queue: SDKUserMessage[] = [];
+  const waiters: Array<(result: IteratorResult<SDKUserMessage>) => void> = [];
+  let closed = false;
+
+  return {
+    close() {
+      if (closed) return;
+      closed = true;
+      while (waiters.length > 0) {
+        const w = waiters.shift();
+        w?.({ done: true, value: undefined });
+      }
+    },
+    async *iterator() {
+      while (true) {
+        if (queue.length > 0) {
+          yield queue.shift()!;
+          continue;
+        }
+        if (closed) return;
+        const result = await new Promise<IteratorResult<SDKUserMessage>>((resolve) =>
+          waiters.push(resolve),
+        );
+        if (result.done) return;
+        yield result.value;
+      }
+    },
+    push(msg) {
+      if (closed) {
+        throw new Error('claudeCodeSdk push channel is closed');
+      }
+      if (waiters.length > 0) {
+        waiters.shift()?.({ done: false, value: msg });
+      } else {
+        queue.push(msg);
+      }
+    },
+  };
+};
+
+const buildSdkUserMessage = async (
+  prompt: string,
+  imageList: HeterogeneousAgentImageAttachment[] | undefined,
+  cacheDir: string,
+  priority: HeterogeneousAgentPushPriority | undefined,
+): Promise<SDKUserMessage> => {
+  const content = await buildUserContent(prompt, imageList, cacheDir);
+  return {
+    message: { content, role: 'user' },
+    parent_tool_use_id: null,
+    ...(priority ? { priority } : {}),
+    type: 'user',
+  };
+};
+
 export const claudeCodeSdkDriver: HeterogeneousAgentDriver = {
   async startStream(
     params: HeterogeneousAgentStartStreamParams,
@@ -125,7 +201,9 @@ export const claudeCodeSdkDriver: HeterogeneousAgentDriver = {
     // image sources write through `normalizeImage`, and a workspace-rooted
     // cache would (a) pollute the user's project with a hidden folder and
     // (b) fail outright on read-only workspaces.
-    const content = await buildUserContent(prompt, imageList, cacheDir);
+    const channel = createPushChannel();
+    const firstMessage = await buildSdkUserMessage(prompt, imageList, cacheDir, undefined);
+    channel.push(firstMessage);
 
     const ac = new AbortController();
     const onAbort = () => ac.abort();
@@ -134,20 +212,8 @@ export const claudeCodeSdkDriver: HeterogeneousAgentDriver = {
 
     const extraArgs = parseExtraArgs(args);
 
-    // The SDK expects `prompt: string | AsyncIterable<SDKUserMessage>`. We
-    // always use the iterable form so future phases can append follow-up user
-    // messages (mid-run injection, queued messages with priority semantics)
-    // through the same channel without rebuilding the transport.
-    async function* promptStream(): AsyncGenerator<SDKUserMessage, void> {
-      yield {
-        message: { content, role: 'user' },
-        parent_tool_use_id: null,
-        type: 'user',
-      };
-    }
-
     const q = query({
-      prompt: promptStream(),
+      prompt: channel.iterator(),
       options: {
         abortController: ac,
         // canUseTool wires CC's `AskUserQuestion` to LobeHub's intervention UI
@@ -179,9 +245,22 @@ export const claudeCodeSdkDriver: HeterogeneousAgentDriver = {
       abortSignal.removeEventListener('abort', onAbort);
     };
 
+    const pushUserMessage = async (
+      pushParams: HeterogeneousAgentPushUserMessageParams,
+    ): Promise<void> => {
+      const msg = await buildSdkUserMessage(
+        pushParams.prompt,
+        pushParams.imageList,
+        cacheDir,
+        pushParams.priority,
+      );
+      channel.push(msg);
+    };
+
     return {
       close: () => {
         cleanup();
+        channel.close();
         try {
           q.close();
         } catch {
@@ -189,12 +268,22 @@ export const claudeCodeSdkDriver: HeterogeneousAgentDriver = {
         }
       },
       interrupt: async () => {
-        // `interrupt()` is only valid in streaming-input mode (multi-turn
-        // AsyncIterable prompt). For the current single-prompt-per-spawn
-        // model, fall back to abort which the SDK turns into a clean exit.
-        ac.abort();
+        // streaming-input mode supports `interrupt()` for the "hard" path —
+        // it aborts the current turn cleanly, injects a synthetic
+        // tool_result rejection for any in-flight tool_use so history stays
+        // well-formed, and leaves the query receptive to the next pushed
+        // user message. Spawn-mode fallback (single-prompt-per-query) would
+        // need `ac.abort()` instead, but that path no longer applies here
+        // because the controller always uses `pushUserMessage` for follow-ups.
+        try {
+          await q.interrupt();
+        } catch {
+          // `interrupt()` rejects if the query has already terminated —
+          // benign; the next push will start a fresh turn anyway.
+        }
       },
       messages: q,
+      pushUserMessage,
     };
   },
 };

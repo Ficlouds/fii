@@ -1174,7 +1174,13 @@ describe('heterogeneousAgentExecutor DB persistence', () => {
         imageList,
       });
 
-      expect(mockSendPrompt).toHaveBeenCalledWith('ipc-sess-1', 'test prompt', 'op-1', imageList);
+      expect(mockSendPrompt).toHaveBeenCalledWith(
+        'ipc-sess-1',
+        'test prompt',
+        'op-1',
+        imageList,
+        undefined,
+      );
     });
 
     it('should clear stale resume metadata and retry once without resume for recoverable Codex errors', async () => {

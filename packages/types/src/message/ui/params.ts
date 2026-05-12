@@ -112,11 +112,27 @@ export interface SendMessageParams {
   editorData?: Record<string, any>;
   files?: UploadFileItem[];
   /**
+   * Streaming-input interrupt mode (LOBE-8804). Set when the message is
+   * a drained queued follow-up so the heterogeneous-agent executor pushes
+   * it onto the live SDK channel with the right priority:
+   *
+   * - `'soft'` → SDK `priority: 'now'`. The in-flight tool finishes but
+   *   the model's pending verbal reply is dropped — the new prompt drives
+   *   a fresh turn immediately.
+   * - `'hard'` → SDK `handle.interrupt()` + push. The active tool_use is
+   *   cancelled with a synthetic rejection.
+   * - `undefined` → plain push (default; non-drain sends).
+   *
+   * Spawn-mode agents (Codex) ignore this — they respawn per turn.
+   */
+  interruptMode?: 'soft' | 'hard';
+  /**
    *
    * https://github.com/lobehub/lobe-chat/pull/2086
    */
   isWelcomeQuestion?: boolean;
   message: string;
+
   /**
    * Display messages for the current conversation context.
    * If provided, sendMessage will use these messages instead of querying from store.
@@ -128,7 +144,6 @@ export interface SendMessageParams {
    * Additional metadata for the message (e.g., mentioned users)
    */
   metadata?: Record<string, any>;
-
   onlyAddUserMessage?: boolean;
   /**
    * Page selections attached to the message (for Ask AI functionality)

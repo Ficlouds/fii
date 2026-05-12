@@ -24,8 +24,28 @@ class HeterogeneousAgentService {
     prompt: string,
     operationId: string,
     imageList?: Array<{ id: string; url: string }>,
+    /**
+     * Streaming-input pivot semantics (LOBE-8804). Only honoured by the
+     * SDK driver when there's already a live channel for this session:
+     *
+     * - `'soft'` — the in-flight tool finishes, the model's pending verbal
+     *   reply is dropped, and this prompt drives a fresh turn (SDK
+     *   `priority: 'now'`). This is the "drop reply, pivot" case.
+     * - `'hard'` — the active tool_use is aborted with a synthetic
+     *   rejection and this prompt drives a fresh turn (SDK
+     *   `handle.interrupt()` + push).
+     * - `undefined` — first prompt of a session, or follow-up that didn't
+     *   originate from a running op. No special handling.
+     */
+    interruptMode?: 'soft' | 'hard',
   ) {
-    return this.ipc.heterogeneousAgent.sendPrompt({ imageList, operationId, prompt, sessionId });
+    return this.ipc.heterogeneousAgent.sendPrompt({
+      imageList,
+      interruptMode,
+      operationId,
+      prompt,
+      sessionId,
+    });
   }
 
   async cancelSession(sessionId: string) {

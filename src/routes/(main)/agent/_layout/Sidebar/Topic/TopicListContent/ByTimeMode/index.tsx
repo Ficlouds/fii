@@ -6,7 +6,7 @@ import GroupedAccordion from '../GroupedAccordion';
 import GroupItem from './GroupItem';
 
 interface ByTimeModeProps {
-  onOpenDrawer: () => void;
+  onOpenDrawer?: () => void;
 }
 
 const ByTimeMode = memo<ByTimeModeProps>(({ onOpenDrawer }) => (

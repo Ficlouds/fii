@@ -18,7 +18,7 @@ import { preferenceSelectors } from '@/store/user/selectors';
 import GroupItem from './GroupItem';
 
 interface ByTimeModeProps {
-  onOpenDrawer: () => void;
+  onOpenDrawer?: () => void;
 }
 
 const ByTimeMode = memo<ByTimeModeProps>(({ onOpenDrawer }) => {
@@ -71,7 +71,7 @@ const ByTimeMode = memo<ByTimeModeProps>(({ onOpenDrawer }) => {
         ))}
       </Accordion>
       {isExpandingPageSize && <SkeletonList rows={3} />}
-      {hasMore && !isExpandingPageSize && (
+      {onOpenDrawer && hasMore && !isExpandingPageSize && (
         <NavItem icon={MoreHorizontal} title={t('loadMore')} onClick={onOpenDrawer} />
       )}
     </Flexbox>

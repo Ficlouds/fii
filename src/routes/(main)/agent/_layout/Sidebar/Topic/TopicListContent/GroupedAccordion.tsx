@@ -26,7 +26,7 @@ export interface GroupItemComponentProps {
 
 interface GroupedAccordionProps {
   GroupItem: ComponentType<GroupItemComponentProps>;
-  onOpenDrawer: () => void;
+  onOpenDrawer?: () => void;
 }
 
 const GroupedAccordion = memo<GroupedAccordionProps>(({ GroupItem, onOpenDrawer }) => {
@@ -78,7 +78,7 @@ const GroupedAccordion = memo<GroupedAccordionProps>(({ GroupItem, onOpenDrawer 
         ))}
       </Accordion>
       {isExpandingPageSize && <SkeletonList rows={3} />}
-      {hasMore && !isExpandingPageSize && (
+      {onOpenDrawer && hasMore && !isExpandingPageSize && (
         <NavItem icon={MoreHorizontal} title={t('loadMore')} onClick={onOpenDrawer} />
       )}
     </Flexbox>

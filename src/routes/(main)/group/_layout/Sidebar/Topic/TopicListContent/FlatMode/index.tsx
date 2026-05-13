@@ -18,7 +18,7 @@ import { preferenceSelectors } from '@/store/user/selectors';
 import TopicItem from '../../List/Item';
 
 interface FlatModeProps {
-  onOpenDrawer: () => void;
+  onOpenDrawer?: () => void;
 }
 
 const FlatMode = memo<FlatModeProps>(({ onOpenDrawer }) => {
@@ -52,7 +52,7 @@ const FlatMode = memo<FlatModeProps>(({ onOpenDrawer }) => {
         />
       ))}
       {isExpandingPageSize && <SkeletonList rows={3} />}
-      {hasMore && !isExpandingPageSize && (
+      {onOpenDrawer && hasMore && !isExpandingPageSize && (
         <NavItem icon={MoreHorizontal} title={t('loadMore')} onClick={onOpenDrawer} />
       )}
     </Flexbox>

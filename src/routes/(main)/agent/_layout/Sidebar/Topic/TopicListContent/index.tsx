@@ -21,11 +21,10 @@ const TopicListContent = memo(() => {
   const { t } = useTranslation('topic');
   const router = useQueryRoute();
   const topicLength = useChatStore((s) => topicSelectors.currentTopicLength(s));
-  const [agentId, isUndefinedTopics, isInSearchMode, openAllTopicsDrawer] = useChatStore((s) => [
+  const [agentId, isUndefinedTopics, isInSearchMode] = useChatStore((s) => [
     s.activeAgentId,
     topicSelectors.isUndefinedTopics(s),
     topicSelectors.isInSearchMode(s),
-    s.openAllTopicsDrawer,
   ]);
 
   const { topicGroupMode } = useAgentTopicGroupMode();
@@ -47,11 +46,11 @@ const TopicListContent = memo(() => {
         />
       )}
       {topicGroupMode === 'flat' ? (
-        <FlatMode onOpenDrawer={openAllTopicsDrawer} />
+        <FlatMode />
       ) : topicGroupMode === 'byProject' ? (
-        <ByProjectMode onOpenDrawer={openAllTopicsDrawer} />
+        <ByProjectMode />
       ) : (
-        <ByTimeMode onOpenDrawer={openAllTopicsDrawer} />
+        <ByTimeMode />
       )}
     </>
   );

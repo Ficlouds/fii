@@ -6,7 +6,7 @@ import GroupedAccordion from '../GroupedAccordion';
 import GroupItem from './GroupItem';
 
 interface ByProjectModeProps {
-  onOpenDrawer: () => void;
+  onOpenDrawer?: () => void;
 }
 
 const ByProjectMode = memo<ByProjectModeProps>(({ onOpenDrawer }) => (

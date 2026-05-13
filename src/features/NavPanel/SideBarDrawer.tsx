@@ -31,9 +31,7 @@ export interface SideBarDrawerHandle {
 interface SideBarDrawerProps {
   action?: ReactNode;
   children?: ReactNode;
-  onClose?: () => void;
   onOpenChange?: (open: boolean) => void;
-  open?: boolean;
   ref?: Ref<SideBarDrawerHandle>;
   subHeader?: ReactNode;
   title?: ReactNode;
@@ -55,32 +53,25 @@ const setRef = <T,>(ref: Ref<T> | undefined, value: T | null) => {
 };
 
 const SideBarDrawer = memo<SideBarDrawerProps>(
-  ({ subHeader, open, onClose, onOpenChange, children, title, action, ref }) => {
+  ({ subHeader, onOpenChange, children, title, action, ref }) => {
     const size = 280;
 
     const [overlayContainer, setOverlayContainer] = useState<HTMLDivElement | null>(null);
     const [internalOpen, setInternalOpen] = useState(false);
 
-    const isControlled = open !== undefined;
-    const effectiveOpen = open ?? internalOpen;
-
     const handleOpen = useCallback(() => {
-      if (isControlled) return;
       setInternalOpen((prev) => {
         if (!prev) onOpenChange?.(true);
         return true;
       });
-    }, [isControlled, onOpenChange]);
+    }, [onOpenChange]);
 
     const handleClose = useCallback(() => {
-      if (!isControlled) {
-        setInternalOpen((prev) => {
-          if (prev) onOpenChange?.(false);
-          return false;
-        });
-      }
-      onClose?.();
-    }, [isControlled, onClose, onOpenChange]);
+      setInternalOpen((prev) => {
+        if (prev) onOpenChange?.(false);
+        return false;
+      });
+    }, [onOpenChange]);
 
     useImperativeHandle(
       ref,
@@ -92,7 +83,7 @@ const SideBarDrawer = memo<SideBarDrawerProps>(
     );
 
     useClickAway(() => {
-      if (!effectiveOpen) return;
+      if (!internalOpen) return;
       handleClose();
     }, overlayContainer);
 
@@ -119,7 +110,7 @@ const SideBarDrawer = memo<SideBarDrawerProps>(
           drawerRender={renderDrawerContent}
           getContainer={() => document.querySelector(`#${NAV_PANEL_RIGHT_DRAWER_ID}`)!}
           mask={false}
-          open={effectiveOpen}
+          open={internalOpen}
           placement="left"
           size={size}
           rootStyle={{

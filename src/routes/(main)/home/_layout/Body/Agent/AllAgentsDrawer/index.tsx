@@ -1,7 +1,7 @@
 'use client';
 
 import { Flexbox, SearchBar } from '@lobehub/ui';
-import { memo, type Ref, useState } from 'react';
+import { memo, type Ref, useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import SkeletonList from '@/features/NavPanel/components/SkeletonList';
@@ -21,13 +21,28 @@ interface AllAgentsDrawerProps {
   ref?: Ref<SideBarDrawerHandle>;
 }
 
-const AllAgentsDrawer = memo<AllAgentsDrawerProps>(({ ref }) => {
+const AllAgentsDrawer = memo<AllAgentsDrawerProps>(({ ref: externalRef }) => {
   const { t } = useTranslation('common');
   const [searchKeyword, setSearchKeyword] = useState('');
+  const handleRef = useRef<SideBarDrawerHandle | null>(null);
+
+  const setHandle = useCallback(
+    (handle: SideBarDrawerHandle | null) => {
+      handleRef.current = handle;
+      if (typeof externalRef === 'function') {
+        externalRef(handle);
+      } else if (externalRef) {
+        externalRef.current = handle;
+      }
+    },
+    [externalRef],
+  );
+
+  const handleNavigate = useCallback(() => handleRef.current?.close(), []);
 
   return (
     <SideBarDrawer
-      ref={ref}
+      ref={setHandle}
       title={t('navPanel.agent')}
       subHeader={
         <Flexbox paddingBlock={'0 8px'} paddingInline={8}>
@@ -43,7 +58,7 @@ const AllAgentsDrawer = memo<AllAgentsDrawerProps>(({ ref }) => {
         </Flexbox>
       }
     >
-      <Content searchKeyword={searchKeyword} />
+      <Content searchKeyword={searchKeyword} onNavigate={handleNavigate} />
     </SideBarDrawer>
   );
 });

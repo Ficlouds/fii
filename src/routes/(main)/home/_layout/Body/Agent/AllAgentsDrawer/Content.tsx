@@ -14,17 +14,15 @@ import GroupItem from '../List/AgentGroupItem';
 import AgentItem from '../List/AgentItem';
 
 interface ContentProps {
+  onNavigate: () => void;
   searchKeyword: string;
 }
 
-const Content = memo<ContentProps>(({ searchKeyword }) => {
+const Content = memo<ContentProps>(({ searchKeyword, onNavigate }) => {
   const trimmedKeyword = searchKeyword.trim();
   const isSearching = trimmedKeyword.length > 0;
 
-  const [closeAllAgentsDrawer, useSearchAgents] = useHomeStore((s) => [
-    s.closeAllAgentsDrawer,
-    s.useSearchAgents,
-  ]);
+  const useSearchAgents = useHomeStore((s) => s.useSearchAgents);
   const { data: searchResults, isLoading: isSearchLoading } = useSearchAgents(
     isSearching ? trimmedKeyword : undefined,
   );
@@ -36,7 +34,7 @@ const Content = memo<ContentProps>(({ searchKeyword }) => {
   const count = displayItems.length;
 
   // Close on navigation because the Home layout stays mounted offscreen across route changes.
-  const handleNavigate = closeAllAgentsDrawer;
+  const handleNavigate = onNavigate;
 
   if (isSearching && (isSearchLoading || !searchResults)) {
     return (

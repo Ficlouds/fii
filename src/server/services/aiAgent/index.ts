@@ -331,6 +331,7 @@ export class AiAgentService {
       resume,
       resumeApproval,
     } = params;
+    const operationTrigger = trigger ?? RequestTrigger.AgentExecution;
 
     // Validate that either agentId or slug is provided
     if (!agentId && !slug) {
@@ -619,13 +620,13 @@ export class AiAgentService {
         metadata,
         title:
           title !== undefined ? title : prompt.slice(0, 50) + (prompt.length > 50 ? '...' : ''),
-        trigger,
+        trigger: operationTrigger,
       });
       topicId = newTopic.id;
       log(
         'execAgent: created new topic %s with trigger %s, cronJobId %s',
         topicId,
-        trigger || 'default',
+        operationTrigger,
         cronJobId || 'none',
       );
     } else {
@@ -1680,7 +1681,7 @@ export class AiAgentService {
             message: prompt,
             threadId: appContext?.threadId ?? undefined,
             topicId,
-            trigger,
+            trigger: operationTrigger,
             messageId: userMessageRecord.id,
           },
           sourceId: userMessageRecord.id,
@@ -1931,7 +1932,7 @@ export class AiAgentService {
           taskId: operationTaskId,
           threadId: appContext?.threadId,
           topicId,
-          trigger,
+          trigger: operationTrigger,
         },
         autoStart,
         botContext,
@@ -2091,7 +2092,7 @@ export class AiAgentService {
       appContext: { groupId, topicId },
       autoStart: true,
       prompt: message,
-      trigger: RequestTrigger.Chat,
+      trigger: RequestTrigger.AgentExecution,
     });
 
     log(

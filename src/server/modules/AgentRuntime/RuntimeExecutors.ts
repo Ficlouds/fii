@@ -30,7 +30,8 @@ import {
 import { parse } from '@lobechat/conversation-flow';
 import { consumeStreamUntilDone } from '@lobechat/model-runtime';
 import { chainCompressContext } from '@lobechat/prompts';
-import { type ChatToolPayload, type MessageToolCall, type UIChatMessage } from '@lobechat/types';
+import type { ChatToolPayload, MessageToolCall, UIChatMessage } from '@lobechat/types';
+import { RequestTrigger } from '@lobechat/types';
 import { sanitizeToolCallArguments, serializePartsForStorage } from '@lobechat/utils';
 import debug from 'debug';
 
@@ -910,7 +911,7 @@ export const createRuntimeExecutors = (
             metadata: {
               operationId,
               topicId: state.metadata?.topicId,
-              trigger: state.metadata?.trigger,
+              trigger: state.metadata?.trigger ?? RequestTrigger.AgentExecution,
             },
             user: ctx.userId,
           });
@@ -1327,6 +1328,7 @@ export const createRuntimeExecutors = (
               summaryContent += text;
             },
           },
+          metadata: { trigger: RequestTrigger.ContextCompression },
           user: ctx.userId,
         },
       );

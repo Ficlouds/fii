@@ -17,6 +17,7 @@ import {
   MAX_ONBOARDING_STEPS,
   MIN_DISCOVERY_USER_MESSAGES,
   RECOMMENDED_DISCOVERY_USER_MESSAGES,
+  RequestTrigger,
   SAVE_USER_QUESTION_FIELDS,
 } from '@lobechat/types';
 import { merge } from '@lobechat/utils';
@@ -297,7 +298,7 @@ export class OnboardingService {
     const topic = await this.topicModel.create({
       agentId,
       title: 'Onboarding',
-      trigger: 'chat',
+      trigger: RequestTrigger.Chat,
     });
 
     return { created: true, topicId: topic.id };

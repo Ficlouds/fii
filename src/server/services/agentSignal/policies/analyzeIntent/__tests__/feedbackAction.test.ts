@@ -1,4 +1,5 @@
 // @vitest-environment node
+import { RequestTrigger } from '@lobechat/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import { AgentSignalProcedureInspector, createProcedurePolicyOptions } from '../../../procedure';
@@ -583,7 +584,7 @@ describe('feedbackActionPlanner', () => {
       skillRoute: 'direct_decision',
       sourceId: 'source_skill_server',
       target: 'skill',
-      trigger: 'chat',
+      trigger: RequestTrigger.Chat,
     });
 
     const result = await handler.handle(signal, context);

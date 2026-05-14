@@ -2,10 +2,10 @@ import { TaskIdentifier as TaskSkillIdentifier } from '@lobechat/builtin-skills'
 import { BriefIdentifier } from '@lobechat/builtin-tool-brief';
 import { INBOX_SESSION_ID } from '@lobechat/const';
 import type { ExecAgentResult, TaskItem } from '@lobechat/types';
+import { RequestTrigger } from '@lobechat/types';
 import { TRPCError } from '@trpc/server';
 import debug from 'debug';
 
-import { TopicTrigger } from '@/const/topic';
 import { AgentModel } from '@/database/models/agent';
 import { BriefModel } from '@/database/models/brief';
 import { TaskModel } from '@/database/models/task';
@@ -203,7 +203,7 @@ export class TaskRunnerService {
         prompt,
         taskId: task.id,
         title: extraPrompt ? extraPrompt.slice(0, 100) : task.name || task.identifier,
-        trigger: TopicTrigger.RunTask,
+        trigger: RequestTrigger.TaskRun,
         userInterventionConfig: { approvalMode: 'headless' },
         ...(continueTopicId && { appContext: { topicId: continueTopicId } }),
       });

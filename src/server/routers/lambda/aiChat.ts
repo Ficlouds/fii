@@ -49,7 +49,7 @@ export const aiChatRouter = router({
         schema: input.schema,
         tools: input.tools,
       },
-      { metadata: { trigger: RequestTrigger.Chat } },
+      { metadata: { trigger: RequestTrigger.StructuredOutput } },
     );
 
     log('generateObject completed, result: %O', result);

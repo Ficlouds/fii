@@ -1,6 +1,8 @@
 import { DEFAULT_SYSTEM_AGENT_CONFIG } from '@lobechat/const';
-import { evaluate, type EvaluateResult, type RubricResult } from '@lobechat/eval-rubric';
+import type { EvaluateResult, RubricResult } from '@lobechat/eval-rubric';
+import { evaluate } from '@lobechat/eval-rubric';
 import type { EvalBenchmarkRubric } from '@lobechat/types';
+import { RequestTrigger } from '@lobechat/types';
 import debug from 'debug';
 
 import { UserModel } from '@/database/models/user';
@@ -80,7 +82,7 @@ export class TaskReviewService {
                 model: payload.model || model,
                 schema: { name: 'judge_score', schema: payload.schema },
               },
-              { metadata: { trigger: 'task-review' } },
+              { metadata: { trigger: RequestTrigger.TaskReview } },
             );
           },
           judgeModel: model,

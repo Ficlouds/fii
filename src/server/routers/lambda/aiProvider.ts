@@ -1,3 +1,4 @@
+import { RequestTrigger } from '@lobechat/types';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
@@ -60,12 +61,15 @@ export const aiProviderRouter = router({
       try {
         const modelRuntime = await initModelRuntimeFromDB(ctx.serverDB, ctx.userId, input.id);
 
-        const response = await modelRuntime.chat({
-          messages: [{ content: 'Hi', role: 'user' }],
-          model,
-          stream: false,
-          temperature: 0,
-        });
+        const response = await modelRuntime.chat(
+          {
+            messages: [{ content: 'Hi', role: 'user' }],
+            model,
+            stream: false,
+            temperature: 0,
+          },
+          { metadata: { trigger: RequestTrigger.ProviderCheck } },
+        );
 
         // If we get a response without error, connectivity is ok
         if (response.ok) {

@@ -1,5 +1,6 @@
 import { DEFAULT_SYSTEM_AGENT_CONFIG } from '@lobechat/const';
 import type { FollowUpChip, FollowUpExtractInput, FollowUpExtractResult } from '@lobechat/types';
+import { RequestTrigger } from '@lobechat/types';
 import debug from 'debug';
 
 import { type LobeChatDatabase } from '@/database/type';
@@ -48,14 +49,17 @@ export class FollowUpActionService {
     let raw: unknown;
     try {
       const modelRuntime = await initModelRuntimeFromDB(this.db, this.userId, provider);
-      raw = await modelRuntime.generateObject({
-        messages: [
-          { content: system, role: 'system' as const },
-          { content: user, role: 'user' as const },
-        ],
-        model,
-        schema: SUGGESTION_RESPONSE_JSON_SCHEMA,
-      });
+      raw = await modelRuntime.generateObject(
+        {
+          messages: [
+            { content: system, role: 'system' as const },
+            { content: user, role: 'user' as const },
+          ],
+          model,
+          schema: SUGGESTION_RESPONSE_JSON_SCHEMA,
+        },
+        { metadata: { trigger: RequestTrigger.FollowUp } },
+      );
     } catch (error) {
       log('LLM call failed: %O', error);
       return EMPTY_RESULT(row.id);

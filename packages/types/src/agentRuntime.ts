@@ -1,21 +1,43 @@
 export enum RequestTrigger {
+  AgentExecution = 'agent_execution',
   AgentSignal = 'agent_signal',
+  AiGeneration = 'ai_generation',
   Api = 'api',
   Bot = 'bot',
   Chat = 'chat',
   Cli = 'cli',
+  ContextCompression = 'context_compression',
   Cron = 'cron',
   Eval = 'eval',
   FileEmbedding = 'file_embedding',
+  FollowUp = 'follow_up',
   Image = 'image',
   Memory = 'memory',
   Notify = 'notify',
   Onboarding = 'onboarding',
   Openapi = 'openapi',
+  ProviderCheck = 'provider_check',
   SemanticSearch = 'semantic_search',
+  StructuredOutput = 'structured_output',
+  TaskBrief = 'task_brief',
+  TaskBriefJudge = 'task_brief_judge',
+  TaskHandoff = 'task_handoff',
+  TaskReview = 'task_review',
+  TaskRun = 'task',
   Topic = 'topic',
   Video = 'video',
   VisualAnalysis = 'visual_analysis',
+}
+
+export enum RuntimeRequestType {
+  BackgroundJob = 'background_job',
+  ExternalApi = 'external_api',
+  InternalTask = 'internal_task',
+  UserInteraction = 'user_interaction',
+}
+
+export interface RuntimeCallMetadata extends Record<string, unknown> {
+  trigger: RequestTrigger;
 }
 
 // ******* Runtime Biz Error ******* //

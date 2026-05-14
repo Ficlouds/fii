@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { ThreadType } from '@lobechat/types';
+import { RequestTrigger, ThreadType } from '@lobechat/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import { AgentModel } from '@/database/models/agent';
@@ -828,7 +828,7 @@ describe('aiChatRouter', () => {
           schema: input.schema,
           tools: undefined,
         },
-        { metadata: { trigger: 'chat' } },
+        { metadata: { trigger: RequestTrigger.StructuredOutput } },
       );
       expect(result).toEqual(mockResult);
     });
@@ -872,7 +872,7 @@ describe('aiChatRouter', () => {
           schema: undefined,
           tools: mockTools,
         },
-        { metadata: { trigger: 'chat' } },
+        { metadata: { trigger: RequestTrigger.StructuredOutput } },
       );
     });
   });

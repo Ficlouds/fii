@@ -13,7 +13,7 @@ import type {
   TaskSchedulerContext,
   TaskTopicHandoff,
 } from '@lobechat/types';
-import { DEFAULT_BRIEF_ACTIONS } from '@lobechat/types';
+import { DEFAULT_BRIEF_ACTIONS, RequestTrigger } from '@lobechat/types';
 import debug from 'debug';
 
 import { BriefModel } from '@/database/models/brief';
@@ -305,7 +305,7 @@ export class TaskLifecycleService {
           model,
           schema: { name: 'task_topic_handoff', schema: TASK_TOPIC_HANDOFF_SCHEMA },
         },
-        { metadata: { trigger: 'task-handoff' } },
+        { metadata: { trigger: RequestTrigger.TaskHandoff } },
       );
 
       const handoff = result as {
@@ -405,7 +405,7 @@ export class TaskLifecycleService {
             model,
             schema: { name: 'task_topic_brief_judge', schema: JUDGE_BRIEF_EMIT_SCHEMA },
           },
-          { metadata: { trigger: 'task-brief-judge' } },
+          { metadata: { trigger: RequestTrigger.TaskBriefJudge } },
         )) as { emit?: boolean; reason?: string };
 
         decision = {
@@ -458,7 +458,7 @@ export class TaskLifecycleService {
           model,
           schema: { name: 'task_topic_brief', schema: GENERATE_BRIEF_SCHEMA },
         },
-        { metadata: { trigger: 'task-brief' } },
+        { metadata: { trigger: RequestTrigger.TaskBrief } },
       );
 
       const generated = result as { summary?: string; title?: string };

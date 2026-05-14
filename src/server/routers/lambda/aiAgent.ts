@@ -640,7 +640,7 @@ export const aiAgentRouter = router({
         resume: !!parentMessageId,
         resumeApproval,
         slug,
-        trigger: trigger ?? RequestTrigger.Chat,
+        trigger: trigger ?? RequestTrigger.AgentExecution,
         userInterventionConfig,
       });
     } catch (error: any) {
@@ -703,7 +703,7 @@ export const aiAgentRouter = router({
           // When parentMessageId is provided, this is a regeneration/continue — skip user message creation
           resume: !!parentMessageId,
           slug,
-          trigger: trigger ?? RequestTrigger.Chat,
+          trigger: trigger ?? RequestTrigger.AgentExecution,
         });
 
         return {

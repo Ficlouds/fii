@@ -22,8 +22,8 @@ import { taskService } from '@/services/task';
 import { getTaskStoreState } from '@/store/task';
 import { findSubtaskParentId } from '@/store/task/slices/detail/reducer';
 
-import { normalizeListTasksParams } from '../listTasks';
-import { TaskIdentifier } from '../manifest';
+import { normalizeListTasksParams } from '../../listTasks';
+import { TaskIdentifier } from '../../manifest';
 import type {
   AddTaskCommentParams,
   CreateTaskParams,
@@ -31,8 +31,8 @@ import type {
   DeleteTaskCommentParams,
   RunTasksItemResult,
   UpdateTaskCommentParams,
-} from '../types';
-import { TaskApiName } from '../types';
+} from '../../types';
+import { TaskApiName } from '../../types';
 
 const log = debug('lobe-task:executor');
 

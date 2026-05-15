@@ -14,7 +14,16 @@ import { messageService } from '@/services/message';
 import { emitClientAgentSignalSourceEvent } from '@/store/chat/slices/aiChat/actions/agentSignalBridge';
 import type { ChatStore } from '@/store/chat/store';
 import { notifyDesktopHumanApprovalRequired } from '@/store/chat/utils/desktopNotification';
-import { getExecutor } from '@/store/tool/slices/builtin/executors';
+
+// Lazy-loaded to break the import cycle:
+//   gateway.ts → gatewayEventHandler.ts → executors/index.ts (which pulls in
+//   tool client barrels that import `@/store/chat/store`) → chat store
+//   creation → `new GatewayActionImpl(...)` while gateway.ts is still
+//   mid-evaluation, so the class binding is undefined.
+const loadGetExecutor = async () => {
+  const mod = await import('@/store/tool/slices/builtin/executors');
+  return mod.getExecutor;
+};
 
 /**
  * Fetch messages from DB and replace them in the chat store's dbMessagesMap.
@@ -78,6 +87,7 @@ const dispatchOnBeforeCall = async (data: ToolStartData | undefined): Promise<vo
   const identity = readToolPayload(payload);
   if (!identity) return;
 
+  const getExecutor = await loadGetExecutor();
   const executor = getExecutor(identity.identifier);
   if (!executor?.onBeforeCall) return;
 
@@ -110,6 +120,7 @@ const dispatchOnAfterCall = async (data: ToolEndData | undefined): Promise<void>
   const identity = readToolPayload(unwrapToolPayload(data?.payload));
   if (!identity) return;
 
+  const getExecutor = await loadGetExecutor();
   const executor = getExecutor(identity.identifier);
   if (!executor?.onAfterCall) return;
 

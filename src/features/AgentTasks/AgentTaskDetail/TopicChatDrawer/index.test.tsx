@@ -132,8 +132,8 @@ vi.mock('../TopicStatusIcon', () => ({
   default: () => <span data-testid="topic-status-icon" />,
 }));
 
-vi.mock('./FeedbackInput', () => ({
-  default: () => <div data-testid="feedback-input" />,
+vi.mock('../TaskChatInput', () => ({
+  default: () => <div data-testid="task-chat-input" />,
 }));
 
 describe('TopicChatDrawer', () => {

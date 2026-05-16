@@ -14,8 +14,8 @@ import { taskActivitySelectors, taskDetailSelectors } from '@/store/task/selecto
 
 import { styles } from '../shared/style';
 import CommentCard from './CommentCard';
-import CommentInput from './CommentInput';
 import TaskBriefCard from './TaskBriefCard';
+import TaskChatInput from './TaskChatInput';
 import TopicCard from './TopicCard';
 
 const ROW_TYPE_ICON = {
@@ -164,7 +164,7 @@ const TaskActivities = memo(() => {
         }
       >
         <Flexbox gap={12} paddingBlock={12} paddingInline={12}>
-          {activeTaskId && <CommentInput taskId={activeTaskId} />}
+          {activeTaskId && <TaskChatInput taskId={activeTaskId} />}
           {items.length > 0 ? (
             items.map(({ activity, brief, key }) => {
               if (brief) {

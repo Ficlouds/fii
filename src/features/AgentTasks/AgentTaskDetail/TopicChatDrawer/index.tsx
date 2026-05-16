@@ -32,8 +32,8 @@ import { taskActivitySelectors, taskDetailSelectors } from '@/store/task/selecto
 import { useUserStore } from '@/store/user';
 import { authSelectors } from '@/store/user/selectors';
 
+import TaskChatInput from '../TaskChatInput';
 import TopicStatusIcon from '../TopicStatusIcon';
-import FeedbackInput from './FeedbackInput';
 
 const SharePopover = dynamic(() => import('@/features/SharePopover'));
 
@@ -46,6 +46,7 @@ interface TopicChatDrawerBodyProps {
 const TopicChatDrawerBody = memo<TopicChatDrawerBodyProps>(({ agentId, taskId, topicId }) => {
   const isLogin = useUserStore(authSelectors.isLogin);
   const useHydrateAgentConfig = useAgentStore((s) => s.useHydrateAgentConfig);
+  const closeTopicDrawer = useTaskStore((s) => s.closeTopicDrawer);
 
   useHydrateAgentConfig(isLogin, agentId);
 
@@ -110,7 +111,7 @@ const TopicChatDrawerBody = memo<TopicChatDrawerBodyProps>(({ agentId, taskId, t
           </Flexbox>
           {canLeaveFeedback && (
             <Flexbox padding={12} style={{ flexShrink: 0 }}>
-              <FeedbackInput taskId={taskId} topicId={topicId} />
+              <TaskChatInput taskId={taskId} onAfterSend={closeTopicDrawer} />
             </Flexbox>
           )}
         </Flexbox>

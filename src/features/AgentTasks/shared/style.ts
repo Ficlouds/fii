@@ -128,25 +128,4 @@ export const styles = createStaticStyles(({ css, cssVar }) => ({
       color: ${cssVar.colorText};
     }
   `,
-
-  commentInputCard: css`
-    padding: 8px;
-    border: 1px solid transparent;
-    border-radius: ${cssVar.borderRadiusLG};
-
-    background: ${cssVar.colorFillTertiary};
-
-    transition:
-      background 0.15s ease,
-      border-color 0.15s ease;
-
-    &:hover {
-      background: ${cssVar.colorFillSecondary};
-    }
-
-    &:focus-within {
-      border-color: ${cssVar.colorBorder};
-      background: ${cssVar.colorFillTertiary};
-    }
-  `,
 }));

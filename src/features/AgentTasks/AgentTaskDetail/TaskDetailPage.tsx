@@ -14,6 +14,7 @@ import { taskDetailSelectors } from '@/store/task/selectors';
 
 import Breadcrumb from '../shared/Breadcrumb';
 import TaskActivities from './TaskActivities';
+import TaskAgentContextSync from './TaskAgentContextSync';
 import TaskArtifacts from './TaskArtifacts';
 import TaskDetailAssignee from './TaskDetailAssignee';
 import TaskDetailHeaderActions from './TaskDetailHeaderActions';
@@ -49,6 +50,7 @@ const TaskDetailPage = memo<TaskDetailPageProps>(({ taskId }) => {
 
   return (
     <Flexbox flex={1} height={'100%'} style={{ minHeight: 0 }}>
+      <TaskAgentContextSync />
       <NavHeader
         left={
           <>

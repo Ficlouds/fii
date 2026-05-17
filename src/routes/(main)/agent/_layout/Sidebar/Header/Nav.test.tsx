@@ -14,6 +14,10 @@ const switchTopicMock = vi.hoisted(() => vi.fn());
 const toggleCommandMenuMock = vi.hoisted(() => vi.fn());
 const useParamsMock = vi.hoisted(() => vi.fn());
 const usePathnameMock = vi.hoisted(() => vi.fn());
+const agentStoreMock = vi.hoisted(() => ({
+  activeAgentId: undefined as string | undefined,
+  isHeterogeneous: false,
+}));
 
 vi.mock('@lobehub/ui', () => ({
   Flexbox: ({ children, ...props }: { children?: ReactNode; [key: string]: unknown }) => (
@@ -84,12 +88,12 @@ vi.mock('@/libs/swr', () => ({
 }));
 
 vi.mock('@/store/agent', () => ({
-  useAgentStore: (selector: (state: unknown) => unknown) => selector({}),
+  useAgentStore: (selector: (state: typeof agentStoreMock) => unknown) => selector(agentStoreMock),
 }));
 
 vi.mock('@/store/agent/selectors', () => ({
   agentSelectors: {
-    isCurrentAgentHeterogeneous: () => false,
+    isCurrentAgentHeterogeneous: (state: typeof agentStoreMock) => state.isHeterogeneous,
   },
 }));
 
@@ -128,6 +132,8 @@ describe('Agent sidebar header nav', () => {
     toggleCommandMenuMock.mockReset();
     useParamsMock.mockReset();
     usePathnameMock.mockReset();
+    agentStoreMock.activeAgentId = undefined;
+    agentStoreMock.isHeterogeneous = false;
 
     useParamsMock.mockReturnValue({ aid: 'agt_eH4zL98zBx5u', topicId: 'tpc_2FCHvjS7d4CA' });
   });
@@ -154,5 +160,21 @@ describe('Agent sidebar header nav', () => {
 
     expect(pushMock).toHaveBeenCalledWith('/agent/agt_eH4zL98zBx5u');
     expect(mutateMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('falls back to the active agent when retained on a task route without an agent param', () => {
+    agentStoreMock.activeAgentId = 'agt_from_task';
+    useParamsMock.mockReturnValue({});
+    usePathnameMock.mockReturnValue('/task/T-1');
+
+    render(<Nav />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'actions.addNewTopic' }));
+    fireEvent.click(screen.getByRole('button', { name: 'tab.profile' }));
+
+    expect(pushMock).toHaveBeenNthCalledWith(1, '/agent/agt_from_task');
+    expect(pushMock).toHaveBeenNthCalledWith(2, '/agent/agt_from_task/profile');
+    expect(mutateMock).toHaveBeenCalledTimes(1);
+    expect(switchTopicMock).toHaveBeenCalledWith(null, { skipRefreshMessage: true });
   });
 });

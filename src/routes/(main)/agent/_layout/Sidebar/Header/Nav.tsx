@@ -22,7 +22,8 @@ const Nav = memo(() => {
   const { t } = useTranslation('chat');
   const { t: tTopic } = useTranslation('topic');
   const params = useParams();
-  const agentId = params.aid;
+  const activeAgentId = useAgentStore((s) => s.activeAgentId);
+  const agentId = params.aid ?? activeAgentId;
   const pathname = usePathname();
   const isProfileActive = pathname.includes('/profile');
   const isChannelActive = pathname.includes('/channel');
@@ -30,7 +31,7 @@ const Nav = memo(() => {
   const { isAgentEditable } = useServerConfigStore(featureFlagsSelectors);
   const toggleCommandMenu = useGlobalStore((s) => s.toggleCommandMenu);
   const isHeterogeneousAgent = useAgentStore(agentSelectors.isCurrentAgentHeterogeneous);
-  const hideProfile = !isAgentEditable;
+  const hideProfile = !isAgentEditable || !agentId;
   const hideChannel = hideProfile || isHeterogeneousAgent;
   const switchTopic = useChatStore((s) => s.switchTopic);
   const [openNewTopicOrSaveTopic] = useChatStore((s) => [s.openNewTopicOrSaveTopic]);

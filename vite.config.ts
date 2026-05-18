@@ -327,6 +327,7 @@ export default defineConfig({
         './packages/builtin-tool-*/src/**/*.ts',
         './packages/builtin-tools/src/**/*.ts',
         './packages/business/*/src/**/*.ts',
+        './packages/business-server/src/**/*.ts',
         './packages/config/src/**/*.ts',
         './packages/edge-config/src/**/*.ts',
         './packages/editor-runtime/src/**/*.ts',

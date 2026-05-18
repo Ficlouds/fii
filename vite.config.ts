@@ -332,6 +332,7 @@ export default defineConfig({
         './packages/edge-config/src/**/*.ts',
         './packages/editor-runtime/src/**/*.ts',
         './packages/env/src/**/*.ts',
+        './packages/trpc/src/**/*.{ts,tsx}',
         './packages/fetch-sse/src/**/*.ts',
         './packages/desktop-bridge/src/**/*.ts',
         './packages/python-interpreter/src/**/*.ts',

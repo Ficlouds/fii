@@ -23,6 +23,7 @@
       "@/types/*": ["./packages/types/src/*", "./src/types/*"],
       "@/server/*": ["./apps/server/src/*", "./src/server/*"],
       "@/envs/*": ["./packages/env/src/*", "./src/envs/*"],
+      "@/libs/trpc/*": ["./packages/trpc/src/*", "./src/libs/trpc/*"],
       "@/*": ["./src/*"],
       "~test-utils": ["./tests/utils.tsx"]
     },

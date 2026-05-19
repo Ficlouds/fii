@@ -74,6 +74,9 @@ const AgentList = memo<AgentListProps>(({ activeAgentId, onSelect }) => {
       // Skip chat groups — sendMessage / agent config lookups expect an agent id.
       // Groups go through their own chat-group flow under /group/:gid.
       if (item.type !== 'agent') continue;
+      // Hide heterogeneous agents (Claude Code / Codex …) from the consumer
+      // home picker — they're dev-oriented and clutter the primary list.
+      if (item.heterogeneousType) continue;
       if (seen.has(item.id)) continue;
       seen.add(item.id);
       out.push({

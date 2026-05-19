@@ -104,3 +104,64 @@ describe('DiscordMessageService.sendMessage', () => {
     expect(api.createMessage).toHaveBeenCalledWith('ch-1', 'still send the text');
   });
 });
+
+describe('DiscordMessageService.sendDirectMessage', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('creates DM channel and posts text + attachments via the shared path', async () => {
+    const api = {
+      createDMChannel: vi.fn().mockResolvedValue({ id: 'dm-ch' }),
+      createMessage: vi.fn().mockResolvedValue({ id: 'msg-dm' }),
+    };
+    const service = new DiscordMessageService(api as any);
+
+    await service.sendDirectMessage!({
+      attachments: [
+        {
+          data: Buffer.from('img').toString('base64'),
+          mimeType: 'image/png',
+          name: 'foo.png',
+          type: 'image',
+        },
+      ],
+      content: 'hello DM',
+      platform: 'discord',
+      userId: 'user-1',
+    });
+
+    expect(api.createDMChannel).toHaveBeenCalledWith('user-1');
+    expect(api.createMessage).toHaveBeenCalledWith(
+      'dm-ch',
+      'hello DM',
+      expect.arrayContaining([
+        expect.objectContaining({ contentType: 'image/png', name: 'foo.png' }),
+      ]),
+    );
+  });
+});
+
+describe('DiscordMessageService.replyToThread', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('posts to the thread id with attachments', async () => {
+    const api = { createMessage: vi.fn().mockResolvedValue({ id: 'tr-1' }) };
+    const service = new DiscordMessageService(api as any);
+
+    await service.replyToThread({
+      attachments: [{ data: Buffer.from('x').toString('base64'), name: 'x.png', type: 'image' }],
+      content: 'thread reply',
+      platform: 'discord',
+      threadId: 'thread-id-1',
+    });
+
+    expect(api.createMessage).toHaveBeenCalledWith(
+      'thread-id-1',
+      'thread reply',
+      expect.arrayContaining([expect.objectContaining({ name: 'x.png' })]),
+    );
+  });
+});

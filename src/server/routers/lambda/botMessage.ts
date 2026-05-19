@@ -40,6 +40,24 @@ const botMessageProcedure = authedProcedure.use(serverDatabase).use(async (opts)
   });
 });
 
+// ── Shared input schemas ─────────────────────────────────
+
+/**
+ * Mirror of `SendMessageAttachment` (builtin-tool-message types). Shared
+ * across `sendMessage`, `sendDirectMessage`, and `replyToThread` so the
+ * three procedures stay in lockstep — the platform-specific helpers
+ * downstream only see one shape.
+ */
+const attachmentsInputSchema = z.array(
+  z.object({
+    data: z.string().optional(),
+    fetchUrl: z.string().url().optional(),
+    mimeType: z.string().optional(),
+    name: z.string().optional(),
+    type: z.enum(['image', 'file', 'video', 'audio']),
+  }),
+);
+
 // ── Service Factory ──────────────────────────────────────
 
 const createServiceForBot = (provider: DecryptedBotProvider): MessageRuntimeService => {
@@ -119,6 +137,7 @@ export const botMessageRouter = router({
   sendDirectMessage: botMessageProcedure
     .input(
       z.object({
+        attachments: attachmentsInputSchema.optional(),
         botId: z.string(),
         content: z.string(),
         userId: z.string(),
@@ -133,6 +152,7 @@ export const botMessageRouter = router({
         });
       }
       return service.sendDirectMessage({
+        attachments: input.attachments,
         content: input.content,
         platform,
         userId: input.userId,
@@ -144,17 +164,7 @@ export const botMessageRouter = router({
   sendMessage: botMessageProcedure
     .input(
       z.object({
-        attachments: z
-          .array(
-            z.object({
-              data: z.string().optional(),
-              fetchUrl: z.string().url().optional(),
-              mimeType: z.string().optional(),
-              name: z.string().optional(),
-              type: z.enum(['image', 'file', 'video', 'audio']),
-            }),
-          )
-          .optional(),
+        attachments: attachmentsInputSchema.optional(),
         botId: z.string(),
         channelId: z.string(),
         content: z.string(),
@@ -451,6 +461,7 @@ export const botMessageRouter = router({
   replyToThread: botMessageProcedure
     .input(
       z.object({
+        attachments: attachmentsInputSchema.optional(),
         botId: z.string(),
         content: z.string(),
         threadId: z.string(),
@@ -459,6 +470,7 @@ export const botMessageRouter = router({
     .mutation(async ({ input, ctx }) => {
       const { service, platform } = await resolveBot(ctx.agentBotProviderModel, input.botId);
       return service.replyToThread({
+        attachments: input.attachments,
         content: input.content,
         platform,
         threadId: input.threadId,

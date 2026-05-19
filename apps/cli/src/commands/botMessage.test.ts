@@ -10,6 +10,8 @@ import { registerBotMessageCommands } from './botMessage';
 const { mockTrpcClient } = vi.hoisted(() => ({
   mockTrpcClient: {
     botMessage: {
+      replyToThread: { mutate: vi.fn() },
+      sendDirectMessage: { mutate: vi.fn() },
       sendMessage: { mutate: vi.fn() },
     },
   },
@@ -35,6 +37,13 @@ describe('bot message send --attachment', () => {
     mockGetTrpcClient.mockResolvedValue(mockTrpcClient);
     mockTrpcClient.botMessage.sendMessage.mutate.mockReset();
     mockTrpcClient.botMessage.sendMessage.mutate.mockResolvedValue({ messageId: 'm-1' });
+    mockTrpcClient.botMessage.sendDirectMessage.mutate.mockReset();
+    mockTrpcClient.botMessage.sendDirectMessage.mutate.mockResolvedValue({
+      channelId: 'dm-1',
+      messageId: 'm-dm-1',
+    });
+    mockTrpcClient.botMessage.replyToThread.mutate.mockReset();
+    mockTrpcClient.botMessage.replyToThread.mutate.mockResolvedValue({ messageId: 'm-tr-1' });
   });
 
   afterEach(() => {
@@ -158,5 +167,143 @@ describe('bot message send --attachment', () => {
 
     const call = mockTrpcClient.botMessage.sendMessage.mutate.mock.calls[0][0];
     expect(call.attachments).toBeUndefined();
+  });
+});
+
+describe('bot message dm --attachment', () => {
+  let exitSpy: ReturnType<typeof vi.spyOn>;
+  let consoleSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    exitSpy = vi.spyOn(process, 'exit').mockImplementation((() => {}) as any);
+    consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    mockGetTrpcClient.mockResolvedValue(mockTrpcClient);
+    mockTrpcClient.botMessage.sendDirectMessage.mutate.mockReset();
+    mockTrpcClient.botMessage.sendDirectMessage.mutate.mockResolvedValue({
+      channelId: 'dm-1',
+      messageId: 'm-dm-1',
+    });
+  });
+
+  afterEach(() => {
+    exitSpy.mockRestore();
+    consoleSpy.mockRestore();
+  });
+
+  function createProgram() {
+    const program = new Command();
+    program.exitOverride();
+    const bot = program.command('bot');
+    registerBotMessageCommands(bot);
+    return program;
+  }
+
+  it('sends a DM with a remote-URL attachment', async () => {
+    const program = createProgram();
+    await program.parseAsync([
+      'node',
+      'test',
+      'bot',
+      'message',
+      'dm',
+      'bot-1',
+      '--user-id',
+      'u-1',
+      '--message',
+      'hi',
+      '--attachment',
+      'https://cdn.example.com/foo.png',
+    ]);
+
+    expect(mockTrpcClient.botMessage.sendDirectMessage.mutate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        attachments: [
+          expect.objectContaining({
+            fetchUrl: 'https://cdn.example.com/foo.png',
+            type: 'image',
+          }),
+        ],
+        botId: 'bot-1',
+        content: 'hi',
+        userId: 'u-1',
+      }),
+    );
+  });
+
+  it('omits attachments when no flag is given', async () => {
+    const program = createProgram();
+    await program.parseAsync([
+      'node',
+      'test',
+      'bot',
+      'message',
+      'dm',
+      'bot-1',
+      '--user-id',
+      'u-1',
+      '--message',
+      'plain',
+    ]);
+    const call = mockTrpcClient.botMessage.sendDirectMessage.mutate.mock.calls[0][0];
+    expect(call.attachments).toBeUndefined();
+  });
+});
+
+describe('bot message thread reply --attachment', () => {
+  let exitSpy: ReturnType<typeof vi.spyOn>;
+  let consoleSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    exitSpy = vi.spyOn(process, 'exit').mockImplementation((() => {}) as any);
+    consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    mockGetTrpcClient.mockResolvedValue(mockTrpcClient);
+    mockTrpcClient.botMessage.replyToThread.mutate.mockReset();
+    mockTrpcClient.botMessage.replyToThread.mutate.mockResolvedValue({ messageId: 'm-tr-1' });
+  });
+
+  afterEach(() => {
+    exitSpy.mockRestore();
+    consoleSpy.mockRestore();
+  });
+
+  function createProgram() {
+    const program = new Command();
+    program.exitOverride();
+    const bot = program.command('bot');
+    registerBotMessageCommands(bot);
+    return program;
+  }
+
+  it('replies to a thread with attachments', async () => {
+    const program = createProgram();
+    await program.parseAsync([
+      'node',
+      'test',
+      'bot',
+      'message',
+      'thread',
+      'reply',
+      'bot-1',
+      '--thread-id',
+      'th-1',
+      '--message',
+      'reply',
+      '--attachment',
+      'https://cdn.example.com/a.png',
+    ]);
+
+    expect(mockTrpcClient.botMessage.replyToThread.mutate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        attachments: [
+          expect.objectContaining({
+            fetchUrl: 'https://cdn.example.com/a.png',
+            type: 'image',
+          }),
+        ],
+        botId: 'bot-1',
+        content: 'reply',
+        threadId: 'th-1',
+      }),
+    );
   });
 });

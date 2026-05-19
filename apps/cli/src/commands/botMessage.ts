@@ -46,6 +46,28 @@ const inferAttachmentType = (mimeType?: string): AttachmentInput['type'] => {
 };
 
 /**
+ * Resolve a list of `--attachment` flag values into `AttachmentInput[]`. Each
+ * entry is either a URL or a local file path. Returns `undefined` when no
+ * flags were passed so callers can omit the field on the wire entirely (the
+ * TRPC schema treats absent vs empty differently). Bails the process on
+ * load failures — a silently-dropped attachment would be worse than a
+ * loud error here.
+ */
+const resolveAttachmentFlags = async (flags: string[]): Promise<AttachmentInput[] | undefined> => {
+  if (flags.length === 0) return undefined;
+  const out: AttachmentInput[] = [];
+  for (const raw of flags) {
+    try {
+      out.push(await parseAttachmentArg(raw));
+    } catch (error) {
+      log.error(`Failed to load attachment "${raw}": ${(error as Error).message}`);
+      process.exit(1);
+    }
+  }
+  return out;
+};
+
+/**
  * Parse a single `--attachment <value>` argument. Accepted forms:
  *   - `https://…` / `http://…`           → fetchUrl, type inferred from extension
  *   - any other string                    → treated as a local file path;
@@ -104,18 +126,7 @@ export function registerBotMessageCommands(bot: Command) {
           target: string;
         },
       ) => {
-        let attachments: AttachmentInput[] | undefined;
-        if (options.attachment.length > 0) {
-          attachments = [];
-          for (const raw of options.attachment) {
-            try {
-              attachments.push(await parseAttachmentArg(raw));
-            } catch (error) {
-              log.error(`Failed to load attachment "${raw}": ${(error as Error).message}`);
-              process.exit(1);
-            }
-          }
-        }
+        const attachments = await resolveAttachmentFlags(options.attachment);
 
         const client = await getTrpcClient();
         const result = await client.botMessage.sendMessage.mutate({
@@ -135,6 +146,49 @@ export function registerBotMessageCommands(bot: Command) {
         const suffix = attachments?.length ? ` with ${attachments.length} attachment(s)` : '';
         console.log(
           `${pc.green('✓')} Message sent${r.messageId ? ` (${pc.dim(r.messageId)})` : ''}${suffix}`,
+        );
+      },
+    );
+
+  // ── dm (direct message) ─────────────────────────────────
+
+  message
+    .command('dm <botId>')
+    .description('Send a direct message to a platform user (creates a DM channel automatically)')
+    .requiredOption('--user-id <id>', 'Target user ID on the platform')
+    .requiredOption('--message <text>', 'Message content')
+    .option(
+      '--attachment <pathOrUrl>',
+      'Attach a file by local path or remote URL (repeatable). ' +
+        'Local paths are base64-encoded; http(s) URLs are passed as fetchUrl.',
+      collectOptions,
+      [],
+    )
+    .option('--json', 'Output JSON')
+    .action(
+      async (
+        botId: string,
+        options: { attachment: string[]; json?: boolean; message: string; userId: string },
+      ) => {
+        const attachments = await resolveAttachmentFlags(options.attachment);
+
+        const client = await getTrpcClient();
+        const result = await client.botMessage.sendDirectMessage.mutate({
+          attachments,
+          botId,
+          content: options.message,
+          userId: options.userId,
+        });
+
+        if (options.json) {
+          outputJson(result);
+          return;
+        }
+
+        const r = result as any;
+        const suffix = attachments?.length ? ` with ${attachments.length} attachment(s)` : '';
+        console.log(
+          `${pc.green('✓')} DM sent${r.messageId ? ` (${pc.dim(r.messageId)})` : ''}${suffix}`,
         );
       },
     );
@@ -548,17 +602,35 @@ export function registerBotMessageCommands(bot: Command) {
     .description('Reply to a thread')
     .requiredOption('--thread-id <id>', 'Thread ID')
     .requiredOption('--message <text>', 'Reply content')
-    .action(async (botId: string, options: { message: string; threadId: string }) => {
-      const client = await getTrpcClient();
-      const result = await client.botMessage.replyToThread.mutate({
-        botId,
-        content: options.message,
-        threadId: options.threadId,
-      });
+    .option(
+      '--attachment <pathOrUrl>',
+      'Attach a file by local path or remote URL (repeatable). ' +
+        'Local paths are base64-encoded; http(s) URLs are passed as fetchUrl.',
+      collectOptions,
+      [],
+    )
+    .action(
+      async (
+        botId: string,
+        options: { attachment: string[]; message: string; threadId: string },
+      ) => {
+        const attachments = await resolveAttachmentFlags(options.attachment);
 
-      const r = result as any;
-      console.log(`${pc.green('✓')} Reply sent${r.messageId ? ` (${pc.dim(r.messageId)})` : ''}`);
-    });
+        const client = await getTrpcClient();
+        const result = await client.botMessage.replyToThread.mutate({
+          attachments,
+          botId,
+          content: options.message,
+          threadId: options.threadId,
+        });
+
+        const r = result as any;
+        const suffix = attachments?.length ? ` with ${attachments.length} attachment(s)` : '';
+        console.log(
+          `${pc.green('✓')} Reply sent${r.messageId ? ` (${pc.dim(r.messageId)})` : ''}${suffix}`,
+        );
+      },
+    );
 
   // ── channel (subcommand group) ──────────────────────────
 

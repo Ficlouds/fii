@@ -30,6 +30,8 @@ import type {
   ReplyToThreadState,
   SearchMessagesParams,
   SearchMessagesState,
+  SendDirectMessageParams,
+  SendDirectMessageState,
   SendMessageParams,
   SendMessageState,
   UnpinMessageParams,
@@ -58,31 +60,27 @@ const toMessageItem = (msg: any): MessageItem => ({
 export class DiscordMessageService implements MessageRuntimeService {
   constructor(private api: DiscordApi) {}
 
-  // ==================== Direct Messaging ====================
-
-  sendDirectMessage = async (params: {
-    content: string;
-    userId: string;
-  }): Promise<{ channelId?: string; messageId?: string; platform?: string }> => {
-    const dmChannel = await this.api.createDMChannel(params.userId);
-    const result = await this.api.createMessage(dmChannel.id, params.content);
-    return { channelId: dmChannel.id, messageId: result.id, platform: 'discord' };
-  };
-
-  // ==================== Core Message Operations ====================
-
-  sendMessage = async (params: SendMessageParams): Promise<SendMessageState> => {
-    if (!params.attachments?.length) {
-      const result = await this.api.createMessage(params.channelId, params.content);
-      return { channelId: params.channelId, messageId: result.id, platform: 'discord' };
+  /**
+   * Shared outbound path used by `sendMessage`, `sendDirectMessage`, and
+   * `replyToThread`. Materializes attachments, batches them under Discord's
+   * 10-files-per-message cap, and falls back to a text-only `createMessage`
+   * if all attachments fail to resolve. Returns the message id of the FIRST
+   * post (the one that carried the text content).
+   */
+  private async postToChannel(
+    channelId: string,
+    content: string,
+    attachments: SendMessageParams['attachments'],
+  ): Promise<{ id: string } | undefined> {
+    if (!attachments?.length) {
+      return this.api.createMessage(channelId, content);
     }
 
-    const files = await materializeAttachmentsForDiscord(params.attachments);
+    const files = await materializeAttachmentsForDiscord(attachments);
     if (files.length === 0) {
       // All attachments failed to materialize — fall back to text-only so the
       // reply still reaches the user.
-      const result = await this.api.createMessage(params.channelId, params.content);
-      return { channelId: params.channelId, messageId: result.id, platform: 'discord' };
+      return this.api.createMessage(channelId, content);
     }
 
     // Discord caps attachments per message at 10. The first batch carries the
@@ -91,18 +89,25 @@ export class DiscordMessageService implements MessageRuntimeService {
     const batches = batchDiscordFiles(files);
     let firstResult: { id: string } | undefined;
     for (const [i, batch] of batches.entries()) {
-      const result = await this.api.createMessage(
-        params.channelId,
-        i === 0 ? params.content : '',
-        batch,
-      );
+      const result = await this.api.createMessage(channelId, i === 0 ? content : '', batch);
       if (i === 0) firstResult = result;
     }
-    return {
-      channelId: params.channelId,
-      messageId: firstResult?.id,
-      platform: 'discord',
-    };
+    return firstResult;
+  }
+
+  // ==================== Direct Messaging ====================
+
+  sendDirectMessage = async (params: SendDirectMessageParams): Promise<SendDirectMessageState> => {
+    const dmChannel = await this.api.createDMChannel(params.userId);
+    const result = await this.postToChannel(dmChannel.id, params.content, params.attachments);
+    return { channelId: dmChannel.id, messageId: result?.id, platform: 'discord' };
+  };
+
+  // ==================== Core Message Operations ====================
+
+  sendMessage = async (params: SendMessageParams): Promise<SendMessageState> => {
+    const result = await this.postToChannel(params.channelId, params.content, params.attachments);
+    return { channelId: params.channelId, messageId: result?.id, platform: 'discord' };
   };
 
   readMessages = async (params: ReadMessagesParams): Promise<ReadMessagesState> => {
@@ -287,8 +292,10 @@ export class DiscordMessageService implements MessageRuntimeService {
   };
 
   replyToThread = async (params: ReplyToThreadParams): Promise<ReplyToThreadState> => {
-    const result = await this.api.createMessage(params.threadId, params.content);
-    return { messageId: result.id, threadId: params.threadId };
+    // Discord threads ARE channels — posting to a thread id goes through the
+    // same `channelMessages` route, so we reuse the shared attachments path.
+    const result = await this.postToChannel(params.threadId, params.content, params.attachments);
+    return { messageId: result?.id, threadId: params.threadId };
   };
 
   // ==================== Platform-Specific: Polls ====================

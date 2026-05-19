@@ -76,6 +76,11 @@ export interface MessageTarget {
 // --- Direct Messaging ---
 
 export interface SendDirectMessageParams {
+  /**
+   * Optional: outbound media attachments (images / files / video / audio).
+   * Same shape as `SendMessageParams.attachments` — see `SendMessageAttachment`.
+   */
+  attachments?: SendMessageAttachment[];
   /** Message content */
   content: string;
   /** Platform */
@@ -373,6 +378,11 @@ export interface ListThreadsState {
 }
 
 export interface ReplyToThreadParams {
+  /**
+   * Optional: outbound media attachments (images / files / video / audio).
+   * Same shape as `SendMessageParams.attachments` — see `SendMessageAttachment`.
+   */
+  attachments?: SendMessageAttachment[];
   /** Reply content */
   content: string;
   /** Platform */

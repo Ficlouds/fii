@@ -277,16 +277,18 @@ export class CompletionLifecycle {
     const metadata = state?.metadata || {};
     const messages: any[] = Array.isArray(state?.messages) ? state.messages : [];
 
-    // Pull text content off the last assistant message. Content may be either
-    // a plain string or an OpenAI-style multimodal part array; in the latter
-    // case, concatenate the text parts so the reply body is preserved.
+    // Pull text content off the **final** assistant turn. Content may be a
+    // plain string or an OpenAI-style multimodal part array; for the array
+    // case we concatenate the text parts so the reply body is preserved.
+    //
+    // We deliberately match on `role === 'assistant'` only — not on whether
+    // the turn has any text — so an image-only or tool-output final turn
+    // doesn't fall through to an earlier assistant message and ship stale
+    // text alongside the current attachments.
     const lastAssistantMessage = messages
       .slice()
       .reverse()
-      .find(
-        (m: { content?: unknown; role: string }) =>
-          m.role === 'assistant' && extractTextFromMessageContent(m.content),
-      );
+      .find((m: { content?: unknown; role: string }) => m.role === 'assistant');
     const lastAssistantContent = lastAssistantMessage
       ? extractTextFromMessageContent(lastAssistantMessage.content)
       : undefined;

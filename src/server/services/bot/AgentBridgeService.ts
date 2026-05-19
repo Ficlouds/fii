@@ -1259,35 +1259,44 @@ export class AgentBridgeService {
 
                 try {
                   const lastAssistantContent = event.lastAssistantContent;
+                  // Convert hook-event attachments (JSON-safe) to chat-sdk
+                  // Attachment shape. Only the *last* chunk carries
+                  // attachments so a multi-chunk reply doesn't repeat the
+                  // image/file once per chunk.
+                  const lastChunkAttachments = hookEventAttachmentsToChatSdk(
+                    event.attachments as any,
+                  );
+                  const hasText = !!lastAssistantContent;
+                  const hasAttachments = !!lastChunkAttachments?.length;
 
-                  if (lastAssistantContent) {
-                    const replyBody = renderFinalReply(lastAssistantContent);
-                    const replyStats = {
-                      elapsedMs: event.duration ?? getElapsedMs(),
-                      llmCalls: event.llmCalls ?? 0,
-                      toolCalls: event.toolCalls ?? 0,
-                      totalCost: event.cost ?? 0,
-                      totalTokens: event.totalTokens ?? 0,
-                    };
-                    // See progress-handler note above: keep the body as
-                    // markdown and let the Chat SDK adapter render it with the
-                    // platform's parse_mode. `formatReply` only appends a
-                    // plain-text stats line.
-                    const finalText = client?.formatReply?.(replyBody, replyStats) ?? replyBody;
+                  if (hasText || hasAttachments) {
+                    let chunks: string[];
+                    if (hasText) {
+                      const replyBody = renderFinalReply(lastAssistantContent!);
+                      const replyStats = {
+                        elapsedMs: event.duration ?? getElapsedMs(),
+                        llmCalls: event.llmCalls ?? 0,
+                        toolCalls: event.toolCalls ?? 0,
+                        totalCost: event.cost ?? 0,
+                        totalTokens: event.totalTokens ?? 0,
+                      };
+                      // See progress-handler note above: keep the body as
+                      // markdown and let the Chat SDK adapter render it with the
+                      // platform's parse_mode. `formatReply` only appends a
+                      // plain-text stats line.
+                      const finalText = client?.formatReply?.(replyBody, replyStats) ?? replyBody;
+                      chunks = splitMessage(finalText, charLimit);
+                      if (chunks.length === 0) chunks = [''];
+                    } else {
+                      // Attachment-only reply — drive one empty chunk so the
+                      // attachments still get posted via buildPostable.
+                      chunks = [''];
+                    }
 
-                    const chunks = splitMessage(finalText, charLimit);
-
-                    // Convert hook-event attachments (JSON-safe) to chat-sdk
-                    // Attachment shape. Only the *last* chunk carries
-                    // attachments so a multi-chunk reply doesn't repeat the
-                    // image/file once per chunk.
-                    const lastChunkAttachments = hookEventAttachmentsToChatSdk(
-                      event.attachments as any,
-                    );
                     const lastIdx = chunks.length - 1;
                     const buildPostable = (chunk: string, idx: number) =>
-                      idx === lastIdx && lastChunkAttachments?.length
-                        ? { attachments: lastChunkAttachments, markdown: chunk }
+                      idx === lastIdx && hasAttachments
+                        ? { attachments: lastChunkAttachments!, markdown: chunk }
                         : { markdown: chunk };
 
                     try {
@@ -1309,14 +1318,18 @@ export class AgentBridgeService {
                     }
 
                     log(
-                      'executeWithCallback[local]: got response (%d chars, %d chunks)',
-                      lastAssistantContent.length,
+                      'executeWithCallback[local]: got response (%d chars, %d chunks, %d attachments)',
+                      lastAssistantContent?.length ?? 0,
                       chunks.length,
+                      lastChunkAttachments?.length ?? 0,
                     );
-                    resolve({ reply: lastAssistantContent, topicId: resolvedTopicId });
+                    resolve({ reply: lastAssistantContent ?? '', topicId: resolvedTopicId });
 
-                    // Fire-and-forget: summarize topic title in DB
-                    if (resolvedTopicId && prompt) {
+                    // Fire-and-forget: summarize topic title in DB. Only when
+                    // we have text to summarize on — image-only replies skip
+                    // title generation (the prompt itself still drives it on
+                    // the next round).
+                    if (resolvedTopicId && prompt && lastAssistantContent) {
                       const topicModel = new TopicModel(this.db, this.userId);
                       topicModel
                         .findById(resolvedTopicId)

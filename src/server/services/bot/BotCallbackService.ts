@@ -386,15 +386,21 @@ export class BotCallbackService {
       return;
     }
 
-    // `!lastAssistantContent` lets whitespace-only strings ("\n", "  ") through;
-    // those collapse to empty text downstream and get rejected by Telegram as
-    // "message text is empty", silently losing the reply. Trim before testing.
-    if (!lastAssistantContent?.trim()) {
-      log('handleCompletion: no lastAssistantContent, skipping');
+    // Skip only when there's nothing at all to send. An image/file-only reply
+    // (no text, but attachments present) is still a valid reply and must go
+    // through — silently dropping it would mean an agent that answered with
+    // just a generated image gets shown nothing on the user side.
+    //
+    // For the text leg: `!lastAssistantContent` lets whitespace-only strings
+    // ("\n", "  ") through; those collapse to empty text downstream and get
+    // rejected by Telegram as "message text is empty", silently losing the
+    // reply. Trim before testing.
+    const hasText = !!lastAssistantContent?.trim();
+    const hasAttachments = !!attachments?.length;
+    if (!hasText && !hasAttachments) {
+      log('handleCompletion: no lastAssistantContent and no attachments, skipping');
       return;
     }
-
-    const msgBody = renderFinalReply(lastAssistantContent);
 
     const stats: UsageStats = {
       elapsedMs: body.duration,
@@ -404,13 +410,22 @@ export class BotCallbackService {
       totalTokens: body.totalTokens ?? 0,
     };
 
-    const formattedBody = client.formatMarkdown?.(msgBody) ?? msgBody;
-    const finalText = client.formatReply?.(formattedBody, stats) ?? formattedBody;
-    const chunks = splitMessage(finalText, charLimit);
-
-    if (chunks.length === 0) {
-      log('handleCompletion: all chunks empty after formatting, skipping send');
-      return;
+    // Build the chunk list. Empty text → a single empty chunk so the
+    // attachment-only path still drives `deliverFirstChunk` once.
+    let chunks: string[];
+    if (hasText) {
+      const msgBody = renderFinalReply(lastAssistantContent!);
+      const formattedBody = client.formatMarkdown?.(msgBody) ?? msgBody;
+      const finalText = client.formatReply?.(formattedBody, stats) ?? formattedBody;
+      chunks = splitMessage(finalText, charLimit);
+      if (chunks.length === 0) {
+        log('handleCompletion: all chunks empty after formatting, skipping send');
+        // Even with no text we still want to deliver the attachments.
+        if (!hasAttachments) return;
+        chunks = [''];
+      }
+    } else {
+      chunks = [''];
     }
 
     // Attach outbound attachments to the *last* chunk only so we don't send

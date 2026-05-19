@@ -773,6 +773,95 @@ describe('BotCallbackService', () => {
         }),
       );
     });
+
+    // Regression for Codex P1: image-only final assistant turn must still
+    // ship the attachments, instead of being silently dropped because there
+    // is no `lastAssistantContent.trim()`.
+    it('should deliver attachments even when reply text is empty', async () => {
+      const body = makeBody({
+        attachments: [{ fetchUrl: 'https://cdn.example.com/only.png', type: 'image' }],
+        lastAssistantContent: '',
+        reason: 'completed',
+        type: 'completion',
+      });
+
+      await service.handleCallback(body);
+
+      // Either edit or create — but the call MUST carry the attachments.
+      const editCalls = mockEditMessage.mock.calls;
+      const createCalls = mockCreateMessage.mock.calls;
+      const allCalls = [...editCalls.map((c) => c[1]), ...createCalls.map((c) => c[0])];
+      expect(
+        allCalls.some(
+          (arg) =>
+            arg &&
+            typeof arg === 'object' &&
+            'attachments' in arg &&
+            (arg as any).attachments?.[0]?.fetchUrl === 'https://cdn.example.com/only.png',
+        ),
+      ).toBe(true);
+    });
+
+    it('should still skip when there is neither text nor attachments', async () => {
+      const body = makeBody({
+        lastAssistantContent: '   \n  ',
+        reason: 'completed',
+        type: 'completion',
+      });
+
+      await service.handleCallback(body);
+
+      expect(mockEditMessage).not.toHaveBeenCalled();
+      expect(mockCreateMessage).not.toHaveBeenCalled();
+    });
+
+    it('should still ship attachments when reply text is whitespace-only', async () => {
+      // Whitespace text alone collapses to empty downstream and would be
+      // dropped, but the attachment-only path must still deliver the image.
+      const body = makeBody({
+        attachments: [{ fetchUrl: 'https://cdn.example.com/ws.png', type: 'image' }],
+        lastAssistantContent: '\n\n   ',
+        reason: 'completed',
+        type: 'completion',
+      });
+
+      await service.handleCallback(body);
+
+      const editCalls = mockEditMessage.mock.calls;
+      const createCalls = mockCreateMessage.mock.calls;
+      const allCalls = [...editCalls.map((c) => c[1]), ...createCalls.map((c) => c[0])];
+      expect(
+        allCalls.some(
+          (arg) =>
+            arg &&
+            typeof arg === 'object' &&
+            'attachments' in arg &&
+            (arg as any).attachments?.[0]?.fetchUrl === 'https://cdn.example.com/ws.png',
+        ),
+      ).toBe(true);
+    });
+
+    it('should not summarize topic title for attachment-only reply', async () => {
+      // Attachment-only reply has no assistant text, so the LLM summarizer
+      // has no body to work with. `summarizeTopicTitle` already guards on
+      // `!lastAssistantContent`; this regression-locks that contract.
+      mockFindById.mockResolvedValue({ title: null });
+
+      const body = makeBody({
+        attachments: [{ fetchUrl: 'https://cdn.example.com/x.png', type: 'image' }],
+        reason: 'completed',
+        topicId: 'topic-1',
+        type: 'completion',
+        userId: 'user-1',
+        userPrompt: 'Draw something',
+      });
+
+      await service.handleCallback(body);
+
+      await new Promise((r) => setTimeout(r, 50));
+      expect(mockGenerateTopicTitle).not.toHaveBeenCalled();
+      expect(mockTopicUpdate).not.toHaveBeenCalled();
+    });
   });
 
   // ==================== Message splitting ====================

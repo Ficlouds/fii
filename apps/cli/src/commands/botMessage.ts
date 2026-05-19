@@ -53,11 +53,12 @@ const inferAttachmentType = (mimeType?: string): AttachmentInput['type'] => {
  */
 const parseAttachmentArg = async (raw: string): Promise<AttachmentInput> => {
   if (/^https?:\/\//.test(raw)) {
-    const mimeType = inferMime(raw);
+    const pathname = new URL(raw).pathname;
+    const mimeType = inferMime(pathname);
     return {
       fetchUrl: raw,
       mimeType,
-      name: basename(new URL(raw).pathname) || undefined,
+      name: basename(pathname) || undefined,
       type: inferAttachmentType(mimeType),
     };
   }

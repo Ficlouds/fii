@@ -2,7 +2,7 @@
 
 import { Button, Flexbox, Popover, Skeleton, Text } from '@lobehub/ui';
 import { Discord, Slack, Telegram } from '@lobehub/ui/icons';
-import { QRCode } from 'antd';
+import { Divider, QRCode } from 'antd';
 import { createStaticStyles } from 'antd-style';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +15,16 @@ const SLACK_INSTALL_HREF = '/api/agent/messenger/slack/install';
 const DISCORD_INSTALL_HREF = '/api/agent/messenger/discord/install';
 
 const styles = createStaticStyles(({ css, cssVar }) => ({
+  divider: css`
+    width: 100%;
+    min-width: 320px;
+    margin-block: 0 6px;
+
+    &::before,
+    &::after {
+      border-block-start: 1px dashed ${cssVar.colorBorder} !important;
+    }
+  `,
   group: css`
     display: flex;
     flex-wrap: wrap;
@@ -49,7 +59,7 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
   wrapper: css`
     gap: 14px;
     align-items: center;
-    margin-block-start: 32px;
+    margin-block-start: 48px;
   `,
 }));
 
@@ -63,13 +73,14 @@ const MessengerIntegrations = memo(() => {
   if (isLoading) {
     return (
       <Flexbox className={styles.wrapper}>
-        <Skeleton.Button active style={{ height: 18, width: 220 }} />
+        <Divider dashed className={styles.divider}>
+          <Skeleton.Button active style={{ height: 14, width: 260 }} />
+        </Divider>
         <div className={styles.group}>
           {[0, 1, 2].map((i) => (
             <Skeleton.Button active key={i} style={{ height: 44, width: 180 }} />
           ))}
         </div>
-        <Skeleton.Button active style={{ height: 14, width: 260 }} />
       </Flexbox>
     );
   }
@@ -84,9 +95,11 @@ const MessengerIntegrations = memo(() => {
 
   return (
     <Flexbox className={styles.wrapper}>
-      <Text strong style={{ fontSize: 15, letterSpacing: 0.2, textAlign: 'center' }}>
-        {t('agent.messenger.title')}
-      </Text>
+      <Divider dashed className={styles.divider}>
+        <Text style={{ fontSize: 13 }} type={'secondary'}>
+          {t('agent.messenger.subtitle')}
+        </Text>
+      </Divider>
       <div className={styles.group}>
         {slack && (
           <Button
@@ -148,9 +161,6 @@ const MessengerIntegrations = memo(() => {
           </Popover>
         )}
       </div>
-      <Text style={{ fontSize: 13, textAlign: 'center' }} type={'secondary'}>
-        {t('agent.messenger.subtitle')}
-      </Text>
     </Flexbox>
   );
 });

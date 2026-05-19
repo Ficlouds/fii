@@ -30,7 +30,7 @@
   "agent.messenger.cta.discord": "Add to Discord",
   "agent.messenger.cta.slack": "Add to Slack",
   "agent.messenger.cta.telegram": "Open in Telegram",
-  "agent.messenger.subtitle": "Chat with your agent on Telegram, Slack, or Discord.",
+  "agent.messenger.subtitle": "Chat with your agent on Telegram, Slack, or Discord",
   "agent.messenger.telegramQrCaption": "Scan with your phone camera",
   "agent.messenger.title": "Keep me with you, wherever you message",
   "agent.modeSwitch.agent": "Conversational",

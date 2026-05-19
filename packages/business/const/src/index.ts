@@ -2,6 +2,7 @@ import { BRANDING_PROVIDER } from './branding';
 
 export * from './branding';
 export * from './llm';
+export * from './storage';
 export * from './url';
 
 const isDev = process.env.NODE_ENV === 'development';

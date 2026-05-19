@@ -1,150 +1,156 @@
 'use client';
 
-import { Block, Flexbox, Icon, Skeleton, Tag, Text } from '@lobehub/ui';
+import { Button, Flexbox, Popover, Skeleton, Text } from '@lobehub/ui';
+import { Discord, Slack, Telegram } from '@lobehub/ui/icons';
+import { QRCode } from 'antd';
 import { createStaticStyles } from 'antd-style';
-import { CheckCircle2Icon, ChevronRightIcon } from 'lucide-react';
-import { memo, useMemo, useState } from 'react';
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import useSWR from 'swr';
 
-import { type MessengerPlatform, PlatformAvatar } from '@/features/Messenger/constants';
-import LinkModal from '@/features/Messenger/LinkModal';
+import { buildTelegramDeepLink, PlatformAvatar } from '@/features/Messenger/constants';
 import { messengerService } from '@/services/messenger';
 
+const SLACK_INSTALL_HREF = '/api/agent/messenger/slack/install';
+const DISCORD_INSTALL_HREF = '/api/agent/messenger/discord/install';
+
 const styles = createStaticStyles(({ css, cssVar }) => ({
-  card: css`
-    cursor: pointer;
-
-    padding-block: 12px;
-    padding-inline: 14px;
-    border: 1px solid ${cssVar.colorBorder};
-    border-radius: ${cssVar.borderRadius};
-
-    transition: border-color 0.2s ease;
-
-    &:hover {
-      border-color: ${cssVar.colorPrimaryBorderHover};
-    }
-  `,
-  grid: css`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+  group: css`
+    display: flex;
+    flex-wrap: wrap;
     gap: 12px;
-    width: 100%;
+    justify-content: center;
 
     @media (width <= 540px) {
-      grid-template-columns: 1fr;
+      flex-direction: column;
+      width: 100%;
     }
   `,
-  header: css`
-    text-align: center;
+  qrIconOverlay: css`
+    pointer-events: none;
+
+    position: absolute;
+    z-index: 1;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    transform: translate(-50%, -50%);
+
+    border: 3px solid ${cssVar.colorBgContainer};
+    border-radius: 50%;
+
+    line-height: 0;
+  `,
+  qrWrap: css`
+    position: relative;
+    padding: 12px;
+    border-radius: 12px;
+    background: ${cssVar.colorBgContainer};
+  `,
+  wrapper: css`
+    gap: 14px;
+    align-items: center;
+    margin-block-start: 32px;
   `,
 }));
 
-interface SelectedPlatform {
-  appId?: string;
-  botUsername?: string;
-  name: string;
-  platform: MessengerPlatform;
-}
-
 const MessengerIntegrations = memo(() => {
   const { t } = useTranslation('onboarding');
-  const [selected, setSelected] = useState<SelectedPlatform | null>(null);
 
-  const platformsSWR = useSWR('messenger:availablePlatforms', () =>
+  const { data, isLoading } = useSWR('messenger:availablePlatforms', () =>
     messengerService.availablePlatforms(),
   );
-  // Only fetch existing connections when at least one platform exists — keeps
-  // the network footprint zero for self-hosted deployments without messenger.
-  const linksSWR = useSWR(
-    platformsSWR.data && platformsSWR.data.length > 0 ? 'messenger:listMyLinks' : null,
-    () => messengerService.listMyLinks(),
-  );
-  const installationsSWR = useSWR(
-    platformsSWR.data && platformsSWR.data.length > 0 ? 'messenger:listMyInstallations' : null,
-    () => messengerService.listMyInstallations(),
-  );
 
-  const connectedPlatforms = useMemo(() => {
-    const set = new Set<MessengerPlatform>();
-    for (const link of linksSWR.data ?? []) set.add(link.platform as MessengerPlatform);
-    for (const inst of installationsSWR.data ?? []) set.add(inst.platform as MessengerPlatform);
-    return set;
-  }, [installationsSWR.data, linksSWR.data]);
-
-  if (platformsSWR.isLoading) {
+  if (isLoading) {
     return (
-      <Flexbox gap={12} width={'100%'}>
-        <Skeleton.Button active style={{ height: 18, width: 160 }} />
-        <div className={styles.grid}>
+      <Flexbox className={styles.wrapper}>
+        <Skeleton.Button active style={{ height: 18, width: 220 }} />
+        <div className={styles.group}>
           {[0, 1, 2].map((i) => (
-            <Skeleton.Button active key={i} style={{ height: 64, width: '100%' }} />
+            <Skeleton.Button active key={i} style={{ height: 44, width: 180 }} />
           ))}
         </div>
+        <Skeleton.Button active style={{ height: 14, width: 260 }} />
       </Flexbox>
     );
   }
 
-  const platforms = platformsSWR.data ?? [];
+  const platforms = data ?? [];
   if (platforms.length === 0) return null;
 
+  const byId = new Map(platforms.map((p) => [p.id, p]));
+  const slack = byId.get('slack');
+  const discord = byId.get('discord');
+  const telegram = byId.get('telegram');
+
   return (
-    <Flexbox align={'center'} gap={12} width={'100%'}>
-      <Flexbox align={'center'} className={styles.header} gap={2}>
-        <Text strong style={{ fontSize: 15 }}>
-          {t('agent.messenger.title')}
-        </Text>
-        <Text style={{ fontSize: 13 }} type={'secondary'}>
-          {t('agent.messenger.subtitle')}
-        </Text>
-      </Flexbox>
-      <div className={styles.grid}>
-        {platforms.map((platform) => {
-          const isConnected = connectedPlatforms.has(platform.id);
-          return (
-            <Block
-              className={styles.card}
-              key={platform.id}
-              onClick={() =>
-                setSelected({
-                  appId: platform.appId,
-                  botUsername: platform.botUsername,
-                  name: platform.name,
-                  platform: platform.id,
-                })
-              }
-            >
-              <Flexbox horizontal align={'center'} gap={12}>
-                <PlatformAvatar platform={platform.id} size={36} />
-                <Flexbox flex={1} gap={2}>
-                  <Text strong style={{ fontSize: 14 }}>
-                    {platform.name}
-                  </Text>
-                  {isConnected ? (
-                    <Tag color={'success'} icon={<Icon icon={CheckCircle2Icon} size={'small'} />}>
-                      {t('agent.messenger.connected')}
-                    </Tag>
-                  ) : (
-                    <Text style={{ fontSize: 12 }} type={'secondary'}>
-                      {t('agent.messenger.connect')}
-                    </Text>
-                  )}
-                </Flexbox>
-                <Icon icon={ChevronRightIcon} />
+    <Flexbox className={styles.wrapper}>
+      <Text strong style={{ fontSize: 15, letterSpacing: 0.2, textAlign: 'center' }}>
+        {t('agent.messenger.title')}
+      </Text>
+      <div className={styles.group}>
+        {slack && (
+          <Button
+            href={SLACK_INSTALL_HREF}
+            icon={<Slack.Color size={20} />}
+            rel={'noopener noreferrer'}
+            size={'large'}
+            style={{ fontWeight: 500, minWidth: 180 }}
+            target={'_blank'}
+          >
+            {t('agent.messenger.cta.slack')}
+          </Button>
+        )}
+        {discord && (
+          <Button
+            href={DISCORD_INSTALL_HREF}
+            icon={<Discord.Color size={20} />}
+            rel={'noopener noreferrer'}
+            size={'large'}
+            style={{ fontWeight: 500, minWidth: 180 }}
+            target={'_blank'}
+          >
+            {t('agent.messenger.cta.discord')}
+          </Button>
+        )}
+        {telegram?.botUsername && (
+          <Popover
+            arrow={false}
+            placement={'top'}
+            trigger={'hover'}
+            content={
+              <Flexbox align={'center'} gap={8}>
+                <div className={styles.qrWrap}>
+                  <QRCode
+                    bordered={false}
+                    size={160}
+                    value={buildTelegramDeepLink(telegram.botUsername)}
+                  />
+                  <div className={styles.qrIconOverlay}>
+                    <PlatformAvatar platform={'telegram'} size={36} />
+                  </div>
+                </div>
+                <Text style={{ fontSize: 12 }} type={'secondary'}>
+                  {t('agent.messenger.telegramQrCaption')}
+                </Text>
               </Flexbox>
-            </Block>
-          );
-        })}
+            }
+          >
+            <Button
+              href={buildTelegramDeepLink(telegram.botUsername)}
+              icon={<Telegram.Color size={20} />}
+              rel={'noopener noreferrer'}
+              size={'large'}
+              style={{ fontWeight: 500, minWidth: 180 }}
+              target={'_blank'}
+            >
+              {t('agent.messenger.cta.telegram')}
+            </Button>
+          </Popover>
+        )}
       </div>
-      <LinkModal
-        appId={selected?.appId}
-        botUsername={selected?.botUsername}
-        name={selected?.name ?? ''}
-        open={!!selected}
-        platform={selected?.platform ?? 'telegram'}
-        onClose={() => setSelected(null)}
-      />
+      <Text style={{ fontSize: 13, textAlign: 'center' }} type={'secondary'}>
+        {t('agent.messenger.subtitle')}
+      </Text>
     </Flexbox>
   );
 });

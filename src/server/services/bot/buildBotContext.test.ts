@@ -29,7 +29,7 @@ describe('buildBotContext', () => {
     expect(ctx.senderExternalUserId).toBe('sender-2');
   });
 
-  it('fails closed when operatorUserId is undefined (LOBE-8768 contract)', () => {
+  it('fails closed when operatorUserId is undefined (fail-closed device access)', () => {
     const ctx = buildBotContext({
       ...baseParams,
       authorUserId: 'sender-1',

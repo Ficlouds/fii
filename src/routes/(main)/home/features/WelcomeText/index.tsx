@@ -57,8 +57,8 @@ interface AutoLinkPattern {
 }
 
 // Bare references the model might emit without the markdown link form.
-// Used as a fallback so e.g. plain "LOBE-8516" inside the welcome still
-// becomes clickable.
+// Used as a fallback to auto-link Linear issue references in plain text
+// encountered in plain text inside the welcome message.
 const AUTO_LINK_PATTERNS: AutoLinkPattern[] = [
   {
     build: (match) => `https://linear.app/lobehub/issue/${match}`,

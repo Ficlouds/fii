@@ -59,7 +59,7 @@ const styles = createStaticStyles(({ css }) => ({
 
 // Module-scoped so a click on any topic cancels a pending click on another.
 // Per-item refs can't do that, which lets rapid clicks across items all
-// fire — each racing to write activeTopicId (see LOBE-7785).
+// fire — each racing to write activeTopicId. Rapid sidebar clicks can cause stale async resolves to overwrite the final topic (switchTopic race condition).
 let pendingSingleClickTimer: ReturnType<typeof setTimeout> | null = null;
 
 const cancelPendingSingleClick = () => {

@@ -1,5 +1,6 @@
 'use client';
 
+import type { RemoteHeterogeneousAgentType } from '@lobechat/heterogeneous-agents';
 import type { HeterogeneousProviderConfig } from '@lobechat/types';
 import { ActionIcon, Flexbox, Icon, Text, Tooltip } from '@lobehub/ui';
 import { Button, Modal, Select, Tag } from 'antd';
@@ -117,7 +118,7 @@ const RemoteAgentConfigCard = memo<RemoteAgentConfigCardProps>(
         try {
           const result = await lambdaClient.device.checkCapability.query({
             deviceId,
-            platform: provider.type as 'hermes' | 'openclaw',
+            platform: provider.type as RemoteHeterogeneousAgentType,
           });
           setCapabilityResult(result);
         } catch {

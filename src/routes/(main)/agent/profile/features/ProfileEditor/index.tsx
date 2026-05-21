@@ -1,6 +1,7 @@
 'use client';
 
 import { isDesktop } from '@lobechat/const';
+import { isRemoteHeterogeneousType } from '@lobechat/heterogeneous-agents';
 import { Flexbox } from '@lobehub/ui';
 import { Divider, Tabs } from 'antd';
 import isEqual from 'fast-deep-equal';
@@ -18,8 +19,6 @@ import AgentTool from './AgentTool';
 import CloudHeterogeneousConfig from './CloudHeterogeneousConfig';
 import HeterogeneousAgentStatusCard from './HeterogeneousAgentStatusCard';
 import RemoteAgentConfigCard from './RemoteAgentConfigCard';
-
-const REMOTE_HETERO_TYPES = new Set(['openclaw', 'hermes']);
 
 const ProfileEditor = memo(() => {
   const { t } = useTranslation('setting');
@@ -53,7 +52,7 @@ const ProfileEditor = memo(() => {
   const isRemoteHetero =
     isHeterogeneous &&
     !!heterogeneousProvider &&
-    REMOTE_HETERO_TYPES.has(heterogeneousProvider.type);
+    isRemoteHeterogeneousType(heterogeneousProvider.type);
 
   return (
     <>

@@ -1,5 +1,6 @@
 'use client';
 
+import type { RemoteHeterogeneousAgentType } from '@lobechat/heterogeneous-agents';
 import { Button, Flexbox, Icon } from '@lobehub/ui';
 import { Alert, Input, Modal, Select, Steps, Tag } from 'antd';
 import { createStyles } from 'antd-style';
@@ -60,12 +61,10 @@ const useStyles = createStyles(({ css, token }) => ({
   `,
 }));
 
-type Platform = 'openclaw' | 'hermes';
-
 interface PlatformDef {
   desc: string;
   name: string;
-  type: Platform;
+  type: RemoteHeterogeneousAgentType;
 }
 
 const PLATFORM_DEFS: PlatformDef[] = [
@@ -143,7 +142,7 @@ const CreatePlatformAgentModal = memo<CreatePlatformAgentModalProps>(
         try {
           const result = await lambdaClient.device.checkCapability.query({
             deviceId: dId,
-            platform: platform as 'hermes' | 'openclaw',
+            platform,
           });
           setCapabilityResult(result);
         } catch {

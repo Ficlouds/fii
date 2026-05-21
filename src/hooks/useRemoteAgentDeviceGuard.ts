@@ -1,3 +1,4 @@
+import { isRemoteHeterogeneousType } from '@lobechat/heterogeneous-agents';
 import { useCallback, useEffect, useState } from 'react';
 
 import { lambdaClient } from '@/libs/trpc/client';
@@ -55,7 +56,7 @@ export const useRemoteAgentDeviceGuard = ({
         return;
       }
 
-      if (providerType === 'openclaw' || providerType === 'hermes') {
+      if (providerType && isRemoteHeterogeneousType(providerType)) {
         const capability = await lambdaClient.device.checkCapability.query({
           deviceId: boundDeviceId,
           platform: providerType,

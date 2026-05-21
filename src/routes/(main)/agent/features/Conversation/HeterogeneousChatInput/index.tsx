@@ -1,5 +1,6 @@
 'use client';
 
+import { isRemoteHeterogeneousType } from '@lobechat/heterogeneous-agents';
 import { Alert, Button, Flexbox } from '@lobehub/ui';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -33,8 +34,6 @@ const rightActions: ActionKeys[] = [];
  * In cloud (web) mode, shows a configuration prompt and disables the input
  * until the user sets up their cloud credentials in agent profile.
  */
-const REMOTE_HETERO_TYPES = new Set(['openclaw', 'hermes']);
-
 const HeterogeneousChatInput = memo(() => {
   const { t } = useTranslation('chat');
   const { isConfigured, goToConfig } = useHeteroAgentCloudConfig();
@@ -42,7 +41,7 @@ const HeterogeneousChatInput = memo(() => {
   const navigate = useNavigate();
 
   const providerType = useAgentStore(agentSelectors.currentAgentHeterogeneousProviderType);
-  const isRemoteAgent = !!providerType && REMOTE_HETERO_TYPES.has(providerType);
+  const isRemoteAgent = !!providerType && isRemoteHeterogeneousType(providerType);
 
   const { status, refresh } = useRemoteAgentDeviceGuard({ enabled: isRemoteAgent });
 

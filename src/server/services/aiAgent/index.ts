@@ -23,6 +23,7 @@ import type {
 } from '@lobechat/context-engine';
 import { SkillEngine } from '@lobechat/context-engine';
 import type { LobeChatDatabase } from '@lobechat/database';
+import { isRemoteHeterogeneousType } from '@lobechat/heterogeneous-agents';
 import { buildTaskManagerDefaultsPrompt } from '@lobechat/prompts';
 import type {
   ChatFileItem,
@@ -667,6 +668,7 @@ export class AiAgentService {
         | 'codex'
         | 'hermes'
         | 'openclaw';
+      const isRemoteHetero = isRemoteHeterogeneousType(heteroType);
       const operationId = nanoid();
 
       // Create user message so the conversation is visible in the UI immediately.
@@ -681,12 +683,14 @@ export class AiAgentService {
           });
 
       // Create an assistant message placeholder (shows spinner in the UI).
+      // For remote hetero agents (openclaw/hermes), override provider with the hetero type
+      // so the frontend can identify the platform and display the correct name in the model tag.
       const assistantMsg = await this.messageModel.create({
         agentId: resolvedAgentId,
         content: LOADING_FLAT,
         model,
         parentId: parentMessageId ?? userMsg?.id,
-        provider,
+        provider: isRemoteHetero ? heteroType : provider,
         role: 'assistant',
         threadId: appContext?.threadId ?? undefined,
         topicId,
@@ -751,6 +755,9 @@ export class AiAgentService {
         userId: this.userId,
       };
 
+      const remoteDeviceId =
+        requestedDeviceId || agentConfig.agencyConfig?.boundDeviceId || undefined;
+
       // Seed topic.metadata.runningOperation so heteroIngest can validate the operation.
       // completionWebhook is stored so heteroFinish can call back to the IM bot-callback
       // endpoint even though the hetero path bypasses the normal hook registration flow.
@@ -772,9 +779,6 @@ export class AiAgentService {
       // by agencyConfig.boundDeviceId and communicate back via agentNotify.notify.
       // They always go through the gateway WS channel — open the stream now so the
       // frontend can subscribe before the first lh notify arrives.
-      const isRemoteHetero = heteroType === 'openclaw' || heteroType === 'hermes';
-      const remoteDeviceId =
-        requestedDeviceId || agentConfig.agencyConfig?.boundDeviceId || undefined;
 
       if (isRemoteHetero) {
         if (!remoteDeviceId) {
@@ -2693,7 +2697,8 @@ export class AiAgentService {
 
       if (
         runningOp?.deviceId &&
-        (runningOp.heteroType === 'openclaw' || runningOp.heteroType === 'hermes')
+        runningOp.heteroType &&
+        isRemoteHeterogeneousType(runningOp.heteroType)
       ) {
         const taskId = runningOp.operationId ?? resolvedOperationId;
         log(

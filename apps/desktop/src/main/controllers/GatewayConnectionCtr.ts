@@ -1,4 +1,6 @@
 import { execFileSync, execSync, spawn } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import type { AgentRunRequestMessage } from '@lobechat/device-gateway-client';
 import type { GatewayConnectionStatus } from '@lobechat/electron-client-ipc';
@@ -299,11 +301,77 @@ export default class GatewayConnectionCtr extends ControllerModule {
     }
   }
 
-  private async getAgentProfile(_args: {
-    platform: string;
-  }): Promise<{ avatar?: string; description?: string; title?: string }> {
-    // Future: forward to platform-specific CLI (e.g. `openclaw profile --json`)
+  private getAgentProfile(args: { agentId?: string; platform: string }): {
+    avatar?: string;
+    description?: string;
+    title?: string;
+  } {
+    const { platform, agentId } = args;
+
+    if (platform === 'openclaw') {
+      return this.getOpenClawProfile(agentId);
+    }
+
+    // hermes and unknown platforms: not yet implemented
     return {};
+  }
+
+  private getOpenClawProfile(agentId?: string): {
+    avatar?: string;
+    description?: string;
+    title?: string;
+  } {
+    let output: string;
+    try {
+      output = execFileSync('openclaw', ['agents', 'list', '--json'], {
+        encoding: 'utf8',
+        timeout: 5000,
+      });
+    } catch {
+      return {};
+    }
+
+    let agents: Array<{
+      id: string;
+      identityEmoji?: string;
+      identityName?: string;
+      isDefault?: boolean;
+      workspace?: string;
+    }>;
+    try {
+      agents = JSON.parse(output) as typeof agents;
+    } catch {
+      return {};
+    }
+
+    const agent = agentId
+      ? agents.find((a) => a.id === agentId)
+      : (agents.find((a) => a.isDefault) ?? agents[0]);
+
+    if (!agent) return {};
+
+    const title = agent.identityName || undefined;
+    const avatar = agent.identityEmoji || '🦞';
+    const description = agent.workspace
+      ? this.readDescriptionFromWorkspace(agent.workspace)
+      : undefined;
+
+    return { avatar, description, title };
+  }
+
+  private readDescriptionFromWorkspace(workspacePath: string): string | undefined {
+    for (const filename of ['IDENTITY.md', 'SOUL.md']) {
+      const filePath = path.join(workspacePath, filename);
+      if (!fs.existsSync(filePath)) continue;
+
+      const content = fs.readFileSync(filePath, 'utf8');
+      const match = content.match(/\*{0,2}(?:Creature|Vibe|Description):?\*{0,2}\s*(.+)/i);
+      if (!match) continue;
+
+      const value = match[1].trim();
+      if (/^[_*(（].*[）)*_]$|^(?:tbd|todo|n\/?a|none|待定|未定)$/i.test(value)) continue;
+      return value;
+    }
   }
 
   // ─── Platform Agent Task Execution ───

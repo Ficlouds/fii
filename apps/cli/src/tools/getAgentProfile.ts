@@ -2,10 +2,12 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
+import type { RemoteHeterogeneousAgentType } from '@lobechat/heterogeneous-agents';
+
 export interface GetAgentProfileParams {
   /** Agent ID to query (openclaw only). Defaults to the default agent. */
   agentId?: string;
-  platform: 'hermes' | 'openclaw';
+  platform: RemoteHeterogeneousAgentType;
 }
 
 export interface AgentProfileResult {

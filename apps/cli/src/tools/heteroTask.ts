@@ -1,5 +1,7 @@
 import { execFileSync, spawn } from 'node:child_process';
 
+import type { RemoteHeterogeneousAgentType } from '@lobechat/heterogeneous-agents';
+
 import { getTrpcClient } from '../api/client';
 import { getTask, removeTask, saveTask } from '../daemon/taskRegistry';
 import { log } from '../utils/logger';
@@ -35,7 +37,7 @@ function openclawSessionExists(agentId: string, topicId: string): boolean {
 
 export interface RunHeteroTaskParams {
   agentId?: string;
-  agentType: 'hermes' | 'openclaw';
+  agentType: RemoteHeterogeneousAgentType;
   cwd?: string;
   operationId: string;
   prompt: string;

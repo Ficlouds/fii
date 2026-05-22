@@ -1,7 +1,17 @@
+import { REMOTE_HETEROGENEOUS_AGENT_CONFIGS } from '@lobechat/heterogeneous-agents';
 import { z } from 'zod';
 
 import { authedProcedure, router } from '@/libs/trpc/lambda';
 import { deviceProxy } from '@/server/services/toolExecution/deviceProxy';
+
+// Derive the zod enum from the canonical config so new platforms are
+// automatically covered without touching this file.
+const remotePlatformEnum = z.enum(
+  REMOTE_HETEROGENEOUS_AGENT_CONFIGS.map((c) => c.type) as [
+    (typeof REMOTE_HETEROGENEOUS_AGENT_CONFIGS)[number]['type'],
+    ...(typeof REMOTE_HETEROGENEOUS_AGENT_CONFIGS)[number]['type'][],
+  ],
+);
 
 const CAPABILITY_TIMEOUT_MS = 5_000;
 const PROFILE_TIMEOUT_MS = 5_000;
@@ -24,7 +34,7 @@ export const deviceRouter = router({
     .input(
       z.object({
         deviceId: z.string(),
-        platform: z.enum(['hermes', 'openclaw']),
+        platform: remotePlatformEnum,
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -62,7 +72,7 @@ export const deviceRouter = router({
     .input(
       z.object({
         deviceId: z.string(),
-        platform: z.enum(['hermes', 'openclaw']),
+        platform: remotePlatformEnum,
       }),
     )
     .query(async ({ ctx, input }) => {

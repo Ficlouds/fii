@@ -326,10 +326,25 @@ export default class GatewayConnectionCtr extends ControllerModule {
     if (agentType === 'openclaw') {
       const lhPath = this.resolveLhPath();
       const openclawAgent = process.env['OPENCLAW_AGENT_ID'] ?? 'main';
-      const isNewSession = !this.openclawSessionExists(openclawAgent, topicId);
-      const enrichedPrompt = isNewSession
-        ? `${prompt}\n\n${buildNotifyProtocol(lhPath, topicId)}`
-        : prompt;
+
+      // Always inject the notify protocol so openclaw knows how to report results
+      // back to the LobeHub UI — even if the previous turn failed and the session
+      // history was not cleanly committed.
+      const enrichedPrompt = `${prompt}\n\n${buildNotifyProtocol(lhPath, topicId)}`;
+
+      // Kill any existing openclaw process for this topicId before spawning a new one.
+      // openclaw serialises session writes; a concurrent process holding the session
+      // lock will cause the new one to exit with code 1.
+      for (const [existingTaskId, entry] of this.platformTasks) {
+        if (entry.topicId === topicId && entry.agentType === 'openclaw') {
+          try {
+            process.kill(entry.pid, 'SIGTERM');
+          } catch {
+            // Already exited — nothing to do.
+          }
+          this.platformTasks.delete(existingTaskId);
+        }
+      }
 
       const child = spawn(
         'openclaw',
@@ -473,18 +488,6 @@ export default class GatewayConnectionCtr extends ControllerModule {
       return execFileSync('which', ['lh'], { encoding: 'utf8' }).trim();
     } catch {
       return 'lh';
-    }
-  }
-
-  private openclawSessionExists(agentId: string, topicId: string): boolean {
-    try {
-      const raw = execFileSync('openclaw', ['sessions', '--agent', agentId, '--json'], {
-        encoding: 'utf8',
-      });
-      const data = JSON.parse(raw) as { sessions?: Array<{ key: string }> };
-      return data.sessions?.some((s) => s.key === `agent:${agentId}:explicit:${topicId}`) ?? false;
-    } catch {
-      return false;
     }
   }
 

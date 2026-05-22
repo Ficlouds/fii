@@ -144,9 +144,12 @@ vi.mock('node:crypto', () => ({
 }));
 
 const execSyncMock = vi.hoisted(() => vi.fn());
+const execFileSyncMock = vi.hoisted(() => vi.fn());
+const spawnMock = vi.hoisted(() => vi.fn());
+
 vi.mock('node:child_process', async (importOriginal) => {
   const actual = await importOriginal<{ execSync: typeof ExecSyncType }>();
-  return { ...actual, execSync: execSyncMock };
+  return { ...actual, execFileSync: execFileSyncMock, execSync: execSyncMock, spawn: spawnMock };
 });
 
 vi.mock('node:os', () => ({
@@ -675,6 +678,143 @@ describe('GatewayConnectionCtr', () => {
         reason: 'binary not found',
         status: 'rejected',
       });
+    });
+  });
+
+  // ─── runHeteroTask ───
+
+  describe('runHeteroTask', () => {
+    /** Creates a minimal mock child process returned by spawn(). */
+    function makeMockChild(pid = 9999) {
+      const listeners: Record<string, Array<(...a: any[]) => void>> = {};
+      return {
+        on: vi.fn((event: string, cb: (...a: any[]) => void) => {
+          listeners[event] = listeners[event] ?? [];
+          listeners[event].push(cb);
+        }),
+        pid,
+        unref: vi.fn(),
+        _emit: (event: string, ...args: any[]) => listeners[event]?.forEach((cb) => cb(...args)),
+      };
+    }
+
+    async function connectAndOpen() {
+      ctr.afterAppReady();
+      await vi.advanceTimersByTimeAsync(0);
+      const client = MockGatewayClient.lastInstance!;
+      client.simulateConnected();
+      return client;
+    }
+
+    beforeEach(() => {
+      execFileSyncMock.mockReturnValue('/usr/local/bin/lh\n');
+      spawnMock.mockReset();
+    });
+
+    it('always injects buildNotifyProtocol into the prompt', async () => {
+      const child = makeMockChild();
+      spawnMock.mockReturnValue(child);
+
+      const client = await connectAndOpen();
+      client.simulateToolCallRequest(
+        'runHeteroTask',
+        {
+          agentType: 'openclaw',
+          operationId: 'op-1',
+          prompt: 'hello',
+          taskId: 'task-1',
+          topicId: 'topic-1',
+        },
+        'req-run',
+      );
+      await vi.advanceTimersByTimeAsync(0);
+
+      expect(spawnMock).toHaveBeenCalledTimes(1);
+      const [, spawnArgs] = spawnMock.mock.calls[0] as [string, string[]];
+      const messageArg = spawnArgs[spawnArgs.indexOf('--message') + 1];
+      expect(messageArg).toContain('hello');
+      expect(messageArg).toContain('lh notify');
+    });
+
+    it('kills an existing concurrent openclaw process for the same topicId before spawning', async () => {
+      const killSpy = vi.spyOn(process, 'kill').mockImplementation(() => true);
+
+      // First task
+      const child1 = makeMockChild(1111);
+      spawnMock.mockReturnValueOnce(child1);
+      const client = await connectAndOpen();
+      client.simulateToolCallRequest(
+        'runHeteroTask',
+        {
+          agentType: 'openclaw',
+          operationId: 'op-1',
+          prompt: 'msg1',
+          taskId: 'task-1',
+          topicId: 'topic-same',
+        },
+        'req-1',
+      );
+      await vi.advanceTimersByTimeAsync(0);
+
+      // Second task for same topicId — should kill task-1's pid first
+      const child2 = makeMockChild(2222);
+      spawnMock.mockReturnValueOnce(child2);
+      client.simulateToolCallRequest(
+        'runHeteroTask',
+        {
+          agentType: 'openclaw',
+          operationId: 'op-2',
+          prompt: 'msg2',
+          taskId: 'task-2',
+          topicId: 'topic-same',
+        },
+        'req-2',
+      );
+      await vi.advanceTimersByTimeAsync(0);
+
+      expect(killSpy).toHaveBeenCalledWith(1111, 'SIGTERM');
+      expect(spawnMock).toHaveBeenCalledTimes(2);
+
+      killSpy.mockRestore();
+    });
+
+    it('does not kill processes for a different topicId', async () => {
+      const killSpy = vi.spyOn(process, 'kill').mockImplementation(() => true);
+
+      const child1 = makeMockChild(3333);
+      spawnMock.mockReturnValueOnce(child1);
+      const client = await connectAndOpen();
+      client.simulateToolCallRequest(
+        'runHeteroTask',
+        {
+          agentType: 'openclaw',
+          operationId: 'op-1',
+          prompt: 'a',
+          taskId: 'task-a',
+          topicId: 'topic-A',
+        },
+        'req-a',
+      );
+      await vi.advanceTimersByTimeAsync(0);
+
+      const child2 = makeMockChild(4444);
+      spawnMock.mockReturnValueOnce(child2);
+      client.simulateToolCallRequest(
+        'runHeteroTask',
+        {
+          agentType: 'openclaw',
+          operationId: 'op-2',
+          prompt: 'b',
+          taskId: 'task-b',
+          topicId: 'topic-B',
+        },
+        'req-b',
+      );
+      await vi.advanceTimersByTimeAsync(0);
+
+      expect(killSpy).not.toHaveBeenCalled();
+
+      killSpy.mockRestore();
     });
   });
 

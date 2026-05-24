@@ -5,8 +5,7 @@ import { SELF_ITERATION_AGENT_SLUGS } from '@lobechat/builtin-agents';
  * AgentSignal source events.
  *
  * Suppression applies when:
- * - The slug belongs to SELF_ITERATION_AGENT_SLUGS (nightly-review,
- *   self-reflection, self-feedback-intent).
+ * - The slug belongs to SELF_ITERATION_AGENT_SLUGS (currently just `self-iteration`).
  * - The caller passes `appContext.suppressSignal: true` explicitly.
  *
  * Background system agents must always pass this so that their own

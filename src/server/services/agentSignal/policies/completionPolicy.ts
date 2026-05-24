@@ -1,22 +1,20 @@
-import { BUILTIN_AGENT_SLUGS } from '@lobechat/builtin-agents';
 import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
+import { BUILTIN_AGENT_SLUGS } from '@lobechat/builtin-agents';
 
 import { defineAgentSignalHandlers, defineSourceHandler } from '../runtime/middleware';
 
 /**
  * Handles `agent.execution.completed` source events emitted after every execAgent run
- * (including builtin background agents). Routes by `payload.agentId` to optional caller
- * callbacks so that side-effects (brief writing, receipt projection, idempotency marker)
- * happen asynchronously after the agent run finishes.
+ * (including builtin background agents). Routes builtin self-iteration runs to an
+ * optional caller callback so side-effects (brief writing, receipt projection,
+ * idempotency marker) can happen asynchronously after the agent run finishes.
  *
- * Routing table:
- * - nightly-review        → write review brief / proposal
- * - self-reflection       → write reflection receipt
- * - self-feedback-intent  → write intent receipt
- * - anything else         → no-op (front-end chat is handled by clientRuntime* sources)
+ * Mode-specific dispatch (review / reflection / feedback) is deferred — the
+ * caller can demultiplex by looking up the operation row and inspecting the
+ * stored scope / iteration mode at callback time.
  *
- * Callbacks are fire-and-forget from the worker's perspective; failures are logged
- * but never re-trigger the source pipeline.
+ * The callback is fire-and-forget from the worker's perspective; failures are
+ * logged but never re-trigger the source pipeline.
  *
  * NOTE on userId: the `agent.execution.completed` source payload today does not carry
  * userId, and `AgentSignalSource.scope` is not populated by renderers. Callers that
@@ -30,12 +28,8 @@ export interface CompletionCallbackParams {
 }
 
 export interface CreateCompletionPolicyOptions {
-  /** Called when a nightly-review run completes. */
-  onNightlyReviewCompleted?: (params: CompletionCallbackParams) => Promise<void>;
-  /** Called when a self-feedback-intent run completes. */
-  onSelfFeedbackIntentCompleted?: (params: CompletionCallbackParams) => Promise<void>;
-  /** Called when a self-reflection run completes. */
-  onSelfReflectionCompleted?: (params: CompletionCallbackParams) => Promise<void>;
+  /** Called when a self-iteration run completes (any mode: review / reflection / feedback). */
+  onSelfIterationCompleted?: (params: CompletionCallbackParams) => Promise<void>;
 }
 
 export const createCompletionPolicy = (options: CreateCompletionPolicyOptions = {}) => {
@@ -49,6 +43,7 @@ export const createCompletionPolicy = (options: CreateCompletionPolicyOptions = 
         const topicId = source.payload.topicId;
 
         if (!agentId || !operationId) return;
+        if (agentId !== BUILTIN_AGENT_SLUGS.selfIteration) return;
 
         const params: CompletionCallbackParams = {
           agentId,
@@ -57,13 +52,7 @@ export const createCompletionPolicy = (options: CreateCompletionPolicyOptions = 
         };
 
         try {
-          if (agentId === BUILTIN_AGENT_SLUGS.nightlyReview) {
-            await options.onNightlyReviewCompleted?.(params);
-          } else if (agentId === BUILTIN_AGENT_SLUGS.selfReflection) {
-            await options.onSelfReflectionCompleted?.(params);
-          } else if (agentId === BUILTIN_AGENT_SLUGS.selfFeedbackIntent) {
-            await options.onSelfFeedbackIntentCompleted?.(params);
-          }
+          await options.onSelfIterationCompleted?.(params);
         } catch (err) {
           // Non-fatal: completion policy failures must not block the AgentSignal worker
           // or cause source re-processing.

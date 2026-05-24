@@ -48,17 +48,10 @@ export interface ExecuteViaExecAgentResult {
   operationId: string;
 }
 
-const resolveSlug = (mode: IterationMode) => {
-  if (mode === 'review') return BUILTIN_AGENT_SLUGS.nightlyReview;
-  if (mode === 'reflection') return BUILTIN_AGENT_SLUGS.selfReflection;
-  return BUILTIN_AGENT_SLUGS.selfFeedbackIntent;
-};
-
 export const executeViaExecAgent = async (
   input: ExecuteViaExecAgentInput,
 ): Promise<ExecuteViaExecAgentResult> => {
   const mode: IterationMode = input.mode ?? 'review';
-  const slug = resolveSlug(mode);
 
   const prompt = createAgentSignalSelfIterationPrompt({
     agentId: input.agentId,
@@ -84,7 +77,7 @@ export const executeViaExecAgent = async (
     autoStart: true,
     maxSteps: input.maxSteps,
     prompt,
-    slug,
+    slug: BUILTIN_AGENT_SLUGS.selfIteration,
     trigger: RequestTrigger.AgentSignal,
   });
 

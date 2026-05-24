@@ -122,6 +122,16 @@ export const renderSkillIndexContent = (input: RenderSkillIndexContentInput): st
 };
 
 /**
+ * Returns the editable Markdown body from a canonical `SKILL.md` document.
+ *
+ * The raw SKILL.md content owns frontmatter as file metadata, while editorData stores only the
+ * rich-text body projection. Keeping that boundary here prevents YAML metadata from becoming
+ * visible editor content.
+ */
+export const getSkillIndexBodyMarkdown = (content: string): string =>
+  parseMatter(content).body.replace(/^\r?\n/, '');
+
+/**
  * Parses skill index frontmatter.
  *
  * Use when:

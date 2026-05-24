@@ -31,6 +31,9 @@ const createAgentDocument = (overrides: Record<string, unknown> = {}) =>
     ...overrides,
   }) as any;
 
+const skillContent = (name = 'writer', body = '# Skill') =>
+  `---\ndescription: Writes documents\nname: ${name}\n---\n${body}`;
+
 describe('Agent skill VFS providers', () => {
   const agentDocumentModel = {
     associate: vi.fn(),
@@ -170,6 +173,57 @@ describe('Agent skill VFS providers', () => {
       expect(result.path).toBe('./lobe/skills/agent/skills/writer/SKILL.md');
     });
 
+    it('creates SKILL.md with full content but body-only editorData when frontmatter is present', async () => {
+      const content = skillContent();
+      agentDocumentModel.findByAgent.mockResolvedValue([]);
+      agentDocumentModel.create
+        .mockResolvedValueOnce({
+          documentId: 'bundle-1',
+          fileType: 'skills/bundle',
+          filename: 'writer',
+          id: 'agent-doc-bundle',
+          metadata: null,
+          parentId: null,
+          templateId: 'agent-skill',
+          title: 'writer',
+        })
+        .mockResolvedValueOnce({
+          content,
+          documentId: 'file-1',
+          fileType: 'skills/index',
+          filename: 'SKILL.md',
+          id: 'agent-doc-file',
+          metadata: null,
+          parentId: 'bundle-1',
+          templateId: 'agent-skill',
+          title: 'SKILL.md',
+        });
+
+      const provider = new ProviderSkillsAgentDocument('agent', {
+        agentDocumentModel,
+        documentService,
+      });
+
+      const result = await provider.create({
+        agentId: 'agent-1',
+        content,
+        skillName: 'writer',
+        targetNamespace: 'agent',
+      });
+
+      expect(agentDocumentModel.create).toHaveBeenNthCalledWith(
+        2,
+        'agent-1',
+        'SKILL.md',
+        content,
+        expect.objectContaining({
+          editorData: { markdown: '# Skill' },
+          fileType: 'skills/index',
+        }),
+      );
+      expect(result.content).toBe(content);
+    });
+
     /**
      * @example
      * A partially-created skill bundle reserves the package name and blocks duplicate creation.
@@ -250,6 +304,46 @@ describe('Agent skill VFS providers', () => {
         editorData: { markdown: 'new content' },
       });
       expect(result.content).toBe('new content');
+    });
+
+    it('updates SKILL.md with full content but body-only editorData when frontmatter is present', async () => {
+      const content = skillContent('skill-a', '# Updated');
+      agentDocumentModel.findByAgent.mockResolvedValue([
+        createAgentDocument({
+          documentId: 'bundle-1',
+          fileType: 'skills/bundle',
+          filename: 'skill-a',
+          id: 'agent-doc-bundle',
+          parentId: null,
+          templateId: 'agent-skill',
+        }),
+        createAgentDocument({
+          content: skillContent('skill-a', '# Old'),
+          documentId: 'file-1',
+          fileType: 'skills/index',
+          filename: 'SKILL.md',
+          id: 'agent-doc-file',
+          parentId: 'bundle-1',
+          templateId: 'agent-skill',
+        }),
+      ]);
+
+      const provider = new ProviderSkillsAgentDocument('agent', {
+        agentDocumentModel,
+        documentService,
+      });
+
+      const result = await provider.update({
+        agentId: 'agent-1',
+        content,
+        path: './lobe/skills/agent/skills/skill-a/SKILL.md',
+      });
+
+      expect(agentDocumentModel.update).toHaveBeenCalledWith('agent-doc-file', {
+        content,
+        editorData: { markdown: '# Updated' },
+      });
+      expect(result.content).toBe(content);
     });
 
     it('soft-deletes the folder subtree for an agent skill', async () => {

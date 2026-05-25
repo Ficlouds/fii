@@ -1,5 +1,6 @@
 'use client';
 
+import { getServiceModelPolicy, isServiceModelCandidateAllowed } from '@lobechat/const';
 import type { FormGroupItemType, FormItemProps } from '@lobehub/ui';
 import { Flexbox, Form, Icon, InputNumber, Skeleton } from '@lobehub/ui';
 import { Switch } from 'antd';
@@ -10,13 +11,16 @@ import { useTranslation } from 'react-i18next';
 
 import { FORM_STYLE } from '@/const/layoutTokens';
 import ModelSelect from '@/features/ModelSelect';
+import { useEnabledEmbeddingModels } from '@/hooks/useEnabledEmbeddingModels';
 import { useUserStore } from '@/store/user';
 import { settingsSelectors } from '@/store/user/selectors';
+import type { EnabledProviderWithModels } from '@/types/aiProvider';
 import type { SystemAgentItem, UserServiceModelConfigKey } from '@/types/user/settings';
 
 interface SystemAgentModelItem {
   contextLimit?: boolean;
   key: UserServiceModelConfigKey;
+  source?: 'chat' | 'embedding';
 }
 
 type LoadingKey = 'defaultAgent' | UserServiceModelConfigKey;
@@ -38,7 +42,7 @@ const OPTIONAL_FEATURE_ITEMS: SystemAgentModelItem[] = [
 const MEMORY_MODEL_ITEMS: SystemAgentModelItem[] = [
   { contextLimit: true, key: 'memoryAnalysisAgentConfig' },
   { contextLimit: true, key: 'userMemoryPersonaWriter' },
-  { contextLimit: true, key: 'userMemoryEmbedding' },
+  { contextLimit: true, key: 'userMemoryEmbedding', source: 'embedding' },
 ];
 
 const ModelAssignmentsForm = memo(() => {
@@ -52,6 +56,7 @@ const ModelAssignmentsForm = memo(() => {
     s.updateSystemAgent,
     s.isUserStateInit,
   ]);
+  const enabledEmbeddingModels = useEnabledEmbeddingModels();
   const [loadingKey, setLoadingKey] = useState<LoadingKey>();
 
   useEffect(() => {
@@ -87,6 +92,24 @@ const ModelAssignmentsForm = memo(() => {
     }
   };
 
+  const getModelSelectProps = (
+    key: UserServiceModelConfigKey,
+    source?: SystemAgentModelItem['source'],
+  ) => {
+    const policy = getServiceModelPolicy(key);
+
+    return {
+      modelFilter: ({
+        model,
+        provider,
+      }: {
+        model: EnabledProviderWithModels['children'][number];
+        provider: EnabledProviderWithModels;
+      }) => isServiceModelCandidateAllowed(policy, { model: model.id, provider: provider.id }),
+      modelList: source === 'embedding' ? enabledEmbeddingModels : undefined,
+    };
+  };
+
   const defaultAgentItem: FormItemProps = {
     children: (
       <Flexbox align="center" direction="horizontal" gap={12} style={{ width: 'min(100%, 448px)' }}>
@@ -103,7 +126,7 @@ const ModelAssignmentsForm = memo(() => {
     minWidth: undefined,
   };
 
-  const systemModelItems: FormItemProps[] = SYSTEM_AGENT_MODEL_ITEMS.map(({ key }) => {
+  const systemModelItems: FormItemProps[] = SYSTEM_AGENT_MODEL_ITEMS.map(({ key, source }) => {
     const value = systemAgentSettings[key];
 
     return {
@@ -115,6 +138,7 @@ const ModelAssignmentsForm = memo(() => {
           style={{ width: 'min(100%, 448px)' }}
         >
           <ModelSelect
+            {...getModelSelectProps(key, source)}
             showAbility={false}
             style={{ minWidth: 0, width: '100%' }}
             value={value}
@@ -128,40 +152,43 @@ const ModelAssignmentsForm = memo(() => {
     } satisfies FormItemProps;
   });
 
-  const memoryModelItems: FormItemProps[] = MEMORY_MODEL_ITEMS.map(({ contextLimit, key }) => {
-    const value = systemAgentSettings[key];
+  const memoryModelItems: FormItemProps[] = MEMORY_MODEL_ITEMS.map(
+    ({ contextLimit, key, source }) => {
+      const value = systemAgentSettings[key];
 
-    return {
-      children: (
-        <Flexbox direction="vertical" gap={8} style={{ width: 'min(100%, 448px)' }}>
-          <ModelSelect
-            showAbility={false}
-            style={{ minWidth: 0, width: '100%' }}
-            value={value}
-            onChange={(props) => updateSystemAgentModel(key, props)}
-          />
-          {contextLimit && (
-            <InputNumber
-              min={1}
-              placeholder={t('serviceModel.contextLimit.placeholder')}
-              style={{ alignSelf: 'flex-end', width: 180 }}
-              value={value.contextLimit}
-              onChange={(contextLimit) =>
-                updateSystemAgentModel(key, {
-                  contextLimit: typeof contextLimit === 'number' ? contextLimit : undefined,
-                })
-              }
+      return {
+        children: (
+          <Flexbox direction="vertical" gap={8} style={{ width: 'min(100%, 448px)' }}>
+            <ModelSelect
+              {...getModelSelectProps(key, source)}
+              showAbility={false}
+              style={{ minWidth: 0, width: '100%' }}
+              value={value}
+              onChange={(props) => updateSystemAgentModel(key, props)}
             />
-          )}
-        </Flexbox>
-      ),
-      desc: t(`systemAgent.${key}.modelDesc`),
-      label: t(`systemAgent.${key}.title`),
-      minWidth: undefined,
-    } satisfies FormItemProps;
-  });
+            {contextLimit && (
+              <InputNumber
+                min={1}
+                placeholder={t('serviceModel.contextLimit.placeholder')}
+                style={{ alignSelf: 'flex-end', width: 180 }}
+                value={value.contextLimit}
+                onChange={(contextLimit) =>
+                  updateSystemAgentModel(key, {
+                    contextLimit: typeof contextLimit === 'number' ? contextLimit : undefined,
+                  })
+                }
+              />
+            )}
+          </Flexbox>
+        ),
+        desc: t(`systemAgent.${key}.modelDesc`),
+        label: t(`systemAgent.${key}.title`),
+        minWidth: undefined,
+      } satisfies FormItemProps;
+    },
+  );
 
-  const optionalFeatureItems: FormItemProps[] = OPTIONAL_FEATURE_ITEMS.map(({ key }) => {
+  const optionalFeatureItems: FormItemProps[] = OPTIONAL_FEATURE_ITEMS.map(({ key, source }) => {
     const value = systemAgentSettings[key];
     const disabled = value.enabled === false;
 
@@ -174,6 +201,7 @@ const ModelAssignmentsForm = memo(() => {
           style={{ width: 'min(100%, 448px)' }}
         >
           <ModelSelect
+            {...getModelSelectProps(key, source)}
             showAbility={false}
             style={{ minWidth: 0, width: '100%' }}
             value={value}

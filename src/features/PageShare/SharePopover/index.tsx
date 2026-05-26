@@ -1,99 +1,93 @@
 'use client';
 
 import type { DocumentSharePermission, DocumentShareVisibility } from '@lobechat/types';
-import { Button, Flexbox, Input, Popover } from '@lobehub/ui';
+import { Button, copyToClipboard, Flexbox, Input, Popover, Text } from '@lobehub/ui';
+import { Select } from '@lobehub/ui/base-ui';
 import { App } from 'antd';
-import { createStyles } from 'antd-style';
-import { CheckIcon, CopyIcon, EyeIcon } from 'lucide-react';
-import { type FC, type ReactNode, useState } from 'react';
+import { createStaticStyles, cssVar } from 'antd-style';
+import { ExternalLinkIcon, EyeIcon, GlobeIcon, LockIcon } from 'lucide-react';
+import { type FC, type ReactElement, type ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import useSWR, { mutate as globalMutate } from 'swr';
 
+import { SHARED_PAGE_PROBE_KEY } from '@/hooks/useSharedPageProbe';
 import { lambdaClient } from '@/libs/trpc/client';
 
-import AccessSelect, { type AccessValue } from './AccessSelect';
+type AccessValue = 'private' | 'link';
 
-const useStyles = createStyles(({ css, token }) => ({
-  description: css`
-    margin-block: 0 16px;
-    margin-inline: 0;
-
-    font-size: 12px;
-    line-height: 1.5;
-    color: ${token.colorTextTertiary};
+const styles = createStaticStyles(({ css, cssVar }) => ({
+  content: css`
+    width: 360px;
   `,
-  divider: css`
-    height: 1px;
-    margin-block: 16px;
-    margin-inline: 0;
-    background: ${token.colorBorderSecondary};
+  footer: css`
+    font-size: 12px;
+    color: ${cssVar.colorTextTertiary};
+  `,
+  footerLink: css`
+    color: ${cssVar.colorTextTertiary};
+
+    &:hover {
+      color: ${cssVar.colorText};
+    }
+  `,
+  iconWrap: css`
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+    border-radius: ${cssVar.borderRadius};
+  `,
+  iconLink: css`
+    color: ${cssVar.colorPrimary};
+    background: ${cssVar.colorPrimaryBg};
+  `,
+  iconLocked: css`
+    color: ${cssVar.colorTextSecondary};
+    background: ${cssVar.colorFillSecondary};
+  `,
+  label: css`
+    font-size: 12px;
+    color: ${cssVar.colorTextTertiary};
   `,
   linkInput: css`
     flex: 1;
-    font-family: ${token.fontFamilyCode};
+    font-family: ${cssVar.fontFamilyCode};
     font-size: 12px;
   `,
-  popoverContent: css`
-    width: 360px;
-    padding: 4px;
+  optionSub: css`
+    font-size: 11.5px;
+    color: ${cssVar.colorTextTertiary};
   `,
-  sectionLabel: css`
-    margin-block-end: 8px;
-    font-size: 12px;
-    font-weight: 500;
-    color: ${token.colorTextTertiary};
-  `,
-  title: css`
-    margin-block: 0 4px;
-    margin-inline: 0;
-    font-size: 14px;
-    font-weight: 600;
-  `,
-  views: css`
-    display: flex;
-    gap: 6px;
-    align-items: center;
-
-    font-size: 11px;
-    color: ${token.colorTextTertiary};
+  optionTitle: css`
+    font-size: 13px;
+    color: ${cssVar.colorText};
   `,
 }));
 
-interface SharePopoverProps {
-  children: ReactNode;
-  documentId: string;
-}
-
 const SHARE_SETTINGS_KEY = (id: string) => ['document.getShareSettings', id];
 
-const toAccessValue = (
-  visibility: DocumentShareVisibility,
-  permission: DocumentSharePermission,
-): AccessValue => {
-  if (visibility === 'private') return 'private';
-  if (permission === 'read') return 'link-read';
-  if (permission === 'comment') return 'link-comment';
-  return 'link-edit';
-};
+const toAccessValue = (visibility: DocumentShareVisibility): AccessValue =>
+  visibility === 'link' ? 'link' : 'private';
 
 const fromAccessValue = (
   value: AccessValue,
-): {
-  permission: DocumentSharePermission;
-  visibility: DocumentShareVisibility;
-} => {
-  if (value === 'private') return { permission: 'read', visibility: 'private' };
-  if (value === 'link-comment') return { permission: 'comment', visibility: 'link' };
-  if (value === 'link-edit') return { permission: 'edit', visibility: 'link' };
-  return { permission: 'read', visibility: 'link' };
-};
+): { permission: DocumentSharePermission; visibility: DocumentShareVisibility } =>
+  value === 'link'
+    ? { permission: 'read', visibility: 'link' }
+    : { permission: 'read', visibility: 'private' };
+
+interface SharePopoverProps {
+  children: ReactElement;
+  documentId: string;
+}
 
 const SharePopover: FC<SharePopoverProps> = ({ children, documentId }) => {
-  const { styles } = useStyles();
   const { t } = useTranslation('pageShare');
   const { message } = App.useApp();
   const [open, setOpen] = useState(false);
-  const [justCopied, setJustCopied] = useState(false);
 
   const { data: settings, mutate: refetchSettings } = useSWR(
     open ? SHARE_SETTINGS_KEY(documentId) : null,
@@ -101,86 +95,131 @@ const SharePopover: FC<SharePopoverProps> = ({ children, documentId }) => {
   );
 
   const current: AccessValue = settings
-    ? toAccessValue(
-        settings.visibility as DocumentShareVisibility,
-        settings.permission as DocumentSharePermission,
-      )
+    ? toAccessValue(settings.visibility as DocumentShareVisibility)
     : 'private';
 
-  const isShared = current !== 'private';
+  const isShared = current === 'link';
   const shareUrl =
     typeof window !== 'undefined' ? `${window.location.origin}/page/${documentId}` : '';
+
+  const accessOptions: {
+    icon: ReactNode;
+    iconClassName: string;
+    sub: string;
+    title: string;
+    value: AccessValue;
+  }[] = [
+    {
+      icon: <LockIcon color={cssVar.colorTextSecondary} size={14} />,
+      iconClassName: styles.iconLocked,
+      sub: t('popover.options.private.sub'),
+      title: t('popover.options.private.title'),
+      value: 'private',
+    },
+    {
+      icon: <GlobeIcon color={cssVar.colorPrimary} size={14} />,
+      iconClassName: styles.iconLink,
+      sub: t('popover.options.link.sub'),
+      title: t('popover.options.link.title'),
+      value: 'link',
+    },
+  ];
 
   const handleChange = async (value: AccessValue) => {
     const { permission, visibility } = fromAccessValue(value);
     await lambdaClient.document.updateShareSettings.mutate({
       id: documentId,
-      permission: 'read',
+      permission,
       visibility,
     });
-    if (permission !== 'read') {
-      // Comment/edit not supported in v1 — silently coerced to read by server.
-      void 0;
-    }
     await refetchSettings();
-    // Invalidate guest probe cache too so an open guest tab refetches.
-    void globalMutate(['share.getSharedDocument', documentId]);
+    void globalMutate(SHARED_PAGE_PROBE_KEY(documentId));
   };
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(shareUrl);
-      setJustCopied(true);
+      await copyToClipboard(shareUrl);
       message.success(t('popover.copied'));
-      setTimeout(() => setJustCopied(false), 2000);
     } catch {
       message.error(t('popover.copyFailed'));
     }
   };
 
+  const renderOption = (option: (typeof accessOptions)[number]) => (
+    <Flexbox horizontal align={'center'} gap={10} paddingBlock={4}>
+      <span className={`${styles.iconWrap} ${option.iconClassName}`}>{option.icon}</span>
+      <Flexbox gap={2}>
+        <span className={styles.optionTitle}>{option.title}</span>
+        <span className={styles.optionSub}>{option.sub}</span>
+      </Flexbox>
+    </Flexbox>
+  );
+
   return (
     <Popover
+      arrow={false}
       open={open}
       placement={'bottomRight'}
       styles={{ content: { padding: 16 } }}
       trigger={'click'}
       content={
-        <div className={styles.popoverContent}>
-          <h4 className={styles.title}>{t('popover.title')}</h4>
-          <p className={styles.description}>{t('popover.description')}</p>
+        <Flexbox className={styles.content} gap={14}>
+          <Text strong style={{ fontSize: 14 }}>
+            {t('popover.title')}
+          </Text>
 
-          <div className={styles.sectionLabel}>{t('popover.sectionAccess')}</div>
-          <AccessSelect value={current} onChange={handleChange} />
+          <Flexbox gap={6}>
+            <span className={styles.label}>{t('popover.sectionAccess')}</span>
+            <Select<AccessValue>
+              options={accessOptions}
+              style={{ width: '100%' }}
+              value={current}
+              labelRender={({ value }) => {
+                const option = accessOptions.find((o) => o.value === value);
+                if (!option) return null;
+                return (
+                  <Flexbox horizontal align={'center'} gap={8}>
+                    <span className={`${styles.iconWrap} ${option.iconClassName}`}>
+                      {option.icon}
+                    </span>
+                    <span className={styles.optionTitle}>{option.title}</span>
+                  </Flexbox>
+                );
+              }}
+              optionRender={(option) => {
+                const target = accessOptions.find((o) => o.value === option.value);
+                return target ? renderOption(target) : null;
+              }}
+              onChange={handleChange}
+            />
+          </Flexbox>
 
-          <div className={styles.divider} />
-
-          <div className={styles.sectionLabel}>{t('popover.sectionLink')}</div>
-          <Flexbox horizontal gap={6}>
+          <Flexbox horizontal align={'center'} gap={6}>
             <Input
               readOnly
               className={styles.linkInput}
               value={isShared ? shareUrl : t('popover.linkPrivatePlaceholder')}
             />
             <Button disabled={!isShared} onClick={handleCopy}>
-              {justCopied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
-              <span style={{ marginLeft: 4 }}>{t('popover.copy')}</span>
+              {t('popover.copy')}
             </Button>
           </Flexbox>
 
-          <div className={styles.divider} />
-
-          <Flexbox horizontal align={'center'} justify={'space-between'}>
-            <span className={styles.views}>
+          <Flexbox horizontal align={'center'} className={styles.footer} justify={'space-between'}>
+            <Flexbox horizontal align={'center'} gap={6}>
               <EyeIcon size={12} />
               {t('popover.sectionViews', { count: settings?.pageViewCount ?? 0 })}
-            </span>
+            </Flexbox>
             {isShared && (
-              <a href={shareUrl} rel={'noreferrer'} style={{ fontSize: 12 }} target={'_blank'}>
-                {t('popover.openInNewTab')}
+              <a className={styles.footerLink} href={shareUrl} rel={'noreferrer'} target={'_blank'}>
+                <Flexbox horizontal align={'center'} gap={4}>
+                  {t('popover.openInNewTab')}
+                  <ExternalLinkIcon size={12} />
+                </Flexbox>
               </a>
             )}
           </Flexbox>
-        </div>
+        </Flexbox>
       }
       onOpenChange={setOpen}
     >

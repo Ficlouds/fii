@@ -30,6 +30,7 @@ const showPortal = (s: ChatStoreState) => s.showPortal;
 // ============== View Type Guards ==============
 
 const showArtifactUI = (s: ChatStoreState) => currentViewType(s) === PortalViewType.Artifact;
+const showBrowser = (s: ChatStoreState) => currentViewType(s) === PortalViewType.Browser;
 const showDocument = (s: ChatStoreState) => currentViewType(s) === PortalViewType.Document;
 const showNotebook = (s: ChatStoreState) => currentViewType(s) === PortalViewType.Notebook;
 const showFilePreview = (s: ChatStoreState) => currentViewType(s) === PortalViewType.FilePreview;
@@ -111,6 +112,17 @@ const isArtifactTagClosed = (id: string, identifier?: string) => (s: ChatStoreSt
   return ARTIFACT_TAG_CLOSED_REGEX.test(content || '');
 };
 
+// Browser selectors
+const currentBrowser = (s: ChatStoreState): { sessionId: string; url?: string } | undefined => {
+  const view = getViewData(s, PortalViewType.Browser);
+  if (!view) return undefined;
+
+  return { sessionId: view.sessionId, url: view.url };
+};
+
+const browserSessionId = (s: ChatStoreState) => currentBrowser(s)?.sessionId;
+const browserInitialUrl = (s: ChatStoreState) => currentBrowser(s)?.url;
+
 // Document selectors
 const portalDocumentId = (s: ChatStoreState): string | undefined => {
   const view = getViewData(s, PortalViewType.Document);
@@ -180,6 +192,7 @@ export const chatPortalSelectors = {
 
   // View type guards
   showArtifactUI,
+  showBrowser,
   showDocument,
   showNotebook,
   showFilePreview,
@@ -197,6 +210,11 @@ export const chatPortalSelectors = {
   artifactCode,
   artifactMessageContent,
   isArtifactTagClosed,
+
+  // Browser data
+  browserInitialUrl,
+  browserSessionId,
+  currentBrowser,
 
   // Document data
   portalAgentDocumentId,

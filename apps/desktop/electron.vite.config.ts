@@ -185,6 +185,10 @@ export default defineConfig({
       outDir: 'dist/preload',
       rolldownOptions: {
         external: electronRuntimeExternals,
+        input: {
+          browserSidebar: path.resolve(__dirname, 'src/preload/browserSidebar.ts'),
+          index: path.resolve(__dirname, 'src/preload/index.ts'),
+        },
       },
       sourcemap: isDev ? 'inline' : false,
     },

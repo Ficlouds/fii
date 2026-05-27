@@ -1,6 +1,7 @@
 import type { CreateServicesResult, IpcServiceConstructor, MergeIpcService } from '@/utils/ipc';
 
 import AuthCtr from './AuthCtr';
+import BrowserSidebarCtr from './BrowserSidebarCtr';
 import BrowserWindowsCtr from './BrowserWindowsCtr';
 import CliCtr from './CliCtr';
 import DevtoolsCtr from './DevtoolsCtr';
@@ -27,6 +28,7 @@ import UpdaterCtr from './UpdaterCtr';
 export const controllerIpcConstructors = [
   HeterogeneousAgentCtr,
   AuthCtr,
+  BrowserSidebarCtr,
   BrowserWindowsCtr,
   CliCtr,
   DevtoolsCtr,

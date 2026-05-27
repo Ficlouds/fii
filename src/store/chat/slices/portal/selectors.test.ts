@@ -97,6 +97,51 @@ describe('chatDockSelectors', () => {
     });
   });
 
+  describe('showBrowser', () => {
+    it('should return false when current view is not Browser', () => {
+      expect(chatPortalSelectors.showBrowser(createState())).toBe(false);
+      expect(
+        chatPortalSelectors.showBrowser(
+          createState({ portalStack: [{ type: PortalViewType.Notebook }] }),
+        ),
+      ).toBe(false);
+    });
+
+    it('should return true when current view is Browser', () => {
+      const state = createState({
+        portalStack: [{ sessionId: 'browser-session', type: PortalViewType.Browser }],
+      });
+      expect(chatPortalSelectors.showBrowser(state)).toBe(true);
+    });
+  });
+
+  describe('currentBrowser', () => {
+    it('should return undefined when no Browser view is on stack', () => {
+      expect(chatPortalSelectors.currentBrowser(createState())).toBeUndefined();
+      expect(chatPortalSelectors.browserSessionId(createState())).toBeUndefined();
+      expect(chatPortalSelectors.browserInitialUrl(createState())).toBeUndefined();
+    });
+
+    it('should return Browser view data from stack', () => {
+      const state = createState({
+        portalStack: [
+          {
+            sessionId: 'browser-session',
+            type: PortalViewType.Browser,
+            url: 'https://lobehub.com',
+          },
+        ],
+      });
+
+      expect(chatPortalSelectors.currentBrowser(state)).toEqual({
+        sessionId: 'browser-session',
+        url: 'https://lobehub.com',
+      });
+      expect(chatPortalSelectors.browserSessionId(state)).toBe('browser-session');
+      expect(chatPortalSelectors.browserInitialUrl(state)).toBe('https://lobehub.com');
+    });
+  });
+
   describe('showDock', () => {
     it('should return the showDock state', () => {
       expect(chatPortalSelectors.showPortal(createState({ showPortal: true }))).toBe(true);

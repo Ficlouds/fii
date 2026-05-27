@@ -36,6 +36,13 @@ export class ChatPortalActionImpl {
     }
   };
 
+  closeBrowser = (): void => {
+    const { portalStack } = this.#get();
+    if (getCurrentViewType(portalStack) === PortalViewType.Browser) {
+      this.#get().popPortalView();
+    }
+  };
+
   closeDocument = (): void => {
     const { portalStack } = this.#get();
     if (getCurrentViewType(portalStack) === PortalViewType.Document) {
@@ -167,6 +174,14 @@ export class ChatPortalActionImpl {
 
   openArtifact = (artifact: PortalArtifact): void => {
     this.#get().pushPortalView({ artifact, type: PortalViewType.Artifact });
+  };
+
+  openBrowser = (params?: { sessionId?: string; url?: string }): void => {
+    const { activeAgentId, activeTopicId } = this.#get();
+    const sessionId =
+      params?.sessionId ?? `agent:${activeAgentId ?? 'inbox'}:${activeTopicId ?? 'inbox'}`;
+
+    this.#get().pushPortalView({ sessionId, type: PortalViewType.Browser, url: params?.url });
   };
 
   openDocument = (documentId: string, agentDocumentId?: string): void => {

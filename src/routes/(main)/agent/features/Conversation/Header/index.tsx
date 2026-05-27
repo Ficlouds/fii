@@ -11,6 +11,7 @@ import { agentByIdSelectors, chatConfigByIdSelectors } from '@/store/agent/selec
 import { useChatStore } from '@/store/chat';
 import { topicSelectors } from '@/store/chat/selectors';
 
+import BrowserToggle from './BrowserToggle';
 import HeaderActions from './HeaderActions';
 import ParamsPanelToggle from './ParamsPanelToggle';
 import ShareButton from './ShareButton';
@@ -76,6 +77,7 @@ const Header = memo(() => {
             {isLocalSystemEnabled && (
               <OpenInAppButton workingDirectory={effectiveWorkingDirectory} />
             )}
+            <BrowserToggle />
             <ShareButton />
             <ParamsPanelToggle />
             <WorkingPanelToggle />

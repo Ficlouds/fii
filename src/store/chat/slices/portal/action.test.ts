@@ -227,6 +227,56 @@ describe('chatDockSlice', () => {
     });
   });
 
+  describe('openBrowser', () => {
+    it('should push Browser view with default session id from active chat context', () => {
+      const { result } = renderHook(() => useChatStore());
+
+      act(() => {
+        useChatStore.setState({ activeAgentId: 'agent-1', activeTopicId: 'topic-1' });
+        result.current.openBrowser();
+      });
+
+      expect(result.current.portalStack).toHaveLength(1);
+      expect(result.current.portalStack[0]).toEqual({
+        sessionId: 'agent:agent-1:topic-1',
+        type: PortalViewType.Browser,
+        url: undefined,
+      });
+      expect(result.current.showPortal).toBe(true);
+    });
+
+    it('should push Browser view with explicit session id and url', () => {
+      const { result } = renderHook(() => useChatStore());
+
+      act(() => {
+        result.current.openBrowser({ sessionId: 'custom-session', url: 'https://lobehub.com' });
+      });
+
+      expect(result.current.portalStack[0]).toEqual({
+        sessionId: 'custom-session',
+        type: PortalViewType.Browser,
+        url: 'https://lobehub.com',
+      });
+    });
+  });
+
+  describe('closeBrowser', () => {
+    it('should pop Browser view from stack', () => {
+      const { result } = renderHook(() => useChatStore());
+
+      act(() => {
+        result.current.openBrowser({ sessionId: 'browser-session' });
+      });
+
+      act(() => {
+        result.current.closeBrowser();
+      });
+
+      expect(result.current.portalStack).toHaveLength(0);
+      expect(result.current.showPortal).toBe(false);
+    });
+  });
+
   describe('openArtifact', () => {
     it('should push Artifact view and open portal', () => {
       const { result } = renderHook(() => useChatStore());

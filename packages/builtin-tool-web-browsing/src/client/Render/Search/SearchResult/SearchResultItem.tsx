@@ -1,10 +1,12 @@
+import { isDesktop } from '@lobechat/const';
 import type { UniformSearchResult } from '@lobechat/types';
 import { Block, Flexbox, Text } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, MouseEvent } from 'react';
 import { memo } from 'react';
 
 import WebFavicon from '@/components/WebFavicon';
+import { useChatStore } from '@/store/chat';
 
 const styles = createStaticStyles(({ css }) => ({
   container: css`
@@ -22,8 +24,17 @@ const SearchResultItem = memo<UniformSearchResult & { style?: CSSProperties }>(
   ({ url, title, style }) => {
     const urlObj = new URL(url);
     const host = urlObj.hostname;
+    const openBrowser = useChatStore((s) => s.openBrowser);
+
+    const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+      if (!isDesktop) return;
+
+      event.preventDefault();
+      openBrowser({ url });
+    };
+
     return (
-      <a href={url} target={'_blank'}>
+      <a href={url} target={'_blank'} onClick={handleClick}>
         <Block
           clickable
           className={styles.container}

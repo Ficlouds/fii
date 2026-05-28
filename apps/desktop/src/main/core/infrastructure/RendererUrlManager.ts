@@ -7,7 +7,10 @@ import { isDev } from '@/const/env';
 import { getDesktopEnv } from '@/env';
 import { createLogger } from '@/utils/logger';
 
-import { RendererProtocolManager } from './RendererProtocolManager';
+import {
+  RendererProtocolManager,
+  type RendererRequestInterceptor,
+} from './RendererProtocolManager';
 
 const logger = createLogger('core:RendererUrlManager');
 
@@ -33,6 +36,10 @@ export class RendererUrlManager {
 
   get protocolScheme() {
     return this.rendererProtocolManager.protocolScheme;
+  }
+
+  addRequestInterceptor(interceptor: RendererRequestInterceptor) {
+    this.rendererProtocolManager.addRequestInterceptor(interceptor);
   }
 
   /**

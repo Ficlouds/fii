@@ -1,10 +1,13 @@
 import { AUTH_REQUIRED_HEADER } from '@lobechat/desktop-bridge';
-import { BrowserWindow, type Session } from 'electron';
+import { BrowserWindow, type Session, session as electronSession } from 'electron';
 
 import { isDev } from '@/const/env';
+import { isBackendPath } from '@/const/protocol';
 import { appendVercelCookie } from '@/utils/http-headers';
 import { createLogger } from '@/utils/logger';
 import { netFetch } from '@/utils/net-fetch';
+
+import type { RendererRequestInterceptor } from './RendererProtocolManager';
 
 interface BackendProxyContext {
   getAccessToken: () => Promise<string | undefined | null>;
@@ -112,6 +115,29 @@ export class BackendProxyProtocolManager {
 
     this.logger.debug(`${logPrefix} protocol handler registered for ${scheme}`);
     this.handledSessions.add(session);
+  }
+
+  /**
+   * Build an `app://` request interceptor that diverts backend-prefixed paths
+   * (trpc / webapi / api/auth / market) through `proxy()` against the default
+   * session. Suitable for plugging into `RendererProtocolManager.addRequestInterceptor`
+   * so the renderer protocol manager doesn't need to know what "backend" means.
+   *
+   * Returns `null` for non-backend paths (lets the file pipeline run). Returns
+   * a 502 if the backend context isn't wired up yet — for backend prefixes we
+   * must never fall through to the SPA HTML fallback.
+   */
+  createAppRequestInterceptor(): RendererRequestInterceptor {
+    return async (request) => {
+      const url = new URL(request.url);
+      if (!isBackendPath(url.pathname)) return null;
+
+      const session = electronSession.defaultSession;
+      if (!session) return new Response('Backend Proxy Unavailable', { status: 502 });
+
+      const proxied = await this.proxy(request, session);
+      return proxied ?? new Response('Backend Proxy Unavailable', { status: 502 });
+    };
   }
 
   /**

@@ -29,6 +29,7 @@ import type { IServiceModule } from '@/services';
 import { createLogger } from '@/utils/logger';
 
 import { BrowserManager } from './browser/BrowserManager';
+import { backendProxyProtocolManager } from './infrastructure/BackendProxyProtocolManager';
 import { I18nManager } from './infrastructure/I18nManager';
 import { IoCContainer } from './infrastructure/IoCContainer';
 import { LocalFileProtocolManager } from './infrastructure/LocalFileProtocolManager';
@@ -104,6 +105,12 @@ export class App {
     this.storeManager = new StoreManager(this);
 
     this.rendererUrlManager = new RendererUrlManager();
+    // Wire the backend reverse-proxy as an `app://` interceptor: keeps
+    // RendererUrlManager ignorant of "what counts as a backend path" while
+    // letting BackendProxyProtocolManager own that knowledge.
+    this.rendererUrlManager.addRequestInterceptor(
+      backendProxyProtocolManager.createAppRequestInterceptor(),
+    );
     this.localFileProtocolManager = new LocalFileProtocolManager();
     void this.localFileProtocolManager.approveWorkspaceRoots(
       this.storeManager.get('localFileWorkspaceRoots', []),

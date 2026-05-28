@@ -1,16 +1,21 @@
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
-import { app, protocol, session as electronSession } from 'electron';
+import { app, protocol } from 'electron';
 import { pathExistsSync } from 'fs-extra';
 
-import { isBackendPath } from '@/const/protocol';
 import { createLogger } from '@/utils/logger';
 
 import { getExportMimeType } from '../../utils/mime';
-import { backendProxyProtocolManager } from './BackendProxyProtocolManager';
 
 type ResolveRendererFilePath = (url: URL) => Promise<string | null>;
+
+/**
+ * Request interceptor: inspects an `app://` request and either produces a Response
+ * (short-circuits the pipeline) or returns `null` to let the next interceptor — and
+ * ultimately the static file handler — try.
+ */
+export type RendererRequestInterceptor = (request: Request) => Promise<Response | null>;
 
 const RENDERER_PROTOCOL_PRIVILEGES = {
   allowServiceWorkers: true,
@@ -33,6 +38,7 @@ export class RendererProtocolManager {
   private readonly host: string;
   private readonly rendererDir: string;
   private readonly resolveRendererFilePath: ResolveRendererFilePath;
+  private readonly interceptors: RendererRequestInterceptor[] = [];
   private handlerRegistered = false;
 
   constructor(options: RendererProtocolManagerOptions) {
@@ -42,6 +48,17 @@ export class RendererProtocolManager {
     this.host = RENDERER_DIR;
     this.rendererDir = rendererDir;
     this.resolveRendererFilePath = resolveRendererFilePath;
+  }
+
+  /**
+   * Register a request interceptor that runs before the static file handler.
+   * Interceptors are invoked in registration order; the first one to return a
+   * non-null Response short-circuits the pipeline. Use this to inject custom
+   * routing (e.g. a backend reverse-proxy) without coupling this class to that
+   * concern.
+   */
+  addRequestInterceptor(interceptor: RendererRequestInterceptor) {
+    this.interceptors.push(interceptor);
   }
 
   /**
@@ -86,16 +103,10 @@ export class RendererProtocolManager {
           return new Response('Not Found', { status: 404 });
         }
 
-        // Backend-bound paths (trpc / webapi / api/auth / market) are diverted to
-        // the remote LobeHub server via BackendProxyProtocolManager so renderer
-        // code can call `fetch('/trpc/...')` without scheme awareness.
-        if (isBackendPath(pathname)) {
-          const targetSession = electronSession.defaultSession;
-          if (targetSession) {
-            const proxied = await backendProxyProtocolManager.proxy(request, targetSession);
-            if (proxied) return proxied;
-          }
-          return new Response('Backend Proxy Unavailable', { status: 502 });
+        // Pipeline: first interceptor to return a Response wins; null = pass through.
+        for (const interceptor of this.interceptors) {
+          const response = await interceptor(request);
+          if (response) return response;
         }
 
         const buildFileResponse = async (targetPath: string) => {

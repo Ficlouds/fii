@@ -1,12 +1,14 @@
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
-import { app, protocol } from 'electron';
+import { app, protocol, session as electronSession } from 'electron';
 import { pathExistsSync } from 'fs-extra';
 
+import { isBackendPath } from '@/const/protocol';
 import { createLogger } from '@/utils/logger';
 
 import { getExportMimeType } from '../../utils/mime';
+import { backendProxyProtocolManager } from './BackendProxyProtocolManager';
 
 type ResolveRendererFilePath = (url: URL) => Promise<string | null>;
 
@@ -82,6 +84,18 @@ export class RendererProtocolManager {
 
         if (hostname !== this.host) {
           return new Response('Not Found', { status: 404 });
+        }
+
+        // Backend-bound paths (trpc / webapi / api/auth / market) are diverted to
+        // the remote LobeHub server via BackendProxyProtocolManager so renderer
+        // code can call `fetch('/trpc/...')` without scheme awareness.
+        if (isBackendPath(pathname)) {
+          const targetSession = electronSession.defaultSession;
+          if (targetSession) {
+            const proxied = await backendProxyProtocolManager.proxy(request, targetSession);
+            if (proxied) return proxied;
+          }
+          return new Response('Backend Proxy Unavailable', { status: 502 });
         }
 
         const buildFileResponse = async (targetPath: string) => {

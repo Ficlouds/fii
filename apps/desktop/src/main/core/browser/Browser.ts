@@ -7,8 +7,8 @@ import type { BrowserWindowConstructorOptions } from 'electron';
 import { app, BrowserWindow, ipcMain, screen, session as electronSession, shell } from 'electron';
 
 import { preloadDir, resourcesDir } from '@/const/dir';
-import { isMac } from '@/const/env';
-import { ELECTRON_BE_PROTOCOL_SCHEME } from '@/const/protocol';
+import { isDev, isMac } from '@/const/env';
+import { ELECTRON_BE_PROTOCOL_SCHEME, isBackendPath } from '@/const/protocol';
 import RemoteServerConfigCtr from '@/controllers/RemoteServerConfigCtr';
 import { backendProxyProtocolManager } from '@/core/infrastructure/BackendProxyProtocolManager';
 import { appendVercelCookie, setResponseHeader } from '@/utils/http-headers';
@@ -580,5 +580,39 @@ export default class Browser {
       scheme: ELECTRON_BE_PROTOCOL_SCHEME,
       source: this.identifier,
     });
+
+    // In dev the renderer is served by electron-vite at http://localhost:<port>.
+    // Redirect backend-prefixed requests to lobe-backend:// so the proxy handler picks
+    // them up. In prod the renderer runs under app:// and the divert happens inside
+    // RendererProtocolManager — this hook is dev-only.
+    if (isDev) {
+      this.setupDevBackendRedirect(targetSession);
+    }
+  }
+
+  private setupDevBackendRedirect(targetSession: Electron.Session): void {
+    targetSession.webRequest.onBeforeRequest(
+      {
+        urls: [
+          'http://localhost/*',
+          'http://localhost:*/*',
+          'http://127.0.0.1/*',
+          'http://127.0.0.1:*/*',
+        ],
+      },
+      (details, callback) => {
+        try {
+          const url = new URL(details.url);
+          if (isBackendPath(url.pathname)) {
+            const redirectURL = `${ELECTRON_BE_PROTOCOL_SCHEME}://lobe${url.pathname}${url.search}`;
+            callback({ redirectURL });
+            return;
+          }
+        } catch {
+          // fall through to callback({})
+        }
+        callback({});
+      },
+    );
   }
 }

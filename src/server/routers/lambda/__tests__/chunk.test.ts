@@ -27,6 +27,7 @@ vi.mock('@/database/server', () => ({ getServerDB: vi.fn() }));
 describe('chunkRouter.getFileContents — ID branching', () => {
   const userId = 'user_test';
   let mockCtx: any;
+  let chunkModelMock: any;
   let documentModelMock: any;
   let fileModelMock: any;
   let documentServiceMock: any;
@@ -34,6 +35,7 @@ describe('chunkRouter.getFileContents — ID branching', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
+    chunkModelMock = { findByFileId: vi.fn() };
     documentModelMock = { findById: vi.fn(), findByFileId: vi.fn() };
     fileModelMock = { findById: vi.fn() };
     documentServiceMock = { parseFile: vi.fn() };
@@ -42,7 +44,7 @@ describe('chunkRouter.getFileContents — ID branching', () => {
     vi.mocked(FileModel).mockImplementation(() => fileModelMock);
     vi.mocked(DocumentService).mockImplementation(() => documentServiceMock);
     vi.mocked(AsyncTaskModel).mockImplementation(() => ({}) as any);
-    vi.mocked(ChunkModel).mockImplementation(() => ({}) as any);
+    vi.mocked(ChunkModel).mockImplementation(() => chunkModelMock);
     vi.mocked(EmbeddingModel).mockImplementation(() => ({}) as any);
     vi.mocked(MessageModel).mockImplementation(() => ({}) as any);
     vi.mocked(SearchRepo).mockImplementation(() => ({}) as any);
@@ -51,7 +53,7 @@ describe('chunkRouter.getFileContents — ID branching', () => {
     mockCtx = {
       userId,
       asyncTaskModel: {},
-      chunkModel: {},
+      chunkModel: chunkModelMock,
       chunkService: {},
       documentModel: documentModelMock,
       documentService: documentServiceMock,
@@ -154,5 +156,35 @@ describe('chunkRouter.getFileContents — ID branching', () => {
     const fileResult = result.find((r) => r.fileId === 'file_b');
     expect(docsResult?.content).toBe('doc content');
     expect(fileResult?.content).toBe('pdf content');
+  });
+
+  describe('getChunksByFileId', () => {
+    it('returns the next cursor when a full page is loaded', async () => {
+      const chunks = Array.from({ length: 20 }, (_, index) => ({ id: `chunk-${index}` }));
+      chunkModelMock.findByFileId.mockResolvedValue(chunks);
+
+      const caller = chunkRouter.createCaller(mockCtx);
+      const result = await caller.getChunksByFileId({ cursor: 2, id: 'file_xyz' });
+
+      expect(chunkModelMock.findByFileId).toHaveBeenCalledWith('file_xyz', 2);
+      expect(result).toEqual({
+        items: chunks,
+        nextCursor: 3,
+      });
+    });
+
+    it('stops pagination when the loaded page is not full', async () => {
+      const chunks = [{ id: 'chunk-1' }];
+      chunkModelMock.findByFileId.mockResolvedValue(chunks);
+
+      const caller = chunkRouter.createCaller(mockCtx);
+      const result = await caller.getChunksByFileId({ id: 'file_xyz' });
+
+      expect(chunkModelMock.findByFileId).toHaveBeenCalledWith('file_xyz', 0);
+      expect(result).toEqual({
+        items: chunks,
+        nextCursor: undefined,
+      });
+    });
   });
 });

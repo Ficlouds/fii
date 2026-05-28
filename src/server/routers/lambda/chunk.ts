@@ -18,6 +18,8 @@ import { ChunkService } from '@/server/services/chunk';
 import { DocumentService } from '@/server/services/document';
 import { KnowledgeBaseSearchService } from '@/server/services/knowledgeBase';
 
+const CHUNK_PAGE_SIZE = 20;
+
 const chunkProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {
   const { ctx } = opts;
 
@@ -71,9 +73,12 @@ export const chunkRouter = router({
       }),
     )
     .query(async ({ ctx, input }) => {
+      const items = await ctx.chunkModel.findByFileId(input.id, input.cursor || 0);
+      const nextCursor = items.length < CHUNK_PAGE_SIZE ? undefined : (input.cursor ?? 0) + 1;
+
       return {
-        items: await ctx.chunkModel.findByFileId(input.id, input.cursor || 0),
-        nextCursor: input.cursor ? input.cursor + 1 : 1,
+        items,
+        nextCursor,
       };
     }),
 

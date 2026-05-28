@@ -1,15 +1,22 @@
 import { type FilesStoreState } from '@/store/file/initialState';
+import { type FileListItem } from '@/types/files';
 import { type FileUploadStatus } from '@/types/files/upload';
 
 const uploadStatusArray = new Set(['uploading', 'pending', 'processing']);
 
 const dockFileList = (s: FilesStoreState) => s.dockUploadFileList;
 const dockRawFileList = (s: FilesStoreState) => s.dockUploadFileList.map((item) => item.file);
-const getFileById = (id?: string | null) => (s: FilesStoreState) => {
-  if (!id) return;
+const getFileById =
+  (id?: string | null): ((s: FilesStoreState) => FileListItem | undefined) =>
+  (s) => {
+    if (!id) return;
 
-  return s.fileList.find((item) => item.id === id);
-};
+    const resource = s.resourceMap.get(id) ?? s.resourceList.find((item) => item.id === id);
+
+    if (resource) return resource as FileListItem;
+
+    return s.fileList.find((item) => item.id === id);
+  };
 
 const isUploadingFiles = (s: FilesStoreState) =>
   s.dockUploadFileList.some((file) => uploadStatusArray.has(file.status));

@@ -17,6 +17,7 @@ import type {
   ToolsCalling,
   Usage,
 } from '../types';
+import { isBlockedStatus } from '../utils/status';
 
 /**
  * Simplified Agent Runtime - The "Engine" that executes instructions from an "Agent" (Brain).
@@ -197,11 +198,7 @@ export class AgentRuntime {
         }
 
         // Stop execution if blocked
-        if (
-          currentState.status === 'waiting_for_human' ||
-          currentState.status === 'waiting_for_async_tool' ||
-          currentState.status === 'interrupted'
-        ) {
+        if (isBlockedStatus(currentState.status)) {
           break;
         }
       }
@@ -221,12 +218,7 @@ export class AgentRuntime {
         // When execution is blocked (waiting for human, waiting for an async
         // tool result, or interrupted), clear nextContext so the outer loop
         // stops instead of continuing
-        nextContext:
-          currentState.status === 'waiting_for_human' ||
-          currentState.status === 'waiting_for_async_tool' ||
-          currentState.status === 'interrupted'
-            ? undefined
-            : finalNextContext,
+        nextContext: isBlockedStatus(currentState.status) ? undefined : finalNextContext,
       };
     } catch (error) {
       const errorState = structuredClone(state);

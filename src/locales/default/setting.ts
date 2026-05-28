@@ -538,10 +538,12 @@ export default {
   'notification.push.desc':
     'Send push notifications to your mobile devices (LobeHub mobile app required)',
   'notification.push.title': 'Mobile Push Notifications',
+  'notification.category.billing.title': 'Billing',
   'notification.category.generation.title': 'Generation',
   'notification.category.schedule.title': 'Scheduled tasks',
   'notification.item.agent_cron_job_failed': 'Scheduled task failed',
   'notification.item.image_generation_completed': 'Image generation completed',
+  'notification.item.storage_overage_cap_reached': 'Storage pay-as-you-go cap reached',
   'notification.item.video_generation_completed': 'Video generation completed',
   'notification.title': 'Notification Channels',
   'myAgents.actions.cancel': 'Cancel',

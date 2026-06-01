@@ -10,6 +10,9 @@ import type { ToolExecutionContext } from '../types';
 import { activatorRuntime } from './activator';
 import { agentDocumentsRuntime } from './agentDocuments';
 import { agentManagementRuntime } from './agentManagement';
+import { agentSignalFeedbackIntentRuntime } from './agentSignalFeedbackIntent';
+import { agentSignalReflectionRuntime } from './agentSignalReflection';
+import { agentSignalReviewRuntime } from './agentSignalReview';
 import { briefRuntime } from './brief';
 import { calculatorRuntime } from './calculator';
 import { cloudSandboxRuntime } from './cloudSandbox';
@@ -71,6 +74,9 @@ registerRuntimes([
   webOnboardingRuntime,
   lobeAgentRuntime,
   selfFeedbackIntentRuntime,
+  agentSignalReviewRuntime,
+  agentSignalReflectionRuntime,
+  agentSignalFeedbackIntentRuntime,
 ]);
 
 // ==================== Registry API ====================

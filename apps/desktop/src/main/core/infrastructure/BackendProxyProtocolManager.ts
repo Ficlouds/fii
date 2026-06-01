@@ -15,25 +15,20 @@ interface BackendProxyContext {
   source?: string;
 }
 
-interface BackendProxyProtocolManagerOptions extends BackendProxyContext {
-  scheme: string;
-}
-
-interface BackendProxyProtocolManagerRemoteBaseOptions {
+interface BackendProxyRemoteBaseOptions {
   getAccessToken: () => Promise<string | undefined | null>;
   getRemoteBaseUrl: () => Promise<string | undefined | null>;
-  scheme: string;
   source?: string;
 }
 
 /**
- * Manage `lobe-backend://` (or any custom scheme) transparent proxy handler registration.
- * Keeps per-session contexts so the proxy logic can be reused from a non-`lobe-backend://`
- * entry point — e.g. the `app://` handler diverting backend-prefixed paths in production.
+ * Holds per-session proxy context for routing renderer-originated backend
+ * requests (`/trpc`, `/webapi`, `/api/auth`, `/market`) to the remote LobeHub
+ * server. The context is consumed by `createAppRequestInterceptor`, which the
+ * `app://` protocol manager invokes before its static / Vite fallback.
  */
 export class BackendProxyProtocolManager {
   private readonly contexts = new WeakMap<Session, BackendProxyContext>();
-  private readonly handledSessions = new WeakSet<Session>();
   private readonly logger = createLogger('core:BackendProxyProtocolManager');
 
   private authRequiredDebounceTimer: NodeJS.Timeout | null = null;
@@ -58,10 +53,12 @@ export class BackendProxyProtocolManager {
     }, BackendProxyProtocolManager.AUTH_REQUIRED_DEBOUNCE_MS);
   }
 
-  registerWithRemoteBaseUrl(
-    session: Session,
-    options: BackendProxyProtocolManagerRemoteBaseOptions,
-  ) {
+  /**
+   * Bind a session's proxy context using a remote-base-URL provider. Backend
+   * paths get rewritten onto the remote base; same-origin requests pass through
+   * (returns null so the `app://` handler falls back to its static / Vite path).
+   */
+  registerWithRemoteBaseUrl(session: Session, options: BackendProxyRemoteBaseOptions) {
     let lastRemoteBaseUrl: string | undefined;
 
     const rewriteUrl = async (rawUrl: string) => {
@@ -96,36 +93,28 @@ export class BackendProxyProtocolManager {
     this.register(session, {
       getAccessToken: options.getAccessToken,
       rewriteUrl,
-      scheme: options.scheme,
       source: options.source,
     });
   }
 
-  register(session: Session, options: BackendProxyProtocolManagerOptions) {
+  /**
+   * Bind a session's proxy context. Subsequent backend-path requests on this
+   * session will be rewritten via `rewriteUrl` and have `Oidc-Auth` injected.
+   */
+  register(session: Session, context: BackendProxyContext) {
     if (!session) return;
-
-    const { scheme, ...context } = options;
     this.contexts.set(session, context);
-
-    if (this.handledSessions.has(session)) return;
-
-    const logPrefix = options.source ? `[${options.source}] BackendProxy` : '[BackendProxy]';
-
-    session.protocol.handle(scheme, (request) => this.proxy(request, session));
-
-    this.logger.debug(`${logPrefix} protocol handler registered for ${scheme}`);
-    this.handledSessions.add(session);
   }
 
   /**
    * Build an `app://` request interceptor that diverts backend-prefixed paths
    * (trpc / webapi / api/auth / market) through `proxy()` against the default
-   * session. Suitable for plugging into `RendererProtocolManager.addRequestInterceptor`
-   * so the renderer protocol manager doesn't need to know what "backend" means.
+   * session. Plug into `RendererProtocolManager.addRequestInterceptor` so the
+   * protocol manager doesn't need to know what "backend" means.
    *
-   * Returns `null` for non-backend paths (lets the file pipeline run). Returns
-   * a 502 if the backend context isn't wired up yet — for backend prefixes we
-   * must never fall through to the SPA HTML fallback.
+   * Returns `null` for non-backend paths (lets the fallback run). Returns a
+   * 502 if the backend context isn't wired up yet — for backend prefixes we
+   * must never fall through to the SPA HTML / Vite path.
    */
   createAppRequestInterceptor(): RendererRequestInterceptor {
     return async (request) => {
@@ -142,9 +131,9 @@ export class BackendProxyProtocolManager {
 
   /**
    * Proxy a renderer-originated request through the remote LobeHub backend.
-   * Returns `null` if the session has no proxy context registered yet (caller decides
-   * how to fall back). Throws on upstream fetch failure to mirror the original
-   * `protocol.handle` semantics.
+   * Returns `null` if the session has no proxy context registered yet (caller
+   * decides how to fall back). Throws on upstream fetch failure to mirror the
+   * original `protocol.handle` semantics.
    */
   async proxy(request: Request, session: Session): Promise<Response | null> {
     const context = this.contexts.get(session);

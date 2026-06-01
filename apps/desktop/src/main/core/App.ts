@@ -10,7 +10,6 @@ import * as electronIs from 'electron-is';
 import { name } from '@/../../package.json';
 import { binDir, buildDir } from '@/const/dir';
 import { isDev } from '@/const/env';
-import { ELECTRON_BE_PROTOCOL_SCHEME } from '@/const/protocol';
 import type { IControlModule } from '@/controllers';
 import AuthCtr from '@/controllers/AuthCtr';
 import { generateCliWrapper, getCliWrapperDir } from '@/modules/cliEmbedding';
@@ -116,16 +115,6 @@ export class App {
       this.storeManager.get('localFileWorkspaceRoots', []),
     );
     protocol.registerSchemesAsPrivileged([
-      {
-        privileges: {
-          allowServiceWorkers: true,
-          corsEnabled: true,
-          secure: true,
-          standard: true,
-          supportFetchAPI: true,
-        },
-        scheme: ELECTRON_BE_PROTOCOL_SCHEME,
-      },
       this.rendererUrlManager.protocolScheme,
       this.localFileProtocolManager.protocolScheme,
     ]);
@@ -438,7 +427,6 @@ export class App {
     if (!isDev) return;
 
     logger.debug('Setting up dev branding');
-    app.setName('lobehub-desktop-dev');
     if (electronIs.macOS()) {
       app.dock!.setIcon(path.join(buildDir, 'icon-dev.png'));
     }

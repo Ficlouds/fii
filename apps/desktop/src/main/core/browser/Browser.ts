@@ -7,8 +7,7 @@ import type { BrowserWindowConstructorOptions } from 'electron';
 import { app, BrowserWindow, ipcMain, screen, session as electronSession, shell } from 'electron';
 
 import { preloadDir, resourcesDir } from '@/const/dir';
-import { isDev, isMac } from '@/const/env';
-import { ELECTRON_BE_PROTOCOL_SCHEME, isBackendPath } from '@/const/protocol';
+import { isMac } from '@/const/env';
 import RemoteServerConfigCtr from '@/controllers/RemoteServerConfigCtr';
 import { backendProxyProtocolManager } from '@/core/infrastructure/BackendProxyProtocolManager';
 import { appendVercelCookie, setResponseHeader } from '@/utils/http-headers';
@@ -561,7 +560,10 @@ export default class Browser {
   }
 
   /**
-   * Rewrite tRPC requests to remote server and inject OIDC token
+   * Bind this window's session to the backend proxy. The `app://` request
+   * interceptor (wired in `App.ts`) consumes this context to route
+   * `/trpc`, `/webapi`, `/api/auth`, and `/market` requests to the remote
+   * LobeHub server.
    */
   private setupRemoteServerRequestHook(browserWindow: BrowserWindow): void {
     const session = browserWindow.webContents.session;
@@ -577,42 +579,7 @@ export default class Browser {
         const remoteServerUrl = await remoteServerConfigCtr.getRemoteServerUrl(config);
         return remoteServerUrl || null;
       },
-      scheme: ELECTRON_BE_PROTOCOL_SCHEME,
       source: this.identifier,
     });
-
-    // In dev the renderer is served by electron-vite at http://localhost:<port>.
-    // Redirect backend-prefixed requests to lobe-backend:// so the proxy handler picks
-    // them up. In prod the renderer runs under app:// and the divert happens inside
-    // RendererProtocolManager — this hook is dev-only.
-    if (isDev) {
-      this.setupDevBackendRedirect(targetSession);
-    }
-  }
-
-  private setupDevBackendRedirect(targetSession: Electron.Session): void {
-    targetSession.webRequest.onBeforeRequest(
-      {
-        urls: [
-          'http://localhost/*',
-          'http://localhost:*/*',
-          'http://127.0.0.1/*',
-          'http://127.0.0.1:*/*',
-        ],
-      },
-      (details, callback) => {
-        try {
-          const url = new URL(details.url);
-          if (isBackendPath(url.pathname)) {
-            const redirectURL = `${ELECTRON_BE_PROTOCOL_SCHEME}://lobe${url.pathname}${url.search}`;
-            callback({ redirectURL });
-            return;
-          }
-        } catch {
-          // fall through to callback({})
-        }
-        callback({});
-      },
-    );
   }
 }

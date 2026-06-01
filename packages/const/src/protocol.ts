@@ -1,5 +1,3 @@
-export const ELECTRON_BE_PROTOCOL_SCHEME = 'lobe-backend';
-
 /**
  * Custom protocol the desktop main process exposes for serving approved
  * local workspace file previews to the renderer.

@@ -2172,6 +2172,10 @@ export class AiAgentService {
         userTimezone,
         appContext: {
           agentId: resolvedAgentId,
+          // Run-scoped Agent Signal marker for background self-iteration / memory
+          // runs — lands in state.metadata.agentSignal so the completion path can
+          // project receipts/briefs. Undefined for ordinary chat runs.
+          ...(appContext?.agentSignal ? { agentSignal: appContext.agentSignal } : {}),
           defaultTaskAssigneeAgentId: appContext?.defaultTaskAssigneeAgentId,
           documentId: appContext?.documentId,
           groupId: appContext?.groupId,

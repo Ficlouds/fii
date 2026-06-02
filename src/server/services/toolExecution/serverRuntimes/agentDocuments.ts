@@ -18,7 +18,7 @@ export const agentDocumentsRuntime: ServerRuntimeRegistration = {
 
     const db = context.serverDB;
     const userId = context.userId;
-    const service = new AgentDocumentsService(db, userId);
+    const service = new AgentDocumentsService(db, userId, context.workspaceId);
     const { taskId } = context;
     const emitDocumentOutcome = async (input: {
       agentId?: string;

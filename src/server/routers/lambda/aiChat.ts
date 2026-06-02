@@ -366,6 +366,7 @@ export const aiChatRouter = router({
         ...input,
         serverDB: ctx.serverDB,
         userId: ctx.userId,
+        workspaceId: ctx.workspaceId ?? undefined,
       });
     }),
 });

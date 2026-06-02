@@ -94,7 +94,7 @@ export class AgentDocumentsService {
   private topicDocumentModel: TopicDocumentModel;
 
   constructor(db: LobeChatDatabase, userId: string, workspaceId?: string) {
-    this.agentDocumentModel = new AgentDocumentModel(db, userId);
+    this.agentDocumentModel = new AgentDocumentModel(db, userId, workspaceId);
     this.documentService = new DocumentService(db, userId, workspaceId);
     this.topicDocumentModel = new TopicDocumentModel(db, userId, workspaceId);
   }

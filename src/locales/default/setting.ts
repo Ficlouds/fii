@@ -566,7 +566,10 @@ export default {
   'notification.item.video_generation_completed': 'Video generation completed',
   'notification.item.workspace_member_joined': 'New member joined',
   'notification.item.workspace_member_removed': 'Removed from workspace',
+  'notification.item.workspace_payment_failed': 'Renewal payment failed',
+  'notification.item.workspace_payment_method_removed': 'Payment method removed',
   'notification.item.workspace_primary_ownership_transferred': 'Primary ownership transferred',
+  'notification.item.workspace_subscription_expired': 'Subscription ended',
   'notification.title': 'Notification Channels',
   'myAgents.actions.cancel': 'Cancel',
   'myAgents.actions.confirmDeprecate': 'Confirm Deprecate',
@@ -1678,6 +1681,8 @@ When I am ___, I need ___
   'workspace.general.url.description':
     "This is your workspace's URL namespace. Members can use it to access shared resources.",
   'workspace.general.url.hint': 'Please use {{max}} characters at maximum.',
+  'workspace.general.url.invalidBrandProtected':
+    'This workspace URL may be associated with a protected brand. To request it, contact us from your organization email.',
   'workspace.general.url.invalidConsecutive': 'Slug cannot contain consecutive dashes.',
   'workspace.general.url.invalidLength': 'Slug must be 3–32 characters long.',
   'workspace.general.url.invalidPattern':
@@ -1686,6 +1691,10 @@ When I am ___, I need ___
   'workspace.general.url.renameWarning': 'Renaming will break existing links to this workspace.',
   'workspace.general.url.taken': 'This URL is already taken.',
   'workspace.general.url.title': 'Workspace URL',
+  'workspace.slugBrandApply.button': 'Apply via email',
+  'workspace.slugBrandApply.mailBody':
+    'Hi LobeHub team,\n\nI would like to request the workspace URL "{{slug}}" (https://lobehub.com/{{slug}}).\n\n- Brand / organization I represent:\n- Official website / domain:\n- My role in the organization:\n- Organization email (please reply from this address):\n\nThanks!',
+  'workspace.slugBrandApply.mailSubject': 'Workspace URL brand request: {{slug}}',
   'workspace.member.demote': 'Demote to member',
   'workspace.member.demoteConfirm.content': 'This member will lose owner privileges.',
   'workspace.member.demoteConfirm.title': 'Demote owner?',
@@ -1879,6 +1888,8 @@ When I am ___, I need ___
   'workspace.wizard.step1.name.label': 'Workspace name',
   'workspace.wizard.step1.name.placeholder': 'e.g. Acme Team',
   'workspace.wizard.step1.name.required': 'Workspace name is required',
+  'workspace.wizard.step1.slug.invalidBrandProtected':
+    'This workspace URL may be associated with a protected brand. To request it, contact us from your organization email.',
   'workspace.wizard.step1.slug.invalidConsecutive': 'Slug cannot contain consecutive dashes.',
   'workspace.wizard.step1.slug.invalidLength': 'Slug must be 3–32 characters long.',
   'workspace.wizard.step1.slug.invalidPattern':

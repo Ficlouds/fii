@@ -282,7 +282,11 @@ export const userRouter = router({
 
   getOnboardingAgentContext: userProcedure.query(async ({ ctx }) => {
     const onboardingService = new OnboardingService(ctx.serverDB, ctx.userId);
-    const docService = new AgentDocumentsService(ctx.serverDB, ctx.userId);
+    const docService = new AgentDocumentsService(
+      ctx.serverDB,
+      ctx.userId,
+      ctx.workspaceId ?? undefined,
+    );
     const { UserPersonaModel } = await import('@/database/models/userMemory/persona');
     const personaModel = new UserPersonaModel(ctx.serverDB, ctx.userId);
 
@@ -326,7 +330,11 @@ export const userRouter = router({
     .query(async ({ ctx, input }) => {
       if (input.type === 'soul') {
         const onboardingService = new OnboardingService(ctx.serverDB, ctx.userId);
-        const docService = new AgentDocumentsService(ctx.serverDB, ctx.userId);
+        const docService = new AgentDocumentsService(
+          ctx.serverDB,
+          ctx.userId,
+          ctx.workspaceId ?? undefined,
+        );
         const inboxAgentId = await onboardingService.getInboxAgentId();
         const doc = await docService.getDocumentByFilename(inboxAgentId, 'SOUL.md');
 
@@ -353,7 +361,11 @@ export const userRouter = router({
     .mutation(async ({ ctx, input }) => {
       if (input.type === 'soul') {
         const onboardingService = new OnboardingService(ctx.serverDB, ctx.userId);
-        const docService = new AgentDocumentsService(ctx.serverDB, ctx.userId);
+        const docService = new AgentDocumentsService(
+          ctx.serverDB,
+          ctx.userId,
+          ctx.workspaceId ?? undefined,
+        );
         const inboxAgentId = await onboardingService.getInboxAgentId();
         const doc = await docService.upsertDocumentByFilename({
           agentId: inboxAgentId,
@@ -418,7 +430,11 @@ export const userRouter = router({
       const readCurrent = async (): Promise<string> => {
         if (input.type === 'soul') {
           const onboardingService = new OnboardingService(ctx.serverDB, ctx.userId);
-          const docService = new AgentDocumentsService(ctx.serverDB, ctx.userId);
+          const docService = new AgentDocumentsService(
+            ctx.serverDB,
+            ctx.userId,
+            ctx.workspaceId ?? undefined,
+          );
           const inboxAgentId = await onboardingService.getInboxAgentId();
           const doc = await docService.getDocumentByFilename(inboxAgentId, 'SOUL.md');
           return doc?.content ?? '';
@@ -442,7 +458,11 @@ export const userRouter = router({
 
       if (input.type === 'soul') {
         const onboardingService = new OnboardingService(ctx.serverDB, ctx.userId);
-        const docService = new AgentDocumentsService(ctx.serverDB, ctx.userId);
+        const docService = new AgentDocumentsService(
+          ctx.serverDB,
+          ctx.userId,
+          ctx.workspaceId ?? undefined,
+        );
         const inboxAgentId = await onboardingService.getInboxAgentId();
         const doc = await docService.upsertDocumentByFilename({
           agentId: inboxAgentId,

@@ -27,6 +27,12 @@
   "workspace_member_removed_downgrade": "由于工作区已降级，您已被从工作区 \"{{workspaceName}}\" 中移除。",
   "workspace_member_removed_downgrade_title": "已从工作区移除",
   "workspace_member_removed_title": "已从工作区移除",
+  "workspace_payment_failed": "工作区「{{workspaceName}}」续费扣款失败,请更新支付方式以保持工作区可用。",
+  "workspace_payment_failed_title": "{{workspaceName}} 续费失败",
+  "workspace_payment_method_removed": "工作区「{{workspaceName}}」已移除一个支付方式。请在下次续费前添加银行卡,否则订阅将续费失败。",
+  "workspace_payment_method_removed_title": "{{workspaceName}} 已移除支付方式",
   "workspace_primary_ownership_transferred": "您已成为工作区「{{workspaceName}}」的 Primary Owner。账单和 Primary 权限已转移给您。",
-  "workspace_primary_ownership_transferred_title": "您已成为 {{workspaceName}} 的 Primary Owner"
+  "workspace_primary_ownership_transferred_title": "您已成为 {{workspaceName}} 的 Primary Owner",
+  "workspace_subscription_expired": "工作区「{{workspaceName}}」的订阅已结束。请在 {{days}} 天内续费以恢复完整权限,否则工作区将被降级。",
+  "workspace_subscription_expired_title": "{{workspaceName}} 订阅已结束"
 }

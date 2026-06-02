@@ -34,8 +34,17 @@ export default {
     'You have been removed from workspace "{{workspaceName}}" because the workspace was downgraded.',
   'workspace_member_removed_downgrade_title': 'Removed from workspace',
   'workspace_member_removed_title': 'Removed from workspace',
+  'workspace_payment_failed':
+    'Renewal payment for workspace "{{workspaceName}}" failed. Please update your payment method to keep the workspace active.',
+  'workspace_payment_failed_title': 'Payment failed for {{workspaceName}}',
+  'workspace_payment_method_removed':
+    'A payment method was removed from workspace "{{workspaceName}}". Add a card before the next renewal, otherwise the subscription will fail to renew.',
+  'workspace_payment_method_removed_title': 'Payment method removed from {{workspaceName}}',
   'workspace_primary_ownership_transferred':
     'You are now the primary owner of workspace "{{workspaceName}}". Billing and primary privileges have been transferred to you.',
   'workspace_primary_ownership_transferred_title':
     'You are now the primary owner of {{workspaceName}}',
+  'workspace_subscription_expired':
+    'The subscription for workspace "{{workspaceName}}" has ended. Renew within {{days}} days to restore full access before the workspace is downgraded.',
+  'workspace_subscription_expired_title': 'Subscription ended for {{workspaceName}}',
 };

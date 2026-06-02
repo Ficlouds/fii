@@ -156,9 +156,9 @@ const agentDocumentProcedure = wsCompatProcedure.use(serverDatabase).use(async (
 
   return opts.next({
     ctx: {
-      agentDocumentModel: new AgentDocumentModel(ctx.serverDB, ctx.userId),
+      agentDocumentModel: new AgentDocumentModel(ctx.serverDB, ctx.userId, wsId),
       agentDocumentService: new AgentDocumentsService(ctx.serverDB, ctx.userId, wsId),
-      agentDocumentVfsService: new AgentDocumentVfsService(ctx.serverDB, ctx.userId),
+      agentDocumentVfsService: new AgentDocumentVfsService(ctx.serverDB, ctx.userId, wsId),
       topicModel: new TopicModel(ctx.serverDB, ctx.userId, wsId),
       topicDocumentModel: new TopicDocumentModel(ctx.serverDB, ctx.userId, wsId),
     },

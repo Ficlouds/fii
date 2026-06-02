@@ -854,6 +854,7 @@
   "storageOverage.capUpdateFailed": "月度上限更新失败。",
   "storageOverage.capUpdated": "月度上限已更新。",
   "storageOverage.capped": "已达到月度消费上限，超额上传已暂停。",
+  "storageOverage.consent.billedMonthlyForYearly": "存储超额费用按月结算，不等到年费续订时结算",
   "storageOverage.consent.billedTogether": "将与订阅账单一起结算",
   "storageOverage.consent.canDisable": "可随时关闭",
   "storageOverage.consent.description": "超出套餐额度的存储将按以下标准计费：",

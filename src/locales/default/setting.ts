@@ -982,6 +982,8 @@ When I am ___, I need ___
   'storageOverage.capped': 'Monthly spending cap reached. Overage uploads are paused.',
   'storageOverage.capUpdateFailed': 'Failed to update monthly cap.',
   'storageOverage.capUpdated': 'Monthly cap updated.',
+  'storageOverage.consent.billedMonthlyForYearly':
+    'Storage overage is billed monthly, separate from your yearly plan renewal',
   'storageOverage.consent.billedTogether': 'Billed together with your subscription',
   'storageOverage.consent.canDisable': 'Can be disabled anytime',
   'storageOverage.consent.description': 'Storage exceeding your plan quota will be charged:',

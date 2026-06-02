@@ -204,6 +204,8 @@ export default {
     'The current deployment mode does not support uploading non-image files. To upload files in {{ext}} format, please switch to server database deployment or use the {{cloud}} service.',
   'upload.networkError':
     "Please check your network connection and ensure that the file storage service's cross-origin configuration is correct.",
+  'upload.storageBlock.billingUnavailable':
+    'Your subscription billing status cannot be verified. Please try again later or update your billing details.',
   'upload.storageBlock.monthlyCapReached': 'Your monthly storage spending cap has been reached.',
   'upload.storageBlock.noPaymentMethod': 'Please add a payment method to continue uploading.',
   'upload.storageBlock.viewUsage': 'View storage usage',

@@ -1,4 +1,5 @@
 export const StorageBlockReason = {
+  BillingUnavailable: 'billing_unavailable',
   MonthlyCapReached: 'monthly_cap_reached',
   NoPaymentMethod: 'no_payment_method',
   OverageNotEnabled: 'overage_not_enabled',

@@ -725,3 +725,8 @@ AND "permission_id" IN (
 UPDATE "rbac_roles"
 SET "description" = 'Read-only access to workspace content.'
 WHERE "name" = 'workspace_viewer';
+--> statement-breakpoint
+ALTER TABLE "document_shares" ADD COLUMN IF NOT EXISTS "workspace_id" text;--> statement-breakpoint
+ALTER TABLE "document_shares" DROP CONSTRAINT IF EXISTS "document_shares_workspace_id_workspaces_id_fk";--> statement-breakpoint
+ALTER TABLE "document_shares" ADD CONSTRAINT "document_shares_workspace_id_workspaces_id_fk" FOREIGN KEY ("workspace_id") REFERENCES "public"."workspaces"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "document_shares_workspace_id_idx" ON "document_shares" USING btree ("workspace_id");

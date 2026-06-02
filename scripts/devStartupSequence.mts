@@ -149,8 +149,8 @@ const main = async () => {
   });
   watchChildExit(nextProcess, 'next');
 
-  viteProcess = runNpmScript('dev:spa');
-  watchChildExit(viteProcess, 'vite');
+  // viteProcess = runNpmScript("dev:spa"); // disabled - saves RAM
+  // watchChildExit(viteProcess, "vite"); // disabled
   runNextBackgroundTasks();
 
   await Promise.race([

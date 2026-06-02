@@ -1,40 +1,29 @@
-// the code below can only be modified with commercial license
-// if you want to use it in the commercial usage
-// please contact us for more information: hello@lobehub.com
-
-export const LOBE_CHAT_CLOUD = 'LobeHub Cloud';
-
-export const BRANDING_NAME = 'LobeHub';
-export const BRANDING_LOGO_URL = '';
-
-export const ORG_NAME = 'LobeHub';
-
+// Fi Platform Branding
+export const LOBE_CHAT_CLOUD = 'Fi Cloud';
+export const BRANDING_NAME = 'Fi';
+export const BRANDING_LOGO_URL = '/fi-logo.svg';
+export const ORG_NAME = 'Fi';
 export const BRANDING_URL = {
   help: undefined,
-  privacy: undefined,
+  privacy: 'https://ficlouds.com/privacy',
   subscription: undefined,
   support: undefined,
-  terms: undefined,
+  terms: 'https://ficlouds.com/terms',
 };
-
 export const SOCIAL_URL = {
-  discord: 'https://discord.gg/AYFPHvv2jT',
-  github: 'https://github.com/lobehub',
-  medium: 'https://medium.com/@lobehub',
-  x: 'https://x.com/lobehub',
-  youtube: 'https://www.youtube.com/@lobehub',
+  discord: undefined,
+  github: undefined,
+  medium: undefined,
+  x: undefined,
+  youtube: undefined,
 };
-
 export const FILE_URL = {
-  importFromNotionGuide: 'https://hub-apac-1.lobeobjects.space/assets/notion.mp4',
+  importFromNotionGuide: '',
 };
-
 export const BRANDING_EMAIL = {
-  business: 'hello@lobehub.com',
-  support: 'support@lobehub.com',
+  business: 'hello@ficlouds.com',
+  support: 'support@ficlouds.com',
 };
-
-export const BRANDING_PROVIDER = 'lobehub';
-
-export const COPYRIGHT = `© ${new Date().getFullYear()} ${ORG_NAME}`;
+export const BRANDING_PROVIDER = 'fi';
+export const COPYRIGHT = `© ${new Date().getFullYear()} Fi`;
 export const COPYRIGHT_FULL = `${COPYRIGHT}. All rights reserved.`;

@@ -1,35 +1,36 @@
 'use client';
 
 import { type FlexboxProps } from '@lobehub/ui';
-import { Flexbox, Text } from '@lobehub/ui';
+import { Flexbox } from '@lobehub/ui';
 import { type ReactNode } from 'react';
 import { memo } from 'react';
 
 export interface AuthCardProps extends Omit<FlexboxProps, 'title'> {
-  footer?: ReactNode;
   subtitle?: ReactNode;
   title?: ReactNode;
 }
 
-export const AuthCard = memo<AuthCardProps>(({ children, title, subtitle, footer, ...rest }) => {
+export const AuthCard = memo<AuthCardProps>(({ children, title, ...rest }) => {
   return (
     <Flexbox width={'min(100%,440px)'} {...rest}>
       <Flexbox gap={16}>
         {title && (
-          <Text fontSize={28} style={{ lineHeight: 1.4 }} weight={'bold'}>
+          <h1 style={{
+            color: '#ffffff',
+            fontSize: 28,
+            fontWeight: 600,
+            lineHeight: 1.3,
+            margin: '0 0 8px 0',
+            fontFamily: 'system-ui, sans-serif',
+            letterSpacing: '-0.5px',
+          }}>
             {title}
-          </Text>
-        )}
-        {subtitle && (
-          <Text fontSize={18} style={{ lineHeight: 1.4 }} type={'secondary'} weight={500}>
-            {subtitle}
-          </Text>
+          </h1>
         )}
       </Flexbox>
       <Flexbox gap={4} paddingBlock={32}>
         {children}
       </Flexbox>
-      {footer}
     </Flexbox>
   );
 });

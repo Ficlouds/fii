@@ -1,24 +1,12 @@
-import { BRANDING_NAME } from '@lobechat/business-const';
-import { Alert, Button, Flexbox, Icon, Input, Skeleton, Text } from '@lobehub/ui';
+import { Button, Flexbox, Icon, Input, Skeleton } from '@lobehub/ui';
 import { type FormInstance, type InputRef } from 'antd';
-import { Badge, Divider, Form } from 'antd';
-import { createStaticStyles } from 'antd-style';
-import { ChevronRight, Mail } from 'lucide-react';
+import { Divider, Form } from 'antd';
+import { Mail } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useRef } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
-
-import AuthIcons from '@/components/AuthIcons';
-import { PRIVACY_URL, TERMS_URL } from '@/const/url';
+import { useTranslation } from 'react-i18next';
 
 import AuthCard from '../../../../features/AuthCard';
-
-const styles = createStaticStyles(({ css, cssVar }) => ({
-  setPasswordLink: css`
-    cursor: pointer;
-    color: ${cssVar.colorPrimary};
-    text-decoration: underline;
-  `,
-}));
 
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@][^\s.@]*\.[^\s@]+$/;
 export const USERNAME_REGEX = /^\w+$/;
@@ -37,130 +25,74 @@ export interface SignInEmailStepProps {
   socialLoading: string | null;
 }
 
+const GoogleIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" style={{ marginRight: 8, flexShrink: 0 }}>
+    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+  </svg>
+);
+
 export const SignInEmailStep = ({
   disableEmailPassword,
   form,
-  isSocialOnly,
-  lastAuthProvider,
   loading,
   oAuthSSOProviders,
   serverConfigInit,
   socialLoading,
   onCheckUser,
-  onSetPassword,
   onSocialSignIn,
 }: SignInEmailStepProps) => {
   const { t } = useTranslation('auth');
   const emailInputRef = useRef<InputRef>(null);
-
-  useEffect(() => {
-    emailInputRef.current?.focus();
-  }, []);
-
-  const divider = (
-    <Divider>
-      <Text fontSize={12} type={'secondary'}>
-        {t('betterAuth.signin.orContinueWith')}
-      </Text>
-    </Divider>
-  );
-
-  const getProviderLabel = (provider: string) => {
-    const normalized = provider
-      .toLowerCase()
-      .replaceAll(/(^|[_-])([a-z])/g, (_, __, c) => c.toUpperCase());
-    const normalizedKey = normalized.replaceAll(/[^\da-z]/gi, '');
-    const key = `betterAuth.signin.continueWith${normalizedKey}`;
-    return t(key, { defaultValue: `Continue with ${normalized}` });
-  };
-
-  const footer = (
-    <Text fontSize={13} type={'secondary'}>
-      <Trans
-        i18nKey={'footer.agreement'}
-        ns={'auth'}
-        components={{
-          privacy: (
-            <a
-              href={PRIVACY_URL}
-              style={{ color: 'inherit', cursor: 'pointer', textDecoration: 'underline' }}
-            >
-              {t('footer.terms')}
-            </a>
-          ),
-          terms: (
-            <a
-              href={TERMS_URL}
-              style={{ color: 'inherit', cursor: 'pointer', textDecoration: 'underline' }}
-            >
-              {t('footer.privacy')}
-            </a>
-          ),
-        }}
-      />
-    </Text>
-  );
+  useEffect(() => { emailInputRef.current?.focus(); }, []);
 
   return (
-    <AuthCard
-      footer={footer}
-      subtitle={t('signin.subtitle', { appName: BRANDING_NAME })}
-      title={'Agent teammates that grow with you'}
-    >
+    <AuthCard title={'Log into your account'}>
       {!serverConfigInit && (
-        <Flexbox gap={12}>
+        <Flexbox gap={10}>
           <Skeleton.Button active block size="large" />
           <Skeleton.Button active block size="large" />
-          {divider}
         </Flexbox>
       )}
-      {serverConfigInit && oAuthSSOProviders.length > 0 && (
-        <Flexbox gap={12}>
-          {oAuthSSOProviders.map((provider) => {
-            const button = (
-              <Button
-                block
-                key={provider}
-                loading={socialLoading === provider}
-                size="large"
-                icon={
-                  <Icon
-                    icon={AuthIcons(provider, 18)}
-                    style={{
-                      left: 12,
-                      position: 'absolute',
-                      top: 13,
-                    }}
-                  />
-                }
-                onClick={() => onSocialSignIn(provider)}
-              >
-                {getProviderLabel(provider)}
-              </Button>
-            );
-            const showLastUsed =
-              provider === lastAuthProvider &&
-              (oAuthSSOProviders.length > 1 ||
-                (oAuthSSOProviders.length === 1 && !disableEmailPassword));
-            return showLastUsed ? (
-              <Badge.Ribbon
-                color="var(--ant-color-info-fill-tertiary)"
-                key={provider}
-                styles={{ content: { color: 'var(--ant-color-info)' } }}
-                text={t('betterAuth.signin.lastUsed')}
-              >
-                {button}
-              </Badge.Ribbon>
-            ) : (
-              button
-            );
-          })}
-          {!disableEmailPassword && divider}
+
+      {serverConfigInit && (
+        <Flexbox gap={10}>
+          {oAuthSSOProviders.map((provider) => (
+            <Button
+              block key={provider}
+              loading={socialLoading === provider}
+              size="large"
+              style={{ display:'flex', alignItems:'center', justifyContent:'center' }}
+              onClick={() => onSocialSignIn(provider)}
+            >
+              {provider === 'google' && <GoogleIcon />}
+              Login with {provider.charAt(0).toUpperCase() + provider.slice(1)}
+            </Button>
+          ))}
+
+          {/* Dummy Google button - replace with real OAuth later */}
+          {!oAuthSSOProviders.includes('google') && (
+            <Button
+              block
+              size="large"
+              style={{ display:'flex', alignItems:'center', justifyContent:'center' }}
+              onClick={() => alert('Google OAuth coming soon')}
+            >
+              <GoogleIcon />
+              Login with Google
+            </Button>
+          )}
+
+          {!disableEmailPassword && (
+            <Divider style={{ margin:'8px 0' }}>
+              <span style={{ color:'#bbb', fontSize:12 }}>or</span>
+            </Divider>
+          )}
         </Flexbox>
       )}
-      {serverConfigInit && disableEmailPassword && oAuthSSOProviders.length === 0 && (
-        <Alert showIcon description={t('betterAuth.signin.ssoOnlyNoProviders')} type="warning" />
-      )}
+
       {!disableEmailPassword && (
         <Form
           form={form}
@@ -169,64 +101,47 @@ export const SignInEmailStep = ({
         >
           <Form.Item
             name="email"
-            style={{ marginBottom: 0 }}
+            style={{ marginBottom: 10 }}
             rules={[
               { message: t('betterAuth.errors.emailRequired'), required: true },
               {
                 validator: (_, value) => {
                   if (!value) return Promise.resolve();
-                  const trimmedValue = (value as string).trim();
-                  if (EMAIL_REGEX.test(trimmedValue) || USERNAME_REGEX.test(trimmedValue)) {
-                    return Promise.resolve();
-                  }
+                  const trimmed = (value as string).trim();
+                  if (EMAIL_REGEX.test(trimmed) || USERNAME_REGEX.test(trimmed)) return Promise.resolve();
                   return Promise.reject(new Error(t('betterAuth.errors.emailInvalid')));
                 },
               },
             ]}
           >
             <Input
-              placeholder={t('betterAuth.signin.emailPlaceholder')}
+              placeholder="Enter your email or username"
               ref={emailInputRef}
               size="large"
-              prefix={
-                <Icon
-                  icon={Mail}
-                  style={{
-                    marginInline: 6,
-                  }}
-                />
-              }
-              style={{
-                padding: 6,
-              }}
-              suffix={
-                <Button
-                  icon={ChevronRight}
-                  loading={loading}
-                  title={t('betterAuth.signin.nextStep')}
-                  variant={'filled'}
-                  onClick={() => form.submit()}
-                />
-              }
+              prefix={<Icon icon={Mail} style={{ marginInline: 4, color: '#bbb' }} />}
             />
           </Form.Item>
+          <Button
+            block
+            htmlType="submit"
+            loading={loading}
+            size="large"
+            type="primary"
+            style={{ marginTop: 4 }}
+          >
+            Continue
+          </Button>
         </Form>
       )}
-      {isSocialOnly && (
-        <Alert
-          showIcon
-          style={{ marginTop: 12 }}
-          type="info"
-          description={
-            <>
-              {t('betterAuth.signin.socialOnlyHint')}{' '}
-              <a className={styles.setPasswordLink} onClick={onSetPassword}>
-                {t('betterAuth.signin.setPassword')}
-              </a>
-            </>
-          }
-        />
-      )}
+
+      <div style={{ textAlign:'center', marginTop:20 }}>
+        <span style={{ fontSize:13, color:'#999' }}>
+          Don&apos;t have an account?{' '}
+          <Link href="/signup" style={{ color:'#000', fontWeight:500 }}>
+            Sign up
+          </Link>
+        </span>
+      </div>
     </AuthCard>
   );
 };

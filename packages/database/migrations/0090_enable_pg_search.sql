@@ -1,2 +1,1 @@
--- Custom SQL migration file, put your code below! --
-CREATE EXTENSION IF NOT EXISTS pg_search;
+-- pg_search not available on Neon, skipping

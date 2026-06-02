@@ -104,6 +104,12 @@ export interface UserMemoryActionHandlerOptions {
   }) => Promise<MemoryAgentActionResult>;
   pluginModel?: Pick<PluginModel, 'query'>;
   userId: string;
+  /**
+   * Workspace id when the source event ran inside a team workspace. When set,
+   * workspace-scoped writes (e.g. `userMemories.workspaceId`) target this
+   * workspace; when undefined, writes fall back to personal-scope.
+   */
+  workspaceId?: string;
 }
 
 const finalizeAttempt = (

@@ -1,4 +1,4 @@
-import { HomeIcon, SearchIcon } from 'lucide-react';
+import { HomeIcon, PlusIcon, SearchIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -35,7 +35,7 @@ export interface NavLayout {
 export const useNavLayout = (): NavLayout => {
   const { t } = useTranslation('common');
   const toggleCommandMenu = useGlobalStore((s) => s.toggleCommandMenu);
-  const { showMarket, hideGitHub } = useServerConfigStore(featureFlagsSelectors);
+  const { hideGitHub } = useServerConfigStore(featureFlagsSelectors);
 
   const topNavItems = useMemo(
     () =>
@@ -58,46 +58,13 @@ export const useNavLayout = (): NavLayout => {
           title: t('tab.tasks'),
           url: '/tasks',
         },
-        {
-          icon: getRouteById('page')!.icon,
-          key: SidebarTabKey.Pages,
-          title: t('tab.pages'),
-          url: '/page',
-        },
       ] as NavItem[],
     [t, toggleCommandMenu],
   );
 
   const bottomMenuItems = useMemo(
-    () =>
-      [
-        {
-          icon: getRouteById('image')!.icon,
-          key: SidebarTabKey.Image,
-          title: t('tab.generation'),
-          url: '/image',
-        },
-        {
-          hidden: !showMarket,
-          icon: getRouteById('community')!.icon,
-          key: SidebarTabKey.Community,
-          title: t('tab.community'),
-          url: '/community',
-        },
-        {
-          icon: getRouteById('resource')!.icon,
-          key: SidebarTabKey.Resource,
-          title: t('tab.resource'),
-          url: '/resource',
-        },
-        {
-          icon: getRouteById('memory')!.icon,
-          key: SidebarTabKey.Memory,
-          title: t('tab.memory'),
-          url: '/memory',
-        },
-      ] as NavItem[],
-    [t, showMarket],
+    () => [] as NavItem[],
+    [],
   );
 
   const footer = useMemo(

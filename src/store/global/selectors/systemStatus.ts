@@ -56,14 +56,8 @@ export const SIDEBAR_SPACER_ID = '__spacer__';
 
 export const DEFAULT_SIDEBAR_ITEMS: string[] = [
   'tasks',
-  'pages',
   'recents',
-  'agent',
   SIDEBAR_SPACER_ID,
-  'image',
-  'community',
-  'resource',
-  'memory',
 ];
 
 /** Items that must stay contiguous in the sidebar list (accordion block). */

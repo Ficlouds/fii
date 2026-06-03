@@ -1,13 +1,12 @@
 import {
   adminClient,
+  emailOTPClient,
   genericOAuthClient,
   inferAdditionalFields,
   magicLinkClient,
 } from 'better-auth/client/plugins';
 import { createAuthClient } from 'better-auth/react';
-
 import { type auth } from '@/auth';
-
 export const {
   changeEmail,
   linkSocial,
@@ -22,12 +21,13 @@ export const {
   signUp,
   unlinkAccount,
   useSession,
+  emailOtp,
 } = createAuthClient({
   plugins: [
     adminClient(),
     inferAdditionalFields<typeof auth>(),
     genericOAuthClient(),
-    // Always include magicLinkClient - server will reject if not enabled
     magicLinkClient(),
+    emailOTPClient(),
   ],
 });

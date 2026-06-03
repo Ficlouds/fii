@@ -1,11 +1,8 @@
 'use client';
-
 import { Suspense } from 'react';
-
 import Loading from '@/components/Loading/BrandTextLoading';
-
 import { SignInEmailStep } from './SignInEmailStep';
-import { SignInPasswordStep } from './SignInPasswordStep';
+import { SignInOtpStep } from './SignInOtpStep';
 import { useSignIn } from './useSignIn';
 
 const SignInPage = () => {
@@ -17,7 +14,9 @@ const SignInPage = () => {
     handleCheckUser,
     handleForgotPassword,
     handleSignIn,
+    handleSendOtp,
     handleSocialSignIn,
+    handleVerifyOtp,
     isSocialOnly,
     lastAuthProvider,
     loading,
@@ -44,13 +43,12 @@ const SignInPage = () => {
           onSocialSignIn={handleSocialSignIn}
         />
       ) : (
-        <SignInPasswordStep
+        <SignInOtpStep
           email={email}
-          form={form as any}
           loading={loading}
-          onBackToEmail={handleBackToEmail}
-          onForgotPassword={handleForgotPassword}
-          onSubmit={handleSignIn}
+          onBack={handleBackToEmail}
+          onVerify={handleVerifyOtp as any}
+          onResend={handleSendOtp as any}
         />
       )}
     </Suspense>

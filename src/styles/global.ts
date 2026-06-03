@@ -7,6 +7,14 @@ import { css } from 'antd-style';
 // ref: https://zhuanlan.zhihu.com/p/113855026
 // eslint-disable-next-line unicorn/no-anonymous-default-export
 export default ({ token }: { prefixCls: string; token: Theme }) => css`
+  html[data-theme='light'] body,
+  html[data-theme='light'] #__next {
+    background-color: #f9f8f7 !important;
+  }
+  html[data-theme='dark'] body,
+  html[data-theme='dark'] #__next {
+    background-color: #000000 !important;
+  }
   html,
   body,
   #__next {

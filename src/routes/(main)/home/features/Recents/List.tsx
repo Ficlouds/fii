@@ -20,7 +20,7 @@ const GROUP_LABEL_STYLE = {
   fontSize: 11,
   fontWeight: 600,
   letterSpacing: '0.04em',
-  padding: '8px 20px 2px',
+  padding: '8px 28px 2px',
   
   textTransform: 'uppercase' as const,
 };

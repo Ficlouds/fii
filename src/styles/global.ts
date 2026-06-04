@@ -102,11 +102,11 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   /* Align recents accordion header with nav items */
   .accordion-he,
   [class*='accordion-he'] {
-    padding-inline-start: 28px !important;
+    padding-inline-start: 4px !important;
   }
   /* Align TODAY/EARLIER group labels */
   [class*='lobe-flex'] > div[style*='uppercase'] {
-    padding-left: 28px !important;
+    padding-left: 6px !important;
   }
 
 

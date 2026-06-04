@@ -54,12 +54,13 @@ const Recents = memo<RecentsProps>(({ itemKey }) => {
   if (isInit && (!recents || recents.length === 0)) return null;
 
   return (
-    <div>
-      <div style={{ borderTop: '1px solid rgba(0,0,0,0.07)', margin: '8px 16px' }} />
+    <div style={{ marginTop: 8 }}>
+      <div style={{ borderTop: '1px solid rgba(0,0,0,0.07)', marginBottom: 8, marginInline: 16 }} />
     <AccordionItem
       itemKey={itemKey}
       paddingBlock={4}
-      paddingInline={'20px 4px'}
+      paddingInline={'8px 4px'}
+      style={{ paddingLeft: 48 }}
       title={
         <Flexbox horizontal align="center" gap={4}>
           <Text ellipsis fontSize={12} type={'secondary'} weight={500}>

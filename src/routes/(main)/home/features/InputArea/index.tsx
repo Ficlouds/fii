@@ -13,13 +13,10 @@ const leftActions: ActionKeys[] = ['plus'];
 const rightActions: ActionKeys[] = ['modelLabel', 'stt'];
 
 interface InputAreaProps {
-  fg?: string;
-  fgSub?: string;
   incognito?: boolean;
-  inputBg?: string;
 }
 
-const InputArea = ({ incognito = false, inputBg, fg }: InputAreaProps) => {
+const InputArea = ({ incognito = false }: InputAreaProps) => {
   const { loading, send, agentId } = useSend();
   useInitAgentConfig(agentId);
   const isAgentConfigLoading = useAgentStore((s) =>
@@ -32,23 +29,21 @@ const InputArea = ({ incognito = false, inputBg, fg }: InputAreaProps) => {
   );
   const { handleUploadFiles } = useUploadFiles({ model, provider });
 
-  const bg = inputBg ?? (incognito ? '#141414' : '#f9f8f7');
-
   const inputContainerProps = useMemo(
     () => ({
-      minHeight: 44,
+      minHeight: 52,
       resize: false,
       style: {
-        background: bg,
+        background: incognito ? '#1c1c1e' : '#f0efee',
         backdropFilter: 'none',
-        border: 'none',
-        borderRadius: 16,
+        border: `1.5px solid ${incognito ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+        borderRadius: 28,
         boxShadow: 'none',
-        color: fg ?? (incognito ? '#fff' : '#111'),
-        outline: 'none',
+        color: incognito ? '#fff' : '#111',
+        transition: 'all 0.25s ease',
       },
     }),
-    [bg, fg, incognito],
+    [incognito],
   );
 
   return (

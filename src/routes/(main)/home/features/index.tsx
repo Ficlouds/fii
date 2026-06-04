@@ -32,121 +32,96 @@ const Home = memo(() => {
     localStorage.setItem(CONNECT_DISMISSED_KEY, 'true');
   }, []);
 
-  const bg = incognito ? '#0a0a0a' : '#f9f8f7';
-  const fg = incognito ? '#fff' : '#111';
-  const fgSub = incognito ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.38)';
-  const inputBg = incognito ? '#141414' : '#f9f8f7';
-  const inputBorder = incognito ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.09)';
-
   return (
     <div
       style={{
         alignItems: 'center',
-        background: bg,
+        background: '#f9f8f7',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         minHeight: '100vh',
-        transition: 'background 0.3s ease',
+        position: 'relative',
         width: '100%',
       }}
     >
+      {/* Incognito icon — top right, icon only */}
+      <button
+        onClick={toggleIncognito}
+        title={incognito ? 'Incognito on — click to disable' : 'Enable incognito mode'}
+        style={{
+          alignItems: 'center',
+          background: incognito ? 'rgba(0,0,0,0.08)' : 'transparent',
+          border: 'none',
+          borderRadius: 8,
+          color: incognito ? '#111' : 'rgba(0,0,0,0.35)',
+          cursor: 'pointer',
+          display: 'flex',
+          padding: 6,
+          position: 'absolute',
+          right: 16,
+          top: 16,
+          transition: 'all 0.15s',
+        }}
+      >
+        <EyeOffIcon size={16} />
+      </button>
+
       {/* Fi logo */}
       <div
         style={{
-          color: fg,
+          color: '#111',
           fontFamily: 'Inter, system-ui, sans-serif',
           fontSize: 56,
           fontWeight: 700,
           letterSpacing: '-2px',
           marginBottom: 24,
-          transition: 'color 0.3s ease',
           userSelect: 'none',
         }}
       >
         Fi
       </div>
 
-      {/* Input — flat, no card, no shadow, no border-radius wrapper */}
-      <div style={{ maxWidth: 680, width: '100%', padding: '0 16px' }}>
-        <div
-          style={{
-            background: inputBg,
-            border: `1.5px solid ${inputBorder}`,
-            borderRadius: 16,
-            transition: 'all 0.3s ease',
-          }}
-        >
-          <InputArea incognito={incognito} inputBg={inputBg} fg={fg} fgSub={fgSub} />
-        </div>
-
-        {/* Incognito toggle — icon + minimal label */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
-          <button
-            onClick={toggleIncognito}
-            title={incognito ? 'Incognito on' : 'Incognito mode'}
-            style={{
-              alignItems: 'center',
-              background: 'transparent',
-              border: 'none',
-              borderRadius: 20,
-              color: incognito ? 'rgba(255,255,255,0.5)' : fgSub,
-              cursor: 'pointer',
-              display: 'flex',
-              fontSize: 11,
-              fontWeight: 500,
-              gap: 4,
-              padding: '3px 8px',
-            }}
-          >
-            <EyeOffIcon size={12} />
-            {incognito ? 'Incognito on' : 'Incognito'}
-          </button>
-        </div>
+      {/* Input pill — Grok style, rounded, single row */}
+      <div style={{ maxWidth: 680, padding: '0 16px', width: '100%' }}>
+        <InputArea incognito={incognito} />
       </div>
 
-      {/* Connect Now banner — exactly like Grok "Connectors are now available" */}
+      {/* Connect Now banner — Grok style */}
       {!bannerDismissed && (
         <div
           style={{
             alignItems: 'center',
-            background: incognito ? '#1a1a1a' : '#fff',
-            border: `1px solid ${incognito ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.08)'}`,
+            background: '#fff',
+            border: '1px solid rgba(0,0,0,0.08)',
             borderRadius: 14,
             display: 'flex',
             gap: 12,
             justifyContent: 'space-between',
             marginTop: 16,
             maxWidth: 680,
-            padding: '10px 14px',
+            padding: '12px 16px',
             width: 'calc(100% - 32px)',
           }}
         >
-          {/* Left: platform icons */}
-          <div style={{ alignItems: 'center', display: 'flex', gap: 4, flexShrink: 0 }}>
-            <Telegram.Color size={22} />
-            <Slack.Color size={22} />
-            <Discord.Color size={22} />
+          <div style={{ alignItems: 'center', display: 'flex', gap: 6, flexShrink: 0 }}>
+            <Telegram.Color size={24} />
+            <Slack.Color size={24} />
+            <Discord.Color size={24} />
           </div>
-
-          {/* Center: text */}
-          <div style={{ flex: 1, paddingInline: 8 }}>
-            <div style={{ color: fg, fontSize: 13, fontWeight: 600 }}>
-              Connect Now
-            </div>
-            <div style={{ color: fgSub, fontSize: 12, marginTop: 1 }}>
+          <div style={{ flex: 1, paddingInline: 10 }}>
+            <div style={{ color: '#111', fontSize: 13, fontWeight: 600 }}>Connect Now</div>
+            <div style={{ color: 'rgba(0,0,0,0.45)', fontSize: 12, marginTop: 1 }}>
               Connect Fi to Telegram, Slack, Discord and more
             </div>
           </div>
-
-          {/* Right: dismiss + connect */}
-          <div style={{ alignItems: 'center', display: 'flex', gap: 8, flexShrink: 0 }}>
+          <div style={{ alignItems: 'center', display: 'flex', flexShrink: 0, gap: 8 }}>
             <button
               onClick={dismissBanner}
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: fgSub,
+                color: 'rgba(0,0,0,0.4)',
                 cursor: 'pointer',
                 fontSize: 13,
                 fontWeight: 500,
@@ -158,15 +133,14 @@ const Home = memo(() => {
             <button
               onClick={() => (window.location.href = '/settings/messenger')}
               style={{
-                background: incognito ? '#fff' : '#111',
+                background: '#111',
                 border: 'none',
                 borderRadius: 20,
-                color: incognito ? '#111' : '#fff',
+                color: '#fff',
                 cursor: 'pointer',
                 fontSize: 12,
                 fontWeight: 600,
-                padding: '6px 16px',
-                whiteSpace: 'nowrap',
+                padding: '6px 18px',
               }}
             >
               Connect

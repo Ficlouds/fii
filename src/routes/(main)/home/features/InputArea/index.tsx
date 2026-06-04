@@ -28,9 +28,9 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
   );
   const { handleUploadFiles } = useUploadFiles({ model, provider });
 
+  // Only pass style — NO minHeight here so ChatInput's minHeight={0} wins
   const inputContainerProps = useMemo(
     () => ({
-      minHeight: 52,
       resize: false,
       style: {
         background: incognito ? '#1c1c1e' : '#e8e8e6',
@@ -51,9 +51,9 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
         <style>{`
           [data-testid="chat-input"] * { color: #ffffff !important; }
           [data-testid="chat-input"] svg { color: #ffffff !important; }
-          [data-testid="chat-input"] .ant-dropdown-trigger { 
-            color: #ffffff !important; 
-            border-color: rgba(255,255,255,0.2) !important; 
+          [data-testid="chat-input"] .ant-dropdown-trigger {
+            color: #ffffff !important;
+            border-color: rgba(255,255,255,0.2) !important;
           }
         `}</style>
       )}

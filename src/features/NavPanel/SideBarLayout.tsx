@@ -6,18 +6,24 @@ import SkeletonList, { SkeletonItem } from '@/features/NavPanel/components/Skele
 
 interface SidebarLayoutProps {
   body?: ReactNode;
+  footer?: ReactNode;
   header?: ReactNode;
 }
 
-const SideBarLayout = memo<SidebarLayoutProps>(({ header, body }) => {
+const SideBarLayout = memo<SidebarLayoutProps>(({ header, body, footer }) => {
   return (
     <Flexbox gap={1} style={{ height: '100%', overflow: 'hidden' }}>
       <Suspense fallback={<SkeletonItem height={44} style={{ marginTop: 8 }} />}>{header}</Suspense>
-      <ScrollShadow size={2} style={{ height: '100%' }}>
+      <ScrollShadow size={2} style={{ flex: 1, height: '100%', overflow: 'hidden' }}>
         <TooltipGroup>
           <Suspense fallback={<SkeletonList paddingBlock={8} />}>{body}</Suspense>
         </TooltipGroup>
       </ScrollShadow>
+      {footer && (
+        <div style={{ flexShrink: 0 }}>
+          {footer}
+        </div>
+      )}
     </Flexbox>
   );
 });

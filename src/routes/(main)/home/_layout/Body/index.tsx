@@ -207,7 +207,7 @@ const Body = memo(() => {
   }, [visibleKeys, renderNavLink, sidebarExpandedKeys, handleAccordionExpandedChange]);
 
   return (
-    <Flexbox flex={1} gap={1} paddingInline={8} style={{ minHeight: '100%' }}>
+    <Flexbox flex={1} gap={1} paddingInline={0} style={{ minHeight: '100%' }}>
       {content}
     </Flexbox>
   );

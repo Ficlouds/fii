@@ -100,7 +100,8 @@ const AssistantMessage = memo<AssistantMessageProps>(
 
     return (
       <ChatItem
-        showTitle
+        showTitle={false}
+        showAvatar={false}
         aboveMessage={null}
         avatar={avatar}
         belowMessage={hasEmptyErrorMessage ? footerRender : undefined}

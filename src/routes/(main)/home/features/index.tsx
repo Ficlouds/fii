@@ -156,7 +156,7 @@ const Home = memo(() => {
           {/* Incognito indicator */}
           {incognito && (
             <div style={{ color: '#555', fontSize: 12, fontWeight: 500, marginTop: 8, textAlign: 'center' }}>
-              Incognito mode — history & memory paused
+              Private mode — chats will not be saved
             </div>
           )}
         </div>

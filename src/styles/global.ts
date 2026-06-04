@@ -85,4 +85,20 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     margin: 0 !important;
     border: none !important;
   }
-`;
+
+  /* Darker sidebar nav text */
+  html[data-theme='light'] [class*='NavPanel'] [class*='NavItem'],
+  html[data-theme='light'] [class*='navPanel'] [class*='NavItem'] {
+    color: rgba(0,0,0,0.75) !important;
+  }
+  html[data-theme='light'] [class*='NavPanel'] [class*='NavItem']:hover,
+  html[data-theme='light'] [class*='navPanel'] [class*='NavItem']:hover {
+    color: #111 !important;
+  }
+
+  /* Equal left padding for sidebar items */
+  html[data-theme='light'] [class*='NavPanel'] [class*='Block'],
+  html[data-theme='light'] [class*='navPanel'] [class*='Block'] {
+    padding-inline-start: 12px !important;
+  }
+\`;

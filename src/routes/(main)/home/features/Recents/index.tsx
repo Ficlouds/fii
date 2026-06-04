@@ -57,7 +57,7 @@ const Recents = memo<RecentsProps>(({ itemKey }) => {
     <AccordionItem
       itemKey={itemKey}
       paddingBlock={4}
-      paddingInline={'8px 4px'}
+      paddingInline={'12px 4px'}
       title={
         <Flexbox horizontal align="center" gap={4}>
           <Text ellipsis fontSize={12} type={'secondary'} weight={500}>

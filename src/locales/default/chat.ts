@@ -506,13 +506,13 @@ export default {
   'selectedAgents': 'Selected agents',
   'followUpPlaceholder': 'Follow up.',
   'followUpPlaceholderHeterogeneous': 'Follow up.',
-  'sendPlaceholder': 'Ask, create, or start a task, <hotkey><hotkey/>',
+  'sendPlaceholder': 'What's on your mind?, <hotkey><hotkey/>',
   'sendPlaceholderChat': 'Ask, search, or brainstorm, <hotkey><hotkey/>',
   'sendPlaceholderChatWithAgentAssignment':
     'Ask, search, or brainstorm. @ to bring in other agents.',
   'sendPlaceholderHeterogeneous': 'Describe a task or ask a question to {{name}}',
   'sendPlaceholderWithAgentAssignment':
-    'Ask, create, or start a task. @ to assign tasks to other agents.',
+    'What's on your mind?. @ to assign tasks to other agents.',
   'sessionGroup.config': 'Category Management',
   'sessionGroup.confirmRemoveGroupAlert':
     'This category is about to be deleted. After deletion, the agents in this category will be moved to the default list. Please confirm your operation.',

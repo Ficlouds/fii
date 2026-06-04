@@ -99,9 +99,9 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     color: #111111 !important;
   }
 
-  /* Align recents/accordion header with nav items */
-  [class*='AccordionItem'] > div:first-child,
-  [class*='accordionItem'] > div:first-child {
+  /* Align recents accordion header with nav items */
+  .accordion-he,
+  [class*='accordion-he'] {
     padding-inline-start: 20px !important;
   }
 `;

@@ -137,7 +137,7 @@ const Home = memo(() => {
   }, []);
 
   return (
-    <div style={{ background: '#f9f8f7', display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', width: '100%', transition: 'all 0.2s ease' }}>
+    <div style={{ background: '#f9f8f7', display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
       {/* Incognito icon top right */}
       <button onClick={toggleIncognito} title={incognito ? 'Incognito on' : 'Incognito mode'}
         style={{ alignItems: 'center', background: incognito ? 'rgba(0,0,0,0.08)' : 'transparent', border: 'none', borderRadius: 8, cursor: 'pointer', display: 'flex', padding: 7, position: 'absolute', right: 4, top: 8, zIndex: 10 }}>

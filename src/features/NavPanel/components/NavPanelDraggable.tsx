@@ -139,7 +139,7 @@ export const NavPanelDraggable = memo<NavPanelDraggableProps>(({ activeContent }
         {/* User avatar */}
         <UserPanel>
           <div className={styles.collapsedIcon}>
-            <UserAvatar size={28} />
+            <UserAvatar size={28} style={{ borderRadius: "50%" }} />
           </div>
         </UserPanel>
       </div>

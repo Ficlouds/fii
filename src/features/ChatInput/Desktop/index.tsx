@@ -39,15 +39,15 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
     background: ${cssVar.colorBgContainer};
   `,
   inputFullscreen: css`border: none; border-radius: 0 !important;`,
-  collapsedBody: css`
+  hiddenBody: css`
     display: none !important;
-    height: 0 !important;
     min-height: 0 !important;
-    max-height: 0 !important;
-    overflow: hidden !important;
+    height: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
+    overflow: hidden !important;
     flex: none !important;
+    border: none !important;
   `,
 }));
 
@@ -108,9 +108,6 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
       <Skeleton.Button active shape="round" size="small" style={{ height: 32, minWidth: 64, width: 64 }} />
     ) : null;
 
-    // When not expanded, collapse the editor body — action bar only
-    const collapsedClassNames = expand ? undefined : { body: styles.collapsedBody };
-
     const content = (
       <Flexbox
         className={cx(styles.container, expand && styles.fullscreen)}
@@ -127,7 +124,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           minHeight={0}
           resize={false}
           slashMenuRef={slashMenuRef}
-          classNames={collapsedClassNames}
+          classNames={{ body: expand ? undefined : styles.hiddenBody }}
           footer={
             <ChatInputActionBar
               style={actionBarStyle ?? { paddingInline: 8, paddingBlock: 6 }}
@@ -156,7 +153,6 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           }
           onSizeChange={(h) => updateSystemStatus({ chatInputHeight: h })}
           {...inputContainerProps}
-          classNames={collapsedClassNames}
           className={cx(expand && styles.inputFullscreen, inputContainerProps?.className)}
         >
           <InputEditor placeholder={placeholder} placeholderVariant={placeholderVariant} />

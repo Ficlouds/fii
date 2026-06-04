@@ -46,22 +46,15 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
   );
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100%',
-        zIndex: 100,
-      }}
-    >
-      {/* Incognito color overlay for all child text/icons */}
+    <div style={{ width: '100%' }}>
       {incognito && (
         <style>{`
           [data-testid="chat-input"] * { color: #ffffff !important; }
-          [data-testid="chat-input"] button { color: #ffffff !important; }
-          [data-testid="chat-input"] svg { color: #ffffff !important; fill: currentColor; }
-          [data-testid="chat-input"] span { color: #ffffff !important; }
-          [data-testid="chat-input"] [contenteditable] { color: #ffffff !important; }
-          [data-testid="chat-input"] .ant-dropdown-trigger { color: #ffffff !important; border-color: rgba(255,255,255,0.2) !important; }
+          [data-testid="chat-input"] svg { color: #ffffff !important; }
+          [data-testid="chat-input"] .ant-dropdown-trigger { 
+            color: #ffffff !important; 
+            border-color: rgba(255,255,255,0.2) !important; 
+          }
         `}</style>
       )}
       <DragUploadZone style={{ width: '100%' }} onUploadFiles={handleUploadFiles}>

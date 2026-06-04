@@ -89,7 +89,7 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   /* Darker sidebar nav text */
   html[data-theme='light'] [class*='NavPanel'] [class*='NavItem'] span,
   html[data-theme='light'] [class*='navPanel'] [class*='NavItem'] span {
-    color: rgba(0,0,0,0.80) !important;
+    color: rgba(0,0,0,0.90) !important;
   }
   html[data-theme='light'] [class*='NavPanel'] [class*='NavItem']:hover span,
   html[data-theme='light'] [class*='navPanel'] [class*='NavItem']:hover span {
@@ -97,11 +97,11 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   }
   html[data-theme='light'] [class*='NavPanel'] [class*='NavItem'] svg,
   html[data-theme='light'] [class*='navPanel'] [class*='NavItem'] svg {
-    color: rgba(0,0,0,0.65) !important;
+    color: rgba(0,0,0,0.85) !important;
   }
   /* Recents label darker */
   html[data-theme='light'] [class*='NavPanel'] [class*='AccordionItem'] span,
   html[data-theme='light'] [class*='navPanel'] [class*='AccordionItem'] span {
-    color: rgba(0,0,0,0.75) !important;
+    color: rgba(0,0,0,0.85) !important;
   }
 `;

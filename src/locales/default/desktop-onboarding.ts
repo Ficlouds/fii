@@ -68,7 +68,7 @@ export default {
   'screen4.share.items.1': 'Performance metrics',
   'screen4.share.items.2': 'Model usage patterns',
   'screen4.share.items.3': 'Feature interactions',
-  'screen4.share.title': 'Help Improve LobeHub',
+  'screen4.share.title': 'Help Improve Fi',
   'screen4.title': 'How would you like to share data?',
   'screen4.title2': 'Your choice helps us improve',
   'screen4.title3': 'You can change this anytime in settings',
@@ -94,7 +94,7 @@ export default {
   'screen5.legacyLocalDb.link': 'Migrate legacy local database',
   'screen5.methods.cloud.description':
     'Sign in with your LobeHub Cloud account to sync everything seamlessly',
-  'screen5.methods.cloud.name': 'LobeHub Cloud',
+  'screen5.methods.cloud.name': 'Fi Cloud',
   'screen5.methods.selfhost.description': 'Connect to your own LobeHub server instance',
   'screen5.methods.selfhost.name': 'Self-hosted Instance',
   'screen5.navigation.next': 'Get Started',

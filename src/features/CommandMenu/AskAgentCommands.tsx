@@ -59,7 +59,7 @@ const AskAgentCommands = memo(() => {
 
   return (
     <Command.Group heading={t('cmdk.mentionAgent')}>
-      {/* @Lobe AI option */}
+      {/* @Fi option */}
       {showLobeAI && (
         <Command.Item
           value="@lobe-ai"
@@ -68,7 +68,7 @@ const AskAgentCommands = memo(() => {
         >
           <Avatar emojiScaleWithBackground avatar={DEFAULT_INBOX_AVATAR} shape="square" size={18} />
           <div className={styles.itemContent}>
-            <div className={styles.itemLabel}>@Lobe AI</div>
+            <div className={styles.itemLabel}>@Fi</div>
           </div>
         </Command.Item>
       )}

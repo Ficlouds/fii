@@ -119,7 +119,7 @@ export default {
   'createGuide.func1.desc1': 'In a conversation, open the Agent settings from the top-right menu.',
   'createGuide.func1.desc2': 'Then click Submit to Agent Community in the top-right corner.',
   'createGuide.func1.tag': 'Option 1',
-  'createGuide.func1.title': 'Submit in LobeHub',
+  'createGuide.func1.title': 'Submit to Fi',
   'createGuide.func2.button': 'Open GitHub Agent repo',
   'createGuide.func2.desc':
     'To add an Agent to the index, create an entry in `plugins/` using `agent-template.json` or `agent-template-full.json`, add a short description and tags, then open a pull request.',
@@ -146,8 +146,8 @@ export default {
   'filterBy.timePeriod.week': 'Last 7 Days',
   'filterBy.timePeriod.year': 'Last Year',
   'footer.desc':
-    'Evolve with AI users worldwide. Become a creator to submit your agents and skills to the LobeHub Community.',
-  'footer.title': 'Share your creation on LobeHub Community today',
+    'Evolve with AI users worldwide. Become a creator to submit your agents and skills to the Fi Community.',
+  'footer.title': 'Share your creation on Fi Community today',
 
   'fork.alreadyForked': 'You have already forked this agent. Navigating to your fork...',
 

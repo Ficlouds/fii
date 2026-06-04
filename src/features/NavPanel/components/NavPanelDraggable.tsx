@@ -42,6 +42,7 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
     flex-direction: column;
     background: #fcfcfc;
     border-right: 1px solid rgba(0,0,0,0.06);
+  transition: width 0.2s ease;
   `,
   inner: css`
     position: relative;
@@ -176,7 +177,7 @@ export const NavPanelDraggable = memo<NavPanelDraggableProps>(({ activeContent }
   }
 
   return (
-    <div className={styles.panel} style={{ width: EXPANDED_WIDTH }}>
+    <div className={styles.panel} style={{ width: EXPANDED_WIDTH, transition: 'width 0.2s ease' }}>
       <div className={styles.inner}>
         <div className={styles.layer} key={activeContent.key}>
           {activeContent.node}

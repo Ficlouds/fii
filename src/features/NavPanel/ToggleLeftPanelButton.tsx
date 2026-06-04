@@ -3,7 +3,7 @@
 import { HotkeyEnum } from '@lobechat/const/hotkeys';
 import { type ActionIconProps } from '@lobehub/ui';
 import { ActionIcon } from '@lobehub/ui';
-import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import { type ReactNode } from 'react';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,20 +30,18 @@ const ToggleLeftPanelButton = memo<ToggleLeftPanelButtonProps>(
       s.toggleLeftPanel,
     ]);
     const hotkey = useUserStore(settingsSelectors.getHotkeyById(HotkeyEnum.ToggleLeftPanel));
-
     const { t } = useTranslation(['chat', 'hotkey']);
+
+    // Hide when collapsed — user clicks anywhere on sidebar to expand
+    if (!expand) return null;
 
     return (
       <ActionIcon
-        active={showActive ? expand : undefined}
-        icon={icon || (expand ? PanelLeftClose : PanelLeftOpen)}
+        icon={icon || ChevronLeft}
         id={TOGGLE_BUTTON_ID}
         size={size || DESKTOP_HEADER_ICON_SMALL_SIZE}
-        title={title || t('toggleLeftPanel.title', { ns: 'hotkey' })}
-        tooltipProps={{
-          hotkey,
-          placement: 'bottom',
-        }}
+        title={title || 'Collapse sidebar'}
+        tooltipProps={{ hotkey, placement: 'bottom' }}
         onClick={() => togglePanel()}
       />
     );

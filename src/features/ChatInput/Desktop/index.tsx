@@ -64,20 +64,11 @@ interface DesktopChatInputProps extends ActionToolbarProps {
   extentHeaderContent?: ReactNode;
   hidden?: boolean;
   inputContainerProps?: ChatInputProps;
-  /**
-   * Swap the action bar and send area for skeleton placeholders while
-   * the underlying agent / group / session config is still hydrating.
-   * The editor itself stays usable. Wins over `leftContent` / `rightContent`.
-   */
   isConfigLoading?: boolean;
   leftContent?: ReactNode;
   placeholder?: ReactNode;
   placeholderVariant?: PlaceholderVariant;
   rightContent?: ReactNode;
-  /**
-   * Custom node to render in place of the default RuntimeConfig bar.
-   * When provided, used instead of `<RuntimeConfig />` (ignores `showRuntimeConfig`).
-   */
   runtimeConfigSlot?: ReactNode;
   sendAreaPrefix?: ReactNode;
   showFootnote?: boolean;
@@ -120,7 +111,6 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
     ]);
 
     const chatKey = useChatStore(chatSelectors.currentChatKey);
-
     const setExpand = useChatInputStore((s) => s.setExpand);
     const skillDrop = useSkillDrop();
 
@@ -139,6 +129,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
         <Skeleton.Button active shape="circle" size="small" style={{ height: 28, width: 28 }} />
       </Flexbox>
     ) : null;
+
     const loadingRightSlot = isConfigLoading ? (
       <Skeleton.Button
         active
@@ -151,23 +142,23 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
     const content = (
       <Flexbox
         className={cx(styles.container, expand && styles.fullscreen)}
-        gap={8}
-        paddingBlock={expand ? 0 : showFootnote ? '0 12px' : '0 8px'}
+        gap={0}
+        paddingBlock={0}
         style={{ display: hidden ? 'none' : undefined }}
         onDragOver={skillDrop.onDragOver}
         onDrop={skillDrop.onDrop}
       >
         <ChatInput
           data-testid="chat-input"
-          defaultHeight={chatInputHeight || 32}
+          defaultHeight={20}
           fullscreen={expand}
-          maxHeight={320}
-          minHeight={36}
-          resize={true}
+          maxHeight={200}
+          minHeight={20}
+          resize={false}
           slashMenuRef={slashMenuRef}
           footer={
             <ChatInputActionBar
-              style={actionBarStyle ?? { paddingRight: 8 }}
+              style={actionBarStyle ?? { paddingInline: 8, paddingBlock: 4 }}
               left={
                 loadingLeftSlot ??
                 leftContent ?? (

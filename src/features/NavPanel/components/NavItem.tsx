@@ -99,7 +99,7 @@ const NavItem = memo<NavItemProps>(
         clickable={!disabled}
         gap={8}
         height={36}
-        paddingInline={4}
+        paddingInline={12}
         variant={variant}
         onClick={(e) => {
           // Always prevent default <a> navigation for normal clicks to avoid full page reload.

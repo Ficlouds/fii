@@ -23,7 +23,7 @@ const Header = memo(() => {
           />
         }
         showBack={false}
-        showTogglePanelButton={false}
+        showTogglePanelButton={true}
       />
       <Nav />
     </>

@@ -52,6 +52,12 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     .${CLASSNAMES.DropdownMenuTrigger}[data-popup-open]:not([data-no-highlight])
   ) { opacity: 1; }
 
+  /* Toggle panel button - only show in expanded sidebar */
+  #toggle_left_panel_button {
+    opacity: 1 !important;
+    width: auto !important;
+  }
+
   /* Remove container padding and border radius causing floating effect */
   .acss-12cbrsv,
   [class*='lobe-flex'][style*='--lobe-flex-padding: 8px'] {

@@ -143,7 +143,7 @@ const Home = memo(() => {
       {/* Content at 40% from top */}
       <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', left: 0, position: 'absolute', right: 0, top: '40%', transform: 'translateY(-50%)' }}>
         {/* Fi logo */}
-        <div style={{ color: '#111', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 64, fontWeight: 700, letterSpacing: '-3px', marginBottom: 36, textAlign: 'center', userSelect: 'none' }}>Fi</div>
+        <div style={{ color: '#111', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 64, fontWeight: 700, letterSpacing: '-3px', marginBottom: 56, textAlign: 'center', userSelect: 'none' }}>Fi</div>
 
         {/* Input */}
         <div style={{ width: '100%', maxWidth: MAX_WIDTH, paddingInline: 20 }}>
@@ -151,7 +151,7 @@ const Home = memo(() => {
         </div>
 
         {/* Connect bar — change ConnectOption3 to any option 1-5 */}
-        {!bannerDismissed && <ConnectOption5 onDismiss={() => setBannerDismissed(true)} />}
+        {!bannerDismissed && <ConnectOption1 onDismiss={() => setBannerDismissed(true)} />}
       </div>
     </div>
   );

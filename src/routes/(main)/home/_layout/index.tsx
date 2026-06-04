@@ -38,22 +38,25 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 
   // Keep the Home layout alive and render it offscreen when inactive.
   return (
-    <Activity mode={isHomeRoute ? 'visible' : 'hidden'} name="DesktopHomeLayout">
-      <Flexbox className={styles.absoluteContainer} height={'100%'} width={'100%'}>
+    <div style={{ display: isHomeRoute ? 'flex' : 'none', position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <div style={{ display: 'flex', width: '100%', height: '100%' }}>
         <Sidebar />
-        <Flexbox
-          className={isDarkMode ? styles.contentDark : styles.contentLight}
-          flex={1}
-          height={'100%'}
-          style={{ ...cssVariables, transition: 'all 0.25s ease' }}
+        <div
+          style={{
+            flex: 1,
+            height: '100%',
+            overflow: 'hidden',
+            background: isDarkMode ? undefined : 'var(--content-bg-secondary)',
+            transition: 'flex 0.25s ease',
+            ...cssVariables,
+          }}
         >
           {content}
-        </Flexbox>
-
+        </div>
         <HomeAgentIdSync />
         <RecentHydration />
-      </Flexbox>
-    </Activity>
+      </div>
+    </div>
   );
 };
 

@@ -4,7 +4,6 @@ import { css } from 'antd-style';
 
 export default ({ token }: { prefixCls: string; token: Theme }) => css`
 
-  /* Force chat input to blend with background */
   html[data-theme='light'] .lobe-chat-input,
   html[data-theme='light'] [class*='ChatInput'],
   html[data-theme='light'] [class*='chat-input'],
@@ -31,9 +30,7 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   body,
   #__next {
     position: relative;
-
     overscroll-behavior: none;
-
     height: 100%;
     min-height: 100dvh;
     max-height: 100dvh;
@@ -94,7 +91,7 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     opacity: 1;
   }
 
-  /* Task 2 — input blends with background */
+  /* Input blends with background */
   .lobe-chat-input-container,
   [class*='inputContainer'],
   [class*='ChatInput'] .ant-input,
@@ -106,7 +103,7 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     box-shadow: none !important;
   }
 
-  /* Fix 10 — sidebar background #FCFCFC */
+  /* Sidebar background #FCFCFC */
   html[data-theme='light'] [class*='NavPanel'],
   html[data-theme='light'] [class*='navPanel'],
   html[data-theme='light'] [class*='sideBar'],
@@ -116,5 +113,11 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   html[data-theme='light'] aside[class] {
     background: #fcfcfc !important;
     background-color: #fcfcfc !important;
+  }
+
+  /* Sidebar nav item spacing */
+  [class*='NavPanel'] a + a,
+  [class*='navPanel'] a + a {
+    margin-top: 2px;
   }
 `;

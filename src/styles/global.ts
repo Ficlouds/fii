@@ -105,4 +105,16 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     background-color: #f9f8f7 !important;
     box-shadow: none !important;
   }
+
+  /* Fix 10 — sidebar background #FCFCFC */
+  html[data-theme='light'] [class*='NavPanel'],
+  html[data-theme='light'] [class*='navPanel'],
+  html[data-theme='light'] [class*='sideBar'],
+  html[data-theme='light'] [class*='sidebar'],
+  html[data-theme='light'] [class*='SideBar'],
+  html[data-theme='light'] nav[class],
+  html[data-theme='light'] aside[class] {
+    background: #fcfcfc !important;
+    background-color: #fcfcfc !important;
+  }
 `;

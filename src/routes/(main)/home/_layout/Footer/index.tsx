@@ -14,7 +14,6 @@ const SidebarFooter = memo(() => {
     userProfileSelectors.username(s),
   ]);
   const isSignedIn = useUserStore(authSelectors.isLogin);
-
   const displayName = nickname || username || 'Guest';
 
   return (
@@ -25,10 +24,10 @@ const SidebarFooter = memo(() => {
         gap={10}
         style={{
           borderTop: '1px solid rgba(0,0,0,0.06)',
-          cursor: 'pointer',
-          margin: '0 8px',
-          padding: '10px 8px',
           borderRadius: 10,
+          cursor: 'pointer',
+          margin: '4px 8px 8px',
+          padding: '8px 10px',
           transition: 'background 0.15s',
         }}
         onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(0,0,0,0.04)')}
@@ -48,6 +47,19 @@ const SidebarFooter = memo(() => {
           >
             {isSignedIn ? displayName : 'Sign in'}
           </span>
+          {isSignedIn && username && nickname && (
+            <span
+              style={{
+                color: '#888',
+                fontSize: 11,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {username}
+            </span>
+          )}
         </Flexbox>
       </Flexbox>
     </UserPanel>

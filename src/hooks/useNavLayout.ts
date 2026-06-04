@@ -1,4 +1,4 @@
-import { PlusIcon, SearchIcon } from 'lucide-react';
+import { BoxIcon, FolderIcon, PlusIcon, SearchIcon, ZapIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGlobalStore } from '@/store/global';
@@ -43,6 +43,24 @@ export const useNavLayout = (): NavLayout => {
         key: 'newchat',
         url: '/',
         title: 'New Chat',
+      },
+      {
+        icon: ZapIcon,
+        key: 'connections',
+        url: '/settings/provider',
+        title: 'Connections',
+      },
+      {
+        icon: FolderIcon,
+        key: 'projects',
+        url: '/chat',
+        title: 'Projects',
+      },
+      {
+        icon: BoxIcon,
+        key: 'artifacts',
+        url: '/artifact',
+        title: 'Artifacts',
       },
     ] as NavItem[],
     [t, toggleCommandMenu],

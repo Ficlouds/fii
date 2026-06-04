@@ -3,7 +3,6 @@
 import { memo } from 'react';
 import SideBarHeaderLayout from '@/features/NavPanel/SideBarHeaderLayout';
 import Nav from './components/Nav';
-import User from './components/User';
 
 const Header = memo(() => {
   return (
@@ -13,10 +12,9 @@ const Header = memo(() => {
           <img
             src="/logos/fi-icon.svg"
             alt="Fi"
-            style={{ height: 22, width: 'auto', objectFit: 'contain', marginLeft: 4 }}
+            style={{ height: 22, width: 'auto', objectFit: 'contain', marginLeft: 0 }}
           />
         }
-        right={<User lite />}
         showBack={false}
       />
       <Nav />

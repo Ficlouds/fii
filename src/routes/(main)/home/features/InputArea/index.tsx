@@ -37,17 +37,33 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
         border: incognito ? '1.5px solid rgba(255,255,255,0.10)' : 'none',
         borderRadius: 28,
         boxShadow: 'none',
-        color: incognito ? '#fff' : '#111',
+        color: incognito ? '#ffffff' : '#111111',
         transition: 'background 0.25s ease, color 0.25s ease',
         width: '100%',
-        boxSizing: 'border-box' as const,
       },
     }),
     [incognito],
   );
 
   return (
-    <div style={{ width: '100%', boxSizing: 'border-box' }}>
+    <div
+      style={{
+        position: 'relative',
+        width: '100%',
+        zIndex: 100,
+      }}
+    >
+      {/* Incognito color overlay for all child text/icons */}
+      {incognito && (
+        <style>{`
+          [data-testid="chat-input"] * { color: #ffffff !important; }
+          [data-testid="chat-input"] button { color: #ffffff !important; }
+          [data-testid="chat-input"] svg { color: #ffffff !important; fill: currentColor; }
+          [data-testid="chat-input"] span { color: #ffffff !important; }
+          [data-testid="chat-input"] [contenteditable] { color: #ffffff !important; }
+          [data-testid="chat-input"] .ant-dropdown-trigger { color: #ffffff !important; border-color: rgba(255,255,255,0.2) !important; }
+        `}</style>
+      )}
       <DragUploadZone style={{ width: '100%' }} onUploadFiles={handleUploadFiles}>
         <ChatInputProvider
           agentId={agentId}
@@ -71,7 +87,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
           }}
         >
           <DesktopChatInput
-            dropdownPlacement="bottomLeft"
+            dropdownPlacement="top"
             inputContainerProps={inputContainerProps}
             showRuntimeConfig={false}
           />

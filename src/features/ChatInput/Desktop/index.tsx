@@ -39,6 +39,16 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
     background: ${cssVar.colorBgContainer};
   `,
   inputFullscreen: css`border: none; border-radius: 0 !important;`,
+  singleRow: css`
+    /* Force editor area to zero height — single row bar */
+    .lobe-chat-input-editor,
+    [data-testid="chat-input"] > div:first-child {
+      height: 0 !important;
+      min-height: 0 !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+    }
+  `,
 }));
 
 interface DesktopChatInputProps extends ActionToolbarProps {
@@ -59,22 +69,11 @@ interface DesktopChatInputProps extends ActionToolbarProps {
 
 const DesktopChatInput = memo<DesktopChatInputProps>(
   ({
-    showFootnote,
-    showRuntimeConfig = true,
-    runtimeConfigSlot,
-    inputContainerProps,
-    extentHeaderContent,
-    actionBarStyle,
-    borderRadius,
-    extraActionItems,
-    dropdownPlacement,
-    hidden,
-    isConfigLoading = false,
-    leftContent,
-    placeholder,
-    placeholderVariant,
-    rightContent,
-    sendAreaPrefix,
+    showFootnote, showRuntimeConfig = true, runtimeConfigSlot,
+    inputContainerProps, extentHeaderContent, actionBarStyle,
+    borderRadius, extraActionItems, dropdownPlacement, hidden,
+    isConfigLoading = false, leftContent, placeholder, placeholderVariant,
+    rightContent, sendAreaPrefix,
   }) => {
     const { t } = useTranslation('chat');
     const layoutContainerRef = use(LayoutContainerContext);
@@ -85,11 +84,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
     const hasContextSelections = useFileStore(fileChatSelectors.chatContextSelectionHasItem);
     const hasFiles = useFileStore(fileChatSelectors.chatUploadFileListHasItem);
     const [slashMenuRef, expand, showTypoBar, editor, leftActions] = useChatInputStore((s) => [
-      s.slashMenuRef,
-      s.expand,
-      s.showTypoBar,
-      s.editor,
-      s.leftActions,
+      s.slashMenuRef, s.expand, s.showTypoBar, s.editor, s.leftActions,
     ]);
     const chatKey = useChatStore(chatSelectors.currentChatKey);
     const setExpand = useChatInputStore((s) => s.setExpand);
@@ -102,24 +97,21 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
 
     const shouldShowContextContainer =
       leftActions.flat().includes('fileUpload') || hasContextSelections || hasFiles;
-    const contextContainerNode = shouldShowContextContainer && <ContextContainer />;
 
-    const loadingLeftSlot = isConfigLoading ? (
+    const loadingLeft = isConfigLoading ? (
       <Flexbox horizontal align="center" gap={6} paddingInline={4}>
-        <Skeleton.Button active shape="circle" size="small" style={{ height: 28, width: 28 }} />
         <Skeleton.Button active shape="circle" size="small" style={{ height: 28, width: 28 }} />
       </Flexbox>
     ) : null;
 
-    const loadingRightSlot = isConfigLoading ? (
+    const loadingRight = isConfigLoading ? (
       <Skeleton.Button active shape="round" size="small" style={{ height: 32, minWidth: 64, width: 64 }} />
     ) : null;
 
     const content = (
       <Flexbox
         className={cx(styles.container, expand && styles.fullscreen)}
-        gap={0}
-        paddingBlock={0}
+        gap={0} paddingBlock={0}
         style={{ display: hidden ? 'none' : undefined, width: '100%' }}
         onDragOver={skillDrop.onDragOver}
         onDrop={skillDrop.onDrop}
@@ -135,34 +127,30 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           footer={
             <ChatInputActionBar
               style={actionBarStyle ?? { paddingInline: 8, paddingBlock: 6 }}
-              left={
-                loadingLeftSlot ?? leftContent ?? (
-                  <ActionBar
-                    borderRadius={borderRadius}
-                    dropdownPlacement={dropdownPlacement}
-                    extraActionItems={extraActionItems}
-                  />
-                )
-              }
-              right={
-                loadingRightSlot ?? rightContent ??
-                (sendAreaPrefix ? (
-                  <Flexbox horizontal align={'center'} gap={6}>
-                    {sendAreaPrefix}
-                    <SendArea />
+              left={loadingLeft ?? leftContent ?? (
+                <ActionBar
+                  borderRadius={borderRadius}
+                  dropdownPlacement={dropdownPlacement}
+                  extraActionItems={extraActionItems}
+                />
+              )}
+              right={loadingRight ?? rightContent ?? (
+                sendAreaPrefix ? (
+                  <Flexbox horizontal align="center" gap={6}>
+                    {sendAreaPrefix}<SendArea />
                   </Flexbox>
-                ) : <SendArea />)
-              }
+                ) : <SendArea />
+              )}
             />
           }
           header={
             <Flexbox gap={0}>
               {extentHeaderContent}
               {showTypoBar && <TypoBar />}
-              {contextContainerNode}
+              {shouldShowContextContainer && <ContextContainer />}
             </Flexbox>
           }
-          onSizeChange={(height) => updateSystemStatus({ chatInputHeight: height })}
+          onSizeChange={(h) => updateSystemStatus({ chatInputHeight: h })}
           {...inputContainerProps}
           className={cx(expand && styles.inputFullscreen, inputContainerProps?.className)}
         >
@@ -171,7 +159,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
         {runtimeConfigSlot ?? (showRuntimeConfig && <RuntimeConfig />)}
         {showFootnote && !expand && (
           <Center style={{ pointerEvents: 'none', zIndex: 100 }}>
-            <Text className={styles.footnote} type={'secondary'}>{t('input.disclaimer')}</Text>
+            <Text className={styles.footnote} type="secondary">{t('input.disclaimer')}</Text>
           </Center>
         )}
       </Flexbox>

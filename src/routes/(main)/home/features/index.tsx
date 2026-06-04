@@ -1,16 +1,14 @@
 'use client';
 import { Discord, Slack, Telegram } from '@lobehub/ui/icons';
 import { memo, useCallback, useEffect, useState } from 'react';
-import { useUserStore } from '@/store/user';
-import { authSelectors } from '@/store/user/slices/auth/selectors';
 import InputArea from './InputArea';
 
 const INCOGNITO_KEY = 'fi-incognito-mode';
-const CONNECT_DISMISSED_KEY = 'fi-connect-banner-dismissed';
 
 const IncognitoIcon = ({ active }: { active: boolean }) => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <path d="M12 4.5L7 9h3.5v1.5H9A2.5 2.5 0 006.5 13 2.5 2.5 0 009 15.5h6A2.5 2.5 0 0017.5 13 2.5 2.5 0 0015 10.5h-1.5V9H17l-5-4.5z" fill={active ? '#111' : 'rgba(0,0,0,0.32)'} />
+    <path d="M12 4.5L7 9h3.5v1.5H9A2.5 2.5 0 006.5 13 2.5 2.5 0 009 15.5h6A2.5 2.5 0 0017.5 13 2.5 2.5 0 0015 10.5h-1.5V9H17l-5-4.5z"
+      fill={active ? '#111' : 'rgba(0,0,0,0.32)'} />
     <circle cx="9.5" cy="13" r="1" fill="#f9f8f7" />
     <circle cx="14.5" cy="13" r="1" fill="#f9f8f7" />
   </svg>
@@ -22,7 +20,7 @@ const Home = memo(() => {
 
   useEffect(() => {
     if (localStorage.getItem(INCOGNITO_KEY) === 'true') setIncognito(true);
-    if (localStorage.getItem(CONNECT_DISMISSED_KEY) === 'true') setBannerDismissed(true);
+    // Never permanently hide banner — show on every session
   }, []);
 
   const toggleIncognito = useCallback(() => {
@@ -31,11 +29,6 @@ const Home = memo(() => {
       localStorage.setItem(INCOGNITO_KEY, String(next));
       return next;
     });
-  }, []);
-
-  const dismissBanner = useCallback(() => {
-    setBannerDismissed(true);
-    localStorage.setItem(CONNECT_DISMISSED_KEY, 'true');
   }, []);
 
   return (
@@ -50,9 +43,9 @@ const Home = memo(() => {
         style={{
           alignItems: 'center',
           background: incognito ? 'rgba(0,0,0,0.08)' : 'transparent',
-          border: 'none', borderRadius: 8,
-          cursor: 'pointer', display: 'flex',
-          padding: 7, position: 'absolute', right: 20, top: 16, zIndex: 10,
+          border: 'none', borderRadius: 8, cursor: 'pointer',
+          display: 'flex', padding: 7,
+          position: 'absolute', right: 20, top: 16, zIndex: 10,
         }}
       >
         <IncognitoIcon active={incognito} />
@@ -60,43 +53,28 @@ const Home = memo(() => {
 
       {/* Centered content */}
       <div style={{
-        alignItems: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        justifyContent: 'center',
-        paddingBottom: 60,
-        width: '100%',
+        alignItems: 'center', display: 'flex', flexDirection: 'column',
+        height: '100%', justifyContent: 'center', paddingBottom: 60, width: '100%',
       }}>
         {/* Fi logo */}
         <div style={{
-          color: '#111',
-          fontFamily: 'Inter, system-ui, sans-serif',
-          fontSize: 60, fontWeight: 700,
-          letterSpacing: '-2px', marginBottom: 32,
-          textAlign: 'center', userSelect: 'none',
-        }}>
-          Fi
-        </div>
+          color: '#111', fontFamily: 'Inter, system-ui, sans-serif',
+          fontSize: 60, fontWeight: 700, letterSpacing: '-2px',
+          marginBottom: 32, textAlign: 'center', userSelect: 'none',
+        }}>Fi</div>
 
-        {/* Input — full width centered */}
+        {/* Input */}
         <div style={{ width: '100%', maxWidth: 720, paddingInline: 24 }}>
           <InputArea incognito={incognito} />
         </div>
 
-        {/* Connect Now banner */}
+        {/* Connect Now banner — always visible, session-only dismiss */}
         {!bannerDismissed && (
           <div style={{
-            alignItems: 'center',
-            background: '#fff',
-            border: '1px solid rgba(0,0,0,0.08)',
-            borderRadius: 16,
-            display: 'flex',
-            gap: 12,
-            justifyContent: 'space-between',
-            marginTop: 16,
-            maxWidth: 720,
-            padding: '12px 18px',
+            alignItems: 'center', background: '#fff',
+            border: '1px solid rgba(0,0,0,0.08)', borderRadius: 16,
+            display: 'flex', gap: 12, justifyContent: 'space-between',
+            marginTop: 16, maxWidth: 720, padding: '12px 18px',
             width: 'calc(100% - 48px)',
           }}>
             <div style={{ alignItems: 'center', display: 'flex', gap: 6, flexShrink: 0 }}>
@@ -111,7 +89,7 @@ const Home = memo(() => {
               </div>
             </div>
             <div style={{ alignItems: 'center', display: 'flex', flexShrink: 0, gap: 8 }}>
-              <button onClick={dismissBanner} style={{
+              <button onClick={() => setBannerDismissed(true)} style={{
                 background: 'transparent', border: 'none',
                 color: 'rgba(0,0,0,0.4)', cursor: 'pointer',
                 fontSize: 13, fontWeight: 500, padding: '4px 8px',

@@ -28,25 +28,37 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
   );
   const { handleUploadFiles } = useUploadFiles({ model, provider });
 
-  // Only pass style — NO minHeight here so ChatInput's minHeight={0} wins
+  const pillBg = incognito ? '#1c1c1e' : '#e8e8e6';
+  const pillColor = incognito ? '#ffffff' : '#111111';
+  const pillBorder = incognito ? '1.5px solid rgba(255,255,255,0.10)' : 'none';
+
   const inputContainerProps = useMemo(
     () => ({
       resize: false,
       style: {
-        background: incognito ? '#1c1c1e' : '#e8e8e6',
-        border: incognito ? '1.5px solid rgba(255,255,255,0.10)' : 'none',
+        background: pillBg,
+        border: pillBorder,
         borderRadius: 28,
         boxShadow: 'none',
-        color: incognito ? '#ffffff' : '#111111',
+        color: pillColor,
         transition: 'background 0.25s ease, color 0.25s ease',
         width: '100%',
       },
     }),
-    [incognito],
+    [pillBg, pillColor, pillBorder],
   );
 
   return (
-    <div style={{ width: '100%' }}>
+    <div
+      style={{
+        background: pillBg,
+        border: pillBorder,
+        borderRadius: 28,
+        overflow: 'hidden',
+        transition: 'background 0.25s ease',
+        width: '100%',
+      }}
+    >
       {incognito && (
         <style>{`
           [data-testid="chat-input"] * { color: #ffffff !important; }

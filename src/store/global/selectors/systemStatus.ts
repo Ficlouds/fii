@@ -55,6 +55,10 @@ const sidebarExpandedKeys = (s: GlobalState): string[] =>
 export const SIDEBAR_SPACER_ID = '__spacer__';
 
 export const DEFAULT_SIDEBAR_ITEMS: string[] = [
+  'newchat',
+  'connect',
+  'projects',
+  'artifacts',
   'recents',
   SIDEBAR_SPACER_ID,
 ];

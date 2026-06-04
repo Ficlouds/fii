@@ -1,12 +1,8 @@
-import { HomeIcon, PlusIcon, SearchIcon } from 'lucide-react';
+import { PlusIcon, SearchIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { getRouteById } from '@/config/routes';
 import { useGlobalStore } from '@/store/global';
-import { SidebarTabKey } from '@/store/global/initialState';
 import { featureFlagsSelectors, useServerConfigStore } from '@/store/serverConfig';
-
 export interface NavItem {
   hidden?: boolean;
   icon: any;
@@ -16,7 +12,6 @@ export interface NavItem {
   title: string;
   url?: string;
 }
-
 export interface NavLayout {
   bottomMenuItems: NavItem[];
   footer: {
@@ -31,42 +26,28 @@ export interface NavLayout {
     showMemory: boolean;
   };
 }
-
 export const useNavLayout = (): NavLayout => {
   const { t } = useTranslation('common');
   const toggleCommandMenu = useGlobalStore((s) => s.toggleCommandMenu);
   const { hideGitHub } = useServerConfigStore(featureFlagsSelectors);
-
   const topNavItems = useMemo(
-    () =>
-      [
-        {
-          icon: SearchIcon,
-          key: 'search',
-          onClick: () => toggleCommandMenu(true),
-          title: t('tab.search'),
-        },
-        {
-          icon: HomeIcon,
-          key: SidebarTabKey.Home,
-          title: t('tab.home'),
-          url: '/',
-        },
-        {
-          icon: getRouteById('tasks')!.icon,
-          key: SidebarTabKey.Tasks,
-          title: t('tab.tasks'),
-          url: '/tasks',
-        },
-      ] as NavItem[],
+    () => [
+      {
+        icon: SearchIcon,
+        key: 'search',
+        onClick: () => toggleCommandMenu(true),
+        title: t('tab.search'),
+      },
+      {
+        icon: PlusIcon,
+        key: 'newchat',
+        url: '/',
+        title: 'New Chat',
+      },
+    ] as NavItem[],
     [t, toggleCommandMenu],
   );
-
-  const bottomMenuItems = useMemo(
-    () => [] as NavItem[],
-    [],
-  );
-
+  const bottomMenuItems = useMemo(() => [] as NavItem[], []);
   const footer = useMemo(
     () => ({
       hideGitHub: !!hideGitHub,
@@ -76,14 +57,9 @@ export const useNavLayout = (): NavLayout => {
     }),
     [hideGitHub],
   );
-
   const userPanel = useMemo(
-    () => ({
-      showDataImporter: false,
-      showMemory: true,
-    }),
+    () => ({ showDataImporter: false, showMemory: true }),
     [],
   );
-
   return { bottomMenuItems, footer, topNavItems, userPanel };
 };

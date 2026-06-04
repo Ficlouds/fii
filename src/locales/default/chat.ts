@@ -512,7 +512,7 @@ export default {
     'Ask, search, or brainstorm. @ to bring in other agents.',
   'sendPlaceholderHeterogeneous': 'Describe a task or ask a question to {{name}}',
   'sendPlaceholderWithAgentAssignment':
-    'What's on your mind?. @ to assign tasks to other agents.',
+    "What's on your mind?. @ to assign tasks to other agents.",
   'sessionGroup.config': 'Category Management',
   'sessionGroup.confirmRemoveGroupAlert':
     'This category is about to be deleted. After deletion, the agents in this category will be moved to the default list. Please confirm your operation.',

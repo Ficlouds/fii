@@ -29,7 +29,6 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
   const { handleUploadFiles } = useUploadFiles({ model, provider });
 
   const pillBg = incognito ? '#1c1c1e' : '#e8e8e6';
-  const pillBorder = incognito ? '1.5px solid rgba(255,255,255,0.10)' : '1.5px solid transparent';
   const pillColor = incognito ? '#ffffff' : '#111111';
 
   const inputContainerProps = useMemo(
@@ -39,30 +38,18 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
       style: {
         background: pillBg,
         backdropFilter: 'none',
-        border: pillBorder,
+        border: incognito ? '1.5px solid rgba(255,255,255,0.12)' : 'none',
         borderRadius: 32,
         boxShadow: 'none',
         color: pillColor,
-        transition: 'background 0.25s ease, border 0.25s ease, color 0.25s ease',
+        transition: 'background 0.25s ease, color 0.25s ease',
       },
     }),
-    [pillBg, pillBorder, pillColor],
+    [pillBg, pillColor, incognito],
   );
 
   return (
-    /* Outer pill wrapper — this is what user sees */
-    <div
-      style={{
-        background: pillBg,
-        border: pillBorder,
-        borderRadius: 32,
-        boxSizing: 'border-box',
-        color: pillColor,
-        overflow: 'hidden',
-        transition: 'background 0.25s ease, border 0.25s ease, color 0.25s ease',
-        width: '100%',
-      }}
-    >
+    <div style={{ position: 'relative', width: '100%' }}>
       <DragUploadZone
         style={{ position: 'relative', zIndex: 1 }}
         onUploadFiles={handleUploadFiles}

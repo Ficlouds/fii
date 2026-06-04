@@ -4,22 +4,12 @@ import { css } from 'antd-style';
 
 export default ({ token }: { prefixCls: string; token: Theme }) => css`
 
-  html[data-theme='light'] .lobe-chat-input,
-  html[data-theme='light'] [class*='ChatInput'],
-  html[data-theme='light'] [class*='chat-input'],
-  html[data-theme='light'] [data-testid='chat-input'] {
-    background: #f9f8f7 !important;
-    background-color: #f9f8f7 !important;
-  }
   html[data-theme='light'] .ant-layout,
   html[data-theme='light'] .ant-layout-content {
     background: #f9f8f7 !important;
   }
   html[data-theme='light'] body,
-  html[data-theme='light'] #__next,
-  html[data-theme='light'] .ant-layout,
-  html[data-theme='light'] [class*='layout'],
-  html[data-theme='light'] [class*='container'] {
+  html[data-theme='light'] #__next {
     background-color: #f9f8f7 !important;
   }
   html[data-theme='dark'] body,
@@ -91,58 +81,18 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     opacity: 1;
   }
 
-  /* Sidebar background #FCFCFC */
+  /* Sidebar background */
   html[data-theme='light'] [class*='NavPanel'],
   html[data-theme='light'] [class*='navPanel'],
-  html[data-theme='light'] [class*='sideBar'],
-  html[data-theme='light'] [class*='sidebar'],
   html[data-theme='light'] [class*='SideBar'],
-  html[data-theme='light'] nav[class],
   html[data-theme='light'] aside[class] {
     background: #fcfcfc !important;
     background-color: #fcfcfc !important;
   }
 
-  /* Sidebar nav item spacing */
+  /* Sidebar nav spacing */
   [class*='NavPanel'] a + a,
   [class*='navPanel'] a + a {
     margin-top: 2px;
-  }
-
-  /* ============================================
-     INPUT BAR — kill ALL lobehub internal styles
-     Target: DesktopChatInput container + editor
-     ============================================ */
-
-  /* The outer ChatInput wrapper — force our pill shape */
-  [data-insp-path*="ChatInput/Desktop"],
-  [class*="ChatInput"][class*="lobe"] {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    padding: 0 !important;
-  }
-
-  /* The inner input container div (acss-1uegmkh class pattern) */
-  [data-insp-path*="ChatInput"] > div > div,
-  [class*="lobe"][class*="Input"] > div {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-
-  /* The editor area */
-  [contenteditable="true"],
-  [data-lexical-editor="true"] {
-    background: transparent !important;
-    color: inherit !important;
-  }
-
-  /* Force entire input zone background to inherit from our wrapper */
-  [data-insp-path*="/home/features/InputArea"] *,
-  [data-insp-path*="/home/features/InputArea"] {
-    background: inherit !important;
-    box-shadow: none !important;
   }
 `;

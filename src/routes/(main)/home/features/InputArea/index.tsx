@@ -28,32 +28,27 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
   );
   const { handleUploadFiles } = useUploadFiles({ model, provider });
 
-  const pillBg = incognito ? '#1c1c1e' : '#e8e8e6';
-  const pillColor = incognito ? '#ffffff' : '#111111';
-
   const inputContainerProps = useMemo(
     () => ({
-      minHeight: 56,
+      minHeight: 52,
       resize: false,
       style: {
-        background: pillBg,
-        backdropFilter: 'none',
-        border: incognito ? '1.5px solid rgba(255,255,255,0.12)' : 'none',
-        borderRadius: 32,
+        background: incognito ? '#1c1c1e' : '#e8e8e6',
+        border: incognito ? '1.5px solid rgba(255,255,255,0.10)' : 'none',
+        borderRadius: 28,
         boxShadow: 'none',
-        color: pillColor,
+        color: incognito ? '#fff' : '#111',
         transition: 'background 0.25s ease, color 0.25s ease',
+        width: '100%',
+        boxSizing: 'border-box' as const,
       },
     }),
-    [pillBg, pillColor, incognito],
+    [incognito],
   );
 
   return (
-    <div style={{ position: 'relative', width: '100%' }}>
-      <DragUploadZone
-        style={{ position: 'relative', zIndex: 1 }}
-        onUploadFiles={handleUploadFiles}
-      >
+    <div style={{ width: '100%', boxSizing: 'border-box' }}>
+      <DragUploadZone style={{ width: '100%' }} onUploadFiles={handleUploadFiles}>
         <ChatInputProvider
           agentId={agentId}
           allowExpand={false}

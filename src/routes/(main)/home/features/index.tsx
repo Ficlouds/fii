@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import InputArea from './InputArea';
 
 const INCOGNITO_KEY = 'fi-incognito-mode';
-const MAX_WIDTH = 760;
+const MAX_WIDTH = 860;
 
 const IncognitoIcon = ({ active }: { active: boolean }) => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -27,7 +27,6 @@ const Home = memo(() => {
     setIncognito((prev) => {
       const next = !prev;
       localStorage.setItem(INCOGNITO_KEY, String(next));
-      // Trigger storage event for ModelLabel
       window.dispatchEvent(new Event('storage'));
       return next;
     });
@@ -53,54 +52,83 @@ const Home = memo(() => {
         <IncognitoIcon active={incognito} />
       </button>
 
-      {/* Centered content */}
+      {/* Content — positioned at 40% from top (slightly above center like Grok) */}
       <div style={{
-        alignItems: 'center', display: 'flex', flexDirection: 'column',
-        height: '100%', justifyContent: 'center', paddingBottom: 60, width: '100%',
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        left: 0,
+        position: 'absolute',
+        right: 0,
+        top: '38%',
+        transform: 'translateY(-50%)',
       }}>
         {/* Fi logo */}
         <div style={{
-          color: '#111', fontFamily: 'Inter, system-ui, sans-serif',
-          fontSize: 60, fontWeight: 700, letterSpacing: '-2px',
-          marginBottom: 32, textAlign: 'center', userSelect: 'none',
+          color: '#111',
+          fontFamily: 'Inter, system-ui, sans-serif',
+          fontSize: 64,
+          fontWeight: 700,
+          letterSpacing: '-3px',
+          marginBottom: 36,
+          textAlign: 'center',
+          userSelect: 'none',
         }}>Fi</div>
 
-        {/* Input */}
+        {/* Input pill */}
         <div style={{ width: '100%', maxWidth: MAX_WIDTH, paddingInline: 20 }}>
           <InputArea incognito={incognito} />
         </div>
 
-        {/* Connect Now banner — same width as input */}
+        {/* Connect Now — sleek pill design */}
         {!bannerDismissed && (
           <div style={{
-            alignItems: 'center', background: '#fff',
-            border: '1px solid rgba(0,0,0,0.08)', borderRadius: 16,
-            display: 'flex', gap: 12, justifyContent: 'space-between',
-            marginTop: 12, maxWidth: MAX_WIDTH,
-            padding: '12px 18px', width: 'calc(100% - 40px)',
+            alignItems: 'center',
+            background: 'rgba(0,0,0,0.03)',
+            border: '1px solid rgba(0,0,0,0.07)',
+            borderRadius: 32,
+            display: 'flex',
+            gap: 0,
+            justifyContent: 'space-between',
+            marginTop: 12,
+            maxWidth: MAX_WIDTH,
+            padding: '10px 10px 10px 16px',
+            width: 'calc(100% - 40px)',
           }}>
-            <div style={{ alignItems: 'center', display: 'flex', gap: 6, flexShrink: 0 }}>
-              <Telegram.Color size={24} />
-              <Slack.Color size={24} />
-              <Discord.Color size={24} />
-            </div>
-            <div style={{ flex: 1, paddingInline: 12 }}>
-              <div style={{ color: '#111', fontSize: 13, fontWeight: 600 }}>Connect Now</div>
-              <div style={{ color: 'rgba(0,0,0,0.45)', fontSize: 12, marginTop: 1 }}>
-                Connect Fi to Telegram, Slack, Discord and more
+            {/* Left: icons + text */}
+            <div style={{ alignItems: 'center', display: 'flex', gap: 10, flex: 1 }}>
+              <div style={{ alignItems: 'center', display: 'flex', gap: 4, flexShrink: 0 }}>
+                <Telegram.Color size={20} />
+                <Slack.Color size={20} />
+                <Discord.Color size={20} />
               </div>
+              <span style={{ color: 'rgba(0,0,0,0.55)', fontSize: 13 }}>
+                Connect Fi to <strong style={{ color: '#111', fontWeight: 600 }}>Telegram, Slack, Discord</strong> and deploy your AI everywhere
+              </span>
             </div>
-            <div style={{ alignItems: 'center', display: 'flex', flexShrink: 0, gap: 8 }}>
+            {/* Right: dismiss + connect pill */}
+            <div style={{ alignItems: 'center', display: 'flex', flexShrink: 0, gap: 4 }}>
               <button onClick={() => setBannerDismissed(true)} style={{
                 background: 'transparent', border: 'none',
-                color: 'rgba(0,0,0,0.4)', cursor: 'pointer',
-                fontSize: 13, fontWeight: 500, padding: '4px 8px',
+                color: 'rgba(0,0,0,0.35)', cursor: 'pointer',
+                fontSize: 12, padding: '6px 10px',
+                borderRadius: 20,
               }}>Dismiss</button>
               <button onClick={() => (window.location.href = '/settings/messenger')} style={{
-                background: '#111', border: 'none', borderRadius: 20,
-                color: '#fff', cursor: 'pointer', fontSize: 12,
-                fontWeight: 600, padding: '6px 18px',
-              }}>Connect</button>
+                alignItems: 'center',
+                background: '#111',
+                border: 'none',
+                borderRadius: 20,
+                color: '#fff',
+                cursor: 'pointer',
+                display: 'flex',
+                fontSize: 13,
+                fontWeight: 600,
+                gap: 4,
+                padding: '8px 18px',
+              }}>
+                Connect →
+              </button>
             </div>
           </div>
         )}

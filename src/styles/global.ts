@@ -52,6 +52,12 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     .${CLASSNAMES.DropdownMenuTrigger}[data-popup-open]:not([data-no-highlight])
   ) { opacity: 1; }
 
+  /* Remove container padding that causes floating effect */
+  .acss-12cbrsv,
+  [class*='lobe-flex'][style*='--lobe-flex-padding: 8px'] {
+    padding: 0 !important;
+  }
+
   /* Sidebar #FCFCFC */
   html[data-theme='light'] [class*='NavPanel'],
   html[data-theme='light'] [class*='navPanel'],
@@ -99,14 +105,11 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     color: #111111 !important;
   }
 
-  /* Align recents accordion header with nav items */
+  /* Align recents accordion header and labels with nav items */
   .accordion-he,
   [class*='accordion-he'] {
-    padding-inline-start: 4px !important;
-  }
-  /* Align TODAY/EARLIER group labels */
-  [class*='lobe-flex'] > div[style*='uppercase'] {
-    padding-left: 6px !important;
+    padding-left: 10px !important;
+    padding-inline-start: 10px !important;
   }
 
 

@@ -170,6 +170,9 @@ const AppTheme = memo<AppThemeProps>(
               colorBgBase: isDark ? '#0a0a0a' : '#f9f8f7',
               colorBgLayout: isDark ? '#0a0a0a' : '#f9f8f7',
               colorBgContainer: isDark ? '#141414' : '#f9f8f7',
+              colorText: isDark ? '#ffffff' : '#111111',
+              colorTextSecondary: isDark ? 'rgba(255,255,255,0.75)' : '#1a1a1a',
+              colorTextDescription: isDark ? 'rgba(255,255,255,0.55)' : '#333333',
               fontFamily: customFontFamily
                 ? `${customFontFamily},${antdTheme.fontFamily}`
                 : undefined,

@@ -1,6 +1,5 @@
 'use client';
 
-import { Button, Flexbox } from '@lobehub/ui';
 import { memo, useCallback, useRef, useState } from 'react';
 import { useUserStore } from '@/store/user';
 
@@ -27,140 +26,139 @@ const TelemetryStep = memo<TelemetryStepProps>(({ onNext }) => {
   const canProceed = termsAccepted && privacyAccepted;
 
   return (
-    <Flexbox gap={32} style={{ maxWidth: 480, width: '100%', margin: '0 auto' }}>
-      {/* Logo */}
-      <div style={{ textAlign: 'center' }}>
-        <div style={{
-          fontSize: 48,
-          fontWeight: 800,
-          letterSpacing: '-2px',
-          fontFamily: 'Inter, system-ui, sans-serif',
-          marginBottom: 8,
-        }}>
-          Fi
-        </div>
-        <div style={{ fontSize: 22, fontWeight: 700, color: '#111', marginBottom: 8 }}>
-          Welcome to Fi
-        </div>
-        <div style={{ fontSize: 15, color: '#666', lineHeight: 1.6 }}>
-          Your intelligent AI assistant. Before you get started,<br />
-          please review and accept our policies.
-        </div>
-      </div>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '100vh',
+      padding: '48px 24px',
+      fontFamily: 'Inter, system-ui, sans-serif',
+      background: '#fff',
+    }}>
+      <div style={{ width: '100%', maxWidth: 440 }}>
 
-      {/* Feature highlights */}
-      <div style={{
-        background: '#f9f8f7',
-        borderRadius: 12,
-        padding: '20px 24px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 14,
-      }}>
-        {[
-          { icon: '⚡', title: 'Powerful AI', desc: 'Access cutting-edge AI models for any task' },
-          { icon: '🔒', title: 'Private & Secure', desc: 'Your conversations are encrypted and private' },
-          { icon: '🎯', title: 'Built for You', desc: 'Fi learns and adapts to your workflow' },
-        ].map((item) => (
-          <div key={item.title} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-            <span style={{ fontSize: 20, flexShrink: 0 }}>{item.icon}</span>
-            <div>
-              <div style={{ fontWeight: 600, fontSize: 14, color: '#111' }}>{item.title}</div>
-              <div style={{ fontSize: 13, color: '#666', marginTop: 2 }}>{item.desc}</div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Checkboxes */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {[
-          {
-            checked: termsAccepted,
-            onChange: setTermsAccepted,
-            label: 'I agree to the',
-            link: 'Terms of Service',
-            href: '/terms',
-            required: true,
-          },
-          {
-            checked: privacyAccepted,
-            onChange: setPrivacyAccepted,
-            label: 'I have read and accept the',
-            link: 'Privacy Policy',
-            href: '/privacy',
-            required: true,
-          },
-          {
-            checked: telemetry,
-            onChange: setTelemetry,
-            label: 'Help improve Fi by sharing anonymous usage data',
-            link: '',
-            href: '',
-            required: false,
-          },
-        ].map((item, i) => (
-          <label key={i} style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            gap: 10,
-            cursor: 'pointer',
-            fontSize: 14,
-            color: '#333',
-            lineHeight: 1.5,
+        {/* Logo */}
+        <div style={{ marginBottom: 48 }}>
+          <div style={{
+            fontSize: 52,
+            fontWeight: 700,
+            letterSpacing: '-2.5px',
+            color: '#000',
+            lineHeight: 1,
+            marginBottom: 20,
           }}>
-            <input
-              type="checkbox"
-              checked={item.checked}
-              onChange={(e) => item.onChange(e.target.checked)}
-              style={{
-                width: 16,
-                height: 16,
-                marginTop: 2,
-                flexShrink: 0,
-                accentColor: '#000',
-                cursor: 'pointer',
-              }}
-            />
-            <span>
-              {item.label}{' '}
-              {item.link && (
-                <a href={item.href} style={{ color: '#000', fontWeight: 600, textDecoration: 'underline' }}>
-                  {item.link}
-                </a>
-              )}
-              {item.required && <span style={{ color: '#e05c5c', marginLeft: 2 }}>*</span>}
-            </span>
-          </label>
-        ))}
-      </div>
+            Fi
+          </div>
+          <div style={{ fontSize: 24, fontWeight: 600, color: '#000', marginBottom: 10, letterSpacing: '-0.5px' }}>
+            Welcome
+          </div>
+          <div style={{ fontSize: 15, color: '#666', lineHeight: 1.6 }}>
+            Before you continue, please review our terms and privacy policy.
+          </div>
+        </div>
 
-      {/* CTA Button */}
-      <div>
+        {/* Divider */}
+        <div style={{ height: 1, background: '#f0f0f0', marginBottom: 32 }} />
+
+        {/* Checkboxes */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 40 }}>
+          {[
+            {
+              checked: termsAccepted,
+              onChange: setTermsAccepted,
+              text: 'I agree to the ',
+              linkText: 'Terms of Service',
+              href: '/terms',
+              required: true,
+            },
+            {
+              checked: privacyAccepted,
+              onChange: setPrivacyAccepted,
+              text: 'I accept the ',
+              linkText: 'Privacy Policy',
+              href: '/privacy',
+              required: true,
+            },
+            {
+              checked: telemetry,
+              onChange: setTelemetry,
+              text: 'Share anonymous usage data to help improve Fi',
+              linkText: '',
+              href: '',
+              required: false,
+            },
+          ].map((item, i) => (
+            <label key={i} style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: 12,
+              cursor: 'pointer',
+            }}>
+              <div style={{ position: 'relative', flexShrink: 0, marginTop: 1 }}>
+                <input
+                  type="checkbox"
+                  checked={item.checked}
+                  onChange={(e) => item.onChange(e.target.checked)}
+                  style={{ opacity: 0, position: 'absolute', width: 18, height: 18, cursor: 'pointer', margin: 0 }}
+                />
+                <div style={{
+                  width: 18,
+                  height: 18,
+                  borderRadius: 4,
+                  border: item.checked ? '2px solid #000' : '2px solid #d0d0d0',
+                  background: item.checked ? '#000' : '#fff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.15s',
+                }}>
+                  {item.checked && (
+                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                      <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  )}
+                </div>
+              </div>
+              <span style={{ fontSize: 14, color: '#333', lineHeight: 1.5 }}>
+                {item.text}
+                {item.linkText && (
+                  <a href={item.href} style={{ color: '#000', fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: 2 }}>
+                    {item.linkText}
+                  </a>
+                )}
+              </span>
+            </label>
+          ))}
+        </div>
+
+        {/* Button */}
         <button
           disabled={!canProceed || isNavigating}
           onClick={handleStart}
           style={{
             width: '100%',
             padding: '14px 24px',
-            background: canProceed ? '#000' : '#ccc',
-            color: '#fff',
+            background: canProceed ? '#000' : '#e8e8e8',
+            color: canProceed ? '#fff' : '#aaa',
             border: 'none',
             borderRadius: 100,
-            fontSize: 16,
+            fontSize: 15,
             fontWeight: 600,
             cursor: canProceed ? 'pointer' : 'not-allowed',
-            transition: 'background 0.2s',
+            transition: 'all 0.2s',
             fontFamily: 'Inter, system-ui, sans-serif',
+            letterSpacing: '-0.2px',
           }}
         >
-          {isNavigating ? 'Getting started...' : 'Get Started with Fi'}
+          {isNavigating ? 'Getting started...' : 'Continue'}
         </button>
-        <div style={{ textAlign: 'center', fontSize: 12, color: '#999', marginTop: 12 }}>
-          * Required to use Fi
+
+        <div style={{ textAlign: 'center', fontSize: 12, color: '#aaa', marginTop: 16 }}>
+          You must accept the Terms and Privacy Policy to use Fi
         </div>
       </div>
-    </Flexbox>
+    </div>
   );
 });
 

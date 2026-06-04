@@ -39,16 +39,19 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
     background: ${cssVar.colorBgContainer};
   `,
   inputFullscreen: css`border: none; border-radius: 0 !important;`,
-  hiddenBody: css`
-    display: none !important;
-    min-height: 0 !important;
-    height: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    overflow: hidden !important;
-    flex: none !important;
-  `,
 }));
+
+const HIDDEN_BODY_STYLE: React.CSSProperties = {
+  display: 'none',
+  height: 0,
+  minHeight: 0,
+  maxHeight: 0,
+  overflow: 'hidden',
+  padding: 0,
+  margin: 0,
+  flex: 'none',
+  border: 'none',
+};
 
 interface DesktopChatInputProps extends ActionToolbarProps {
   actionBarStyle?: React.CSSProperties;
@@ -152,7 +155,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           onSizeChange={(h) => updateSystemStatus({ chatInputHeight: h })}
           {...inputContainerProps}
           className={cx(expand && styles.inputFullscreen, inputContainerProps?.className)}
-          classNames={{ body: expand ? undefined : styles.hiddenBody }}
+          styles={{ body: expand ? undefined : HIDDEN_BODY_STYLE }}
         >
           <InputEditor placeholder={placeholder} placeholderVariant={placeholderVariant} />
         </ChatInput>

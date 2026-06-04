@@ -1,94 +1,77 @@
 'use client';
 
-import { DraggablePanel } from '@lobehub/ui';
-import { createStaticStyles, cssVar } from 'antd-style';
+import { cssVar, createStaticStyles } from 'antd-style';
+import { ChevronRight } from 'lucide-react';
 import { type ReactNode } from 'react';
-import { memo, useMemo, useRef } from 'react';
+import { memo } from 'react';
 
-import { isDesktop } from '@/const/version';
-import { TOGGLE_BUTTON_ID } from '@/features/NavPanel/ToggleLeftPanelButton';
-import { USER_DROPDOWN_ICON_ID } from '@/routes/(main)/home/_layout/Header/components/User';
 import { useGlobalStore } from '@/store/global';
 import { systemStatusSelectors } from '@/store/global/selectors';
-import { isMacOS } from '@/utils/platform';
+import { useNavLayout } from '@/hooks/useNavLayout';
+import { useActiveTabKey } from '@/hooks/useActiveTabKey';
+import { useNavigate } from 'react-router-dom';
+import UserAvatar from '@/features/User/UserAvatar';
+import UserPanel from '@/features/User/UserPanel';
 
-import { useNavPanelSizeChangeHandler } from '../hooks/useNavPanel';
-import { BACK_BUTTON_ID } from './BackButton';
+const EXPANDED_WIDTH = 220;
+const COLLAPSED_WIDTH = 56;
 
-const draggableStyles = createStaticStyles(({ css, cssVar }) => ({
-  content: css`
-    position: relative;
-
+const styles = createStaticStyles(({ css, cssVar }) => ({
+  panel: css`
+    flex-shrink: 0;
+    height: 100%;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-
-    height: 100%;
-    min-height: 100%;
-    max-height: 100%;
+    background: #fcfcfc;
+    border-right: 1px solid rgba(0,0,0,0.06);
+    transition: width 0.2s ease;
   `,
   inner: css`
     position: relative;
-
     overflow: hidden;
     flex: 1;
-
-    min-width: 200px;
-    max-width: 100%;
+    width: 100%;
     min-height: 0;
   `,
   layer: css`
     position: absolute;
     inset: 0;
-
     overflow: hidden;
     display: flex;
     flex-direction: column;
-
-    min-width: 200px;
-    max-width: 100%;
+    width: 100%;
     min-height: 100%;
     max-height: 100%;
   `,
-  panel: css`
-    user-select: none;
+  collapsedPanel: css`
+    flex-shrink: 0;
     height: 100%;
-    color: ${cssVar.colorTextSecondary};
-    background: ${isDesktop && isMacOS() ? 'transparent' : cssVar.colorBgLayout};
-
-    * {
-      user-select: none;
-    }
-
-    #${TOGGLE_BUTTON_ID} {
-      width: 0 !important;
-      opacity: 0;
-      transition:
-        opacity,
-        width 0.2s ${cssVar.motionEaseOut};
-    }
-
-    #${USER_DROPDOWN_ICON_ID} {
-      width: 0 !important;
-      opacity: 0;
-      transition:
-        opacity,
-        width 0.2s ${cssVar.motionEaseOut};
-    }
-    #${BACK_BUTTON_ID} {
-      width: 24px !important;
-    }
-
+    width: ${COLLAPSED_WIDTH}px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fcfcfc;
+    border-right: 1px solid rgba(0,0,0,0.06);
+    cursor: pointer;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    gap: 4px;
+    transition: width 0.2s ease;
+    &:hover { background: #f7f7f7; }
+  `,
+  collapsedIcon: css`
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: rgba(0,0,0,0.45);
+    transition: background 0.15s, color 0.15s;
     &:hover {
-      #${TOGGLE_BUTTON_ID} {
-        width: 32px !important;
-        opacity: 1;
-      }
-
-      #${USER_DROPDOWN_ICON_ID} {
-        width: 14px !important;
-        opacity: 1;
-      }
+      background: rgba(0,0,0,0.06);
+      color: #111;
     }
   `,
 }));
@@ -100,58 +83,77 @@ interface NavPanelDraggableProps {
   };
 }
 
-const classNames = {
-  content: draggableStyles.content,
-};
-
 export const NavPanelDraggable = memo<NavPanelDraggableProps>(({ activeContent }) => {
-  const [expand, togglePanel, isStatusInit] = useGlobalStore((s) => [
+  const [expand, togglePanel] = useGlobalStore((s) => [
     systemStatusSelectors.showLeftPanel(s),
     s.toggleLeftPanel,
-    systemStatusSelectors.isStatusInit(s),
   ]);
-  const handleSizeChange = useNavPanelSizeChangeHandler();
+  const { topNavItems } = useNavLayout();
+  const tab = useActiveTabKey();
+  const navigate = useNavigate();
 
-  const defaultWidthRef = useRef(0);
-  if (defaultWidthRef.current === 0 && isStatusInit) {
-    defaultWidthRef.current = systemStatusSelectors.leftPanelWidth(useGlobalStore.getState());
+  if (!expand) {
+    return (
+      <div
+        className={styles.collapsedPanel}
+        onClick={() => togglePanel(true)}
+        title="Expand sidebar"
+      >
+        {/* Fi logo */}
+        <div style={{ marginBottom: 8, marginTop: 4 }}>
+          <img src="/logos/fi-icon.svg" alt="Fi" style={{ height: 22, width: 'auto' }} />
+        </div>
+
+        {/* Nav icons */}
+        {topNavItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = tab === item.key;
+          return (
+            <div
+              key={item.key}
+              className={styles.collapsedIcon}
+              title={item.title}
+              style={{
+                background: isActive ? 'rgba(0,0,0,0.06)' : undefined,
+                color: isActive ? '#111' : undefined,
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (item.onClick) item.onClick();
+                else if (item.url) navigate(item.url);
+                togglePanel(true);
+              }}
+            >
+              {Icon && <Icon size={18} />}
+            </div>
+          );
+        })}
+
+        {/* Spacer */}
+        <div style={{ flex: 1 }} />
+
+        {/* Expand chevron */}
+        <div className={styles.collapsedIcon} title="Expand sidebar">
+          <ChevronRight size={16} />
+        </div>
+
+        {/* User avatar */}
+        <UserPanel>
+          <div className={styles.collapsedIcon} style={{ marginTop: 4 }}>
+            <UserAvatar size={28} />
+          </div>
+        </UserPanel>
+      </div>
+    );
   }
-
-  const styles = useMemo(
-    () => ({
-      background: isDesktop && isMacOS() ? 'transparent' : cssVar.colorBgLayout,
-      zIndex: 11,
-    }),
-    [],
-  );
-
-  if (defaultWidthRef.current === 0) {
-    const pendingWidth = systemStatusSelectors.leftPanelWidth(useGlobalStore.getState());
-    return <div aria-hidden style={{ flexShrink: 0, height: '100%', width: pendingWidth }} />;
-  }
-
-  const defaultSize = { height: '100%', width: defaultWidthRef.current };
 
   return (
-    <DraggablePanel
-      className={draggableStyles.panel}
-      classNames={classNames}
-      defaultSize={defaultSize}
-      expand={expand}
-      expandable={false}
-      maxWidth={320}
-      minWidth={200}
-      placement="left"
-      showBorder={false}
-      style={styles}
-      onExpandChange={togglePanel}
-      onSizeDragging={handleSizeChange}
-    >
-      <div className={draggableStyles.inner}>
-        <div className={draggableStyles.layer} key={activeContent.key}>
+    <div className={styles.panel} style={{ width: EXPANDED_WIDTH }}>
+      <div className={styles.inner}>
+        <div className={styles.layer} key={activeContent.key}>
           {activeContent.node}
         </div>
       </div>
-    </DraggablePanel>
+    </div>
   );
 });

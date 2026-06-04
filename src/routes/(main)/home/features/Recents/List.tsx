@@ -76,7 +76,7 @@ const RecentsList = memo(() => {
   );
 
   return (
-    <Flexbox gap={1} style={{ paddingInline: '0px 0px' }}>
+    <Flexbox gap={1} style={{ paddingInline: '0' }}>
       {todayItems.length > 0 && (
         <>
           <div style={GROUP_LABEL_STYLE}>Today</div>

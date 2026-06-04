@@ -294,7 +294,7 @@ const ChatInput = memo<ChatInputProps>(
         {/* Keep the chat input mounted while an intervention panel is showing —
             unmounting would wipe the Lexical editor's in-memory document. */}
         <div style={{ display: hasPendingInterventions ? 'none' : 'contents' }}>
-          {sendMessageErrorMsg && (
+          {false && sendMessageErrorMsg && (
             <Flexbox paddingBlock={'0 6px'} paddingInline={12}>
               <Alert
                 closable

@@ -1,11 +1,11 @@
 'use client';
 
 import { type ChatInputProps } from '@lobehub/editor/react';
-import { ChatInput, ChatInputActionBar } from '@lobehub/editor/react';
+import { ChatInput } from '@lobehub/editor/react';
 import { Center, Flexbox, Skeleton, Text } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
-import { type ReactNode, use } from 'react';
-import { memo, useEffect } from 'react';
+import { type ReactNode, use, useEffect, useRef, useState } from 'react';
+import { memo } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -26,6 +26,14 @@ import RuntimeConfig from '../RuntimeConfig';
 import SendArea from '../SendArea';
 import TypoBar from '../TypoBar';
 import ContextContainer from './ContextContainer';
+
+const ROTATING = [
+  'What do you want to know?',
+  'How can I help you today?',
+  'Ask me anything...',
+  'Start a task or explore an idea...',
+  'What are you working on?',
+];
 
 const styles = createStaticStyles(({ css, cssVar }) => ({
   container: css`
@@ -95,25 +103,31 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
     const setExpand = useChatInputStore((s) => s.setExpand);
     const skillDrop = useSkillDrop();
 
+    const [rotIdx, setRotIdx] = useState(0);
+    const [rotVisible, setRotVisible] = useState(true);
+    const [focused, setFocused] = useState(false);
+    const [hasText, setHasText] = useState(false);
+
     useEffect(() => {
       if (editor) editor.focus();
       setExpand(false);
     }, [chatKey, editor, setExpand]);
 
+    useEffect(() => {
+      const iv = setInterval(() => {
+        setRotVisible(false);
+        setTimeout(() => {
+          setRotIdx((p) => (p + 1) % ROTATING.length);
+          setRotVisible(true);
+        }, 250);
+      }, 3000);
+      return () => clearInterval(iv);
+    }, []);
+
     const shouldShowContextContainer =
       leftActions.flat().includes('fileUpload') || hasContextSelections || hasFiles;
-    const contextContainerNode = shouldShowContextContainer && <ContextContainer />;
 
-    const loadingLeftSlot = isConfigLoading ? (
-      <Flexbox horizontal align="center" gap={6} paddingInline={4}>
-        <Skeleton.Button active shape="circle" size="small" style={{ height: 28, width: 28 }} />
-        <Skeleton.Button active shape="circle" size="small" style={{ height: 28, width: 28 }} />
-      </Flexbox>
-    ) : null;
-
-    const loadingRightSlot = isConfigLoading ? (
-      <Skeleton.Button active shape="round" size="small" style={{ height: 32, minWidth: 64, width: 64 }} />
-    ) : null;
+    const showPlaceholder = !focused && !hasText && !expand;
 
     const content = (
       <Flexbox
@@ -124,54 +138,136 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
         onDragOver={skillDrop.onDragOver}
         onDrop={skillDrop.onDrop}
       >
-        <ChatInput
-          data-testid="chat-input"
-          defaultHeight={chatInputHeight || 28}
-          fullscreen={expand}
-          maxHeight={200}
-          minHeight={28}
-          resize={false}
-          slashMenuRef={slashMenuRef}
-          footer={
-            <ChatInputActionBar
-              style={actionBarStyle ?? { paddingInline: 8, paddingBlock: 4 }}
-              left={
-                loadingLeftSlot ?? leftContent ?? (
-                  <ActionBar
-                    borderRadius={borderRadius}
-                    dropdownPlacement={dropdownPlacement}
-                    extraActionItems={extraActionItems}
-                  />
-                )
-              }
-              right={
-                loadingRightSlot ?? rightContent ??
-                (sendAreaPrefix ? (
-                  <Flexbox horizontal align={'center'} gap={6}>
-                    {sendAreaPrefix}
-                    <SendArea />
-                  </Flexbox>
-                ) : (
-                  <SendArea />
-                ))
-              }
-            />
-          }
-          header={
-            <Flexbox gap={0}>
-              {extentHeaderContent}
-              {showTypoBar && <TypoBar />}
-              {contextContainerNode}
-            </Flexbox>
-          }
-          onSizeChange={(height) => {
-            updateSystemStatus({ chatInputHeight: height });
+        {/* Single row bar */}
+        <Flexbox
+          horizontal
+          align="center"
+          gap={0}
+          style={{
+            minHeight: 52,
+            padding: '0 4px',
+            position: 'relative',
+            width: '100%',
           }}
-          {...inputContainerProps}
-          className={cx(expand && styles.inputFullscreen, inputContainerProps?.className)}
+          onClick={() => {
+            editor?.focus();
+            setFocused(true);
+          }}
         >
-          <InputEditor placeholder={placeholder} placeholderVariant={placeholderVariant} />
-        </ChatInput>
+          {/* Left: + button */}
+          {isConfigLoading ? (
+            <Flexbox horizontal align="center" gap={6} paddingInline={4}>
+              <Skeleton.Button active shape="circle" size="small" style={{ height: 28, width: 28 }} />
+            </Flexbox>
+          ) : (
+            leftContent ?? (
+              <ActionBar
+                borderRadius={borderRadius}
+                dropdownPlacement={dropdownPlacement}
+                extraActionItems={extraActionItems}
+              />
+            )
+          )}
+
+          {/* Center: rotating placeholder OR real editor */}
+          <div
+            style={{
+              flex: 1,
+              minWidth: 0,
+              position: 'relative',
+              paddingInline: 8,
+            }}
+          >
+            {/* Rotating placeholder — shown when not focused and no text */}
+            {showPlaceholder && (
+              <div
+                style={{
+                  color: 'rgba(0,0,0,0.38)',
+                  fontSize: 15,
+                  left: 8,
+                  opacity: rotVisible ? 1 : 0,
+                  pointerEvents: 'none',
+                  position: 'absolute',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  transition: 'opacity 0.25s ease',
+                  userSelect: 'none',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  right: 8,
+                }}
+              >
+                {ROTATING[rotIdx]}
+              </div>
+            )}
+
+            {/* Real editor — always mounted, hidden when not focused + no text */}
+            <div
+              style={{
+                opacity: showPlaceholder ? 0 : 1,
+                pointerEvents: showPlaceholder ? 'none' : 'auto',
+                transition: 'opacity 0.15s ease',
+              }}
+              onFocus={() => setFocused(true)}
+              onBlur={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                  setFocused(false);
+                }
+              }}
+            >
+              <ChatInput
+                data-testid="chat-input"
+                defaultHeight={chatInputHeight || 24}
+                fullscreen={expand}
+                maxHeight={200}
+                minHeight={24}
+                resize={false}
+                slashMenuRef={slashMenuRef}
+                footer={null}
+                header={
+                  <Flexbox gap={0}>
+                    {extentHeaderContent}
+                    {showTypoBar && <TypoBar />}
+                    {shouldShowContextContainer && <ContextContainer />}
+                  </Flexbox>
+                }
+                onSizeChange={(height) => {
+                  updateSystemStatus({ chatInputHeight: height });
+                  setHasText(height > 30);
+                }}
+                {...inputContainerProps}
+                className={cx(expand && styles.inputFullscreen, inputContainerProps?.className)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  boxShadow: 'none',
+                  borderRadius: 0,
+                  ...inputContainerProps?.style,
+                }}
+              >
+                <InputEditor placeholder={placeholder} placeholderVariant={placeholderVariant} />
+              </ChatInput>
+            </div>
+          </div>
+
+          {/* Right: agent selector + mic + send */}
+          {isConfigLoading ? (
+            <Skeleton.Button active shape="round" size="small" style={{ height: 32, minWidth: 64, width: 64 }} />
+          ) : (
+            rightContent ?? (
+              sendAreaPrefix ? (
+                <Flexbox horizontal align={'center'} gap={6}>
+                  {sendAreaPrefix}
+                  <SendArea />
+                </Flexbox>
+              ) : (
+                <SendArea />
+              )
+            )
+          )}
+        </Flexbox>
+
         {runtimeConfigSlot ?? (showRuntimeConfig && <RuntimeConfig />)}
         {showFootnote && !expand && (
           <Center style={{ pointerEvents: 'none', zIndex: 100 }}>

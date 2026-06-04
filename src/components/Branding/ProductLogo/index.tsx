@@ -1,22 +1,43 @@
 'use client';
 
-import { type LobeHubProps } from '@lobehub/ui/brand';
-import { LobeHub } from '@lobehub/ui/brand';
 import { memo } from 'react';
 
-import { isCustomBranding } from '@/const/version';
-
-import CustomLogo from './Custom';
-
-interface ProductLogoProps extends LobeHubProps {
-  height?: number;
+interface ProductLogoProps {
+  size?: number;
   width?: number;
+  height?: number;
+  type?: 'text' | 'icon' | 'combine';
+  color?: string;
+  style?: React.CSSProperties;
+  className?: string;
 }
 
-export const ProductLogo = memo<ProductLogoProps>((props) => {
-  if (isCustomBranding) {
-    return <CustomLogo {...props} />;
-  }
+export const ProductLogo = memo<ProductLogoProps>(({
+  size = 32,
+  width,
+  height,
+  type = 'combine',
+  color,
+  style,
+  className,
+}) => {
+  const h = height || size;
+  const w = width || (type === 'combine' ? h * 4 : h);
 
-  return <LobeHub {...props} />;
+  return (
+    <img
+      src="/logos/fi-icon.svg"
+      alt="Fi"
+      width={w}
+      height={h}
+      style={{
+        objectFit: 'contain',
+        filter: color === 'white' ? 'invert(1)' : undefined,
+        ...style,
+      }}
+      className={className}
+    />
+  );
 });
+
+export default ProductLogo;

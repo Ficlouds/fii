@@ -132,8 +132,8 @@ const CommonOnboardingPage = memo(() => {
     <div style={wrap}>
       <div style={inner}>
 
-        {/* Centered Fi logo */}
-        <div style={{ fontSize: 32, fontWeight: 700, letterSpacing: '-1.5px', color: '#111', marginBottom: 48 }}>Fi</div>
+        {/* Fi Logo */}
+        <img src="/logos/fi-icon.svg" alt="Fi" style={{ height: 28, width: 'auto', marginBottom: 48, objectFit: 'contain' }} />
 
         {/* Step 1 — Terms */}
         {step === 1 && <>

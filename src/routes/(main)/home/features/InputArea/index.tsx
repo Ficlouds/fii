@@ -28,37 +28,24 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
   );
   const { handleUploadFiles } = useUploadFiles({ model, provider });
 
-  const pillBg = incognito ? '#1c1c1e' : '#e8e8e6';
-  const pillColor = incognito ? '#ffffff' : '#111111';
-  const pillBorder = incognito ? '1.5px solid rgba(255,255,255,0.10)' : 'none';
-
   const inputContainerProps = useMemo(
     () => ({
       resize: false,
       style: {
-        background: pillBg,
-        border: pillBorder,
+        background: incognito ? '#1c1c1e' : '#e8e8e6',
+        border: incognito ? '1.5px solid rgba(255,255,255,0.10)' : 'none',
         borderRadius: 28,
         boxShadow: 'none',
-        color: pillColor,
+        color: incognito ? '#ffffff' : '#111111',
         transition: 'background 0.25s ease, color 0.25s ease',
         width: '100%',
       },
     }),
-    [pillBg, pillColor, pillBorder],
+    [incognito],
   );
 
   return (
-    <div
-      style={{
-        background: pillBg,
-        border: pillBorder,
-        borderRadius: 28,
-        overflow: 'hidden',
-        transition: 'background 0.25s ease',
-        width: '100%',
-      }}
-    >
+    <div style={{ position: 'relative', width: '100%' }}>
       {incognito && (
         <style>{`
           [data-testid="chat-input"] * { color: #ffffff !important; }
@@ -92,7 +79,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
           }}
         >
           <DesktopChatInput
-            dropdownPlacement="top"
+            dropdownPlacement="topLeft"
             inputContainerProps={inputContainerProps}
             showRuntimeConfig={false}
           />

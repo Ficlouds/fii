@@ -4,13 +4,12 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import InputArea from './InputArea';
 
 const INCOGNITO_KEY = 'fi-incognito-mode';
+const MAX_WIDTH = 760;
 
 const IncognitoIcon = ({ active }: { active: boolean }) => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <path
-      d="M12 4.5L7 9h3.5v1.5H9A2.5 2.5 0 006.5 13 2.5 2.5 0 009 15.5h6A2.5 2.5 0 0017.5 13 2.5 2.5 0 0015 10.5h-1.5V9H17l-5-4.5z"
-      fill={active ? '#111' : 'rgba(0,0,0,0.32)'}
-    />
+    <path d="M12 4.5L7 9h3.5v1.5H9A2.5 2.5 0 006.5 13 2.5 2.5 0 009 15.5h6A2.5 2.5 0 0017.5 13 2.5 2.5 0 0015 10.5h-1.5V9H17l-5-4.5z"
+      fill={active ? '#111' : 'rgba(0,0,0,0.32)'} />
     <circle cx="9.5" cy="13" r="1" fill="#f9f8f7" />
     <circle cx="14.5" cy="13" r="1" fill="#f9f8f7" />
   </svg>
@@ -28,6 +27,8 @@ const Home = memo(() => {
     setIncognito((prev) => {
       const next = !prev;
       localStorage.setItem(INCOGNITO_KEY, String(next));
+      // Trigger storage event for ModelLabel
+      window.dispatchEvent(new Event('storage'));
       return next;
     });
   }, []);
@@ -64,18 +65,18 @@ const Home = memo(() => {
           marginBottom: 32, textAlign: 'center', userSelect: 'none',
         }}>Fi</div>
 
-        {/* Input — Grok width */}
-        <div style={{ width: '100%', maxWidth: 780, paddingInline: 20 }}>
+        {/* Input */}
+        <div style={{ width: '100%', maxWidth: MAX_WIDTH, paddingInline: 20 }}>
           <InputArea incognito={incognito} />
         </div>
 
-        {/* Connect Now banner */}
+        {/* Connect Now banner — same width as input */}
         {!bannerDismissed && (
           <div style={{
             alignItems: 'center', background: '#fff',
             border: '1px solid rgba(0,0,0,0.08)', borderRadius: 16,
             display: 'flex', gap: 12, justifyContent: 'space-between',
-            marginTop: 16, maxWidth: 780,
+            marginTop: 12, maxWidth: MAX_WIDTH,
             padding: '12px 18px', width: 'calc(100% - 40px)',
           }}>
             <div style={{ alignItems: 'center', display: 'flex', gap: 6, flexShrink: 0 }}>
@@ -97,8 +98,8 @@ const Home = memo(() => {
               }}>Dismiss</button>
               <button onClick={() => (window.location.href = '/settings/messenger')} style={{
                 background: '#111', border: 'none', borderRadius: 20,
-                color: '#fff', cursor: 'pointer',
-                fontSize: 12, fontWeight: 600, padding: '6px 18px',
+                color: '#fff', cursor: 'pointer', fontSize: 12,
+                fontWeight: 600, padding: '6px 18px',
               }}>Connect</button>
             </div>
           </div>

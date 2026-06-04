@@ -10,7 +10,11 @@ const AGENTS = [
   { id: 'horus', label: 'Horus', description: 'Precise & Analytical' },
 ];
 
-const AgentSelector = memo(() => {
+interface AgentSelectorProps {
+  incognito?: boolean;
+}
+
+const AgentSelector = memo<AgentSelectorProps>(({ incognito = false }) => {
   const [selected, setSelected] = useState(AGENTS[0]);
   const [open, setOpen] = useState(false);
   const [coords, setCoords] = useState({ top: 0, left: 0 });
@@ -19,10 +23,7 @@ const AgentSelector = memo(() => {
   const handleOpen = () => {
     if (!open && buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
-      setCoords({
-        top: rect.top - 8,
-        left: rect.left,
-      });
+      setCoords({ top: rect.top - 8, left: rect.left });
     }
     setOpen(!open);
   };
@@ -34,6 +35,13 @@ const AgentSelector = memo(() => {
     return () => window.removeEventListener('scroll', handle, true);
   }, [open]);
 
+  const fg = incognito ? '#ffffff' : '#111111';
+  const fgSub = incognito ? 'rgba(255,255,255,0.5)' : '#888';
+  const borderColor = incognito ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)';
+  const dropBg = incognito ? '#1c1c1e' : '#fff';
+  const dropBorder = incognito ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)';
+  const hoverBg = incognito ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)';
+
   return (
     <>
       <button
@@ -42,24 +50,24 @@ const AgentSelector = memo(() => {
         style={{
           alignItems: 'center',
           background: 'transparent',
-          border: '1px solid rgba(0,0,0,0.12)',
+          border: `1px solid ${borderColor}`,
           borderRadius: 20,
-          color: 'inherit',
+          color: fg,
           cursor: 'pointer',
           display: 'flex',
           fontSize: 13,
           fontWeight: 500,
           gap: 4,
           padding: '4px 10px 4px 12px',
-          transition: 'background 0.15s',
+          transition: 'all 0.15s',
           userSelect: 'none',
           whiteSpace: 'nowrap',
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(0,0,0,0.05)')}
+        onMouseEnter={(e) => (e.currentTarget.style.background = hoverBg)}
         onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
       >
         {selected.label}
-        <ChevronDown size={14} style={{ opacity: 0.6 }} />
+        <ChevronDown size={14} style={{ opacity: 0.6, color: fg }} />
       </button>
 
       {open && typeof document !== 'undefined' && createPortal(
@@ -70,8 +78,8 @@ const AgentSelector = memo(() => {
           />
           <div
             style={{
-              background: '#fff',
-              border: '1px solid rgba(0,0,0,0.08)',
+              background: dropBg,
+              border: `1px solid ${dropBorder}`,
               borderRadius: 12,
               boxShadow: '0 8px 32px rgba(0,0,0,0.16)',
               left: coords.left,
@@ -88,7 +96,7 @@ const AgentSelector = memo(() => {
                 key={agent.id}
                 onClick={() => { setSelected(agent); setOpen(false); }}
                 style={{
-                  background: selected.id === agent.id ? 'rgba(0,0,0,0.04)' : 'transparent',
+                  background: selected.id === agent.id ? hoverBg : 'transparent',
                   cursor: 'pointer',
                   display: 'flex',
                   flexDirection: 'column',
@@ -96,11 +104,11 @@ const AgentSelector = memo(() => {
                   padding: '10px 14px',
                   transition: 'background 0.1s',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(0,0,0,0.04)')}
-                onMouseLeave={(e) => (e.currentTarget.style.background = selected.id === agent.id ? 'rgba(0,0,0,0.04)' : 'transparent')}
+                onMouseEnter={(e) => (e.currentTarget.style.background = hoverBg)}
+                onMouseLeave={(e) => (e.currentTarget.style.background = selected.id === agent.id ? hoverBg : 'transparent')}
               >
-                <span style={{ color: '#111', fontSize: 14, fontWeight: 500 }}>{agent.label}</span>
-                <span style={{ color: '#888', fontSize: 12 }}>{agent.description}</span>
+                <span style={{ color: fg, fontSize: 14, fontWeight: 500 }}>{agent.label}</span>
+                <span style={{ color: fgSub, fontSize: 12 }}>{agent.description}</span>
               </div>
             ))}
           </div>

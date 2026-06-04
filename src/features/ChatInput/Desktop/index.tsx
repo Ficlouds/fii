@@ -27,6 +27,8 @@ import SendArea from '../SendArea';
 import TypoBar from '../TypoBar';
 import ContextContainer from './ContextContainer';
 
+const BODY_HIDDEN: React.CSSProperties = { display: 'none' };
+
 const styles = createStaticStyles(({ css, cssVar }) => ({
   container: css`
     .show-on-hover { opacity: 0; }
@@ -40,8 +42,6 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
   `,
   inputFullscreen: css`border: none; border-radius: 0 !important;`,
 }));
-
-const BODY_HIDDEN: React.CSSProperties = { display: 'none' };
 
 interface DesktopChatInputProps extends ActionToolbarProps {
   actionBarStyle?: React.CSSProperties;
@@ -118,7 +118,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           slashMenuRef={slashMenuRef}
           footer={
             <ChatInputActionBar
-              style={actionBarStyle ?? { paddingInline: 8, paddingBlock: 6 }}
+              style={actionBarStyle ?? { paddingInline: 12, paddingBlock: 10 }}
               left={loadingLeft ?? leftContent ?? (
                 <ActionBar
                   borderRadius={borderRadius}

@@ -32,11 +32,12 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
     () => ({
       resize: false,
       style: {
-        background: incognito ? '#1c1c1e' : '#e8e8e6',
-        border: incognito ? '1.5px solid rgba(255,255,255,0.10)' : 'none',
-        borderRadius: 28,
+        background: incognito ? '#1c1c1e' : '#efefed',
+        border: incognito ? '1.5px solid rgba(255,255,255,0.10)' : '1.5px solid rgba(0,0,0,0.06)',
+        borderRadius: 32,
         boxShadow: 'none',
         color: incognito ? '#ffffff' : '#111111',
+        minHeight: 60,
         transition: 'background 0.25s ease, color 0.25s ease',
         width: '100%',
       },
@@ -48,12 +49,8 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
     <div style={{ position: 'relative', width: '100%' }}>
       {incognito && (
         <style>{`
-          [data-testid="chat-input"] * { color: #ffffff !important; }
+          [data-testid="chat-input"] *:not([class*="dropdown"]):not([class*="portal"]) { color: #ffffff !important; }
           [data-testid="chat-input"] svg { color: #ffffff !important; }
-          [data-testid="chat-input"] .ant-dropdown-trigger {
-            color: #ffffff !important;
-            border-color: rgba(255,255,255,0.2) !important;
-          }
         `}</style>
       )}
       <DragUploadZone style={{ width: '100%' }} onUploadFiles={handleUploadFiles}>

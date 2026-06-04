@@ -1,18 +1,7 @@
 'use client';
 
-import { BRANDING_NAME } from '@lobechat/business-const';
-import { type IconProps } from '@lobehub/ui';
-import { Block, Button, Flexbox, Icon, Text } from '@lobehub/ui';
-import { TypewriterEffect } from '@lobehub/ui/awesome';
-import { LoadingDots } from '@lobehub/ui/chat';
-import { Steps, Switch } from 'antd';
-import { cssVar } from 'antd-style';
-import { BrainIcon, HeartHandshakeIcon, PencilRulerIcon, ShieldCheck } from 'lucide-react';
+import { Button, Flexbox } from '@lobehub/ui';
 import { memo, useCallback, useRef, useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
-
-import { ProductLogo } from '@/components/Branding';
-import { PRIVACY_URL, TERMS_URL } from '@/const/url';
 import { useUserStore } from '@/store/user';
 
 interface TelemetryStepProps {
@@ -20,169 +9,160 @@ interface TelemetryStepProps {
 }
 
 const TelemetryStep = memo<TelemetryStepProps>(({ onNext }) => {
-  const { t, i18n } = useTranslation('onboarding');
-  const locale = i18n.language;
-  const [check, setCheck] = useState(true);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [telemetry, setTelemetry] = useState(true);
   const [isNavigating, setIsNavigating] = useState(false);
   const isNavigatingRef = useRef(false);
   const updateGeneralConfig = useUserStore((s) => s.updateGeneralConfig);
 
-  const handleChoice = useCallback(
-    (enabled: boolean) => {
-      if (isNavigatingRef.current) return;
-      isNavigatingRef.current = true;
-      setIsNavigating(true);
-      updateGeneralConfig({ telemetry: enabled });
-      onNext();
-    },
-    [updateGeneralConfig, onNext],
-  );
+  const handleStart = useCallback(() => {
+    if (isNavigatingRef.current) return;
+    isNavigatingRef.current = true;
+    setIsNavigating(true);
+    updateGeneralConfig({ telemetry });
+    onNext();
+  }, [updateGeneralConfig, onNext, telemetry]);
 
-  // eslint-disable-next-line @eslint-react/no-nested-component-definitions
-  const IconAvatar = useCallback(({ icon }: { icon: IconProps['icon'] }) => {
-    return (
-      <Block
-        shadow
-        align="center"
-        height={32}
-        justify="center"
-        padding={4}
-        variant="outlined"
-        width={32}
-      >
-        <Icon color={cssVar.colorTextDescription} icon={icon} size={16} />
-      </Block>
-    );
-  }, []);
+  const canProceed = termsAccepted && privacyAccepted;
 
   return (
-    <Flexbox gap={16}>
-      <ProductLogo size={64} />
-      <Flexbox style={{ marginBottom: 16 }}>
-        <Text as={'h1'} fontSize={28} weight={'bold'}>
-          <TypewriterEffect
-            cursorCharacter={<LoadingDots size={28} variant={'pulse'} />}
-            cursorFade={false}
-            deletePauseDuration={1000}
-            deletingSpeed={32}
-            hideCursorWhileTyping={'afterTyping'}
-            key={locale}
-            pauseDuration={16_000}
-            typingSpeed={64}
-            sentences={[
-              t('telemetry.title', { name: 'Lobe AI' }),
-              t('telemetry.title2'),
-              t('telemetry.title3'),
-            ]}
-          />
-        </Text>
-        <Text as={'p'}>{t('telemetry.desc')}</Text>
-      </Flexbox>
-      <Steps
-        current={null as any}
-        direction={'vertical'}
-        items={[
+    <Flexbox gap={32} style={{ maxWidth: 480, width: '100%', margin: '0 auto' }}>
+      {/* Logo */}
+      <div style={{ textAlign: 'center' }}>
+        <div style={{
+          fontSize: 48,
+          fontWeight: 800,
+          letterSpacing: '-2px',
+          fontFamily: 'Inter, system-ui, sans-serif',
+          marginBottom: 8,
+        }}>
+          Fi
+        </div>
+        <div style={{ fontSize: 22, fontWeight: 700, color: '#111', marginBottom: 8 }}>
+          Welcome to Fi
+        </div>
+        <div style={{ fontSize: 15, color: '#666', lineHeight: 1.6 }}>
+          Your intelligent AI assistant. Before you get started,<br />
+          please review and accept our policies.
+        </div>
+      </div>
+
+      {/* Feature highlights */}
+      <div style={{
+        background: '#f9f8f7',
+        borderRadius: 12,
+        padding: '20px 24px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 14,
+      }}>
+        {[
+          { icon: '⚡', title: 'Powerful AI', desc: 'Access cutting-edge AI models for any task' },
+          { icon: '🔒', title: 'Private & Secure', desc: 'Your conversations are encrypted and private' },
+          { icon: '🎯', title: 'Built for You', desc: 'Fi learns and adapts to your workflow' },
+        ].map((item) => (
+          <div key={item.title} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <span style={{ fontSize: 20, flexShrink: 0 }}>{item.icon}</span>
+            <div>
+              <div style={{ fontWeight: 600, fontSize: 14, color: '#111' }}>{item.title}</div>
+              <div style={{ fontSize: 13, color: '#666', marginTop: 2 }}>{item.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Checkboxes */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {[
           {
-            description: (
-              <Text as={'p'} color={cssVar.colorTextSecondary} style={{ marginBottom: 16 }}>
-                {t('telemetry.rows.create.desc')}
-              </Text>
-            ),
-            icon: <IconAvatar icon={PencilRulerIcon} />,
-            title: (
-              <Text as={'h2'} fontSize={16}>
-                {t('telemetry.rows.create.title')}
-              </Text>
-            ),
+            checked: termsAccepted,
+            onChange: setTermsAccepted,
+            label: 'I agree to the',
+            link: 'Terms of Service',
+            href: '/terms',
+            required: true,
           },
           {
-            description: (
-              <Text as={'p'} color={cssVar.colorTextSecondary} style={{ marginBottom: 16 }}>
-                {t('telemetry.rows.collaborate.desc')}
-              </Text>
-            ),
-            icon: <IconAvatar icon={HeartHandshakeIcon} />,
-            title: (
-              <Text as={'h2'} fontSize={16}>
-                {t('telemetry.rows.collaborate.title')}
-              </Text>
-            ),
+            checked: privacyAccepted,
+            onChange: setPrivacyAccepted,
+            label: 'I have read and accept the',
+            link: 'Privacy Policy',
+            href: '/privacy',
+            required: true,
           },
           {
-            description: (
-              <Text as={'p'} color={cssVar.colorTextSecondary}>
-                {t('telemetry.rows.evolve.desc')}
-              </Text>
-            ),
-            icon: <IconAvatar icon={BrainIcon} />,
-            title: (
-              <Text as={'h2'} fontSize={16}>
-                {t('telemetry.rows.evolve.title')}
-              </Text>
-            ),
+            checked: telemetry,
+            onChange: setTelemetry,
+            label: 'Help improve Fi by sharing anonymous usage data',
+            link: '',
+            href: '',
+            required: false,
           },
-        ]}
-      />
-      <Flexbox gap={8}>
-        <Text as={'p'} color={cssVar.colorTextSecondary}>
-          {t('telemetry.rows.privacy.desc', { appName: BRANDING_NAME })}
-        </Text>
-        <Flexbox horizontal align="center" gap={8}>
-          <Switch checked={check} size={'small'} onChange={(v) => setCheck(v)} />
-          <Text fontSize={12} type={check ? undefined : 'secondary'}>
-            {t('telemetry.rows.privacy.title', { appName: BRANDING_NAME })}
-          </Text>
-        </Flexbox>
-      </Flexbox>
-      <Button
-        disabled={isNavigating}
-        size={'large'}
-        type="primary"
-        style={{
-          marginBlock: 8,
-          maxWidth: 240,
-        }}
-        onClick={() => handleChoice(check)}
-      >
-        {t('telemetry.next')}
-      </Button>
-      {check && (
-        <Block horizontal align="flex-start" gap={8} variant={'borderless'}>
-          <Icon
-            icon={ShieldCheck}
-            size={16}
-            style={{ color: cssVar.colorSuccess, flexShrink: 0 }}
-          />
-          <Text fontSize={12} type="secondary">
-            <Trans
-              i18nKey={'telemetry.agreement'}
-              ns={'onboarding'}
-              components={{
-                privacy: (
-                  <a
-                    href={PRIVACY_URL}
-                    style={{ color: 'inherit', cursor: 'pointer', textDecoration: 'underline' }}
-                  >
-                    {t('telemetry.terms')}
-                  </a>
-                ),
-                terms: (
-                  <a
-                    href={TERMS_URL}
-                    style={{ color: 'inherit', cursor: 'pointer', textDecoration: 'underline' }}
-                  >
-                    {t('telemetry.privacy')}
-                  </a>
-                ),
+        ].map((item, i) => (
+          <label key={i} style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: 10,
+            cursor: 'pointer',
+            fontSize: 14,
+            color: '#333',
+            lineHeight: 1.5,
+          }}>
+            <input
+              type="checkbox"
+              checked={item.checked}
+              onChange={(e) => item.onChange(e.target.checked)}
+              style={{
+                width: 16,
+                height: 16,
+                marginTop: 2,
+                flexShrink: 0,
+                accentColor: '#000',
+                cursor: 'pointer',
               }}
             />
-          </Text>
-        </Block>
-      )}
+            <span>
+              {item.label}{' '}
+              {item.link && (
+                <a href={item.href} style={{ color: '#000', fontWeight: 600, textDecoration: 'underline' }}>
+                  {item.link}
+                </a>
+              )}
+              {item.required && <span style={{ color: '#e05c5c', marginLeft: 2 }}>*</span>}
+            </span>
+          </label>
+        ))}
+      </div>
+
+      {/* CTA Button */}
+      <div>
+        <button
+          disabled={!canProceed || isNavigating}
+          onClick={handleStart}
+          style={{
+            width: '100%',
+            padding: '14px 24px',
+            background: canProceed ? '#000' : '#ccc',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 100,
+            fontSize: 16,
+            fontWeight: 600,
+            cursor: canProceed ? 'pointer' : 'not-allowed',
+            transition: 'background 0.2s',
+            fontFamily: 'Inter, system-ui, sans-serif',
+          }}
+        >
+          {isNavigating ? 'Getting started...' : 'Get Started with Fi'}
+        </button>
+        <div style={{ textAlign: 'center', fontSize: 12, color: '#999', marginTop: 12 }}>
+          * Required to use Fi
+        </div>
+      </div>
     </Flexbox>
   );
 });
 
 TelemetryStep.displayName = 'TelemetryStep';
-
 export default TelemetryStep;

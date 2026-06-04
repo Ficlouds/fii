@@ -89,19 +89,19 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   /* Darker sidebar nav text */
   html[data-theme='light'] [class*='NavPanel'] [class*='NavItem'] span,
   html[data-theme='light'] [class*='navPanel'] [class*='NavItem'] span {
-    color: #0d0d0d !important;
+    color: #000000 !important;
   }
   html[data-theme='light'] [class*='NavPanel'] [class*='NavItem']:hover span,
   html[data-theme='light'] [class*='navPanel'] [class*='NavItem']:hover span {
-    color: #0d0d0d !important;
+    color: #000000 !important;
   }
   html[data-theme='light'] [class*='NavPanel'] [class*='NavItem'] svg,
   html[data-theme='light'] [class*='navPanel'] [class*='NavItem'] svg {
-    color: #0d0d0d !important;
+    color: #000000 !important;
   }
   /* Recents label darker */
   html[data-theme='light'] [class*='NavPanel'] [class*='AccordionItem'] span,
   html[data-theme='light'] [class*='navPanel'] [class*='AccordionItem'] span {
-    color: #0d0d0d !important;
+    color: #000000 !important;
   }
 `;

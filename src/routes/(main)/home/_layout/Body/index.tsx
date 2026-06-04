@@ -128,14 +128,8 @@ const Body = memo(() => {
         >
           <NavItem
             active={tab === key}
-            contextMenuItems={getContextMenuItems(key)}
             icon={navItem.icon}
             title={navItem.title}
-            actions={
-              <DropdownMenu items={getContextMenuItems(key)} nativeButton={false}>
-                <ActionIcon icon={MoreHorizontalIcon} size={'small'} style={{ flex: 'none' }} />
-              </DropdownMenu>
-            }
           />
         </Link>
       );

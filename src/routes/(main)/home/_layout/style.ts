@@ -5,6 +5,11 @@ export const styles = createStaticStyles(({ css, cssVar }) => ({
   absoluteContainer: css`
     position: absolute;
     inset: 0;
+    transition: all 0.25s ease;
+
+    & > * {
+      transition: width 0.25s ease, flex 0.25s ease;
+    }
   `,
 
   // Content area - dark mode

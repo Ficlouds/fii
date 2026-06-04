@@ -156,7 +156,7 @@ const Home = memo(() => {
           {/* Incognito indicator */}
           {incognito && (
             <div style={{ color: 'rgba(0,0,0,0.4)', fontSize: 11, marginTop: 6, textAlign: 'center' }}>
-              🕵 Incognito mode — history & memory paused
+              Incognito mode — history & memory paused
             </div>
           )}
         </div>

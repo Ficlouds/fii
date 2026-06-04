@@ -153,12 +153,10 @@ const Home = memo(() => {
         <div style={{ width: '100%', maxWidth: MAX_WIDTH, paddingInline: 20, position: 'relative' }}>
           <InputArea incognito={incognito} />
 
-          {/* Incognito indicator */}
-          {incognito && (
-            <div style={{ color: '#555', fontSize: 12, fontWeight: 500, marginTop: 8, textAlign: 'center' }}>
-              Private mode — chats will not be saved
-            </div>
-          )}
+          {/* Incognito indicator - always visible for debug */}
+          <div style={{ color: incognito ? '#000' : 'transparent', fontSize: 12, fontWeight: 500, marginTop: 8, textAlign: 'center', border: '1px solid red' }}>
+            {incognito ? 'Private mode — chats will not be saved' : 'normal'}
+          </div>
         </div>
 
         {/* Connect bar — change ConnectOption3 to any option 1-5 */}

@@ -141,7 +141,7 @@ const Home = memo(() => {
       </button>
 
       {/* Content at 40% from top */}
-      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', paddingBottom: 120, paddingTop: 80, width: '100%' }}>
+      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', paddingBottom: 60, paddingTop: 140, width: '100%' }}>
         {/* Fi logo */}
         <div style={{ color: '#111', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 64, fontWeight: 700, letterSpacing: '-3px', marginBottom: 72, textAlign: 'center', userSelect: 'none' }}>Fi</div>
 

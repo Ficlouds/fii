@@ -34,9 +34,9 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
       minHeight: 56,
       resize: false,
       style: {
-        background: incognito ? '#1c1c1e' : '#ebebeb',
+        background: incognito ? '#1c1c1e' : '#e8e8e6',
         backdropFilter: 'none',
-        border: `1.5px solid ${incognito ? 'rgba(255,255,255,0.10)' : 'transparent'}`,
+        border: incognito ? '1.5px solid rgba(255,255,255,0.10)' : '1.5px solid rgba(0,0,0,0.12)',
         borderRadius: 32,
         boxShadow: 'none',
         color: incognito ? '#ffffff' : '#111111',

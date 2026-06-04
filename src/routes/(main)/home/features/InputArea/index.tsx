@@ -7,6 +7,7 @@ import { useInitAgentConfig } from '@/hooks/useInitAgentConfig';
 import { useAgentStore } from '@/store/agent';
 import { agentByIdSelectors } from '@/store/agent/selectors';
 import { useChatStore } from '@/store/chat';
+import AgentSelector from './AgentSelector';
 import { useSend } from './useSend';
 const leftActions: ActionKeys[] = [];
 const rightActions: ActionKeys[] = [];
@@ -27,10 +28,10 @@ const InputArea = () => {
       minHeight: 56,
       resize: false,
       style: {
-        borderRadius: 16,
+        borderRadius: 28,
         boxShadow: 'none',
-        border: '1.5px solid rgba(0,0,0,0.09)',
-        background: '#ffffff',
+        border: '1.5px solid rgba(0,0,0,0.10)',
+        background: '#f9f8f7',
       },
     }),
     [],
@@ -38,9 +39,12 @@ const InputArea = () => {
   return (
     <Flexbox gap={16} style={{ marginBottom: 16 }}>
       <DragUploadZone
-        style={{ position: 'relative', zIndex: 1 }}
+        style={{ position: 'relative', zIndex: 1, paddingBottom: 8 }}
         onUploadFiles={handleUploadFiles}
       >
+        <div style={{ alignItems: 'center', bottom: 12, display: 'flex', left: 16, position: 'absolute', zIndex: 10 }}>
+          <AgentSelector />
+        </div>
         <ChatInputProvider
           agentId={agentId}
           allowExpand={false}

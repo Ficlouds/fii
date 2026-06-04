@@ -34,7 +34,7 @@ const draggableStyles = createStaticStyles(({ css, cssVar }) => ({
     overflow: hidden;
     flex: 1;
 
-    min-width: 240px;
+    min-width: 200px;
     max-width: 100%;
     min-height: 0;
   `,
@@ -46,7 +46,7 @@ const draggableStyles = createStaticStyles(({ css, cssVar }) => ({
     display: flex;
     flex-direction: column;
 
-    min-width: 240px;
+    min-width: 200px;
     max-width: 100%;
     min-height: 100%;
     max-height: 100%;
@@ -142,8 +142,8 @@ export const NavPanelDraggable = memo<NavPanelDraggableProps>(({ activeContent }
       defaultSize={defaultSize}
       expand={expand}
       expandable={false}
-      maxWidth={400}
-      minWidth={240}
+      maxWidth={320}
+      minWidth={200}
       placement="left"
       showBorder={false}
       style={styles}

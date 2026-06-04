@@ -7,6 +7,19 @@ import { css } from 'antd-style';
 // ref: https://zhuanlan.zhihu.com/p/113855026
 // eslint-disable-next-line unicorn/no-anonymous-default-export
 export default ({ token }: { prefixCls: string; token: Theme }) => css`
+  
+  /* Force chat input to blend with background */
+  html[data-theme='light'] .lobe-chat-input,
+  html[data-theme='light'] [class*='ChatInput'],
+  html[data-theme='light'] [class*='chat-input'],
+  html[data-theme='light'] [data-testid='chat-input'] {
+    background: #f9f8f7 !important;
+    background-color: #f9f8f7 !important;
+  }
+  html[data-theme='light'] .ant-layout,
+  html[data-theme='light'] .ant-layout-content {
+    background: #f9f8f7 !important;
+  }
   html[data-theme='light'] body,
   html[data-theme='light'] #__next,
   html[data-theme='light'] .ant-layout,

@@ -105,8 +105,5 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     padding-inline-start: 20px !important;
   }
 
-  /* Force recents TODAY/EARLIER labels to match nav item text indent */
-  .lobe-flex.acss-5z9y9s {
-    padding-inline-start: 20px !important;
-  }
+
 `;

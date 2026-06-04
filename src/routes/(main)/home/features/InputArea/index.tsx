@@ -31,16 +31,16 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
 
   const inputContainerProps = useMemo(
     () => ({
-      minHeight: 52,
+      minHeight: 56,
       resize: false,
       style: {
-        background: incognito ? '#1c1c1e' : '#f0efee',
+        background: incognito ? '#1c1c1e' : '#ebebeb',
         backdropFilter: 'none',
-        border: `1.5px solid ${incognito ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
-        borderRadius: 28,
+        border: `1.5px solid ${incognito ? 'rgba(255,255,255,0.10)' : 'transparent'}`,
+        borderRadius: 32,
         boxShadow: 'none',
-        color: incognito ? '#fff' : '#111',
-        transition: 'all 0.25s ease',
+        color: incognito ? '#ffffff' : '#111111',
+        transition: 'background 0.25s ease, border 0.25s ease, color 0.25s ease',
       },
     }),
     [incognito],

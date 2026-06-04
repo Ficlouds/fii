@@ -30,7 +30,7 @@ const CommonOnboardingPage = memo(() => {
   const f: React.CSSProperties = {
     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
     minHeight: '100vh',
-    background: '#fff',
+    background: '#f9f8f7',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -55,7 +55,7 @@ const CommonOnboardingPage = memo(() => {
 
   const q: React.CSSProperties = {
     fontSize: 30,
-    fontWeight: 600,
+    fontWeight: 700,
     color: '#000',
     letterSpacing: '-0.8px',
     lineHeight: 1.2,
@@ -77,7 +77,7 @@ const CommonOnboardingPage = memo(() => {
     border: 'none',
     borderRadius: 100,
     fontSize: 15,
-    fontWeight: 600,
+    fontWeight: 700,
     cursor: on ? 'pointer' : 'not-allowed',
     fontFamily: 'inherit',
     transition: 'all 0.15s',
@@ -115,10 +115,10 @@ const CommonOnboardingPage = memo(() => {
           <div style={q}>Let's get started</div>
           <div style={hint}>Please review and accept to continue.</div>
           {checkRow(termsAccepted, setTermsAccepted,
-            <span>I agree to Fi's <a href="/terms" style={{ color: '#000', fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: 3 }}>Terms of Service</a> and confirm I am at least 13 years old.</span>
+            <span>I agree to Fi's <a href="/terms" style={{ color: '#000', fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: 3 }}>Terms of Service</a> and confirm I am at least 13 years old.</span>
           )}
           {checkRow(privacyAccepted, setPrivacyAccepted,
-            <span>I accept the <a href="/privacy" style={{ color: '#000', fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: 3 }}>Privacy Policy</a>.</span>
+            <span>I accept the <a href="/privacy" style={{ color: '#000', fontWeight: 700, textDecoration: 'underline', textUnderlineOffset: 3 }}>Privacy Policy</a>.</span>
           )}
           <div style={{ height: 12 }} />
           <button style={primaryBtn(termsAccepted && privacyAccepted)}
@@ -137,13 +137,13 @@ const CommonOnboardingPage = memo(() => {
             { t: 'Private by default', d: 'Your conversations are yours. We never sell your data.' },
           ].map((item) => (
             <div key={item.t} style={{ paddingBlock: 16, borderBottom: '1px solid #f2f2f2' }}>
-              <div style={{ fontSize: 15, fontWeight: 600, color: '#111', marginBottom: 3 }}>{item.t}</div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: '#111', marginBottom: 3 }}>{item.t}</div>
               <div style={{ fontSize: 14, color: '#999', lineHeight: 1.55 }}>{item.d}</div>
             </div>
           ))}
           <div style={{ paddingBlock: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
             <div>
-              <div style={{ fontSize: 15, fontWeight: 600, color: '#111', marginBottom: 3 }}>Help improve Fi</div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: '#111', marginBottom: 3 }}>Help improve Fi</div>
               <div style={{ fontSize: 14, color: '#999' }}>Share anonymous data. Change anytime.</div>
             </div>
             <div onClick={() => setTelemetry(!telemetry)} style={{
@@ -153,7 +153,7 @@ const CommonOnboardingPage = memo(() => {
             }}>
               <div style={{
                 position: 'absolute', top: 4, left: telemetry ? 22 : 4,
-                width: 18, height: 18, borderRadius: '50%', background: '#fff',
+                width: 18, height: 18, borderRadius: '50%', background: '#f9f8f7',
                 transition: 'left 0.2s', boxShadow: '0 1px 2px rgba(0,0,0,0.15)',
               }} />
             </div>
@@ -173,13 +173,13 @@ const CommonOnboardingPage = memo(() => {
             placeholder="Enter your name"
             style={{
               width: '100%', padding: '14px 18px', fontSize: 15,
-              border: '1.5px solid #e8e8e8', borderRadius: 12,
+              border: '1.5px solid #e0e0e0', borderRadius: 100,
               outline: 'none', fontFamily: 'inherit', color: '#111',
-              marginBottom: 14, boxSizing: 'border-box', background: '#fafafa',
+              marginBottom: 14, boxSizing: 'border-box', background: '#fff',
               transition: 'border-color 0.15s, background 0.15s',
             }}
             onFocus={(e) => { e.target.style.borderColor = '#000'; e.target.style.background = '#fff'; }}
-            onBlur={(e) => { e.target.style.borderColor = '#e8e8e8'; e.target.style.background = '#fafafa'; }}
+            onBlur={(e) => { e.target.style.borderColor = '#e8e8e8'; e.target.style.background = '#fff'; }}
           />
           <button style={primaryBtn(!!name.trim())} disabled={!name.trim()} onClick={() => setStep(4)}>Continue</button>
           <button onClick={() => setStep(4)} style={{ width: '100%', padding: '12px', background: 'none', border: 'none', color: '#bbb', fontSize: 14, cursor: 'pointer', fontFamily: 'inherit', marginTop: 6 }}>
@@ -204,7 +204,7 @@ const CommonOnboardingPage = memo(() => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                background: '#fafafa',
+                background: '#fff',
                 fontSize: 15,
                 color: role ? '#111' : '#bbb',
                 userSelect: 'none',
@@ -220,7 +220,7 @@ const CommonOnboardingPage = memo(() => {
             {roleOpen && (
               <div style={{
                 position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0,
-                background: '#fff', border: '1.5px solid #e8e8e8', borderRadius: 12,
+                background: '#f9f8f7', border: '1.5px solid #e0e0e0', borderRadius: 100,
                 boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
                 maxHeight: 280, overflowY: 'auto', zIndex: 100,
               }}>

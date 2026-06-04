@@ -12,7 +12,14 @@ const Header = memo(() => {
           <img
             src="/logos/fi-icon.svg"
             alt="Fi"
-            style={{ height: 22, width: 'auto', objectFit: 'contain', marginLeft: 0 }}
+            style={{
+              height: 22,
+              marginBottom: 12,
+              marginLeft: -4,
+              marginTop: 12,
+              objectFit: 'contain',
+              width: 'auto',
+            }}
           />
         }
         showBack={false}

@@ -19,7 +19,7 @@ interface InputAreaProps {
   inputBg?: string;
 }
 
-const InputArea = ({ incognito = false, inputBg, fg, fgSub }: InputAreaProps) => {
+const InputArea = ({ incognito = false, inputBg, fg }: InputAreaProps) => {
   const { loading, send, agentId } = useSend();
   useInitAgentConfig(agentId);
   const isAgentConfigLoading = useAgentStore((s) =>
@@ -32,7 +32,7 @@ const InputArea = ({ incognito = false, inputBg, fg, fgSub }: InputAreaProps) =>
   );
   const { handleUploadFiles } = useUploadFiles({ model, provider });
 
-  const bg = inputBg ?? (incognito ? '#1a1a1a' : '#f9f8f7');
+  const bg = inputBg ?? (incognito ? '#141414' : '#f9f8f7');
 
   const inputContainerProps = useMemo(
     () => ({
@@ -42,9 +42,10 @@ const InputArea = ({ incognito = false, inputBg, fg, fgSub }: InputAreaProps) =>
         background: bg,
         backdropFilter: 'none',
         border: 'none',
-        borderRadius: 28,
+        borderRadius: 16,
         boxShadow: 'none',
         color: fg ?? (incognito ? '#fff' : '#111'),
+        outline: 'none',
       },
     }),
     [bg, fg, incognito],

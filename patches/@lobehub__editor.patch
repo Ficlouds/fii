@@ -1,0 +1,4 @@
+34c34
+< 			minHeight: resize ? currentHeight : minHeight
+---
+> 			minHeight: customStyles?.body?.display === "none" ? 0 : (resize ? currentHeight : minHeight)

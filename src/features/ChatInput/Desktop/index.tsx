@@ -4,8 +4,8 @@ import { type ChatInputProps } from '@lobehub/editor/react';
 import { ChatInput, ChatInputActionBar } from '@lobehub/editor/react';
 import { Center, Flexbox, Skeleton, Text } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
-import { type ReactNode, use, useEffect, useRef, useState } from 'react';
-import { memo } from 'react';
+import { type ReactNode, use } from 'react';
+import { memo, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -27,14 +27,6 @@ import SendArea from '../SendArea';
 import TypoBar from '../TypoBar';
 import ContextContainer from './ContextContainer';
 
-const ROTATING = [
-  'What do you want to know?',
-  'How can I help you today?',
-  'Ask me anything...',
-  'Start a task or explore an idea...',
-  'What are you working on?',
-];
-
 const styles = createStaticStyles(({ css, cssVar }) => ({
   container: css`
     .show-on-hover { opacity: 0; }
@@ -47,16 +39,6 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
     background: ${cssVar.colorBgContainer};
   `,
   inputFullscreen: css`border: none; border-radius: 0 !important;`,
-  hiddenEditor: css`
-    position: absolute !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    height: 0 !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  `,
 }));
 
 interface DesktopChatInputProps extends ActionToolbarProps {
@@ -96,7 +78,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
   }) => {
     const { t } = useTranslation('chat');
     const layoutContainerRef = use(LayoutContainerContext);
-    const [, updateSystemStatus] = useGlobalStore((s) => [
+    const [chatInputHeight, updateSystemStatus] = useGlobalStore((s) => [
       systemStatusSelectors.chatInputHeight(s),
       s.updateSystemStatus,
     ]);
@@ -113,26 +95,10 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
     const setExpand = useChatInputStore((s) => s.setExpand);
     const skillDrop = useSkillDrop();
 
-    // Rotating placeholder state
-    const [rotIdx, setRotIdx] = useState(0);
-    const [rotVisible, setRotVisible] = useState(true);
-    const [hasText, setHasText] = useState(false);
-
     useEffect(() => {
       if (editor) editor.focus();
       setExpand(false);
     }, [chatKey, editor, setExpand]);
-
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setRotVisible(false);
-        setTimeout(() => {
-          setRotIdx((p) => (p + 1) % ROTATING.length);
-          setRotVisible(true);
-        }, 250);
-      }, 3000);
-      return () => clearInterval(interval);
-    }, []);
 
     const shouldShowContextContainer =
       leftActions.flat().includes('fileUpload') || hasContextSelections || hasFiles;
@@ -149,66 +115,37 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
       <Skeleton.Button active shape="round" size="small" style={{ height: 32, minWidth: 64, width: 64 }} />
     ) : null;
 
-    // Rotating placeholder shown inline next to + button
-    const inlinePlaceholder = !hasText && !expand && (
-      <span
-        onClick={() => editor?.focus()}
-        style={{
-          color: 'rgba(0,0,0,0.35)',
-          cursor: 'text',
-          fontSize: 15,
-          opacity: rotVisible ? 1 : 0,
-          paddingInline: 4,
-          pointerEvents: 'auto',
-          transition: 'opacity 0.25s ease',
-          userSelect: 'none',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: 340,
-          flex: 1,
-        }}
-      >
-        {ROTATING[rotIdx]}
-      </span>
-    );
-
     const content = (
       <Flexbox
         className={cx(styles.container, expand && styles.fullscreen)}
         gap={0}
         paddingBlock={0}
-        style={{ display: hidden ? 'none' : undefined, position: 'relative' }}
+        style={{ display: hidden ? 'none' : undefined }}
         onDragOver={skillDrop.onDragOver}
         onDrop={skillDrop.onDrop}
       >
         <ChatInput
           data-testid="chat-input"
-          defaultHeight={0}
+          defaultHeight={chatInputHeight || 28}
           fullscreen={expand}
           maxHeight={200}
-          minHeight={0}
+          minHeight={28}
           resize={false}
           slashMenuRef={slashMenuRef}
           footer={
             <ChatInputActionBar
-              style={actionBarStyle ?? { paddingInline: 8, paddingBlock: 6 }}
+              style={actionBarStyle ?? { paddingInline: 8, paddingBlock: 4 }}
               left={
-                loadingLeftSlot ??
-                leftContent ?? (
-                  <Flexbox horizontal align="center" gap={4} style={{ flex: 1, overflow: 'hidden' }}>
-                    <ActionBar
-                      borderRadius={borderRadius}
-                      dropdownPlacement={dropdownPlacement}
-                      extraActionItems={extraActionItems}
-                    />
-                    {inlinePlaceholder}
-                  </Flexbox>
+                loadingLeftSlot ?? leftContent ?? (
+                  <ActionBar
+                    borderRadius={borderRadius}
+                    dropdownPlacement={dropdownPlacement}
+                    extraActionItems={extraActionItems}
+                  />
                 )
               }
               right={
-                loadingRightSlot ??
-                rightContent ??
+                loadingRightSlot ?? rightContent ??
                 (sendAreaPrefix ? (
                   <Flexbox horizontal align={'center'} gap={6}>
                     {sendAreaPrefix}
@@ -229,13 +166,9 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           }
           onSizeChange={(height) => {
             updateSystemStatus({ chatInputHeight: height });
-            setHasText(height > 10);
           }}
           {...inputContainerProps}
-          className={cx(
-            expand ? styles.inputFullscreen : styles.hiddenEditor,
-            inputContainerProps?.className,
-          )}
+          className={cx(expand && styles.inputFullscreen, inputContainerProps?.className)}
         >
           <InputEditor placeholder={placeholder} placeholderVariant={placeholderVariant} />
         </ChatInput>

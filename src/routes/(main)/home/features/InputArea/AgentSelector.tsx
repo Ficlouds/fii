@@ -1,7 +1,8 @@
 'use client';
 
 import { ChevronDown } from 'lucide-react';
-import { memo, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 const AGENTS = [
   { id: 'athena', label: 'Athena', description: 'Smart & Creative' },
@@ -12,11 +13,32 @@ const AGENTS = [
 const AgentSelector = memo(() => {
   const [selected, setSelected] = useState(AGENTS[0]);
   const [open, setOpen] = useState(false);
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const handleOpen = () => {
+    if (!open && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setCoords({
+        top: rect.top - 8,
+        left: rect.left,
+      });
+    }
+    setOpen(!open);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const handle = () => setOpen(false);
+    window.addEventListener('scroll', handle, true);
+    return () => window.removeEventListener('scroll', handle, true);
+  }, [open]);
 
   return (
-    <div style={{ position: 'relative' }}>
+    <>
       <button
-        onClick={() => setOpen(!open)}
+        ref={buttonRef}
+        onClick={handleOpen}
         style={{
           alignItems: 'center',
           background: 'transparent',
@@ -40,7 +62,7 @@ const AgentSelector = memo(() => {
         <ChevronDown size={14} style={{ opacity: 0.6 }} />
       </button>
 
-      {open && (
+      {open && typeof document !== 'undefined' && createPortal(
         <>
           <div
             style={{ bottom: 0, left: 0, position: 'fixed', right: 0, top: 0, zIndex: 9998 }}
@@ -51,12 +73,13 @@ const AgentSelector = memo(() => {
               background: '#fff',
               border: '1px solid rgba(0,0,0,0.08)',
               borderRadius: 12,
-              bottom: 'calc(100% + 8px)',
               boxShadow: '0 8px 32px rgba(0,0,0,0.16)',
-              left: 0,
+              left: coords.left,
               minWidth: 180,
               overflow: 'hidden',
-              position: 'absolute',
+              position: 'fixed',
+              top: coords.top,
+              transform: 'translateY(-100%)',
               zIndex: 9999,
             }}
           >
@@ -81,9 +104,10 @@ const AgentSelector = memo(() => {
               </div>
             ))}
           </div>
-        </>
+        </>,
+        document.body
       )}
-    </div>
+    </>
   );
 });
 

@@ -15,7 +15,7 @@ const Header = memo(() => {
             style={{
               height: 22,
               marginBottom: 12,
-              marginLeft: 0,
+              marginLeft: -6,
               marginTop: 12,
               objectFit: 'contain',
               width: 'auto',

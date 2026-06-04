@@ -101,4 +101,4 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   html[data-theme='light'] [class*='navPanel'] [class*='Block'] {
     padding-inline-start: 12px !important;
   }
-\`;
+`;

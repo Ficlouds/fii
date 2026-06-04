@@ -4,8 +4,8 @@ import { type ChatInputProps } from '@lobehub/editor/react';
 import { ChatInput, ChatInputActionBar } from '@lobehub/editor/react';
 import { Center, Flexbox, Skeleton, Text } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
-import { type ReactNode, use } from 'react';
-import { memo, useEffect } from 'react';
+import { type ReactNode, use, useEffect, useState } from 'react';
+import { memo } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -26,6 +26,14 @@ import RuntimeConfig from '../RuntimeConfig';
 import SendArea from '../SendArea';
 import TypoBar from '../TypoBar';
 import ContextContainer from './ContextContainer';
+
+const ROTATING = [
+  'What do you want to know?',
+  'How can I help you today?',
+  'Ask me anything...',
+  'Start a task or explore an idea...',
+  'What are you working on?',
+];
 
 const BODY_HIDDEN: React.CSSProperties = { display: 'none' };
 
@@ -69,7 +77,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
   }) => {
     const { t } = useTranslation('chat');
     const layoutContainerRef = use(LayoutContainerContext);
-    const [chatInputHeight, updateSystemStatus] = useGlobalStore((s) => [
+    const [, updateSystemStatus] = useGlobalStore((s) => [
       systemStatusSelectors.chatInputHeight(s),
       s.updateSystemStatus,
     ]);
@@ -82,10 +90,26 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
     const setExpand = useChatInputStore((s) => s.setExpand);
     const skillDrop = useSkillDrop();
 
+    // Rotating placeholder
+    const [rotIdx, setRotIdx] = useState(0);
+    const [rotVisible, setRotVisible] = useState(true);
+    const [hasText, setHasText] = useState(false);
+
     useEffect(() => {
       if (editor) editor.focus();
       setExpand(false);
     }, [chatKey, editor, setExpand]);
+
+    useEffect(() => {
+      const iv = setInterval(() => {
+        setRotVisible(false);
+        setTimeout(() => {
+          setRotIdx((p) => (p + 1) % ROTATING.length);
+          setRotVisible(true);
+        }, 250);
+      }, 3000);
+      return () => clearInterval(iv);
+    }, []);
 
     const shouldShowContextContainer =
       leftActions.flat().includes('fileUpload') || hasContextSelections || hasFiles;
@@ -99,6 +123,8 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
     const loadingRight = isConfigLoading ? (
       <Skeleton.Button active shape="round" size="small" style={{ height: 32, minWidth: 64, width: 64 }} />
     ) : null;
+
+    const isHomePage = !expand && inputContainerProps?.style?.borderRadius !== undefined;
 
     const content = (
       <Flexbox
@@ -118,13 +144,36 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           slashMenuRef={slashMenuRef}
           footer={
             <ChatInputActionBar
-              style={actionBarStyle ?? { paddingInline: 12, paddingBlock: 10 }}
+              style={actionBarStyle ?? { paddingInline: 12, paddingBlock: 12 }}
               left={loadingLeft ?? leftContent ?? (
-                <ActionBar
-                  borderRadius={borderRadius}
-                  dropdownPlacement={dropdownPlacement}
-                  extraActionItems={extraActionItems}
-                />
+                <Flexbox horizontal align="center" gap={8} style={{ flex: 1, minWidth: 0 }}>
+                  <ActionBar
+                    borderRadius={borderRadius}
+                    dropdownPlacement={dropdownPlacement}
+                    extraActionItems={extraActionItems}
+                  />
+                  {/* Rotating placeholder inline */}
+                  {isHomePage && !hasText && !expand && (
+                    <span
+                      onClick={() => editor?.focus()}
+                      style={{
+                        color: 'rgba(0,0,0,0.35)',
+                        cursor: 'text',
+                        flex: 1,
+                        fontSize: 15,
+                        opacity: rotVisible ? 1 : 0,
+                        overflow: 'hidden',
+                        pointerEvents: 'auto',
+                        textOverflow: 'ellipsis',
+                        transition: 'opacity 0.25s ease',
+                        userSelect: 'none',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {ROTATING[rotIdx]}
+                    </span>
+                  )}
+                </Flexbox>
               )}
               right={loadingRight ?? rightContent ?? (
                 sendAreaPrefix ? (
@@ -142,7 +191,10 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
               {shouldShowContextContainer && <ContextContainer />}
             </Flexbox>
           }
-          onSizeChange={(h) => updateSystemStatus({ chatInputHeight: h })}
+          onSizeChange={(h) => {
+            updateSystemStatus({ chatInputHeight: h });
+            setHasText(h > 10);
+          }}
           {...inputContainerProps}
           className={cx(expand && styles.inputFullscreen, inputContainerProps?.className)}
           styles={{ body: expand ? undefined : BODY_HIDDEN }}

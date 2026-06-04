@@ -506,7 +506,7 @@ export default {
   'selectedAgents': 'Selected agents',
   'followUpPlaceholder': 'Follow up.',
   'followUpPlaceholderHeterogeneous': 'Follow up.',
-  'sendPlaceholder': 'What's on your mind?, <hotkey><hotkey/>',
+  'sendPlaceholder': "What's on your mind? <hotkey><hotkey/>",
   'sendPlaceholderChat': 'Ask, search, or brainstorm, <hotkey><hotkey/>',
   'sendPlaceholderChatWithAgentAssignment':
     'Ask, search, or brainstorm. @ to bring in other agents.',

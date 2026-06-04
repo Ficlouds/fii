@@ -52,10 +52,17 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     .${CLASSNAMES.DropdownMenuTrigger}[data-popup-open]:not([data-no-highlight])
   ) { opacity: 1; }
 
-  /* Remove container padding that causes floating effect */
+  /* Remove container padding and border radius causing floating effect */
   .acss-12cbrsv,
   [class*='lobe-flex'][style*='--lobe-flex-padding: 8px'] {
     padding: 0 !important;
+    border-radius: 0 !important;
+  }
+  [style*='--container-border-bottom-right-radius'],
+  [style*='--container-border-radius'] {
+    --container-border-bottom-right-radius: 0px !important;
+    --container-border-radius: 0px !important;
+    border-radius: 0 !important;
   }
 
   /* Sidebar #FCFCFC */

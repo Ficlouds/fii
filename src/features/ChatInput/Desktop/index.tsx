@@ -47,7 +47,6 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
     margin: 0 !important;
     overflow: hidden !important;
     flex: none !important;
-    border: none !important;
   `,
 }));
 
@@ -124,7 +123,6 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           minHeight={0}
           resize={false}
           slashMenuRef={slashMenuRef}
-          classNames={{ body: expand ? undefined : styles.hiddenBody }}
           footer={
             <ChatInputActionBar
               style={actionBarStyle ?? { paddingInline: 8, paddingBlock: 6 }}
@@ -154,6 +152,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           onSizeChange={(h) => updateSystemStatus({ chatInputHeight: h })}
           {...inputContainerProps}
           className={cx(expand && styles.inputFullscreen, inputContainerProps?.className)}
+          classNames={{ body: expand ? undefined : styles.hiddenBody }}
         >
           <InputEditor placeholder={placeholder} placeholderVariant={placeholderVariant} />
         </ChatInput>

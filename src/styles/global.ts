@@ -87,18 +87,21 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   }
 
   /* Darker sidebar nav text */
-  html[data-theme='light'] [class*='NavPanel'] [class*='NavItem'],
-  html[data-theme='light'] [class*='navPanel'] [class*='NavItem'] {
+  html[data-theme='light'] [class*='NavPanel'] [class*='NavItem'] span,
+  html[data-theme='light'] [class*='navPanel'] [class*='NavItem'] span {
+    color: rgba(0,0,0,0.80) !important;
+  }
+  html[data-theme='light'] [class*='NavPanel'] [class*='NavItem']:hover span,
+  html[data-theme='light'] [class*='navPanel'] [class*='NavItem']:hover span {
+    color: #000 !important;
+  }
+  html[data-theme='light'] [class*='NavPanel'] [class*='NavItem'] svg,
+  html[data-theme='light'] [class*='navPanel'] [class*='NavItem'] svg {
+    color: rgba(0,0,0,0.65) !important;
+  }
+  /* Recents label darker */
+  html[data-theme='light'] [class*='NavPanel'] [class*='AccordionItem'] span,
+  html[data-theme='light'] [class*='navPanel'] [class*='AccordionItem'] span {
     color: rgba(0,0,0,0.75) !important;
-  }
-  html[data-theme='light'] [class*='NavPanel'] [class*='NavItem']:hover,
-  html[data-theme='light'] [class*='navPanel'] [class*='NavItem']:hover {
-    color: #111 !important;
-  }
-
-  /* Equal left padding for sidebar items */
-  html[data-theme='light'] [class*='NavPanel'] [class*='Block'],
-  html[data-theme='light'] [class*='navPanel'] [class*='Block'] {
-    padding-inline-start: 20px !important;
   }
 `;

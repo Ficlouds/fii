@@ -8,12 +8,15 @@ import { css } from 'antd-style';
 // eslint-disable-next-line unicorn/no-anonymous-default-export
 export default ({ token }: { prefixCls: string; token: Theme }) => css`
   html[data-theme='light'] body,
-  html[data-theme='light'] #__next {
+  html[data-theme='light'] #__next,
+  html[data-theme='light'] .ant-layout,
+  html[data-theme='light'] [class*='layout'],
+  html[data-theme='light'] [class*='container'] {
     background-color: #f9f8f7 !important;
   }
   html[data-theme='dark'] body,
   html[data-theme='dark'] #__next {
-    background-color: #000000 !important;
+    background-color: #0a0a0a !important;
   }
   html,
   body,

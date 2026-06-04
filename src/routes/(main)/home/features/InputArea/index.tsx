@@ -24,12 +24,13 @@ const InputArea = () => {
   const { handleUploadFiles } = useUploadFiles({ model, provider });
   const inputContainerProps = useMemo(
     () => ({
-      minHeight: 88,
+      minHeight: 56,
       resize: false,
       style: {
         borderRadius: 16,
         boxShadow: 'none',
-        border: '1px solid rgba(0,0,0,0.08)',
+        border: '1.5px solid rgba(0,0,0,0.09)',
+        background: '#ffffff',
       },
     }),
     [],

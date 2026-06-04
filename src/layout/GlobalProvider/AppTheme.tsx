@@ -167,9 +167,9 @@ const AppTheme = memo<AppThemeProps>(
           theme={{
             cssVar: { key: 'lobe-vars' },
             token: {
-              colorBgBase: isDark ? '#000000' : '#f9f8f7',
-              colorBgLayout: isDark ? '#000000' : '#f9f8f7',
-              colorBgContainer: isDark ? '#1a1a1a' : '#ffffff',
+              colorBgBase: isDark ? '#0a0a0a' : '#f9f8f7',
+              colorBgLayout: isDark ? '#0a0a0a' : '#f9f8f7',
+              colorBgContainer: isDark ? '#141414' : '#f9f8f7',
               fontFamily: customFontFamily
                 ? `${customFontFamily},${antdTheme.fontFamily}`
                 : undefined,

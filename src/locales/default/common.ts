@@ -507,7 +507,7 @@ export default {
   'tab.image': 'Image',
   'tab.audio': 'Audio',
   'tab.chat': 'Chat',
-  'recents': 'Recents',
+  'recents': 'History',
   'tab.community': 'Community',
   'tab.create': 'Create',
   'tab.discover': 'Discover',

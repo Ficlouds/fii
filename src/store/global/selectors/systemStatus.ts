@@ -83,7 +83,8 @@ const ensureSpacer = (order: string[]): string[] => {
 const withAllKnownKeys = (order: string[]): string[] => {
   const present = new Set(order);
   const missing = DEFAULT_SIDEBAR_ITEMS.filter((k) => k !== SIDEBAR_SPACER_ID && !present.has(k));
-  const withMissing = missing.length === 0 ? order : [...order, ...missing];
+  // Prepend missing items so new nav items appear at top, not bottom
+  const withMissing = missing.length === 0 ? order : [...missing, ...order];
   return ensureSpacer(withMissing);
 };
 

@@ -12,7 +12,7 @@ import { systemStatusSelectors } from '@/store/global/selectors';
 import UserAvatar from '@/features/User/UserAvatar';
 import UserPanel from '@/features/User/UserPanel';
 
-const EXPANDED_WIDTH = 220;
+const EXPANDED_WIDTH = 260;
 const COLLAPSED_WIDTH = 56;
 
 // Map key to icon for collapsed view

@@ -99,6 +99,6 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   /* Equal left padding for sidebar items */
   html[data-theme='light'] [class*='NavPanel'] [class*='Block'],
   html[data-theme='light'] [class*='navPanel'] [class*='Block'] {
-    padding-inline-start: 12px !important;
+    padding-inline-start: 16px !important;
   }
 `;

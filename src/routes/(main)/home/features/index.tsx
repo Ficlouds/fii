@@ -140,7 +140,7 @@ const Home = memo(() => {
     <div style={{ background: '#f9f8f7', display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', width: '100%' }}>
       {/* Incognito icon top right */}
       <button onClick={toggleIncognito} title={incognito ? 'Incognito on' : 'Incognito mode'}
-        style={{ alignItems: 'center', background: incognito ? 'rgba(0,0,0,0.08)' : 'transparent', border: 'none', borderRadius: 8, cursor: 'pointer', display: 'flex', padding: 7, position: 'absolute', right: 20, top: 16, zIndex: 10 }}>
+        style={{ alignItems: 'center', background: incognito ? 'rgba(0,0,0,0.08)' : 'transparent', border: 'none', borderRadius: 8, cursor: 'pointer', display: 'flex', padding: 7, position: 'absolute', right: 4, top: 8, zIndex: 10 }}>
         <IncognitoIcon active={incognito} />
       </button>
 
@@ -150,8 +150,43 @@ const Home = memo(() => {
         <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src="/logos/fi-icon.svg" alt="Fi" style={{ height: 72, width: 'auto' }} /></div>
 
         {/* Input */}
-        <div style={{ width: '100%', maxWidth: MAX_WIDTH, paddingInline: 20 }}>
+        <div style={{ width: '100%', maxWidth: MAX_WIDTH, paddingInline: 20, position: 'relative' }}>
           <InputArea incognito={incognito} />
+
+          {/* INCOGNITO INDICATOR — pick one option, comment others */}
+
+          {/* OPTION A: Badge inside box bottom-left */}
+          {incognito && (
+            <div style={{ position: 'absolute', bottom: 10, left: 32, alignItems: 'center', background: 'rgba(255,255,255,0.12)', borderRadius: 12, color: 'rgba(255,255,255,0.6)', display: 'flex', fontSize: 11, fontWeight: 500, gap: 4, padding: '2px 8px', pointerEvents: 'none' }}>
+              🕵 Incognito
+            </div>
+          )}
+
+          {/* OPTION B: Text below box — uncomment to use
+          {incognito && (
+            <div style={{ color: 'rgba(0,0,0,0.35)', fontSize: 11, marginTop: 6, textAlign: 'center' }}>
+              Incognito mode — history & memory paused
+            </div>
+          )} */}
+
+          {/* OPTION C: Pill top-left corner of box — uncomment to use
+          {incognito && (
+            <div style={{ position: 'absolute', top: 8, left: 16, alignItems: 'center', background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 20, color: 'rgba(255,255,255,0.7)', display: 'flex', fontSize: 10, fontWeight: 600, gap: 3, padding: '2px 8px', pointerEvents: 'none' }}>
+              <span style={{ color: '#4ade80', fontSize: 8 }}>●</span> INCOGNITO
+            </div>
+          )} */}
+
+          {/* OPTION D: Dark left border stripe — uncomment to use
+          {incognito && (
+            <div style={{ position: 'absolute', top: 0, left: 20, bottom: 0, width: 3, background: 'rgba(255,255,255,0.2)', borderRadius: 4, pointerEvents: 'none' }} />
+          )} */}
+
+          {/* OPTION E: Floating chip below send button — uncomment to use
+          {incognito && (
+            <div style={{ position: 'absolute', bottom: 8, right: 60, alignItems: 'center', background: '#111', borderRadius: 20, color: 'rgba(255,255,255,0.6)', display: 'flex', fontSize: 10, fontWeight: 500, gap: 3, padding: '2px 10px', pointerEvents: 'none' }}>
+              🔒 Private
+            </div>
+          )} */}
         </div>
 
         {/* Connect bar — change ConnectOption3 to any option 1-5 */}

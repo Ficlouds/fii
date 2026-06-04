@@ -124,7 +124,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
       <Skeleton.Button active shape="round" size="small" style={{ height: 32, minWidth: 64, width: 64 }} />
     ) : null;
 
-    const isHomePage = !expand && inputContainerProps?.style?.borderRadius !== undefined;
+    const isHomePage = !expand;
 
     const content = (
       <Flexbox
@@ -164,6 +164,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
                         opacity: rotVisible ? 1 : 0,
                         overflow: 'hidden',
                         pointerEvents: 'auto',
+                        textAlign: 'left',
                         textOverflow: 'ellipsis',
                         transition: 'opacity 0.25s ease',
                         userSelect: 'none',

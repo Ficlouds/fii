@@ -21,6 +21,7 @@ const GROUP_LABEL_STYLE = {
   fontWeight: 600,
   letterSpacing: '0.04em',
   padding: '8px 12px 2px',
+  paddingLeft: 48,
   textTransform: 'uppercase' as const,
 };
 

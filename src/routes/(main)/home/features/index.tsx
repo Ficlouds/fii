@@ -133,7 +133,7 @@ const Home = memo(() => {
   }, []);
 
   return (
-    <div style={{ background: '#f9f8f7', bottom: 0, left: 0, position: 'absolute', right: 0, top: 0 }}>
+    <div style={{ background: '#f9f8f7', display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', width: '100%' }}>
       {/* Incognito icon top right */}
       <button onClick={toggleIncognito} title={incognito ? 'Incognito on' : 'Incognito mode'}
         style={{ alignItems: 'center', background: incognito ? 'rgba(0,0,0,0.08)' : 'transparent', border: 'none', borderRadius: 8, cursor: 'pointer', display: 'flex', padding: 7, position: 'absolute', right: 20, top: 16, zIndex: 10 }}>
@@ -141,7 +141,7 @@ const Home = memo(() => {
       </button>
 
       {/* Content at 40% from top */}
-      <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', left: 0, position: 'absolute', right: 0, top: "52%", transform: 'translateY(-50%)' }}>
+      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', paddingBottom: 40, paddingTop: 80, width: '100%' }}>
         {/* Fi logo */}
         <div style={{ color: '#111', fontFamily: 'Inter, system-ui, sans-serif', fontSize: 64, fontWeight: 700, letterSpacing: '-3px', marginBottom: 72, textAlign: 'center', userSelect: 'none' }}>Fi</div>
 

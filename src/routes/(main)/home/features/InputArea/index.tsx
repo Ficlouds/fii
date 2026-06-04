@@ -12,7 +12,14 @@ import { useSend } from './useSend';
 const leftActions: ActionKeys[] = ['plus'];
 const rightActions: ActionKeys[] = ['modelLabel', 'stt'];
 
-const InputArea = () => {
+interface InputAreaProps {
+  fg?: string;
+  fgSub?: string;
+  incognito?: boolean;
+  inputBg?: string;
+}
+
+const InputArea = ({ incognito = false, inputBg, fg, fgSub }: InputAreaProps) => {
   const { loading, send, agentId } = useSend();
   useInitAgentConfig(agentId);
   const isAgentConfigLoading = useAgentStore((s) =>
@@ -25,23 +32,26 @@ const InputArea = () => {
   );
   const { handleUploadFiles } = useUploadFiles({ model, provider });
 
+  const bg = inputBg ?? (incognito ? '#1a1a1a' : '#f9f8f7');
+
   const inputContainerProps = useMemo(
     () => ({
-      minHeight: 52,
+      minHeight: 44,
       resize: false,
       style: {
-        borderRadius: 28,
-        boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
-        border: '1px solid rgba(0,0,0,0.06)',
-        background: '#f9f8f7',
+        background: bg,
         backdropFilter: 'none',
+        border: 'none',
+        borderRadius: 28,
+        boxShadow: 'none',
+        color: fg ?? (incognito ? '#fff' : '#111'),
       },
     }),
-    [],
+    [bg, fg, incognito],
   );
 
   return (
-    <Flexbox gap={16} style={{ marginBottom: 16 }}>
+    <Flexbox style={{ width: '100%' }}>
       <DragUploadZone
         style={{ position: 'relative', zIndex: 1 }}
         onUploadFiles={handleUploadFiles}

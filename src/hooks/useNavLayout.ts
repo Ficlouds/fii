@@ -46,9 +46,9 @@ export const useNavLayout = (): NavLayout => {
       },
       {
         icon: ZapIcon,
-        key: 'connections',
-        url: '/settings/provider',
-        title: 'Connections',
+        key: 'connect',
+        url: '/settings/messenger',
+        title: 'Connect',
       },
       {
         icon: FolderIcon,

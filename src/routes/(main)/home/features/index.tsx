@@ -1,18 +1,28 @@
 'use client';
+import { Discord, Slack, Telegram } from '@lobehub/ui/icons';
+import { EyeOffIcon } from 'lucide-react';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useUserStore } from '@/store/user';
 import { authSelectors } from '@/store/user/slices/auth/selectors';
 import InputArea from './InputArea';
 
 const INCOGNITO_KEY = 'fi-incognito-mode';
+const CONNECT_DISMISSED_KEY = 'fi-connect-banner-dismissed';
+
+const PLATFORMS = [
+  { id: 'telegram', label: 'Telegram', icon: <Telegram.Color size={28} /> },
+  { id: 'slack', label: 'Slack', icon: <Slack.Color size={28} /> },
+  { id: 'discord', label: 'Discord', icon: <Discord.Color size={28} /> },
+];
 
 const Home = memo(() => {
   const isLogin = useUserStore(authSelectors.isLogin);
   const [incognito, setIncognito] = useState(false);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem(INCOGNITO_KEY);
-    if (saved === 'true') setIncognito(true);
+    if (localStorage.getItem(INCOGNITO_KEY) === 'true') setIncognito(true);
+    if (localStorage.getItem(CONNECT_DISMISSED_KEY) === 'true') setBannerDismissed(true);
   }, []);
 
   const toggleIncognito = useCallback(() => {
@@ -23,158 +33,224 @@ const Home = memo(() => {
     });
   }, []);
 
+  const dismissBanner = useCallback(() => {
+    setBannerDismissed(true);
+    localStorage.setItem(CONNECT_DISMISSED_KEY, 'true');
+  }, []);
+
+  const bg = incognito ? '#0a0a0a' : '#f9f8f7';
+  const fg = incognito ? '#fff' : '#111';
+  const fgSub = incognito ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)';
+  const borderColor = incognito ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)';
+  const inputBg = incognito ? '#1a1a1a' : '#f9f8f7';
+  const inputBorder = incognito ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.08)';
+
   return (
     <div
       style={{
+        alignItems: 'center',
+        background: bg,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
         justifyContent: 'center',
         minHeight: '100vh',
-        width: '100%',
-        background: incognito ? '#0a0a0a' : undefined,
         transition: 'background 0.3s ease',
+        width: '100%',
       }}
     >
-      {/* Share button top right */}
-      <div style={{ position: 'absolute', top: 16, right: 20 }}>
-        <button
-          onClick={() => {
-            navigator.clipboard?.writeText(window.location.href);
-          }}
-          style={{
-            alignItems: 'center',
-            background: 'transparent',
-            border: '1px solid rgba(0,0,0,0.12)',
-            borderRadius: 20,
-            color: incognito ? '#fff' : '#111',
-            cursor: 'pointer',
-            display: 'flex',
-            fontSize: 13,
-            fontWeight: 500,
-            gap: 6,
-            padding: '5px 14px',
-            transition: 'background 0.15s',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(0,0,0,0.06)')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
-        >
-          <svg fill="none" height="14" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" width="14">
-            <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          Share
-        </button>
-      </div>
-
       {/* Fi logo */}
       <div
         style={{
-          color: incognito ? '#fff' : '#111',
+          color: fg,
           fontFamily: 'Inter, system-ui, sans-serif',
-          fontSize: 60,
+          fontSize: 56,
           fontWeight: 700,
           letterSpacing: '-2px',
-          marginBottom: 32,
+          marginBottom: 28,
           transition: 'color 0.3s ease',
           userSelect: 'none',
         }}
       >
-        {incognito ? '🕵️ Fi' : 'Fi'}
+        Fi
       </div>
 
-      {/* Input */}
-      <div style={{ width: '100%', maxWidth: 680, padding: '0 16px' }}>
-        <InputArea incognito={incognito} />
-      </div>
-
-      {/* Incognito toggle */}
-      <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
-        <button
-          onClick={toggleIncognito}
-          style={{
-            alignItems: 'center',
-            background: incognito ? 'rgba(255,255,255,0.08)' : 'transparent',
-            border: 'none',
-            borderRadius: 20,
-            color: incognito ? '#aaa' : 'rgba(0,0,0,0.35)',
-            cursor: 'pointer',
-            display: 'flex',
-            fontSize: 12,
-            fontWeight: 500,
-            gap: 5,
-            padding: '4px 12px',
-            transition: 'all 0.15s',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = incognito ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.05)')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = incognito ? 'rgba(255,255,255,0.08)' : 'transparent')}
-        >
-          <svg fill="none" height="13" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" width="13">
-            <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24M1 1l22 22" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          {incognito ? 'Incognito on — history & memory off' : 'Incognito mode'}
-        </button>
-      </div>
-
-      {/* Bot Channel banner — like Grok connectors */}
+      {/* Input wrapper — incognito overrides background via inline style on wrapper */}
       <div
         style={{
-          alignItems: 'center',
-          background: incognito ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.02)',
-          border: `1px solid ${incognito ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)'}`,
-          borderRadius: 14,
-          display: 'flex',
-          gap: 12,
-          justifyContent: 'space-between',
-          marginTop: 24,
           maxWidth: 680,
-          padding: '12px 16px',
-          width: 'calc(100% - 32px)',
+          padding: '0 16px',
+          width: '100%',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ fontSize: 20 }}>🤖</div>
-          <div>
-            <div style={{ color: incognito ? '#fff' : '#111', fontSize: 13, fontWeight: 600 }}>
-              Create your own Bot Channel
-            </div>
-            <div style={{ color: incognito ? '#888' : 'rgba(0,0,0,0.45)', fontSize: 12, marginTop: 1 }}>
-              Build and deploy custom AI agents on any platform
-            </div>
-          </div>
+        <div
+          style={{
+            background: inputBg,
+            border: `1px solid ${inputBorder}`,
+            borderRadius: 28,
+            boxShadow: incognito ? '0 1px 6px rgba(0,0,0,0.4)' : '0 1px 6px rgba(0,0,0,0.06)',
+            overflow: 'hidden',
+            transition: 'all 0.3s ease',
+          }}
+        >
+          <InputArea incognito={incognito} inputBg={inputBg} fg={fg} fgSub={fgSub} />
         </div>
-        <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+
+        {/* Below input: incognito icon only */}
+        <div
+          style={{
+            alignItems: 'center',
+            display: 'flex',
+            gap: 6,
+            justifyContent: 'center',
+            marginTop: 10,
+          }}
+        >
           <button
+            onClick={toggleIncognito}
+            title={incognito ? 'Incognito on — history & memory paused' : 'Enable incognito mode'}
             style={{
-              background: 'transparent',
-              border: `1px solid ${incognito ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)'}`,
-              borderRadius: 20,
-              color: incognito ? '#aaa' : 'rgba(0,0,0,0.45)',
-              cursor: 'pointer',
-              fontSize: 12,
-              fontWeight: 500,
-              padding: '4px 12px',
-            }}
-            onClick={() => {}}
-          >
-            Dismiss
-          </button>
-          <button
-            style={{
-              background: incognito ? '#fff' : '#111',
+              alignItems: 'center',
+              background: incognito ? 'rgba(255,255,255,0.08)' : 'transparent',
               border: 'none',
               borderRadius: 20,
-              color: incognito ? '#111' : '#fff',
+              color: incognito ? '#fff' : fgSub,
               cursor: 'pointer',
-              fontSize: 12,
-              fontWeight: 600,
-              padding: '4px 14px',
+              display: 'flex',
+              fontSize: 11,
+              fontWeight: 500,
+              gap: 4,
+              padding: '3px 10px',
+              transition: 'all 0.15s',
             }}
-            onClick={() => window.location.href = '/settings/advanced'}
           >
-            Create
+            <EyeOffIcon size={13} />
+            {incognito ? 'Incognito on' : 'Incognito'}
           </button>
         </div>
       </div>
+
+      {/* Connect banner — LobeChat style */}
+      {!bannerDismissed && (
+        <div
+          style={{
+            background: incognito ? '#111' : '#fff',
+            border: `1px solid ${borderColor}`,
+            borderRadius: 14,
+            marginTop: 20,
+            maxWidth: 680,
+            padding: '12px 16px',
+            width: 'calc(100% - 32px)',
+          }}
+        >
+          {/* Banner header row */}
+          <div
+            style={{
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginBottom: 10,
+            }}
+          >
+            <div style={{ alignItems: 'center', display: 'flex', gap: 8 }}>
+              <span style={{ fontSize: 16 }}>📡</span>
+              <span style={{ color: fg, fontSize: 13, fontWeight: 600 }}>
+                Connect your Bot Channel
+              </span>
+            </div>
+            <button
+              onClick={dismissBanner}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: fgSub,
+                cursor: 'pointer',
+                fontSize: 16,
+                lineHeight: 1,
+                padding: '0 2px',
+              }}
+            >
+              ×
+            </button>
+          </div>
+
+          {/* Platform icons row */}
+          <div style={{ alignItems: 'center', display: 'flex', gap: 10, marginBottom: 12 }}>
+            {PLATFORMS.map((p) => (
+              <div
+                key={p.id}
+                title={p.label}
+                onClick={() => (window.location.href = '/settings/messenger')}
+                style={{
+                  alignItems: 'center',
+                  background: incognito ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+                  border: `1px solid ${borderColor}`,
+                  borderRadius: 10,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 4,
+                  padding: '8px 12px',
+                  transition: 'background 0.15s',
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = incognito
+                    ? 'rgba(255,255,255,0.10)'
+                    : 'rgba(0,0,0,0.07)')
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = incognito
+                    ? 'rgba(255,255,255,0.06)'
+                    : 'rgba(0,0,0,0.04)')
+                }
+              >
+                {p.icon}
+                <span style={{ color: fgSub, fontSize: 11 }}>{p.label}</span>
+              </div>
+            ))}
+            <div
+              onClick={() => (window.location.href = '/settings/messenger')}
+              style={{
+                alignItems: 'center',
+                background: 'transparent',
+                border: `1px dashed ${borderColor}`,
+                borderRadius: 10,
+                color: fgSub,
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                fontSize: 11,
+                gap: 4,
+                padding: '8px 12px',
+              }}
+            >
+              <span style={{ fontSize: 20 }}>+</span>
+              <span>More</span>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ color: fgSub, fontSize: 12 }}>
+              Deploy Fi across Telegram, Slack, Discord and more
+            </span>
+            <button
+              onClick={() => (window.location.href = '/settings/messenger')}
+              style={{
+                background: incognito ? '#fff' : '#111',
+                border: 'none',
+                borderRadius: 20,
+                color: incognito ? '#111' : '#fff',
+                cursor: 'pointer',
+                fontSize: 12,
+                fontWeight: 600,
+                padding: '5px 16px',
+              }}
+            >
+              Set up
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 });

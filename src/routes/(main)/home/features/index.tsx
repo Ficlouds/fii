@@ -7,12 +7,16 @@ const INCOGNITO_KEY = 'fi-incognito-mode';
 const MAX_WIDTH = 860;
 
 const IncognitoIcon = ({ active }: { active: boolean }) => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <path d="M12 4.5L7 9h3.5v1.5H9A2.5 2.5 0 006.5 13 2.5 2.5 0 009 15.5h6A2.5 2.5 0 0017.5 13 2.5 2.5 0 0015 10.5h-1.5V9H17l-5-4.5z"
-      fill={active ? '#111' : 'rgba(0,0,0,0.32)'} />
-    <circle cx="9.5" cy="13" r="1" fill="#f9f8f7" />
-    <circle cx="14.5" cy="13" r="1" fill="#f9f8f7" />
-  </svg>
+  <img
+    src="/logos/incognito-icon.svg"
+    alt="Incognito"
+    style={{
+      height: 20,
+      width: 20,
+      opacity: active ? 1 : 0.4,
+      transition: 'opacity 0.15s',
+    }}
+  />
 );
 
 /* ═══════════════════════════════════════════════

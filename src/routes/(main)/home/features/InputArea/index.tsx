@@ -1,4 +1,3 @@
-import { Flexbox } from '@lobehub/ui';
 import { useMemo } from 'react';
 import DragUploadZone, { useUploadFiles } from '@/components/DragUploadZone';
 import { type ActionKeys } from '@/features/ChatInput';
@@ -29,25 +28,41 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
   );
   const { handleUploadFiles } = useUploadFiles({ model, provider });
 
+  const pillBg = incognito ? '#1c1c1e' : '#e8e8e6';
+  const pillBorder = incognito ? '1.5px solid rgba(255,255,255,0.10)' : '1.5px solid transparent';
+  const pillColor = incognito ? '#ffffff' : '#111111';
+
   const inputContainerProps = useMemo(
     () => ({
       minHeight: 56,
       resize: false,
       style: {
-        background: incognito ? '#1c1c1e' : '#e8e8e6',
+        background: pillBg,
         backdropFilter: 'none',
-        border: incognito ? '1.5px solid rgba(255,255,255,0.10)' : '1.5px solid rgba(0,0,0,0.12)',
+        border: pillBorder,
         borderRadius: 32,
         boxShadow: 'none',
-        color: incognito ? '#ffffff' : '#111111',
+        color: pillColor,
         transition: 'background 0.25s ease, border 0.25s ease, color 0.25s ease',
       },
     }),
-    [incognito],
+    [pillBg, pillBorder, pillColor],
   );
 
   return (
-    <Flexbox style={{ width: '100%' }}>
+    /* Outer pill wrapper — this is what user sees */
+    <div
+      style={{
+        background: pillBg,
+        border: pillBorder,
+        borderRadius: 32,
+        boxSizing: 'border-box',
+        color: pillColor,
+        overflow: 'hidden',
+        transition: 'background 0.25s ease, border 0.25s ease, color 0.25s ease',
+        width: '100%',
+      }}
+    >
       <DragUploadZone
         style={{ position: 'relative', zIndex: 1 }}
         onUploadFiles={handleUploadFiles}
@@ -80,7 +95,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
           />
         </ChatInputProvider>
       </DragUploadZone>
-    </Flexbox>
+    </div>
   );
 };
 

@@ -91,18 +91,6 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     opacity: 1;
   }
 
-  /* Input blends with background */
-  .lobe-chat-input-container,
-  [class*='inputContainer'],
-  [class*='ChatInput'] .ant-input,
-  [class*='ChatInput'] textarea,
-  [class*='editor'] textarea,
-  [class*='editor'] [contenteditable] {
-    background: #f9f8f7 !important;
-    background-color: #f9f8f7 !important;
-    box-shadow: none !important;
-  }
-
   /* Sidebar background #FCFCFC */
   html[data-theme='light'] [class*='NavPanel'],
   html[data-theme='light'] [class*='navPanel'],
@@ -119,5 +107,42 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   [class*='NavPanel'] a + a,
   [class*='navPanel'] a + a {
     margin-top: 2px;
+  }
+
+  /* ============================================
+     INPUT BAR — kill ALL lobehub internal styles
+     Target: DesktopChatInput container + editor
+     ============================================ */
+
+  /* The outer ChatInput wrapper — force our pill shape */
+  [data-insp-path*="ChatInput/Desktop"],
+  [class*="ChatInput"][class*="lobe"] {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* The inner input container div (acss-1uegmkh class pattern) */
+  [data-insp-path*="ChatInput"] > div > div,
+  [class*="lobe"][class*="Input"] > div {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* The editor area */
+  [contenteditable="true"],
+  [data-lexical-editor="true"] {
+    background: transparent !important;
+    color: inherit !important;
+  }
+
+  /* Force entire input zone background to inherit from our wrapper */
+  [data-insp-path*="/home/features/InputArea"] *,
+  [data-insp-path*="/home/features/InputArea"] {
+    background: inherit !important;
+    box-shadow: none !important;
   }
 `;

@@ -8,8 +8,10 @@ import { useAgentStore } from '@/store/agent';
 import { agentByIdSelectors } from '@/store/agent/selectors';
 import { useChatStore } from '@/store/chat';
 import { useSend } from './useSend';
+
 const leftActions: ActionKeys[] = ['plus'];
 const rightActions: ActionKeys[] = ['modelLabel', 'stt'];
+
 const InputArea = () => {
   const { loading, send, agentId } = useSend();
   useInitAgentConfig(agentId);
@@ -22,19 +24,22 @@ const InputArea = () => {
     agentByIdSelectors.getAgentModelProviderById(resolvedAgentId)(s),
   );
   const { handleUploadFiles } = useUploadFiles({ model, provider });
+
   const inputContainerProps = useMemo(
     () => ({
       minHeight: 52,
       resize: false,
       style: {
         borderRadius: 28,
-        boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-        border: '1.5px solid rgba(0,0,0,0.10)',
-        background: '#f0efee',
+        boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
+        border: '1px solid rgba(0,0,0,0.06)',
+        background: '#f9f8f7',
+        backdropFilter: 'none',
       },
     }),
     [],
   );
+
   return (
     <Flexbox gap={16} style={{ marginBottom: 16 }}>
       <DragUploadZone
@@ -72,4 +77,5 @@ const InputArea = () => {
     </Flexbox>
   );
 };
+
 export default InputArea;

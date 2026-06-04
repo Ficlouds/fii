@@ -2,12 +2,8 @@ import { CLASSNAMES } from '@lobehub/ui';
 import type { Theme } from 'antd-style';
 import { css } from 'antd-style';
 
-// fix ios input keyboard
-// overflow: hidden;
-// ref: https://zhuanlan.zhihu.com/p/113855026
-// eslint-disable-next-line unicorn/no-anonymous-default-export
 export default ({ token }: { prefixCls: string; token: Theme }) => css`
-  
+
   /* Force chat input to blend with background */
   html[data-theme='light'] .lobe-chat-input,
   html[data-theme='light'] [class*='ChatInput'],
@@ -48,7 +44,6 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   }
 
   body {
-    /* Increase compositing layer, force hardware acceleration, otherwise render black edges will appear */
     will-change: opacity;
     transform: translateZ(0);
   }
@@ -97,5 +92,17 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     .${CLASSNAMES.DropdownMenuTrigger}[data-popup-open]:not([data-no-highlight])
   ) {
     opacity: 1;
+  }
+
+  /* Task 2 — input blends with background */
+  .lobe-chat-input-container,
+  [class*='inputContainer'],
+  [class*='ChatInput'] .ant-input,
+  [class*='ChatInput'] textarea,
+  [class*='editor'] textarea,
+  [class*='editor'] [contenteditable] {
+    background: #f9f8f7 !important;
+    background-color: #f9f8f7 !important;
+    box-shadow: none !important;
   }
 `;

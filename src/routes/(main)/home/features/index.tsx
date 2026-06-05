@@ -55,7 +55,7 @@ const DriveIcon = () => (
 );
 
 const ConnectOption1 = ({ onDismiss }: { onDismiss: () => void }) => (
-  <div style={{ alignItems: 'center', display: 'flex', gap: 10, justifyContent: 'center', marginTop: 16, width: '100%', maxWidth: MAX_WIDTH, paddingInline: 20, flexWrap: 'wrap' }}>
+  <div style={{ alignItems: 'center', display: 'flex', gap: 10, justifyContent: 'center', marginTop: 16, width: '100%', maxWidth: MAX_WIDTH, paddingInline: 20, flexWrap: 'nowrap' }}>
     <div style={{ alignItems: 'center', display: 'flex', gap: 8 }}>
       <Telegram.Color size={20} />
       <Slack.Color size={20} />

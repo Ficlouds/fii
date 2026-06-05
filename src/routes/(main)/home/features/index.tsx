@@ -145,11 +145,40 @@ const Home = memo(() => {
 
   return (
     <div style={{ background: '#f9f8f7', height: '100%', overflow: 'hidden', position: 'relative', width: '100%' }}>
+      {/* Incognito sidebar blur overlay */}
+      {incognito && (
+        <style>{`
+          [class*='NavPanelDraggable'], [class*='navPanel'], .acss-12lasj6 {
+            filter: blur(6px) !important;
+            pointer-events: none !important;
+            user-select: none !important;
+            transition: filter 0.3s ease !important;
+          }
+        `}</style>
+      )}
       {/* Incognito icon top right */}
-      <button onClick={toggleIncognito} title={incognito ? 'Incognito on' : 'Incognito mode'}
-        style={{ alignItems: 'center', background: incognito ? 'rgba(0,0,0,0.08)' : 'transparent', border: 'none', borderRadius: 8, cursor: 'pointer', display: 'flex', padding: 7, position: 'absolute', right: 4, top: 8, zIndex: 10 }}>
-        <IncognitoIcon active={incognito} />
-      </button>
+      {!incognito && (
+        <button onClick={toggleIncognito} title="Incognito mode"
+          style={{ alignItems: 'center', background: 'transparent', border: 'none', borderRadius: 8, cursor: 'pointer', display: 'flex', padding: 7, position: 'absolute', right: 4, top: 8, zIndex: 10 }}>
+          <IncognitoIcon active={false} />
+        </button>
+      )}
+
+      {/* Incognito active banner with X to close */}
+      {incognito && (
+        <div style={{ alignItems: 'center', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', borderRadius: 24, color: '#fff', display: 'flex', gap: 8, padding: '6px 12px 6px 14px', position: 'absolute', right: 12, top: 12, zIndex: 10 }}>
+          <IncognitoIcon active={true} />
+          <span style={{ fontSize: 12, fontWeight: 500, opacity: 0.9 }}>Off the record</span>
+          <button
+            onClick={toggleIncognito}
+            style={{ alignItems: 'center', background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: '50%', color: '#fff', cursor: 'pointer', display: 'flex', height: 18, justifyContent: 'center', marginLeft: 2, padding: 0, width: 18 }}
+          >
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M1 1l8 8M9 1L1 9" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          </button>
+        </div>
+      )}
 
       {/* Content - centered in available space with smooth transition */}
       <div style={{ display: 'flex', flex: 1, flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative', width: '100%' }}>

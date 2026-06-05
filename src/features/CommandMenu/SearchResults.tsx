@@ -20,7 +20,7 @@ interface SearchResultsProps {
 const fmt = (d: Date | string) => dayjs(d).format('D MMMM YYYY');
 
 // ── CHANGE THIS NUMBER TO SWITCH OPTION ──
-const ACTIVE_OPTION = 4;
+const ACTIVE_OPTION = 5;
 
 const SearchResults = memo<SearchResultsProps>(({ isLoading, onClose, results, searchQuery }) => {
   const navigate = useNavigate();

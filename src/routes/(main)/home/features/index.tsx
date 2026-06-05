@@ -144,8 +144,8 @@ const Home = memo(() => {
         <IncognitoIcon active={incognito} />
       </button>
 
-      {/* Content at 40% from top */}
-      <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: 20, paddingTop: 220, position: 'fixed', left: '50vw', top: '50vh', transform: 'translate(-50%, -50%)', width: 'calc(100vw - 60px)', zIndex: 1 }}>
+      {/* Content centered on full page */}
+      <div style={{ alignItems: 'center', bottom: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', left: 0, paddingBottom: 20, paddingTop: 220, position: 'absolute', right: 0, top: 0 }}>
         {/* Fi logo */}
         <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src="/logos/fi-icon.svg" alt="Fi" style={{ height: 72, width: 'auto' }} /></div>
 

@@ -43,16 +43,16 @@ const DesktopLayoutContainer: FC<PropsWithChildren> = ({ children }) => {
   return (
     <Flexbox
       className={styles.outerContainer}
+      flex={1}
       height={'100%'}
       padding={0}
-      style={outerCssVariables}
-      width={'100%'}
+      style={{ ...outerCssVariables, transition: 'width 0.25s ease, flex 0.25s ease', minWidth: 0 }}
     >
       <Flexbox
         className={styles.innerContainer}
         height={'100%'}
         ref={innerContainerRef}
-        style={innerCssVariables}
+        style={{ ...innerCssVariables, transition: 'width 0.25s ease' }}
         width={'100%'}
       >
         <LayoutContainerContext value={innerContainerRef}>{children}</LayoutContainerContext>

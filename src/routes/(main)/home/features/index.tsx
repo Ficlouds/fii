@@ -196,8 +196,8 @@ const Home = memo(() => {
       )}
 
       {/* Content - centered with offset down */}
-      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', overflow: 'hidden', paddingTop: 80, width: '100%' }}>
-        <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', paddingBottom: 60, paddingInline: 20, width: '100%', maxWidth: 860 }}>
+      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: "center", overflow: "hidden", width: '100%' }}>
+        <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', paddingInline: 20, width: '100%', maxWidth: 860 }}>
         {/* Fi logo */}
         <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src={isDark ? '/logos/fi-icon-white.svg' : '/logos/fi-icon-black.svg'} alt="Fi" style={{ height: 72, width: 'auto' }} /></div>
 

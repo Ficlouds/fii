@@ -20,8 +20,8 @@ const DesktopLayoutContainer: FC<PropsWithChildren> = ({ children }) => {
   // CSS variables for dynamic styling
   const outerCssVariables = useMemo<Record<string, string>>(
     () => ({
-      '--container-padding-left': expand ? '0px' : '8px',
-      '--container-padding-top': isDesktop ? '0px' : '8px',
+      '--container-padding-left': '0px',
+      '--container-padding-top': '0px',
     }),
     [expand, isDesktop],
   );

@@ -104,39 +104,15 @@ export const styles = createStaticStyles(({ css, cssVar }) => ({
     overflow: hidden;
     display: flex;
     flex-direction: column;
-
-    width: min(680px, 92vw);
-    max-height: min(500px, 70vh);
-    border-radius: 16px;
-
-    background: ${cssVar.colorBgElevated};
-    box-shadow: ${cssVar.boxShadowSecondary};
-
-    animation: ${slideDown} 0.12s ease-out;
-
-    &[data-closing='true'] {
-      animation: ${slideUp} 0.15s ease-out forwards;
-    }
-
-    [cmdk-input] {
-      flex: 1;
-
-      min-width: 0;
-      padding: 0;
-      border: none;
-
-      font-family: inherit;
-      font-size: 16px;
-      color: ${cssVar.colorText};
-
-      background: transparent;
-      outline: none;
-
-      &::placeholder {
-        color: ${cssVar.colorTextPlaceholder};
-      }
-    }
-
+    width: min(720px, 94vw);
+    max-height: min(560px, 75vh);
+    border-radius: 20px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.5);
+    animation: ${slideDown} 0.15s ease-out;
+    &[data-closing='true'] { animation: ${slideUp} 0.15s ease-out forwards; }
+    [cmdk-input] { flex: 1; min-width: 0; padding: 0; border: none; font-family: inherit; font-size: 16px; color: #111; background: transparent; outline: none; &::placeholder { color: rgba(0,0,0,0.3); } }
     [cmdk-list] {
       overflow-y: auto;
       max-height: 400px;
@@ -291,20 +267,14 @@ export const styles = createStaticStyles(({ css, cssVar }) => ({
     position: fixed;
     z-index: 9999;
     inset: 0;
-
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
-
-    padding-block-start: 15vh;
-
-    background: ${cssVar.colorBgMask};
-
+    padding-block-start: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(8px);
     animation: ${fadeIn} 0.1s ease-in-out;
-
-    &[data-closing='true'] {
-      animation: ${fadeOut} 0.15s ease-out forwards;
-    }
+    &[data-closing='true'] { animation: ${fadeOut} 0.15s ease-out forwards; }
   `,
   skeleton: css`
     height: 16px;

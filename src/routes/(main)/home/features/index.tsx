@@ -152,8 +152,8 @@ const Home = memo(() => {
       </button>
 
       {/* Content - centered in available space with smooth transition */}
-      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', transition: 'all 0.15s ease', width: '100%' }}>
-        <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%', maxWidth: 860, paddingInline: 20 }}>
+      <div style={{ flex: '1', overflow: 'hidden', position: 'relative', width: '100%' }}>
+        <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', left: 0, margin: '0 auto', maxWidth: 860, paddingInline: 20, position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}>
         {/* Fi logo */}
         <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src="/logos/fi-icon.svg" alt="Fi" style={{ height: 72, width: 'auto' }} /></div>
 

@@ -161,16 +161,8 @@ const CommandMenuContent = memo<CommandMenuContentProps>(({ isClosing, onClose }
               </Command.Group>
             )}
 
-            {/* @ mention agent commands */}
-            {!page && !selectedAgent && <AskAgentCommands />}
-
-            {/* Hide MainMenu and SearchResults when in @ mention mode */}
-            {!page && !selectedAgent && !search.trimStart().startsWith('@') && <MainMenu />}
-
-            {page === 'theme' && <ThemeMenu />}
-            {page === 'ask-ai' && <AskAIMenu />}
-
-            {!page && !selectedAgent && hasSearch && !search.trimStart().startsWith('@') && (
+            {/* Only show conversation search results */}
+            {hasSearch ? (
               <SearchResults
                 isLoading={isSearching}
                 results={searchResults}
@@ -179,6 +171,10 @@ const CommandMenuContent = memo<CommandMenuContentProps>(({ isClosing, onClose }
                 onClose={onClose}
                 onSetTypeFilter={setTypeFilter}
               />
+            ) : (
+              <Command.Empty style={{ padding: '24px', textAlign: 'center', color: 'rgba(0,0,0,0.35)', fontSize: 13 }}>
+                Type to search your conversations...
+              </Command.Empty>
             )}
           </Command.List>
 

@@ -16,7 +16,7 @@ interface LayoutProps {
 
 const Layout: FC<LayoutProps> = ({ children }) => {
   const isDarkMode = useIsDark();
-  const theme = useTheme(); // Keep for colorBgContainerSecondary (not in cssVar)
+  const theme = useTheme();
   const { pathname } = useLocation();
   const isHomeRoute = pathname === '/';
   const [hasActivated, setHasActivated] = useState(isHomeRoute);
@@ -26,7 +26,6 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     if (isHomeRoute) setHasActivated(true);
   }, [isHomeRoute]);
 
-  // CSS variable for dynamic background color (colorBgContainerSecondary is not in cssVar)
   const cssVariables = useMemo<Record<string, string>>(
     () => ({
       '--content-bg-secondary': theme.colorBgContainerSecondary,
@@ -36,27 +35,22 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 
   if (!hasActivated) return null;
 
-  // Keep the Home layout alive and render it offscreen when inactive.
   return (
-    <div style={{ display: isHomeRoute ? 'flex' : 'none', position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-      <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+    <Activity mode={isHomeRoute ? 'visible' : 'hidden'} name="DesktopHomeLayout">
+      <Flexbox className={styles.absoluteContainer} height={'100%'} width={'100%'}>
         <Sidebar />
-        <div
-          style={{
-            flex: 1,
-            height: '100%',
-            overflow: 'hidden',
-            background: isDarkMode ? undefined : 'var(--content-bg-secondary)',
-            transition: 'flex 0.25s ease',
-            ...cssVariables,
-          }}
+        <Flexbox
+          className={isDarkMode ? styles.contentDark : styles.contentLight}
+          flex={1}
+          height={'100%'}
+          style={cssVariables}
         >
           {content}
-        </div>
+        </Flexbox>
         <HomeAgentIdSync />
         <RecentHydration />
-      </div>
-    </div>
+      </Flexbox>
+    </Activity>
   );
 };
 

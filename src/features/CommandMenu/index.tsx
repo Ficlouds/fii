@@ -96,17 +96,17 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
       <style>{`
         @keyframes fiIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes fiOut { from { opacity: 1; } to { opacity: 0; } }
-        .fi-search-item:hover { background: rgba(0,0,0,0.04) !important; }
-        .fi-search-item.active { background: rgba(0,0,0,0.06) !important; }
+        .fi-search-item:hover { background: ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'} !important; }
+        .fi-search-item.active { background: ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'} !important; }
       `}</style>
 
       {/* Modal */}
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
-          background: '#ffffff',
+          background: isDark ? '#2f2f2f' : '#ffffff',
           borderRadius: 16,
-          boxShadow: '0 8px 60px rgba(0,0,0,0.15)',
+          boxShadow: isDark ? '0 8px 60px rgba(0,0,0,0.5)' : '0 8px 60px rgba(0,0,0,0.15)',
           display: 'flex',
           flexDirection: 'column',
           height: 'min(680px, 85vh)',
@@ -135,7 +135,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
               <X size={11} />
             </button>
           ) : (
-            <kbd onClick={onClose} style={{ background: 'rgba(0,0,0,0.05)', borderRadius: 5, color: 'rgba(0,0,0,0.3)', cursor: 'pointer', fontSize: 11, padding: '2px 7px' }}>ESC</kbd>
+            <kbd onClick={onClose} style={{ background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)', borderRadius: 5, color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.3)', cursor: 'pointer', fontSize: 11, padding: '2px 7px' }}>ESC</kbd>
           )}
         </div>
 
@@ -158,7 +158,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
               if (!items?.length) return null;
               return (
                 <div key={group}>
-                  <div style={{ color: 'rgba(0,0,0,0.35)', fontSize: 11, fontWeight: 600, letterSpacing: '0.05em', padding: '12px 16px 4px', textTransform: 'uppercase' }}>{group}</div>
+                  <div style={{ color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)', fontSize: 11, fontWeight: 600, letterSpacing: '0.05em', padding: '12px 16px 4px', textTransform: 'uppercase' }}>{group}</div>
                   {items.map((r: any) => (
                     <div
                       key={r.id}
@@ -171,7 +171,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ color: '#111', fontSize: 13, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title || 'Untitled'}</div>
                       </div>
-                      <div style={{ color: 'rgba(0,0,0,0.25)', flexShrink: 0, fontSize: 11 }}>{r.createdAt ? fmt(r.createdAt) : ''}</div>
+                      <div style={{ color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.25)', flexShrink: 0, fontSize: 11 }}>{r.createdAt ? fmt(r.createdAt) : ''}</div>
                     </div>
                   ))}
                 </div>
@@ -194,7 +194,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
                 </button>
               </div>
             ) : (
-              <div style={{ color: 'rgba(0,0,0,0.25)', fontSize: 13 }}>Select a conversation to preview</div>
+              <div style={{ color: isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)', fontSize: 13 }}>Select a conversation to preview</div>
             )}
           </div>
         </div>

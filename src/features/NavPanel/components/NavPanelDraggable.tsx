@@ -41,7 +41,7 @@ const styles = createStaticStyles(({ css }) => ({
     height: 100%;
     background: #fcfcfc;
     border-right: 1px solid rgba(0,0,0,0.06);
-    transition: width 0.25s ease;
+    transition: width 0.15s ease;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -119,7 +119,7 @@ export const NavPanelDraggable = memo<NavPanelDraggableProps>(({ activeContent }
   return (
     <div
       className={styles.wrapper}
-      style={{ width: expand ? EXPANDED_WIDTH : COLLAPSED_WIDTH }}
+      style={{ width: expand ? EXPANDED_WIDTH : COLLAPSED_WIDTH, transition: 'width 0.15s ease' }}
     >
       {/* Expanded content */}
       <div

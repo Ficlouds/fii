@@ -251,4 +251,31 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     color: rgba(255,255,255,0.35) !important;
     text-align: left !important;
   }
+
+  /* Fix editor body position when typing on home page */
+  [data-testid="chat-input"] [class*="acss-1uegmkh"],
+  [data-testid="chat-input"] [class*="acss-3kh57l"] {
+    min-height: 0 !important;
+    padding: 0 !important;
+  }
+  [data-testid="chat-input"] .acss-1pldu16:first-child {
+    display: none !important;
+  }
+
+  /* Fix editor text position - align with action bar */
+  [data-testid="chat-input"] .acss-3kh57l {
+    min-height: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  [data-testid="chat-input"] .acss-158j65s {
+    min-height: 0 !important;
+    padding: 0 !important;
+    line-height: 1.5 !important;
+  }
+  [data-testid="chat-input"] .acss-1uegmkh {
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
 `;

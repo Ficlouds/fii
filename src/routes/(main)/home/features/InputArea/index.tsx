@@ -35,7 +35,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
       resize: false,
       style: {
         background: isDark ? '#2c2c2b' : '#ffffff',
-        border: incognito ? '1.5px solid rgba(255,255,255,0.10)' : '1.5px solid rgba(0,0,0,0.06)',
+        border: isDark ? '1.5px solid rgba(255,255,255,0.08)' : '1.5px solid rgba(0,0,0,0.06)',
         borderRadius: 32,
         boxShadow: 'none',
         color: isDark ? '#ececec' : '#111111',
@@ -49,12 +49,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
 
   return (
     <div style={{ position: 'relative', width: '100%' }}>
-      {incognito && (
-        <style>{`
-          [data-testid="chat-input"] *:not([class*="dropdown"]):not([class*="portal"]) { color: #ffffff !important; }
-          [data-testid="chat-input"] svg { color: #ffffff !important; }
-        `}</style>
-      )}
+
       <DragUploadZone style={{ width: '100%' }} onUploadFiles={handleUploadFiles}>
         <ChatInputProvider
           agentId={agentId}

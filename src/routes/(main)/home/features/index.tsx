@@ -146,7 +146,7 @@ const Home = memo(() => {
   }, []);
 
   return (
-    <div style={{ background: isDark ? '#171717' : '#f9f8f7', height: '100%', overflow: 'hidden', position: 'relative', transition: 'background 0.2s ease', width: '100%' }}>
+    <div style={{ background: isDark ? '#1f1f1e' : '#f9f8f7', height: '100%', overflow: 'hidden', position: 'relative', transition: 'background 0.2s ease', width: '100%' }}>
       {/* Incognito sidebar blur overlay */}
       {incognito && (
         <>

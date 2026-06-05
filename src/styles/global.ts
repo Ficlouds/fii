@@ -92,9 +92,16 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
 
   /* Sidebar colors - light and dark */
   html[data-theme='dark'] .acss-12lasj6,
-  html[data-theme='dark'] [class*='NavPanelDraggable'] {
-    background: #212121 !important;
+  html[data-theme='dark'] [class*='NavPanelDraggable'],
+  html[data-theme='dark'] aside {
+    background: #1e1e1d !important;
     border-right-color: rgba(255,255,255,0.06) !important;
+  }
+
+  /* Dark mode main content */
+  html[data-theme='dark'] [class*='contentDark'],
+  html[data-theme='dark'] [class*='content-dark'] {
+    background: #1f1f1e !important;
   }
 
   /* Dark mode nav item hover */
@@ -105,6 +112,31 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   /* Dark mode accordion */
   html[data-theme='dark'] .accordion-he {
     color: rgba(255,255,255,0.8) !important;
+  }
+
+  /* Dark mode text colors in sidebar */
+  html[data-theme='dark'] aside span,
+  html[data-theme='dark'] aside a,
+  html[data-theme='dark'] aside div span {
+    color: rgba(255,255,255,0.85) !important;
+  }
+  html[data-theme='dark'] aside svg {
+    color: rgba(255,255,255,0.7) !important;
+  }
+
+  /* Dark mode search modal */
+  html[data-theme='dark'] [cmdk-root] {
+    background: #2c2c2b !important;
+    color: #ececec !important;
+  }
+  html[data-theme='dark'] [cmdk-input] {
+    color: #ececec !important;
+  }
+  html[data-theme='dark'] [cmdk-item] {
+    color: rgba(255,255,255,0.85) !important;
+  }
+  html[data-theme='dark'] [cmdk-item][aria-selected='true'] {
+    background: rgba(255,255,255,0.06) !important;
   }
 
   /* Sidebar #FCFCFC */

@@ -48,6 +48,8 @@ const ORDER = ['Today', 'Yesterday', 'Last 7 Days', 'Last 30 Days', 'Older'];
 
 const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ isClosing, onClose }) => {
   const { hasSearch, isSearching, searchResults } = useCommandMenu();
+  const isDark = useIsDark();
+  const isDark = useIsDark();
   const { search, setSearch } = useCommandMenuContext();
   const navigate = useNavigate();
   const [selected, setSelected] = useState<any>(null);
@@ -156,7 +158,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
               if (!items?.length) return null;
               return (
                 <div key={group}>
-                  <div style={{ color: 'rgba(0,0,0,0.35)', fontSize: 11, fontWeight: 600, letterSpacing: '0.05em', padding: '12px 16px 4px', textTransform: 'uppercase' }}>{group}</div>
+                  <div style={{ color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)', fontSize: 11, fontWeight: 600, letterSpacing: '0.05em', padding: '12px 16px 4px', textTransform: 'uppercase' }}>{group}</div>
                   {items.map((r: any) => (
                     <div
                       key={r.id}

@@ -32,7 +32,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
     () => ({
       resize: false,
       style: {
-        background: incognito ? '#1c1c1e' : '#efefed',
+        background: incognito ? '#1c1c1e' : '#ffffff',
         border: incognito ? '1.5px solid rgba(255,255,255,0.10)' : '1.5px solid rgba(0,0,0,0.06)',
         borderRadius: 32,
         boxShadow: 'none',

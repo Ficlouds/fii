@@ -5,11 +5,11 @@ import dayjs from 'dayjs';
 import { MessageSquare, Search, X } from 'lucide-react';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-import { SESSION_CHAT_TOPIC_URL } from '@/const/url';
 import { useGlobalStore } from '@/store/global';
 import { useIsDark } from '@/hooks/useIsDark';
+import { useChatStore } from '@/store/chat';
 import { useHomeStore } from '@/store/home';
 import { homeRecentSelectors } from '@/store/home/selectors';
 

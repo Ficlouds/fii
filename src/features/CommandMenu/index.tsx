@@ -182,19 +182,40 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
           {/* Right: preview */}
           <div style={{ alignItems: 'center', background: isDark ? '#2c2c2a' : '#fafafa', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
             {selected ? (
-              <div style={{ padding: 24, width: '100%' }}>
-                <div style={{ color: isDark ? '#ffffff' : '#111', fontSize: 18, fontWeight: 600, marginBottom: 8 }}>{selected.title || 'Untitled'}</div>
-                <div style={{ color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', fontSize: 13, marginBottom: 16 }}>{selected.createdAt ? dayjs(selected.createdAt).format('D MMMM YYYY') : ''}</div>
-                {selected.description && <div style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)', fontSize: 14, lineHeight: 1.6 }}>{selected.description}</div>}
+              <div style={{ alignItems: 'flex-start', display: 'flex', flexDirection: 'column', gap: 12, padding: 24, width: '100%' }}>
+                <div style={{ color: isDark ? '#ffffff' : '#111', fontSize: 20, fontWeight: 600, lineHeight: 1.3 }}>{selected.title || 'Untitled'}</div>
+                <div style={{ alignItems: 'center', display: 'flex', gap: 8 }}>
+                  <span style={{ background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', borderRadius: 6, color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)', fontSize: 12, padding: '3px 8px' }}>
+                    {selected.createdAt ? dayjs(selected.createdAt).format('D MMM YYYY') : ''}
+                  </span>
+                </div>
+                {selected.description && (
+                  <div style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.55)', fontSize: 14, lineHeight: 1.7 }}>
+                    {selected.description}
+                  </div>
+                )}
                 <button
                   onClick={() => handleSelect(selected)}
-                  style={{ background: isDark ? 'rgba(255,255,255,0.15)' : '#111', border: isDark ? '1px solid rgba(255,255,255,0.2)' : 'none', borderRadius: 20, color: isDark ? '#ffffff' : '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 600, marginTop: 20, padding: '8px 20px' }}
+                  style={{
+                    background: isDark ? '#ffffff' : '#111',
+                    border: 'none',
+                    borderRadius: 20,
+                    color: isDark ? '#111' : '#fff',
+                    cursor: 'pointer',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    marginTop: 8,
+                    padding: '9px 22px',
+                  }}
                 >
                   Open conversation →
                 </button>
               </div>
             ) : (
-              <div style={{ color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.25)', fontSize: 13 }}>Select a conversation to preview</div>
+              <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div style={{ color: isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)', fontSize: 32 }}>💬</div>
+                <div style={{ color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.25)', fontSize: 13 }}>Select a conversation to preview</div>
+              </div>
             )}
           </div>
         </div>

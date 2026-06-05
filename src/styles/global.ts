@@ -194,4 +194,33 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   }
 
 
+
+  /* Dark mode - force all text elements white */
+  html[data-theme='dark'] * {
+    --lobe-color-text: #ffffff;
+    --ant-color-text: #ffffff;
+    --ant-color-text-secondary: rgba(255,255,255,0.75);
+  }
+
+  /* Athena/model selector button */
+  html[data-theme='dark'] button[style*="border-radius: 20px"],
+  html[data-theme='dark'] button[style*="border-radius: 16px"] {
+    color: rgba(255,255,255,0.9) !important;
+    border-color: rgba(255,255,255,0.2) !important;
+  }
+
+  /* User name and email bottom left */
+  html[data-theme='dark'] [class*='name'],
+  html[data-theme='dark'] [class*='email'],
+  html[data-theme='dark'] [class*='user'] span,
+  html[data-theme='dark'] [class*='User'] span {
+    color: rgba(255,255,255,0.85) !important;
+  }
+
+  /* Any remaining black text in dark mode */
+  html[data-theme='dark'] span[style*="color: rgb(17"],
+  html[data-theme='dark'] span[style*="color: #111"],
+  html[data-theme='dark'] div[style*="color: #111"] {
+    color: rgba(255,255,255,0.9) !important;
+  }
 `;

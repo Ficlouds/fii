@@ -37,12 +37,12 @@ const AgentSelector = memo<AgentSelectorProps>(({ incognito = false }) => {
   }, [open]);
 
   const isDark = useIsDark();
-  const fg = incognito || isDark ? '#ffffff' : '#111111';
-  const fgSub = incognito || isDark ? 'rgba(255,255,255,0.6)' : '#888';
-  const borderColor = incognito || isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)';
-  const dropBg = incognito ? '#1c1c1e' : isDark ? '#2c2c2b' : '#fff';
-  const dropBorder = incognito || isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)';
-  const hoverBg = incognito || isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)';
+  const fg = isDark ? '#ffffff' : '#111111';
+  const fgSub = isDark ? 'rgba(255,255,255,0.6)' : '#888';
+  const borderColor = isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)';
+  const dropBg = isDark ? '#2c2c2b' : '#fff';
+  const dropBorder = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)';
+  const hoverBg = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)';
 
   return (
     <>

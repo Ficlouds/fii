@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import { useGlobalStore } from '@/store/global';
 import { useIsDark } from '@/hooks/useIsDark';
 import { useChatStore } from '@/store/chat';
+import { messageMapKey } from '@/store/chat/slices/message/utils';
 import { useHomeStore } from '@/store/home';
 import { homeRecentSelectors } from '@/store/home/selectors';
 
@@ -178,34 +179,55 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
           {/* Right: preview */}
           <div style={{ alignItems: 'center', background: isDark ? '#2c2c2a' : '#fafafa', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
             {selected ? (
-              <div style={{ alignItems: 'flex-start', display: 'flex', flexDirection: 'column', gap: 12, padding: 24, width: '100%' }}>
-                <div style={{ color: isDark ? '#ffffff' : '#111', fontSize: 20, fontWeight: 600, lineHeight: 1.3 }}>{selected.title || 'Untitled'}</div>
-                <div style={{ alignItems: 'center', display: 'flex', gap: 8 }}>
-                  <span style={{ background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', borderRadius: 6, color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)', fontSize: 12, padding: '3px 8px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
+                {/* Header */}
+                <div style={{ borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)'}`, padding: '16px 20px' }}>
+                  <div style={{ color: isDark ? '#ffffff' : '#111', fontSize: 16, fontWeight: 600 }}>{selected.title || 'Untitled'}</div>
+                  <div style={{ color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', fontSize: 12, marginTop: 3 }}>
                     {selected.createdAt ? dayjs(selected.createdAt).format('D MMM YYYY') : ''}
-                  </span>
-                </div>
-                {selected.description && (
-                  <div style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.55)', fontSize: 14, lineHeight: 1.7 }}>
-                    {selected.description}
                   </div>
-                )}
-                <button
-                  onClick={() => handleSelect(selected)}
-                  style={{
-                    background: isDark ? '#ffffff' : '#111',
-                    border: 'none',
-                    borderRadius: 20,
-                    color: isDark ? '#111' : '#fff',
-                    cursor: 'pointer',
-                    fontSize: 13,
-                    fontWeight: 600,
-                    marginTop: 8,
-                    padding: '9px 22px',
-                  }}
-                >
-                  Open conversation →
-                </button>
+                </div>
+                {/* Messages */}
+                <div style={{ flex: 1, overflowY: 'auto', padding: '12px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {!previewMessages && (
+                    <div style={{ color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', fontSize: 13, paddingTop: 20, textAlign: 'center' }}>Loading...</div>
+                  )}
+                  {previewMessages?.slice(0, 20).map((msg: any) => (
+                    <div key={msg.id} style={{
+                      alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
+                      background: msg.role === 'user'
+                        ? (isDark ? '#3a3a3a' : '#111')
+                        : (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
+                      borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                      color: msg.role === 'user' ? '#fff' : (isDark ? 'rgba(255,255,255,0.85)' : '#111'),
+                      fontSize: 13,
+                      lineHeight: 1.5,
+                      maxWidth: '85%',
+                      padding: '8px 12px',
+                    }}>
+                      {typeof msg.content === 'string' ? msg.content : msg.content?.[0]?.text || ''}
+                    </div>
+                  ))}
+                </div>
+                {/* Open button */}
+                <div style={{ borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)'}`, padding: '12px 20px' }}>
+                  <button
+                    onClick={() => handleSelect(selected)}
+                    style={{
+                      background: isDark ? '#ffffff' : '#111',
+                      border: 'none',
+                      borderRadius: 20,
+                      color: isDark ? '#111' : '#fff',
+                      cursor: 'pointer',
+                      fontSize: 13,
+                      fontWeight: 600,
+                      padding: '9px 22px',
+                      width: '100%',
+                    }}
+                  >
+                    Open conversation →
+                  </button>
+                </div>
               </div>
             ) : (
               <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', gap: 8 }}>

@@ -157,7 +157,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
               if (!items?.length) return null;
               return (
                 <div key={group}>
-                  <div style={{ color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)', fontSize: 11, fontWeight: 600, letterSpacing: '0.05em', padding: '12px 16px 4px', textTransform: 'uppercase' }}>{group}</div>
+                  <div style={{ color: 'rgba(0,0,0,0.35)', fontSize: 11, fontWeight: 600, letterSpacing: '0.05em', padding: '12px 16px 4px', textTransform: 'uppercase' }}>{group}</div>
                   {items.map((r: any) => (
                     <div
                       key={r.id}

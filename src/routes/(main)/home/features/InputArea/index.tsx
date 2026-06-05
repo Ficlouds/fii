@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { type MutableRefObject, useMemo } from 'react';
 import { useIsDark } from '@/hooks/useIsDark';
 import DragUploadZone, { useUploadFiles } from '@/components/DragUploadZone';
 import { type ActionKeys } from '@/features/ChatInput';
@@ -13,11 +13,13 @@ const leftActions: ActionKeys[] = ['plus'];
 const rightActions: ActionKeys[] = ['modelLabel', 'stt'];
 
 interface InputAreaProps {
+  activeTopicIdRef?: MutableRefObject<string | undefined>;
   incognito?: boolean;
+  onTopicReady?: (agentId: string, topicId: string) => void;
 }
 
-const InputArea = ({ incognito = false }: InputAreaProps) => {
-  const { loading, send, agentId } = useSend();
+const InputArea = ({ activeTopicIdRef, incognito = false, onTopicReady }: InputAreaProps) => {
+  const { loading, send, agentId } = useSend({ activeTopicIdRef, onTopicReady });
   const isDark = useIsDark();
   useInitAgentConfig(agentId);
   const isAgentConfigLoading = useAgentStore((s) =>

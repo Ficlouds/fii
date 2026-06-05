@@ -1,29 +1,16 @@
 'use client';
 import { Discord, Slack, Telegram } from '@lobehub/ui/icons';
-import { memo, useCallback, useEffect, useState } from 'react';
-import { useGlobalStore } from '@/store/global';
-import { systemStatusSelectors } from '@/store/global/selectors';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { ChatList, ConversationProvider } from '@/features/Conversation';
+import { useOperationState } from '@/hooks/useOperationState';
 import { useIsDark } from '@/hooks/useIsDark';
+import { useChatStore } from '@/store/chat';
+import { messageMapKey } from '@/store/chat/utils/messageMapKey';
 import InputArea from './InputArea';
 
-const EXPANDED_WIDTH = 260;
-const COLLAPSED_WIDTH = 48;
-
-const INCOGNITO_KEY = 'fi-incognito-mode';
 const MAX_WIDTH = 860;
 
-const IncognitoIcon = ({ active }: { active: boolean }) => (
-  <img
-    src="/logos/incognito-icon.svg"
-    alt="Incognito"
-    style={{
-      height: 20,
-      width: 20,
-      opacity: active ? 1 : 0.4,
-      transition: 'opacity 0.15s',
-    }}
-  />
-);
+const INCOGNITO_KEY = 'fi-incognito-mode';
 
 /* ═══════════════════════════════════════════════
    CONNECT BAR — 5 options, uncomment to switch
@@ -128,9 +115,23 @@ const ConnectOption5 = ({ onDismiss }: { onDismiss: () => void }) => (
 const Home = memo(() => {
   const [incognito, setIncognito] = useState(false);
   const [bannerDismissed, setBannerDismissed] = useState(false);
-  const expand = useGlobalStore(systemStatusSelectors.showLeftPanel);
-  const sidebarW = expand ? 260 : 48;
   const isDark = useIsDark();
+
+  // Conversation state — set when user sends the first message
+  const [chatContext, setChatContext] = useState<{ agentId: string; topicId: string } | null>(null);
+  const activeTopicIdRef = useRef<string | undefined>(undefined);
+  const hasStarted = chatContext !== null;
+
+  const handleTopicReady = useCallback((agentId: string, topicId: string) => {
+    activeTopicIdRef.current = topicId;
+    setChatContext({ agentId, topicId });
+  }, []);
+
+  // Messages + operation state for ConversationProvider
+  const chatContextKey = chatContext ? messageMapKey(chatContext) : null;
+  const messages = useChatStore((s) => chatContextKey ? s.dbMessagesMap[chatContextKey] : undefined);
+  const replaceMessages = useChatStore((s) => s.replaceMessages);
+  const operationState = useOperationState(chatContext ?? { agentId: '' });
 
   useEffect(() => {
     if (localStorage.getItem(INCOGNITO_KEY) === 'true') setIncognito(true);
@@ -145,72 +146,99 @@ const Home = memo(() => {
     });
   }, []);
 
+  const incognitoOverlay = incognito && (
+    <>
+      <style>{`
+        .acss-12lasj6, [data-insp-path*="NavPanelDraggable"] {
+          filter: blur(5px) !important;
+          transition: filter 0.3s ease !important;
+        }
+      `}</style>
+      <div style={{ bottom: 0, cursor: 'not-allowed', left: 0, position: 'fixed', top: 0, width: 260, zIndex: 50 }} onClick={(e) => e.stopPropagation()} />
+    </>
+  );
+
+  const incognitoButton = !incognito && (
+    <button onClick={toggleIncognito} title="Incognito mode"
+      style={{ alignItems: 'center', background: 'transparent', border: 'none', borderRadius: 8, cursor: 'pointer', display: 'flex', padding: 7, position: 'absolute', right: 4, top: 8, zIndex: 10 }}>
+      <img src={isDark ? '/logos/incognito-icon-white.svg' : '/logos/incognito-icon.svg'} alt="incognito" style={{ height: 20, opacity: 0.5, width: 20 }} />
+    </button>
+  );
+
+  const incognitoBanner = incognito && (
+    <div style={{ alignItems: 'center', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', borderRadius: 24, color: '#fff', display: 'flex', gap: 8, padding: '6px 12px 6px 14px', position: 'absolute', right: 12, top: 12, zIndex: 10 }}>
+      <img src="/logos/incognito-icon-white.svg" alt="incognito" style={{ height: 16, width: 16 }} />
+      <span style={{ fontSize: 12, fontWeight: 500, opacity: 0.9 }}>Off the record</span>
+      <button onClick={toggleIncognito} style={{ alignItems: 'center', background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: '50%', color: '#fff', cursor: 'pointer', display: 'flex', height: 18, justifyContent: 'center', marginLeft: 2, padding: 0, width: 18 }}>
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <path d="M1 1l8 8M9 1L1 9" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+        </svg>
+      </button>
+    </div>
+  );
+
+  if (hasStarted && chatContext) {
+    return (
+      <div style={{ background: isDark ? '#1f1f1e' : '#f9f8f7', display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative', transition: 'background 0.2s ease', width: '100%' }}>
+        {incognitoOverlay}
+        {incognitoButton}
+        {incognitoBanner}
+        <ConversationProvider
+          context={chatContext}
+          hasInitMessages={!!messages}
+          messages={messages}
+          operationState={operationState}
+          onMessagesChange={(msgs, ctx) => replaceMessages(msgs, { context: ctx })}
+        >
+          {/* Messages — scrollable, takes all available space */}
+          <div style={{ flex: 1, minHeight: 0, overflowX: 'hidden', overflowY: 'auto', position: 'relative' }}>
+            <ChatList />
+          </div>
+          {/* Input fixed at bottom */}
+          <div style={{ background: isDark ? '#1f1f1e' : '#f9f8f7', flexShrink: 0, paddingBlock: 12, paddingInline: 20, transition: 'background 0.2s ease' }}>
+            <InputArea
+              activeTopicIdRef={activeTopicIdRef}
+              incognito={incognito}
+              onTopicReady={handleTopicReady}
+            />
+            {incognito && (
+              <div style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)', fontSize: 12, fontWeight: 500, marginTop: 8, textAlign: 'center' }}>
+                Off the record
+              </div>
+            )}
+          </div>
+        </ConversationProvider>
+      </div>
+    );
+  }
+
   return (
     <div style={{ background: isDark ? '#1f1f1e' : '#f9f8f7', display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative', transition: 'background 0.2s ease', width: '100%' }}>
-      {/* Incognito sidebar blur overlay */}
-      {incognito && (
-        <>
-          <style>{`
-            .acss-12lasj6, [data-insp-path*="NavPanelDraggable"] {
-              filter: blur(5px) !important;
-              transition: filter 0.3s ease !important;
-            }
-          `}</style>
-          <div style={{
-            bottom: 0,
-            cursor: 'not-allowed',
-            left: 0,
-            position: 'fixed',
-            top: 0,
-            width: 260,
-            zIndex: 50,
-          }} onClick={(e) => e.stopPropagation()} />
-        </>
-      )}
-      {/* Incognito icon top right */}
-      {!incognito && (
-        <button onClick={toggleIncognito} title="Incognito mode"
-          style={{ alignItems: 'center', background: 'transparent', border: 'none', borderRadius: 8, cursor: 'pointer', display: 'flex', padding: 7, position: 'absolute', right: 4, top: 8, zIndex: 10 }}>
-          <img
-            src={isDark ? '/logos/incognito-icon-white.svg' : '/logos/incognito-icon.svg'}
-            alt="incognito"
-            style={{ height: 20, opacity: 0.5, width: 20 }}
-          />
-        </button>
-      )}
+      {incognitoOverlay}
+      {incognitoButton}
+      {incognitoBanner}
 
-      {/* Incognito active banner with X to close */}
-      {incognito && (
-        <div style={{ alignItems: 'center', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', borderRadius: 24, color: '#fff', display: 'flex', gap: 8, padding: '6px 12px 6px 14px', position: 'absolute', right: 12, top: 12, zIndex: 10 }}>
-          <img src="/logos/incognito-icon-white.svg" alt="incognito" style={{ height: 16, width: 16 }} />
-          <span style={{ fontSize: 12, fontWeight: 500, opacity: 0.9 }}>Off the record</span>
-          <button
-            onClick={toggleIncognito}
-            style={{ alignItems: 'center', background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: '50%', color: '#fff', cursor: 'pointer', display: 'flex', height: 18, justifyContent: 'center', marginLeft: 2, padding: 0, width: 18 }}
-          >
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-              <path d="M1 1l8 8M9 1L1 9" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-          </button>
-        </div>
-      )}
-
-      {/* Content - vertically centered */}
+      {/* Pre-chat: centered logo + input */}
       <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', minHeight: 0, overflow: 'hidden', paddingBottom: 160, width: '100%' }}>
         <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', paddingInline: 20, width: '100%', maxWidth: 860 }}>
-        {/* Fi logo */}
-        <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src={isDark ? '/logos/fi-icon-white.svg' : '/logos/fi-icon-black.svg'} alt="Fi" style={{ height: 72, width: 'auto' }} /></div>
+          {/* Fi logo */}
+          <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}>
+            <img src={isDark ? '/logos/fi-icon-white.svg' : '/logos/fi-icon-black.svg'} alt="Fi" style={{ height: 72, width: 'auto' }} />
+          </div>
 
-        {/* Input */}
-        <div style={{ width: '100%', maxWidth: MAX_WIDTH, paddingInline: 20, position: 'relative' }}>
-          <InputArea incognito={incognito} />
-
-          {incognito && (
-            <div style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)', fontSize: 12, fontWeight: 500, marginTop: 8, textAlign: 'center' }}>
-              Off the record
-            </div>
-          )}
-        </div>
+          {/* Input */}
+          <div style={{ maxWidth: 860, paddingInline: 20, position: 'relative', width: '100%' }}>
+            <InputArea
+              activeTopicIdRef={activeTopicIdRef}
+              incognito={incognito}
+              onTopicReady={handleTopicReady}
+            />
+            {incognito && (
+              <div style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)', fontSize: 12, fontWeight: 500, marginTop: 8, textAlign: 'center' }}>
+                Off the record
+              </div>
+            )}
+          </div>
 
           {/* Connect bar */}
           {!bannerDismissed && <ConnectOption1 onDismiss={() => setBannerDismissed(true)} isDark={isDark} />}

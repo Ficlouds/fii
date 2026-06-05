@@ -1,9 +1,8 @@
-import { SESSION_CHAT_TOPIC_URL, SESSION_CHAT_URL } from '@lobechat/const';
 import { useCallback } from 'react';
+import type { MutableRefObject } from 'react';
 
 import type { SendButtonHandler } from '@/features/ChatInput/store/initialState';
 import { useHomeDailyBrief } from '@/hooks/useHomeDailyBrief';
-import { useQueryRoute } from '@/hooks/useQueryRoute';
 import { agentService } from '@/services/agent';
 import { useAgentStore } from '@/store/agent';
 import { useChatStore } from '@/store/chat';
@@ -34,8 +33,12 @@ const ensureAgentConfigLoaded = async (agentId: string): Promise<void> => {
   if (config) agentState.internal_dispatchAgentMap(agentId, config);
 };
 
-export const useSend = () => {
-  const router = useQueryRoute();
+interface UseSendOptions {
+  activeTopicIdRef?: MutableRefObject<string | undefined>;
+  onTopicReady?: (agentId: string, topicId: string) => void;
+}
+
+export const useSend = (options?: UseSendOptions) => {
   const sendMessage = useChatStore((s) => s.sendMessage);
   const clearChatUploadFileList = useFileStore((s) => s.clearChatUploadFileList);
   const clearChatContextSelections = useFileStore((s) => s.clearChatContextSelections);
@@ -120,18 +123,20 @@ export const useSend = () => {
             // yet — block on the fetch so sendMessage finds a real config below.
             await ensureAgentConfigLoaded(activeAgentId);
 
+            const existingTopicId = options?.activeTopicIdRef?.current;
             sendMessage({
-              context: { agentId: activeAgentId, isolatedTopic: true },
+              context: existingTopicId
+                ? { agentId: activeAgentId, topicId: existingTopicId }
+                : { agentId: activeAgentId, isolatedTopic: true },
               contexts: contextList,
               editorData,
               files: fileList,
               message,
               onTopicCreated: (topicId) => {
-                router.replace(SESSION_CHAT_TOPIC_URL(activeAgentId, topicId, false));
+                if (options?.activeTopicIdRef) options.activeTopicIdRef.current = topicId;
+                options?.onTopicReady?.(activeAgentId, topicId);
               },
             });
-
-            router.push(SESSION_CHAT_URL(activeAgentId, false));
           }
         }
       } finally {
@@ -146,7 +151,8 @@ export const useSend = () => {
       sendMessage,
       clearChatContextSelections,
       clearChatUploadFileList,
-      router,
+      options?.activeTopicIdRef,
+      options?.onTopicReady,
       currentPair,
       advance,
     ],

@@ -144,8 +144,9 @@ const Home = memo(() => {
         <IncognitoIcon active={incognito} />
       </button>
 
-      {/* Content centered */}
-      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', paddingBottom: 20, paddingTop: 120, width: '100%' }}>
+      {/* Content centered on full viewport - no shift on sidebar collapse */}
+      <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100vh', left: 0, position: 'fixed', top: 0, width: '100vw', zIndex: 0, pointerEvents: 'none' }}>
+      <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', pointerEvents: 'auto', width: '100%', maxWidth: 920, paddingInline: 20 }}>
         {/* Fi logo */}
         <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src="/logos/fi-icon.svg" alt="Fi" style={{ height: 72, width: 'auto' }} /></div>
 
@@ -162,6 +163,7 @@ const Home = memo(() => {
 
         {/* Connect bar — change ConnectOption3 to any option 1-5 */}
         {!bannerDismissed && <ConnectOption1 onDismiss={() => setBannerDismissed(true)} />}
+      </div>
       </div>
     </div>
   );

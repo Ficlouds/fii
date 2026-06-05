@@ -50,7 +50,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
   );
 
   return (
-    <div style={{ position: 'relative', width: '100%' }}>
+    <div onClick={() => navigate('/chat')} style={{ cursor: 'text', position: 'relative', width: '100%' }}>
 
       <DragUploadZone style={{ width: '100%' }} onUploadFiles={handleUploadFiles}>
         <ChatInputProvider

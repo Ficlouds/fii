@@ -43,23 +43,11 @@ const DesktopLayoutContainer: FC<PropsWithChildren> = ({ children }) => {
   }, [isDarkMode]);
 
   return (
-    <Flexbox
-      className={styles.outerContainer}
-      flex={1}
-      height={'100%'}
-      padding={0}
-      style={{ ...outerCssVariables, minWidth: 0 }}
-    >
-      <Flexbox
-        className={styles.innerContainer}
-        height={'100%'}
-        ref={innerContainerRef}
-        style={{ ...innerCssVariables, transition: 'width 0.25s ease' }}
-        width={'100%'}
-      >
+    <div style={{ flex: 1, height: '100%', minWidth: 0, overflow: 'hidden', position: 'relative', width: '100%' }}>
+      <div ref={innerContainerRef} style={{ background: 'var(--ant-color-bg-container)', height: '100%', overflow: 'hidden', position: 'absolute', inset: 0 }}>
         <LayoutContainerContext value={innerContainerRef}>{children}</LayoutContainerContext>
-      </Flexbox>
-    </Flexbox>
+      </div>
+    </div>
   );
 };
 export default DesktopLayoutContainer;

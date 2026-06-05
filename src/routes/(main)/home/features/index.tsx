@@ -147,14 +147,23 @@ const Home = memo(() => {
     <div style={{ background: '#f9f8f7', height: '100%', overflow: 'hidden', position: 'relative', width: '100%' }}>
       {/* Incognito sidebar blur overlay */}
       {incognito && (
-        <style>{`
-          [class*='NavPanelDraggable'], [class*='navPanel'], .acss-12lasj6 {
-            filter: blur(6px) !important;
-            pointer-events: none !important;
-            user-select: none !important;
-            transition: filter 0.3s ease !important;
-          }
-        `}</style>
+        <>
+          <style>{`
+            .acss-12lasj6, [data-insp-path*="NavPanelDraggable"] {
+              filter: blur(5px) !important;
+              transition: filter 0.3s ease !important;
+            }
+          `}</style>
+          <div style={{
+            bottom: 0,
+            cursor: 'not-allowed',
+            left: 0,
+            position: 'fixed',
+            top: 0,
+            width: 260,
+            zIndex: 50,
+          }} onClick={(e) => e.stopPropagation()} />
+        </>
       )}
       {/* Incognito icon top right */}
       {!incognito && (
@@ -167,7 +176,7 @@ const Home = memo(() => {
       {/* Incognito active banner with X to close */}
       {incognito && (
         <div style={{ alignItems: 'center', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', borderRadius: 24, color: '#fff', display: 'flex', gap: 8, padding: '6px 12px 6px 14px', position: 'absolute', right: 12, top: 12, zIndex: 10 }}>
-          <IncognitoIcon active={true} />
+          <img src="/logos/incognito-icon-white.svg" alt="incognito" style={{ height: 16, width: 16 }} />
           <span style={{ fontSize: 12, fontWeight: 500, opacity: 0.9 }}>Off the record</span>
           <button
             onClick={toggleIncognito}

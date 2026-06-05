@@ -44,7 +44,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
         width: '100%',
       },
     }),
-    [incognito],
+    [incognito, isDark],
   );
 
   return (

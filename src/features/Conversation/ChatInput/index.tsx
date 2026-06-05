@@ -1,7 +1,7 @@
 'use client';
 
 import { type SlashOptions } from '@lobehub/editor';
-import { type ChatInputActionsProps } from '@lobehub/editor/react';
+import { type ChatInputActionsProps, type ChatInputProps as EditorChatInputProps } from '@lobehub/editor/react';
 import { type MenuProps } from '@lobehub/ui';
 import { Alert, Flexbox } from '@lobehub/ui';
 import { type ReactNode } from 'react';
@@ -47,6 +47,10 @@ export interface ChatInputProps {
    * Whether to allow fullscreen expand button
    */
   allowExpand?: boolean;
+  /**
+   * Props forwarded to the underlying editor ChatInput container (e.g. border-radius styling).
+   */
+  inputContainerProps?: EditorChatInputProps;
   /**
    * Custom children to render instead of default Desktop component.
    * Use this to add custom UI like error alerts, MessageFromUrl, etc.
@@ -136,6 +140,7 @@ const ChatInput = memo<ChatInputProps>(
     disableFollowUpVariant,
     disableQueue,
     feature,
+    inputContainerProps,
     leftActions = [],
     leftContent,
     rightActions = [],
@@ -323,6 +328,7 @@ const ChatInput = memo<ChatInputProps>(
             borderRadius={12}
             extraActionItems={extraActionItems}
             hidden={hasPendingInterventions}
+            inputContainerProps={inputContainerProps}
             isConfigLoading={isConfigLoading}
             leftContent={leftContent}
             placeholderVariant={placeholderVariant}

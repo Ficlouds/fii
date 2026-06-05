@@ -50,6 +50,24 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
     background: ${cssVar.colorBgContainer};
   `,
   inputFullscreen: css`border: none; border-radius: 0 !important;`,
+  /** Wraps the ActionBar so it doesn't flex-grow and steal width from the editor. */
+  actionBarFix: css`flex-shrink: 0;`,
+  /** Stretches the inline editor to fill remaining row space. */
+  inlineEditorWrap: css`
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    align-items: center;
+
+    /* Force the ReactPlainText root div to fill this wrapper */
+    & > div {
+      flex: 1 !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      height: auto !important;
+    }
+  `,
 }));
 
 interface DesktopChatInputProps extends ActionToolbarProps {
@@ -165,13 +183,15 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
               style={actionBarStyle ?? { paddingInline: 12, paddingBlock: 12 }}
               left={loadingLeft ?? leftContent ?? (
                 <Flexbox horizontal align="center" gap={8} style={{ cursor: 'text', flex: 1, minWidth: 0 }}>
-                  <ActionBar
-                    borderRadius={borderRadius}
-                    dropdownPlacement={dropdownPlacement}
-                    extraActionItems={extraActionItems}
-                  />
+                  <div className={styles.actionBarFix}>
+                    <ActionBar
+                      borderRadius={borderRadius}
+                      dropdownPlacement={dropdownPlacement}
+                      extraActionItems={extraActionItems}
+                    />
+                  </div>
                   {showEditorInline && (
-                    <div style={{ flex: 1, minWidth: 0 }}>
+                    <div className={styles.inlineEditorWrap}>
                       <InputEditor
                         defaultRows={1}
                         placeholder={rotatingPlaceholder}

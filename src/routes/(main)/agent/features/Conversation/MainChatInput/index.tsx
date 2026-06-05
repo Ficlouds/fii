@@ -4,6 +4,7 @@ import { memo, useMemo } from 'react';
 
 import { type ActionKeys } from '@/features/ChatInput';
 import { ChatInput } from '@/features/Conversation';
+import { useIsDark } from '@/hooks/useIsDark';
 import { useModelSupportImageOutput } from '@/hooks/useModelSupportImageOutput';
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
@@ -27,6 +28,7 @@ const []: ActionKeys[] = ['promptTransform', 'contextWindow'];
 const MainChatInput = memo(() => {
   const isDevMode = useUserStore((s) => userGeneralSettingsSelectors.config(s).isDevMode);
   const sendMenuItems = useSendMenuItems();
+  const isDark = useIsDark();
 
   const model = useAgentStore(agentSelectors.currentAgentModel);
   const provider = useAgentStore(agentSelectors.currentAgentModelProvider);
@@ -38,9 +40,25 @@ const MainChatInput = memo(() => {
 
   const leftActions: ActionKeys[] = useMemo(() => [], []);
 
+  const inputContainerProps = useMemo(
+    () => ({
+      style: {
+        background: isDark ? '#2c2c2b' : '#ffffff',
+        border: isDark ? '1.5px solid rgba(255,255,255,0.08)' : '1.5px solid rgba(0,0,0,0.06)',
+        borderRadius: 32,
+        boxShadow: 'none',
+        minHeight: 60,
+        transition: 'background 0.25s ease, color 0.25s ease',
+        width: '100%',
+      },
+    }),
+    [isDark],
+  );
+
   return (
     <ChatInput
       skipScrollMarginWithList
+      inputContainerProps={inputContainerProps}
       isConfigLoading={isAgentConfigLoading}
       leftActions={leftActions}
       rightActions={rightActions}

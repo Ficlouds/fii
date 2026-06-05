@@ -149,7 +149,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
             <ChatInputActionBar
               style={actionBarStyle ?? { paddingInline: 12, paddingBlock: 12 }}
               left={loadingLeft ?? leftContent ?? (
-                <Flexbox horizontal align="center" gap={8} style={{ flex: 1, minWidth: 0, position: 'relative' }}>
+                <Flexbox horizontal align="center" gap={8} style={{ cursor: 'text', flex: 1, minWidth: 0, position: 'relative' }} onClick={() => editor?.focus()}>
                   <ActionBar
                     borderRadius={borderRadius}
                     dropdownPlacement={dropdownPlacement}
@@ -201,9 +201,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           }}
           {...inputContainerProps}
           className={cx(expand && styles.inputFullscreen, inputContainerProps?.className)}
-          styles={{ body: (expand || inputFocused) ? undefined : BODY_HIDDEN }}
-          onFocus={() => setInputFocused(true)}
-          onBlur={() => !hasText && setInputFocused(false)}
+          styles={{ body: expand ? undefined : BODY_HIDDEN }}
         >
           <InputEditor placeholder={placeholder} placeholderVariant={placeholderVariant} />
         </ChatInput>

@@ -191,9 +191,9 @@ const Home = memo(() => {
         </div>
       )}
 
-      {/* Content - centered in available space with smooth transition */}
-      <div style={{ display: 'flex', flex: 1, flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative', width: '100%' }}>
-        <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', margin: '0 auto', maxWidth: 860, marginTop: 'auto', marginBottom: 'auto', paddingInline: 20, paddingBlock: 60, width: '100%' }}>
+      {/* Content - centered */}
+      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', overflow: 'hidden', width: '100%' }}>
+        <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', paddingBlock: 60, paddingInline: 20, width: '100%', maxWidth: 860 }}>
         {/* Fi logo */}
         <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src={isDark || incognito ? '/logos/fi-icon-white.svg' : '/logos/fi-icon-black.svg'} alt="Fi" style={{ height: 72, width: 'auto' }} /></div>
 

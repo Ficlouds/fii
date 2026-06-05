@@ -183,7 +183,7 @@ const Home = memo(() => {
       {incognito && (
         <div style={{ alignItems: 'center', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', borderRadius: 24, color: '#fff', display: 'flex', gap: 8, padding: '6px 12px 6px 14px', position: 'absolute', right: 12, top: 12, zIndex: 10 }}>
           <img src="/logos/incognito-icon-white.svg" alt="incognito" style={{ height: 16, width: 16 }} />
-          <span style={{ fontSize: 12, fontWeight: 500, opacity: 0.9 }}>Off the record</span>
+          <span style={{ fontSize: 12, fontWeight: 500, opacity: 0.9 }}>This conversation won't be saved</span>
           <button
             onClick={toggleIncognito}
             style={{ alignItems: 'center', background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: '50%', color: '#fff', cursor: 'pointer', display: 'flex', height: 18, justifyContent: 'center', marginLeft: 2, padding: 0, width: 18 }}
@@ -207,7 +207,7 @@ const Home = memo(() => {
 
           {incognito && (
             <div style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)', fontSize: 12, fontWeight: 500, marginTop: 8, textAlign: 'center' }}>
-              Off the record
+              This conversation won't be saved
             </div>
           )}
         </div>

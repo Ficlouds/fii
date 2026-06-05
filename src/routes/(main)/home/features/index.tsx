@@ -171,7 +171,11 @@ const Home = memo(() => {
       {!incognito && (
         <button onClick={toggleIncognito} title="Incognito mode"
           style={{ alignItems: 'center', background: 'transparent', border: 'none', borderRadius: 8, cursor: 'pointer', display: 'flex', padding: 7, position: 'absolute', right: 4, top: 8, zIndex: 10 }}>
-          <IncognitoIcon active={false} />
+          <img
+            src={isDark ? '/logos/incognito-icon-white.svg' : '/logos/incognito-icon.svg'}
+            alt="incognito"
+            style={{ height: 20, opacity: 0.5, width: 20 }}
+          />
         </button>
       )}
 

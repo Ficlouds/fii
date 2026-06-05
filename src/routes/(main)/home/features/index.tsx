@@ -151,8 +151,8 @@ const Home = memo(() => {
         <IncognitoIcon active={incognito} />
       </button>
 
-      {/* Content - centered on full viewport offset by sidebar */}
-      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', marginLeft: `-${sidebarWidth}px`, transition: 'margin-left 0.15s ease', width: `calc(100% + ${sidebarWidth}px)` }}>
+      {/* Content - centered in available space with smooth transition */}
+      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', transition: 'all 0.15s ease', width: '100%' }}>
         <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%', maxWidth: 860, paddingInline: 20 }}>
         {/* Fi logo */}
         <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src="/logos/fi-icon.svg" alt="Fi" style={{ height: 72, width: 'auto' }} /></div>

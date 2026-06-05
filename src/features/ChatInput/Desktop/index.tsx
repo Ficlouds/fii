@@ -201,7 +201,9 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           }}
           {...inputContainerProps}
           className={cx(expand && styles.inputFullscreen, inputContainerProps?.className)}
-          styles={{ body: expand ? undefined : BODY_HIDDEN }}
+          styles={{ body: (expand || inputFocused) ? undefined : BODY_HIDDEN }}
+          onFocus={() => setInputFocused(true)}
+          onBlur={() => { if (!hasText) setInputFocused(false); }}
         >
           <InputEditor placeholder={placeholder} placeholderVariant={placeholderVariant} />
         </ChatInput>

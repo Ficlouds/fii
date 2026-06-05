@@ -278,4 +278,27 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     display: flex !important;
     align-items: center !important;
   }
+
+  /* Fix editor body - must appear INSIDE the input bar row, not above it */
+  [data-testid="chat-input"] {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  /* Hide the top spacer div that causes text to float above */
+  [data-testid="chat-input"] > div:first-child {
+    display: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+  /* Editor body inline */
+  [data-testid="chat-input"] .acss-1uegmkh {
+    order: 2 !important;
+    min-height: 0 !important;
+    max-height: 120px !important;
+    overflow-y: auto !important;
+  }
+  /* Action bar row */
+  [data-testid="chat-input"] .acss-1pldu16 {
+    order: 1 !important;
+  }
 `;

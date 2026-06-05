@@ -157,7 +157,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
                     <span
                       onClick={() => editor?.focus()}
                       style={{
-                        color: 'rgba(0,0,0,0.35)',
+                        color: 'var(--ant-color-text-placeholder)',
                         cursor: 'text',
                         flex: 1,
                         fontSize: 15,

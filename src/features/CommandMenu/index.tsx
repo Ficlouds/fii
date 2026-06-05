@@ -1,168 +1,98 @@
 'use client';
 
-import { Avatar, stopPropagation } from '@lobehub/ui';
-import { Command, defaultFilter } from 'cmdk';
-import { CornerDownLeft } from 'lucide-react';
+import { Command } from 'cmdk';
+import { Search, X } from 'lucide-react';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 import { useGlobalStore } from '@/store/global';
-
-import AskAgentCommands from './AskAgentCommands';
-import AskAIMenu from './AskAIMenu';
-import { CommandMenuProvider, useCommandMenuContext } from './CommandMenuContext';
-import CommandFooter from './components/CommandFooter';
-import CommandInput from './components/CommandInput';
-import MainMenu from './MainMenu';
-import SearchResults from './SearchResults';
-import { styles } from './styles';
-import ThemeMenu from './ThemeMenu';
 import { useCommandMenu } from './useCommandMenu';
+import { CommandMenuProvider, useCommandMenuContext } from './CommandMenuContext';
+import SearchResults from './SearchResults';
 
 const CLOSE_ANIMATION_DURATION = 150;
 
-interface CommandMenuContentProps {
-  isClosing: boolean;
-  onClose: () => void;
-}
-
-/**
- * Inner component that uses the context
- */
-const CommandMenuContent = memo<CommandMenuContentProps>(({ isClosing, onClose }) => {
-  const { t } = useTranslation('common');
-  const {
-    handleBack,
-    handleSendToSelectedAgent,
-    hasSearch,
-    isSearching,
-    searchQuery,
-    searchResults,
-    selectedAgent,
-  } = useCommandMenu();
-
-  const { setPages, page, pages, search, setSearch, setTypeFilter, setSelectedAgent, typeFilter } =
-    useCommandMenuContext();
-
-  // Ref for Command.List to control scroll position
+const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ isClosing, onClose }) => {
+  const { hasSearch, isSearching, searchQuery, searchResults, typeFilter } = useCommandMenu();
+  const { search, setSearch, setTypeFilter } = useCommandMenuContext();
   const listRef = useRef<HTMLDivElement>(null);
-  // State for controlled selection value (undefined lets cmdk auto-select first item)
-  const [value, setValue] = useState<string | undefined>();
 
-  // Reset scroll position and selection when search, page, or selectedAgent changes
   useEffect(() => {
-    if (listRef.current) {
-      listRef.current.scrollTop = 0;
-    }
-    setValue(undefined);
-  }, [search, page, selectedAgent]);
-
-  // Clear search input when entering certain submenu pages (but not ask-ai)
-  useEffect(() => {
-    if (page && page !== 'ask-ai') {
-      setSearch('');
-    }
-  }, [page, setSearch]);
-
-  // Search result items (value prefixed with "search-result ") are already ranked
-  // and ordered server-side — topics/messages by recency. cmdk would otherwise
-  // re-rank them by fuzzy match against the query; returning a constant keeps their
-  // server order (cmdk's sort is stable). They are force-mounted, so visibility is
-  // unaffected. The constant is below a strong command match (1 = exact, ~0.9 =
-  // prefix) so a well-matching built-in command still ranks above search results,
-  // but above incidental fuzzy matches — preserving the prior "rank after built-in
-  // commands" intent while fixing the within-group ordering.
-  const commandFilter = useCallback(
-    (itemValue: string, searchValue: string, keywords?: string[]) => {
-      if (itemValue.startsWith('search-result ')) return 0.5;
-      return defaultFilter?.(itemValue, searchValue, keywords) ?? 0;
-    },
-    [],
-  );
+    if (listRef.current) listRef.current.scrollTop = 0;
+  }, [search]);
 
   return (
-    <div className={styles.overlay} data-closing={isClosing} onClick={onClose}>
-      <div onClick={stopPropagation}>
+    <div
+      onClick={onClose}
+      style={{
+        alignItems: 'flex-start',
+        animation: isClosing ? 'fiSearchFadeOut 0.15s ease-out forwards' : 'fiSearchFadeIn 0.15s ease-out',
+        background: 'rgba(249,248,247,0.97)',
+        display: 'flex',
+        inset: 0,
+        justifyContent: 'center',
+        paddingTop: 100,
+        position: 'fixed',
+        zIndex: 9999,
+      }}
+    >
+      <style>{`
+        @keyframes fiSearchFadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fiSearchFadeOut { from { opacity: 1; } to { opacity: 0; } }
+        [cmdk-item] { cursor: pointer; }
+        [cmdk-item][aria-selected='true'] { background: rgba(0,0,0,0.04); border-radius: 10px; }
+        [cmdk-item]:hover { background: rgba(0,0,0,0.03); border-radius: 10px; }
+      `}</style>
+
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: '#ffffff',
+          borderRadius: 20,
+          boxShadow: '0 4px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.06)',
+          display: 'flex',
+          flexDirection: 'column',
+          maxHeight: '60vh',
+          overflow: 'hidden',
+          width: 'min(680px, 92vw)',
+        }}
+      >
         <Command
-          className={styles.commandRoot}
-          data-closing={isClosing}
-          filter={commandFilter}
-          shouldFilter={page !== 'ask-ai' && !selectedAgent && !search.trimStart().startsWith('@')}
-          value={value}
-          onValueChange={setValue}
+          shouldFilter={false}
           onKeyDown={(e) => {
-            // Enter key to send message to selected agent
-            if (e.key === 'Enter' && selectedAgent && search.trim()) {
-              e.preventDefault();
-              handleSendToSelectedAgent();
-              return;
-            }
-            // Tab key to ask AI
-            if (e.key === 'Tab' && page !== 'ask-ai' && !selectedAgent) {
-              e.preventDefault();
-              setPages([...pages, 'ask-ai']);
-              return;
-            }
-            // Escape goes to previous page, clears selected agent, or closes
-            if (e.key === 'Escape') {
-              e.preventDefault();
-              if (selectedAgent) {
-                setSelectedAgent(undefined);
-              } else if (pages.length > 0) {
-                handleBack();
-              } else {
-                onClose();
-              }
-            }
-            // Backspace clears selected agent when search is empty, or goes to previous page
-            if (e.key === 'Backspace' && !search) {
-              if (selectedAgent) {
-                e.preventDefault();
-                setSelectedAgent(undefined);
-              } else if (pages.length > 0) {
-                e.preventDefault();
-                setPages((prev) => prev.slice(0, -1));
-              }
-            }
+            if (e.key === 'Escape') { e.preventDefault(); onClose(); }
           }}
         >
-          <CommandInput />
-
-          <Command.List ref={listRef}>
-            {/* Hide cmdk's Empty when we have search results or are loading them,
-               since force-mounted items aren't counted by cmdk's internal filter */}
-            {!(hasSearch && (searchResults.length > 0 || isSearching)) && (
-              <Command.Empty>{t('cmdk.noResults')}</Command.Empty>
+          {/* Search input */}
+          <div style={{ alignItems: 'center', borderBottom: '1px solid rgba(0,0,0,0.07)', display: 'flex', gap: 14, padding: '20px 24px' }}>
+            <Search size={20} style={{ color: 'rgba(0,0,0,0.3)', flexShrink: 0 }} />
+            <Command.Input
+              autoFocus
+              maxLength={500}
+              placeholder="Search your conversations..."
+              value={search}
+              onValueChange={setSearch}
+              style={{ background: 'transparent', border: 'none', color: '#111', flex: 1, fontSize: 18, fontWeight: 400, minWidth: 0, outline: 'none' }}
+            />
+            {search ? (
+              <button onClick={() => setSearch('')} style={{ alignItems: 'center', background: 'rgba(0,0,0,0.07)', border: 'none', borderRadius: '50%', color: 'rgba(0,0,0,0.45)', cursor: 'pointer', display: 'flex', flexShrink: 0, height: 22, justifyContent: 'center', width: 22 }}>
+                <X size={12} />
+              </button>
+            ) : (
+              <kbd style={{ background: 'rgba(0,0,0,0.05)', borderRadius: 6, color: 'rgba(0,0,0,0.3)', fontSize: 11, padding: '3px 8px' }}>ESC</kbd>
             )}
+          </div>
 
-            {/* Show send command when agent is selected */}
-            {selectedAgent && (
-              <Command.Group>
-                <Command.Item
-                  disabled={!search.trim()}
-                  value="send-to-agent"
-                  onSelect={handleSendToSelectedAgent}
-                >
-                  <Avatar
-                    emojiScaleWithBackground
-                    avatar={selectedAgent.avatar}
-                    shape="square"
-                    size={20}
-                  />
-                  <div className={styles.itemContent}>
-                    <div className={styles.itemLabel}>
-                      {t('cmdk.sendToAgent', { agent: selectedAgent.title } as any)}
-                    </div>
-                  </div>
-                  <CornerDownLeft className={styles.icon} />
-                </Command.Item>
-              </Command.Group>
+          {/* Results */}
+          <Command.List ref={listRef} style={{ maxHeight: 'calc(60vh - 72px)', overflowY: 'auto', padding: '8px' }}>
+            {!hasSearch && (
+              <div style={{ color: 'rgba(0,0,0,0.3)', fontSize: 13, padding: '40px 20px', textAlign: 'center' }}>
+                Start typing to search your conversations
+              </div>
             )}
-
-            {/* Only show conversation search results */}
-            {hasSearch ? (
+            {hasSearch && (
               <SearchResults
                 isLoading={isSearching}
                 results={searchResults}
@@ -171,27 +101,14 @@ const CommandMenuContent = memo<CommandMenuContentProps>(({ isClosing, onClose }
                 onClose={onClose}
                 onSetTypeFilter={setTypeFilter}
               />
-            ) : (
-              <Command.Empty style={{ padding: '24px', textAlign: 'center', color: 'rgba(0,0,0,0.35)', fontSize: 13 }}>
-                Type to search your conversations...
-              </Command.Empty>
             )}
           </Command.List>
-
-          <CommandFooter />
         </Command>
       </div>
     </div>
   );
 });
 
-CommandMenuContent.displayName = 'CommandMenuContent';
-
-/**
- * CMDK Menu.
- *
- * Search everything in LobeHub.
- */
 const CommandMenu = memo(() => {
   const [open, setOpen] = useGlobalStore((s) => [s.status.showCommandMenu, s.updateSystemStatus]);
   const [mounted, setMounted] = useState(false);
@@ -199,72 +116,36 @@ const CommandMenu = memo(() => {
   const [isClosing, setIsClosing] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const location = useLocation();
-  const pathname = location.pathname;
 
-  // Ensure we're mounted on the client
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => { setMounted(true); }, []);
 
-  // Sync visibility with open state
   useEffect(() => {
-    if (open) {
-      setIsVisible(true);
-      setIsClosing(false);
-    }
+    if (open) { setIsVisible(true); setIsClosing(false); }
   }, [open]);
 
-  // Find App root node (.ant-app)
   useEffect(() => {
     if (!mounted) return;
-
-    const appElement = document.querySelector('.ant-app') as HTMLElement;
-    if (appElement) {
-      setAppRoot(appElement);
-      return;
-    }
-
-    // Fallback: use MutationObserver only if .ant-app not found yet
-    // Observe only direct children of body for better performance
-    const observer = new MutationObserver((_, obs) => {
-      const el = document.querySelector('.ant-app') as HTMLElement;
-      if (el) {
-        setAppRoot(el);
-        obs.disconnect(); // Stop observing once found
-      }
+    const el = document.querySelector('.ant-app') as HTMLElement;
+    if (el) { setAppRoot(el); return; }
+    const obs = new MutationObserver(() => {
+      const found = document.querySelector('.ant-app') as HTMLElement;
+      if (found) { setAppRoot(found); obs.disconnect(); }
     });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: false, // Only watch direct children, not entire DOM tree
-    });
-
-    // Fallback timeout: if .ant-app not found after 2s, use body
-    const timeoutId = setTimeout(() => {
-      observer.disconnect();
-      setAppRoot((prev) => prev || document.body);
-    }, 2000);
-
-    return () => {
-      observer.disconnect();
-      clearTimeout(timeoutId);
-    };
+    obs.observe(document.body, { childList: true });
+    setTimeout(() => { obs.disconnect(); setAppRoot((p) => p || document.body); }, 2000);
+    return () => obs.disconnect();
   }, [mounted]);
 
   const handleClose = useCallback(() => {
     if (isClosing) return;
     setIsClosing(true);
-    setTimeout(() => {
-      setOpen({ showCommandMenu: false });
-      setIsVisible(false);
-      setIsClosing(false);
-    }, CLOSE_ANIMATION_DURATION);
+    setTimeout(() => { setOpen({ showCommandMenu: false }); setIsVisible(false); setIsClosing(false); }, CLOSE_ANIMATION_DURATION);
   }, [isClosing, setOpen]);
 
   if (!mounted || !isVisible || !appRoot) return null;
 
   return createPortal(
-    <CommandMenuProvider pathname={pathname} onClose={handleClose}>
+    <CommandMenuProvider pathname={location.pathname} onClose={handleClose}>
       <CommandMenuContent isClosing={isClosing} onClose={handleClose} />
     </CommandMenuProvider>,
     appRoot,
@@ -272,5 +153,161 @@ const CommandMenu = memo(() => {
 });
 
 CommandMenu.displayName = 'CommandMenu';
+export default CommandMenu;
+ENDOFFILEcat > "/Users/cts13677/Desktop/f/src/features/CommandMenu/index.tsx" << 'ENDOFFILE'
+'use client';
 
+import { Command } from 'cmdk';
+import { Search, X } from 'lucide-react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
+import { useGlobalStore } from '@/store/global';
+import { useCommandMenu } from './useCommandMenu';
+import { CommandMenuProvider, useCommandMenuContext } from './CommandMenuContext';
+import SearchResults from './SearchResults';
+
+const CLOSE_ANIMATION_DURATION = 150;
+
+const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ isClosing, onClose }) => {
+  const { hasSearch, isSearching, searchQuery, searchResults, typeFilter } = useCommandMenu();
+  const { search, setSearch, setTypeFilter } = useCommandMenuContext();
+  const listRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (listRef.current) listRef.current.scrollTop = 0;
+  }, [search]);
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        alignItems: 'flex-start',
+        animation: isClosing ? 'fiSearchFadeOut 0.15s ease-out forwards' : 'fiSearchFadeIn 0.15s ease-out',
+        background: 'rgba(249,248,247,0.97)',
+        display: 'flex',
+        inset: 0,
+        justifyContent: 'center',
+        paddingTop: 100,
+        position: 'fixed',
+        zIndex: 9999,
+      }}
+    >
+      <style>{`
+        @keyframes fiSearchFadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fiSearchFadeOut { from { opacity: 1; } to { opacity: 0; } }
+        [cmdk-item] { cursor: pointer; }
+        [cmdk-item][aria-selected='true'] { background: rgba(0,0,0,0.04); border-radius: 10px; }
+        [cmdk-item]:hover { background: rgba(0,0,0,0.03); border-radius: 10px; }
+      `}</style>
+
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: '#ffffff',
+          borderRadius: 20,
+          boxShadow: '0 4px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.06)',
+          display: 'flex',
+          flexDirection: 'column',
+          maxHeight: '60vh',
+          overflow: 'hidden',
+          width: 'min(680px, 92vw)',
+        }}
+      >
+        <Command
+          shouldFilter={false}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') { e.preventDefault(); onClose(); }
+          }}
+        >
+          {/* Search input */}
+          <div style={{ alignItems: 'center', borderBottom: '1px solid rgba(0,0,0,0.07)', display: 'flex', gap: 14, padding: '20px 24px' }}>
+            <Search size={20} style={{ color: 'rgba(0,0,0,0.3)', flexShrink: 0 }} />
+            <Command.Input
+              autoFocus
+              maxLength={500}
+              placeholder="Search your conversations..."
+              value={search}
+              onValueChange={setSearch}
+              style={{ background: 'transparent', border: 'none', color: '#111', flex: 1, fontSize: 18, fontWeight: 400, minWidth: 0, outline: 'none' }}
+            />
+            {search ? (
+              <button onClick={() => setSearch('')} style={{ alignItems: 'center', background: 'rgba(0,0,0,0.07)', border: 'none', borderRadius: '50%', color: 'rgba(0,0,0,0.45)', cursor: 'pointer', display: 'flex', flexShrink: 0, height: 22, justifyContent: 'center', width: 22 }}>
+                <X size={12} />
+              </button>
+            ) : (
+              <kbd style={{ background: 'rgba(0,0,0,0.05)', borderRadius: 6, color: 'rgba(0,0,0,0.3)', fontSize: 11, padding: '3px 8px' }}>ESC</kbd>
+            )}
+          </div>
+
+          {/* Results */}
+          <Command.List ref={listRef} style={{ maxHeight: 'calc(60vh - 72px)', overflowY: 'auto', padding: '8px' }}>
+            {!hasSearch && (
+              <div style={{ color: 'rgba(0,0,0,0.3)', fontSize: 13, padding: '40px 20px', textAlign: 'center' }}>
+                Start typing to search your conversations
+              </div>
+            )}
+            {hasSearch && (
+              <SearchResults
+                isLoading={isSearching}
+                results={searchResults}
+                searchQuery={searchQuery}
+                typeFilter={typeFilter}
+                onClose={onClose}
+                onSetTypeFilter={setTypeFilter}
+              />
+            )}
+          </Command.List>
+        </Command>
+      </div>
+    </div>
+  );
+});
+
+const CommandMenu = memo(() => {
+  const [open, setOpen] = useGlobalStore((s) => [s.status.showCommandMenu, s.updateSystemStatus]);
+  const [mounted, setMounted] = useState(false);
+  const [appRoot, setAppRoot] = useState<HTMLElement | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => { setMounted(true); }, []);
+
+  useEffect(() => {
+    if (open) { setIsVisible(true); setIsClosing(false); }
+  }, [open]);
+
+  useEffect(() => {
+    if (!mounted) return;
+    const el = document.querySelector('.ant-app') as HTMLElement;
+    if (el) { setAppRoot(el); return; }
+    const obs = new MutationObserver(() => {
+      const found = document.querySelector('.ant-app') as HTMLElement;
+      if (found) { setAppRoot(found); obs.disconnect(); }
+    });
+    obs.observe(document.body, { childList: true });
+    setTimeout(() => { obs.disconnect(); setAppRoot((p) => p || document.body); }, 2000);
+    return () => obs.disconnect();
+  }, [mounted]);
+
+  const handleClose = useCallback(() => {
+    if (isClosing) return;
+    setIsClosing(true);
+    setTimeout(() => { setOpen({ showCommandMenu: false }); setIsVisible(false); setIsClosing(false); }, CLOSE_ANIMATION_DURATION);
+  }, [isClosing, setOpen]);
+
+  if (!mounted || !isVisible || !appRoot) return null;
+
+  return createPortal(
+    <CommandMenuProvider pathname={location.pathname} onClose={handleClose}>
+      <CommandMenuContent isClosing={isClosing} onClose={handleClose} />
+    </CommandMenuProvider>,
+    appRoot,
+  );
+});
+
+CommandMenu.displayName = 'CommandMenu';
 export default CommandMenu;

@@ -43,7 +43,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         className={isDarkMode ? styles.contentDark : styles.contentLight}
         flex={1}
         height={'100%'}
-        style={cssVariables}
+        style={{ ...cssVariables, transition: 'width 0.15s ease, flex 0.15s ease' }}
         width={'100%'}
       >
         {content}

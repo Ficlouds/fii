@@ -36,28 +36,21 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   if (!hasActivated) return null;
 
   return (
-    <div style={{ height: '100%', position: 'relative', width: '100%' }}>
-      {/* Content area - full width, doesn't move */}
-      <div
-        style={{
-          bottom: 0,
-          left: 0,
-          overflow: 'hidden',
-          position: 'absolute',
-          right: 0,
-          top: 0,
-        }}
+    <>
+      {/* Register sidebar content via portal - no layout impact */}
+      <Sidebar />
+      <Flexbox
         className={isDarkMode ? styles.contentDark : styles.contentLight}
+        flex={1}
+        height={'100%'}
+        style={cssVariables}
+        width={'100%'}
       >
         {content}
-      </div>
-      {/* Sidebar - overlays on top of content */}
-      <div style={{ height: '100%', left: 0, position: 'absolute', top: 0, zIndex: 10 }}>
-        <Sidebar />
-      </div>
+      </Flexbox>
       <HomeAgentIdSync />
       <RecentHydration />
-    </div>
+    </>
   );
 };
 

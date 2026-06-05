@@ -96,6 +96,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
     const [rotIdx, setRotIdx] = useState(0);
     const [rotVisible, setRotVisible] = useState(true);
     const [hasText, setHasText] = useState(false);
+    const [inputFocused, setInputFocused] = useState(false);
 
     useEffect(() => {
       if (editor) editor.focus();
@@ -157,7 +158,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
                   {/* Rotating placeholder - left aligned after + button */}
                   {isHomePage && !hasText && !expand && (
                     <span
-                      onClick={() => editor?.focus()}
+                      onClick={() => { setInputFocused(true); editor?.focus(); }}
                       style={{
                         color: isDark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.45)',
                         cursor: 'text',
@@ -202,7 +203,9 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           }}
           {...inputContainerProps}
           className={cx(expand && styles.inputFullscreen, inputContainerProps?.className)}
-          styles={{ body: expand ? undefined : BODY_HIDDEN }}
+          styles={{ body: (expand || inputFocused) ? undefined : BODY_HIDDEN }}
+          onFocus={() => setInputFocused(true)}
+          onBlur={() => !hasText && setInputFocused(false)}
         >
           <InputEditor placeholder={placeholder} placeholderVariant={placeholderVariant} />
         </ChatInput>

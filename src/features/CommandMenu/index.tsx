@@ -120,7 +120,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
       >
         {/* Search input */}
         <div style={{ alignItems: 'center', borderBottom: '1px solid rgba(0,0,0,0.08)', display: 'flex', gap: 12, padding: '16px 20px' }}>
-          <Search size={18} style={{ color: 'rgba(0,0,0,0.3)', flexShrink: 0 }} />
+          <Search size={18} style={{ color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', flexShrink: 0 }} />
           <input
             autoFocus
             maxLength={500}
@@ -142,7 +142,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
         {/* Body */}
         <div style={{ display: 'flex', flex: 1, minHeight: 0, overflow: 'hidden' }}>
           {/* Left: list */}
-          <div style={{ borderRight: '1px solid rgba(0,0,0,0.07)', flex: '0 0 340px', overflowY: 'auto', padding: '8px 0' }}>
+          <div style={{ background: isDark ? '#1a1a19' : '#ffffff', borderRight: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.07)'}`, flex: '0 0 340px', overflowY: 'auto', padding: '8px 0' }}>
             {!hasSearch && convResults.length === 0 && (
               <div style={{ color: 'rgba(0,0,0,0.3)', fontSize: 13, padding: '40px 20px', textAlign: 'center' }}>
                 No recent conversations
@@ -167,9 +167,9 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
                       onMouseEnter={() => setSelected(r)}
                       style={{ alignItems: 'center', borderRadius: 8, cursor: 'pointer', display: 'flex', gap: 10, margin: '1px 8px', padding: '8px 10px' }}
                     >
-                      <MessageSquare size={14} style={{ color: 'rgba(0,0,0,0.3)', flexShrink: 0 }} />
+                      <MessageSquare size={14} style={{ color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', flexShrink: 0 }} />
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ color: '#111', fontSize: 13, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title || 'Untitled'}</div>
+                        <div style={{ color: isDark ? '#ffffff' : '#111', fontSize: 13, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title || 'Untitled'}</div>
                       </div>
                       <div style={{ color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.25)', flexShrink: 0, fontSize: 11 }}>{r.createdAt ? fmt(r.createdAt) : ''}</div>
                     </div>
@@ -180,7 +180,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
           </div>
 
           {/* Right: preview */}
-          <div style={{ alignItems: 'center', background: '#fafafa', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ alignItems: 'center', background: isDark ? '#2c2c2a' : '#fafafa', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
             {selected ? (
               <div style={{ padding: 24, width: '100%' }}>
                 <div style={{ color: isDark ? '#ffffff' : '#111', fontSize: 18, fontWeight: 600, marginBottom: 8 }}>{selected.title || 'Untitled'}</div>
@@ -194,7 +194,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
                 </button>
               </div>
             ) : (
-              <div style={{ color: isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)', fontSize: 13 }}>Select a conversation to preview</div>
+              <div style={{ color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.25)', fontSize: 13 }}>Select a conversation to preview</div>
             )}
           </div>
         </div>

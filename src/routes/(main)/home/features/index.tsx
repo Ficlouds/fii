@@ -153,7 +153,7 @@ const Home = memo(() => {
 
       {/* Content - centered in available space with smooth transition */}
       <div style={{ display: 'flex', flex: 1, flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative', width: '100%' }}>
-        <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', left: 0, margin: '0 auto', maxWidth: 860, paddingInline: 20, position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}>
+        <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', margin: '0 auto', maxWidth: 860, marginTop: 'auto', marginBottom: 'auto', paddingInline: 20, paddingBlock: 60, width: '100%' }}>
         {/* Fi logo */}
         <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src="/logos/fi-icon.svg" alt="Fi" style={{ height: 72, width: 'auto' }} /></div>
 

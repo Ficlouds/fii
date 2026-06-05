@@ -104,14 +104,15 @@ export const styles = createStaticStyles(({ css, cssVar }) => ({
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    width: min(640px, 92vw);
-    max-height: min(480px, 70vh);
-    border-radius: 12px;
+    width: 100%;
+    max-width: 100%;
+    max-height: 70vh;
+    border-radius: 20px 20px 0 0;
     background: #ffffff;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06);
-    animation: ${slideDown} 0.12s ease-out;
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.15);
+    animation: ${slideDown} 0.2s ease-out;
     &[data-closing='true'] { animation: ${slideUp} 0.15s ease-out forwards; }
-    [cmdk-input] { flex: 1; min-width: 0; padding: 0; border: none; font-family: inherit; font-size: 15px; color: #111; background: transparent; outline: none; &::placeholder { color: rgba(0,0,0,0.3); } }
+    [cmdk-input] { flex: 1; min-width: 0; padding: 0; border: none; font-family: inherit; font-size: 16px; color: #111; background: transparent; outline: none; &::placeholder { color: rgba(0,0,0,0.3); } }
     [cmdk-list] {
       overflow-y: auto;
       max-height: 400px;
@@ -267,10 +268,10 @@ export const styles = createStaticStyles(({ css, cssVar }) => ({
     z-index: 9999;
     inset: 0;
     display: flex;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: center;
-    padding-block-start: 80px;
-    background: rgba(0,0,0,0.3);
+    padding-block-start: 0;
+    background: rgba(0,0,0,0.35);
     animation: ${fadeIn} 0.1s ease-in-out;
     &[data-closing='true'] { animation: ${fadeOut} 0.15s ease-out forwards; }
   `,

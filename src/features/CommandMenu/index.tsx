@@ -49,7 +49,6 @@ const ORDER = ['Today', 'Yesterday', 'Last 7 Days', 'Last 30 Days', 'Older'];
 const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ isClosing, onClose }) => {
   const { hasSearch, isSearching, searchResults } = useCommandMenu();
   const isDark = useIsDark();
-  const isDark = useIsDark();
   const { search, setSearch } = useCommandMenuContext();
   const navigate = useNavigate();
   const [selected, setSelected] = useState<any>(null);

@@ -10,6 +10,7 @@ import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
 import { useChatInputStore } from '@/features/ChatInput/store';
+import { useIsDark } from '@/hooks/useIsDark';
 import { LayoutContainerContext } from '@/routes/(main)/_layout/DesktopLayoutContainer/LayoutContainerContext';
 import { useChatStore } from '@/store/chat';
 import { chatSelectors } from '@/store/chat/selectors';
@@ -89,6 +90,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
     const chatKey = useChatStore(chatSelectors.currentChatKey);
     const setExpand = useChatInputStore((s) => s.setExpand);
     const skillDrop = useSkillDrop();
+    const isDark = useIsDark();
 
     // Rotating placeholder
     const [rotIdx, setRotIdx] = useState(0);
@@ -157,7 +159,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
                     <span
                       onClick={() => editor?.focus()}
                       style={{
-                        color: 'rgba(0,0,0,0.45)',
+                        color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.45)',
                         cursor: 'text',
                         fontSize: 15,
                         left: 44,

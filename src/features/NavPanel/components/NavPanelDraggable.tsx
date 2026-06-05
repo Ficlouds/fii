@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useActiveTabKey } from '@/hooks/useActiveTabKey';
 import { useGlobalStore } from '@/store/global';
 import { systemStatusSelectors } from '@/store/global/selectors';
+import { useIsDark } from '@/hooks/useIsDark';
 import UserAvatar from '@/features/User/UserAvatar';
 import UserPanel from '@/features/User/UserPanel';
 
@@ -114,6 +115,7 @@ export const NavPanelDraggable = memo<NavPanelDraggableProps>(({ activeContent }
     systemStatusSelectors.showLeftPanel(s),
     s.toggleLeftPanel,
   ]);
+  const isDark = useIsDark();
   const tab = useActiveTabKey();
   const navigate = useNavigate();
 
@@ -141,7 +143,7 @@ export const NavPanelDraggable = memo<NavPanelDraggableProps>(({ activeContent }
           onClick={() => togglePanel(true)}
         >
           <div style={{ marginBottom: 12, marginTop: 4 }}>
-            <img src="/logos/fi-icon.svg" alt="Fi" style={{ height: 20, width: 'auto' }} />
+            <img src={isDark ? '/logos/fi-icon-white.svg' : '/logos/fi-icon-black.svg'} alt="Fi" style={{ height: 20, width: 'auto' }} />
           </div>
 
           {COLLAPSED_KEYS.map((key) => {

@@ -183,7 +183,7 @@ const Home = memo(() => {
       {incognito && (
         <div style={{ alignItems: 'center', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', borderRadius: 24, color: '#fff', display: 'flex', gap: 8, padding: '6px 12px 6px 14px', position: 'absolute', right: 12, top: 12, zIndex: 10 }}>
           <img src="/logos/incognito-icon-white.svg" alt="incognito" style={{ height: 16, width: 16 }} />
-          <span style={{ fontSize: 12, fontWeight: 500, opacity: 0.9 }}>This conversation won't be saved</span>
+          <span style={{ fontSize: 12, fontWeight: 500, opacity: 0.9 }}>Off the record</span>
           <button
             onClick={toggleIncognito}
             style={{ alignItems: 'center', background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: '50%', color: '#fff', cursor: 'pointer', display: 'flex', height: 18, justifyContent: 'center', marginLeft: 2, padding: 0, width: 18 }}
@@ -199,7 +199,7 @@ const Home = memo(() => {
       <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', overflow: 'hidden', paddingTop: 80, width: '100%' }}>
         <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', paddingBottom: 60, paddingInline: 20, width: '100%', maxWidth: 860 }}>
         {/* Fi logo */}
-        <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src={isDark || incognito ? '/logos/fi-icon-white.svg' : '/logos/fi-icon-black.svg'} alt="Fi" style={{ height: 72, width: 'auto' }} /></div>
+        <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src={isDark ? '/logos/fi-icon-white.svg' : '/logos/fi-icon-black.svg'} alt="Fi" style={{ height: 72, width: 'auto' }} /></div>
 
         {/* Input */}
         <div style={{ width: '100%', maxWidth: MAX_WIDTH, paddingInline: 20, position: 'relative' }}>
@@ -207,7 +207,7 @@ const Home = memo(() => {
 
           {incognito && (
             <div style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)', fontSize: 12, fontWeight: 500, marginTop: 8, textAlign: 'center' }}>
-              This conversation won't be saved
+              Off the record
             </div>
           )}
         </div>

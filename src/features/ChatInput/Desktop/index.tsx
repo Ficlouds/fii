@@ -1,7 +1,6 @@
 'use client';
 
 import { type ChatInputProps } from '@lobehub/editor/react';
-import { useNavigate } from 'react-router-dom';
 import { ChatInput, ChatInputActionBar } from '@lobehub/editor/react';
 import { Center, Flexbox, Skeleton, Text } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
@@ -92,7 +91,6 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
     const setExpand = useChatInputStore((s) => s.setExpand);
     const skillDrop = useSkillDrop();
     const isDark = useIsDark();
-    const navigate = useNavigate();
 
     // Rotating placeholder
     const [rotIdx, setRotIdx] = useState(0);
@@ -131,48 +129,6 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
 
     const isHomePage = !expand;
 
-    // Home page fake input - navigates to chat on click
-    if (isHomePage && !expand) {
-      return (
-        <div
-          onClick={() => navigate('/chat')}
-          style={{
-            alignItems: 'center',
-            background: isDark ? '#2c2c2b' : '#ffffff',
-            border: isDark ? '1.5px solid rgba(255,255,255,0.08)' : '1.5px solid rgba(0,0,0,0.06)',
-            borderRadius: 32,
-            cursor: 'text',
-            display: 'flex',
-            gap: 8,
-            minHeight: 60,
-            paddingInline: 12,
-            paddingBlock: 12,
-            width: '100%',
-          }}
-        >
-          <ActionBar
-            borderRadius={borderRadius}
-            dropdownPlacement={dropdownPlacement}
-            extraActionItems={extraActionItems}
-          />
-          <span style={{
-            color: isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.35)',
-            flex: 1,
-            fontSize: 15,
-            opacity: rotVisible ? 1 : 0,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            transition: 'opacity 0.25s ease',
-            userSelect: 'none',
-            whiteSpace: 'nowrap',
-          }}>
-            {ROTATING[rotIdx]}
-          </span>
-          <SendArea />
-        </div>
-      );
-    }
-
     const content = (
       <Flexbox
         className={cx(styles.container, expand && styles.fullscreen)}
@@ -200,7 +156,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
                     extraActionItems={extraActionItems}
                   />
                   {/* Rotating placeholder - left aligned after + button */}
-                  {isHomePage && !hasText && !expand && (
+                  {isHomePage && !hasText && !expand && !inputFocused && (
                     <span
                       onClick={() => { setInputFocused(true); editor?.focus(); }}
                       style={{
@@ -245,7 +201,9 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           }}
           {...inputContainerProps}
           className={cx(expand && styles.inputFullscreen, inputContainerProps?.className)}
-          styles={{ body: expand ? undefined : BODY_HIDDEN }}
+          styles={{ body: (expand || inputFocused) ? undefined : BODY_HIDDEN }}
+          onFocus={() => setInputFocused(true)}
+          onBlur={() => { if (!hasText) setInputFocused(false); }}
         >
           <InputEditor placeholder={placeholder} placeholderVariant={placeholderVariant} />
         </ChatInput>

@@ -7,6 +7,7 @@ import { useInitAgentConfig } from '@/hooks/useInitAgentConfig';
 import { useAgentStore } from '@/store/agent';
 import { agentByIdSelectors } from '@/store/agent/selectors';
 import { useChatStore } from '@/store/chat';
+import { useNavigate } from 'react-router-dom';
 import { useSend } from './useSend';
 
 const leftActions: ActionKeys[] = ['plus'];
@@ -19,6 +20,7 @@ interface InputAreaProps {
 const InputArea = ({ incognito = false }: InputAreaProps) => {
   const { loading, send, agentId } = useSend();
   const isDark = useIsDark();
+  const navigate = useNavigate();
   useInitAgentConfig(agentId);
   const isAgentConfigLoading = useAgentStore((s) =>
     agentByIdSelectors.isAgentConfigLoadingById(agentId ?? '')(s),

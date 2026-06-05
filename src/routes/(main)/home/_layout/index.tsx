@@ -36,24 +36,28 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   if (!hasActivated) return null;
 
   return (
-    <Flexbox
-      className={styles.absoluteContainer}
-      height={'100%'}
-      width={'100%'}
-      style={{ visibility: hasActivated ? 'visible' : 'hidden' }}
-    >
-      <Sidebar />
-      <Flexbox
+    <div style={{ height: '100%', position: 'relative', width: '100%' }}>
+      {/* Content area - full width, doesn't move */}
+      <div
+        style={{
+          bottom: 0,
+          left: 0,
+          overflow: 'hidden',
+          position: 'absolute',
+          right: 0,
+          top: 0,
+        }}
         className={isDarkMode ? styles.contentDark : styles.contentLight}
-        flex={1}
-        height={'100%'}
-        style={cssVariables}
       >
         {content}
-      </Flexbox>
+      </div>
+      {/* Sidebar - overlays on top of content */}
+      <div style={{ height: '100%', left: 0, position: 'absolute', top: 0, zIndex: 10 }}>
+        <Sidebar />
+      </div>
       <HomeAgentIdSync />
       <RecentHydration />
-    </Flexbox>
+    </div>
   );
 };
 

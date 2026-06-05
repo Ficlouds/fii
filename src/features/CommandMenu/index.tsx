@@ -188,7 +188,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
                 {selected.description && <div style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)', fontSize: 14, lineHeight: 1.6 }}>{selected.description}</div>}
                 <button
                   onClick={() => handleSelect(selected)}
-                  style={{ background: isDark ? '#ffffff' : '#111', border: 'none', borderRadius: 20, color: isDark ? '#111' : '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 600, marginTop: 20, padding: '8px 20px' }}
+                  style={{ background: isDark ? 'rgba(255,255,255,0.15)' : '#111', border: isDark ? '1px solid rgba(255,255,255,0.2)' : 'none', borderRadius: 20, color: isDark ? '#ffffff' : '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 600, marginTop: 20, padding: '8px 20px' }}
                 >
                   Open conversation →
                 </button>

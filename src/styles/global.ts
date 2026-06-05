@@ -52,12 +52,14 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     .${CLASSNAMES.DropdownMenuTrigger}[data-popup-open]:not([data-no-highlight])
   ) { opacity: 1; }
 
-  /* Smooth sidebar collapse */
-  .acss-1338lqi {
-    transition: none !important;
+  /* Disable React Activity content-visibility animation */
+  [hidden] {
+    content-visibility: hidden;
   }
-  .acss-1338lqi > * {
-    transition: none !important;
+  
+  /* Force no animation on content visibility change */
+  * {
+    content-visibility: visible !important;
   }
 
   /* Toggle panel button - only show in expanded sidebar */

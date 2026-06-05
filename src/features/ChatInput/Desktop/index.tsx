@@ -146,24 +146,26 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
             <ChatInputActionBar
               style={actionBarStyle ?? { paddingInline: 12, paddingBlock: 12 }}
               left={loadingLeft ?? leftContent ?? (
-                <Flexbox horizontal align="center" gap={8} style={{ flex: 1, minWidth: 0 }}>
+                <Flexbox horizontal align="center" gap={8} style={{ flex: 1, minWidth: 0, position: 'relative' }}>
                   <ActionBar
                     borderRadius={borderRadius}
                     dropdownPlacement={dropdownPlacement}
                     extraActionItems={extraActionItems}
                   />
-                  {/* Rotating placeholder inline */}
+                  {/* Rotating placeholder - left aligned after + button */}
                   {isHomePage && !hasText && !expand && (
                     <span
                       onClick={() => editor?.focus()}
                       style={{
                         color: 'var(--ant-color-text-placeholder)',
                         cursor: 'text',
-                        flex: 1,
                         fontSize: 15,
+                        left: 44,
                         opacity: rotVisible ? 1 : 0,
                         overflow: 'hidden',
                         pointerEvents: 'auto',
+                        position: 'absolute',
+                        right: 0,
                         textAlign: 'left',
                         textOverflow: 'ellipsis',
                         transition: 'opacity 0.25s ease',

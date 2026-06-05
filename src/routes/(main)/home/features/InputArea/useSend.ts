@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import type { MutableRefObject } from 'react';
 
 import type { SendButtonHandler } from '@/features/ChatInput/store/initialState';
 import { useHomeDailyBrief } from '@/hooks/useHomeDailyBrief';
@@ -7,6 +6,7 @@ import { agentService } from '@/services/agent';
 import { useAgentStore } from '@/store/agent';
 import { useChatStore } from '@/store/chat';
 import { fileChatSelectors, useFileStore } from '@/store/file';
+import { useActiveConversationStore } from '@/store/home/activeConversation';
 import { useHomeStore } from '@/store/home';
 
 import { useResolvedHomeAgentId } from '../AgentSelect/useResolvedHomeAgentId';
@@ -33,12 +33,7 @@ const ensureAgentConfigLoaded = async (agentId: string): Promise<void> => {
   if (config) agentState.internal_dispatchAgentMap(agentId, config);
 };
 
-interface UseSendOptions {
-  activeTopicIdRef?: MutableRefObject<string | undefined>;
-  onTopicReady?: (agentId: string, topicId: string) => void;
-}
-
-export const useSend = (options?: UseSendOptions) => {
+export const useSend = () => {
   const sendMessage = useChatStore((s) => s.sendMessage);
   const clearChatUploadFileList = useFileStore((s) => s.clearChatUploadFileList);
   const clearChatContextSelections = useFileStore((s) => s.clearChatContextSelections);
@@ -123,7 +118,8 @@ export const useSend = (options?: UseSendOptions) => {
             // yet — block on the fetch so sendMessage finds a real config below.
             await ensureAgentConfigLoaded(activeAgentId);
 
-            const existingTopicId = options?.activeTopicIdRef?.current;
+            // Continue the current conversation if one is active, otherwise start a new one.
+            const existingTopicId = useActiveConversationStore.getState().conversation?.topicId;
             sendMessage({
               context: existingTopicId
                 ? { agentId: activeAgentId, topicId: existingTopicId }
@@ -133,8 +129,7 @@ export const useSend = (options?: UseSendOptions) => {
               files: fileList,
               message,
               onTopicCreated: (topicId) => {
-                if (options?.activeTopicIdRef) options.activeTopicIdRef.current = topicId;
-                options?.onTopicReady?.(activeAgentId, topicId);
+                useActiveConversationStore.getState().setConversation({ agentId: activeAgentId, topicId });
               },
             });
           }
@@ -151,8 +146,6 @@ export const useSend = (options?: UseSendOptions) => {
       sendMessage,
       clearChatContextSelections,
       clearChatUploadFileList,
-      options?.activeTopicIdRef,
-      options?.onTopicReady,
       currentPair,
       advance,
     ],

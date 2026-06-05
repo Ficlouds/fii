@@ -1,7 +1,8 @@
 import { BoxIcon, FolderIcon, PlusIcon, SearchIcon, ZapIcon } from 'lucide-react';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGlobalStore } from '@/store/global';
+import { useActiveConversationStore } from '@/store/home/activeConversation';
 import { featureFlagsSelectors, useServerConfigStore } from '@/store/serverConfig';
 export interface NavItem {
   hidden?: boolean;
@@ -30,6 +31,8 @@ export const useNavLayout = (): NavLayout => {
   const { t } = useTranslation('common');
   const toggleCommandMenu = useGlobalStore((s) => s.toggleCommandMenu);
   const { hideGitHub } = useServerConfigStore(featureFlagsSelectors);
+  const setConversation = useActiveConversationStore((s) => s.setConversation);
+  const handleNewChat = useCallback(() => setConversation(null), [setConversation]);
   const topNavItems = useMemo(
     () => [
       {
@@ -41,6 +44,7 @@ export const useNavLayout = (): NavLayout => {
       {
         icon: PlusIcon,
         key: 'newchat',
+        onClick: handleNewChat,
         url: '/',
         title: 'New Chat',
       },
@@ -63,7 +67,7 @@ export const useNavLayout = (): NavLayout => {
         title: 'Artifacts',
       },
     ] as NavItem[],
-    [t, toggleCommandMenu],
+    [t, toggleCommandMenu, handleNewChat],
   );
   const bottomMenuItems = useMemo(() => [] as NavItem[], []);
   const footer = useMemo(

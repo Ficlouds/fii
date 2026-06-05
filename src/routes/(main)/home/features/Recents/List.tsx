@@ -6,6 +6,7 @@ import { taskDetailPath } from '@/features/AgentTasks/shared/taskDetailPath';
 import SkeletonList from '@/features/NavPanel/components/SkeletonList';
 import { useGlobalStore } from '@/store/global';
 import { systemStatusSelectors } from '@/store/global/selectors';
+import { useActiveConversationStore } from '@/store/home/activeConversation';
 import { useHomeStore } from '@/store/home';
 import { homeRecentSelectors } from '@/store/home/selectors';
 
@@ -17,7 +18,7 @@ const GROUP_LABEL_STYLE = {
   fontWeight: 600,
   letterSpacing: '0.04em',
   padding: '8px 10px 2px', paddingLeft: 10,
-  
+
   textTransform: 'uppercase' as const,
 };
 
@@ -35,6 +36,7 @@ const RecentsList = memo(() => {
   const recents = useHomeStore(homeRecentSelectors.recents);
   const isInit = useHomeStore(homeRecentSelectors.isRecentsInit);
   const recentPageSize = useGlobalStore(systemStatusSelectors.recentPageSize);
+  const setConversation = useActiveConversationStore((s) => s.setConversation);
   const displayItems = useMemo(() => recents.slice(0, recentPageSize), [recents, recentPageSize]);
 
   const getRecentRoute = useCallback((item: (typeof displayItems)[number]) => {
@@ -54,15 +56,31 @@ const RecentsList = memo(() => {
     return <SkeletonList rows={3} />;
   }
 
-  const renderItem = (item: (typeof displayItems)[number]) => (
-    <Link
-      key={`${item.type}-${item.id}`}
-      style={{ color: 'inherit', textDecoration: 'none' }}
-      to={getRecentRoute(item)}
-    >
-      <RecentListItem {...item} />
-    </Link>
-  );
+  const renderItem = (item: (typeof displayItems)[number]) => {
+    // Topic items load in-page — no navigation
+    if (item.type === 'topic' && item.agentId) {
+      return (
+        <div
+          key={`${item.type}-${item.id}`}
+          style={{ cursor: 'pointer' }}
+          onClick={() => setConversation({ agentId: item.agentId!, topicId: item.id })}
+        >
+          <RecentListItem {...item} />
+        </div>
+      );
+    }
+
+    // Documents/tasks still navigate (they're not conversations)
+    return (
+      <Link
+        key={`${item.type}-${item.id}`}
+        style={{ color: 'inherit', textDecoration: 'none' }}
+        to={getRecentRoute(item)}
+      >
+        <RecentListItem {...item} />
+      </Link>
+    );
+  };
 
   return (
     <Flexbox gap={1} style={{ paddingInline: '0px 4px' }}>

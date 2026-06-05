@@ -275,11 +275,91 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   }
   [data-testid="chat-input"] .acss-1uegmkh {
     padding: 0 !important;
-    display: flex !important;
-    align-items: center !important;
+    display: block !important;
+    text-align: left !important;
+  }
+  [data-testid="chat-input"] .acss-3kh57l {
+    flex: 1 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    position: relative !important;
+  }
+  [data-testid="chat-input"] .acss-3kh57l > * {
+    width: 100% !important;
+  }
+
+  [data-testid="chat-input"] .acss-158j65s {
+    width: 100% !important;
+  }
+  [data-testid="chat-input"] .acss-158j65s p {
+    width: 100% !important;
+    text-align: left !important;
+  }
+  [data-testid="chat-input"] [class*="acss-1pldu16"] {
+    left: 0 !important;
+    transform: none !important;
+    text-align: left !important;
+    width: 100% !important;
   }
 
 
 
 
+
+  /* Delete confirmation modal - Claude style */
+  .ant-modal-content {
+    border-radius: 16px !important;
+    padding: 28px !important;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.12) !important;
+  }
+  .ant-modal-title {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #111 !important;
+    margin-bottom: 8px !important;
+  }
+  .ant-modal-body p {
+    color: rgba(0,0,0,0.5) !important;
+    font-size: 14px !important;
+  }
+  .ant-modal-footer {
+    margin-top: 24px !important;
+    display: flex !important;
+    gap: 8px !important;
+    justify-content: flex-end !important;
+  }
+  .ant-modal-footer .ant-btn {
+    border-radius: 20px !important;
+    height: 38px !important;
+    padding: 0 20px !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+  }
+  .ant-modal-footer .ant-btn-default {
+    border: 1px solid rgba(0,0,0,0.12) !important;
+    color: #111 !important;
+    background: #fff !important;
+  }
+  .ant-modal-footer .ant-btn-primary {
+    background: #c0392b !important;
+    border: none !important;
+    color: #fff !important;
+  }
+  .ant-modal-footer .ant-btn-primary:hover {
+    background: #a93226 !important;
+  }
+  html[data-theme='dark'] .ant-modal-content {
+    background: #2c2c2b !important;
+  }
+  html[data-theme='dark'] .ant-modal-title {
+    color: #ffffff !important;
+  }
+  html[data-theme='dark'] .ant-modal-body p {
+    color: rgba(255,255,255,0.5) !important;
+  }
+  html[data-theme='dark'] .ant-modal-footer .ant-btn-default {
+    border-color: rgba(255,255,255,0.12) !important;
+    color: #fff !important;
+    background: transparent !important;
+  }
 `;

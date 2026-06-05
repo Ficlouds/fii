@@ -119,11 +119,12 @@ const Body = memo(() => {
       return (
         <Link
           key={key}
-          to={navItem.url!}
+          to={navItem.url ?? '/'}
           onClick={(e) => {
             if (isModifierClick(e)) return;
             e.preventDefault();
-            navigate(navItem.url!);
+            navItem.onClick?.();
+            if (navItem.url) navigate(navItem.url);
           }}
         >
           <NavItem
@@ -134,7 +135,7 @@ const Body = memo(() => {
         </Link>
       );
     },
-    [navLinkItems, tab, getContextMenuItems, navigate],
+    [navLinkItems, tab, navigate],
   );
 
   const handleAccordionExpandedChange = useCallback(

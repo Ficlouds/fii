@@ -2,6 +2,7 @@
 
 import { ChevronDown } from 'lucide-react';
 import { memo, useEffect, useRef, useState } from 'react';
+import { useIsDark } from '@/hooks/useIsDark';
 import { createPortal } from 'react-dom';
 
 const AGENTS = [

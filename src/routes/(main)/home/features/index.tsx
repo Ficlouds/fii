@@ -1,11 +1,13 @@
 'use client';
 import { Discord, Slack, Telegram } from '@lobehub/ui/icons';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { ChatList, ConversationProvider } from '@/features/Conversation';
+import { useInitAgentConfig } from '@/hooks/useInitAgentConfig';
 import { useOperationState } from '@/hooks/useOperationState';
 import { useIsDark } from '@/hooks/useIsDark';
 import { useChatStore } from '@/store/chat';
 import { messageMapKey } from '@/store/chat/utils/messageMapKey';
+import { useActiveConversationStore } from '@/store/home/activeConversation';
 import InputArea from './InputArea';
 
 const MAX_WIDTH = 860;
@@ -117,15 +119,9 @@ const Home = memo(() => {
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const isDark = useIsDark();
 
-  // Conversation state — set when user sends the first message
-  const [chatContext, setChatContext] = useState<{ agentId: string; topicId: string } | null>(null);
-  const activeTopicIdRef = useRef<string | undefined>(undefined);
+  // Active conversation — written by useSend (new message) or sidebar recents click
+  const chatContext = useActiveConversationStore((s) => s.conversation);
   const hasStarted = chatContext !== null;
-
-  const handleTopicReady = useCallback((agentId: string, topicId: string) => {
-    activeTopicIdRef.current = topicId;
-    setChatContext({ agentId, topicId });
-  }, []);
 
   // Messages + operation state for ConversationProvider
   const chatContextKey = chatContext ? messageMapKey(chatContext) : null;
@@ -146,7 +142,7 @@ const Home = memo(() => {
     });
   }, []);
 
-  const incognitoOverlay = incognito && (
+  const incognitoOverlay = incognito && !hasStarted && (
     <>
       <style>{`
         .acss-12lasj6, [data-insp-path*="NavPanelDraggable"] {
@@ -158,14 +154,14 @@ const Home = memo(() => {
     </>
   );
 
-  const incognitoButton = !incognito && (
+  const incognitoButton = !incognito && !hasStarted && (
     <button onClick={toggleIncognito} title="Incognito mode"
       style={{ alignItems: 'center', background: 'transparent', border: 'none', borderRadius: 8, cursor: 'pointer', display: 'flex', padding: 7, position: 'absolute', right: 4, top: 8, zIndex: 10 }}>
       <img src={isDark ? '/logos/incognito-icon-white.svg' : '/logos/incognito-icon.svg'} alt="incognito" style={{ height: 20, opacity: 0.5, width: 20 }} />
     </button>
   );
 
-  const incognitoBanner = incognito && (
+  const incognitoBanner = incognito && !hasStarted && (
     <div style={{ alignItems: 'center', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', borderRadius: 24, color: '#fff', display: 'flex', gap: 8, padding: '6px 12px 6px 14px', position: 'absolute', right: 12, top: 12, zIndex: 10 }}>
       <img src="/logos/incognito-icon-white.svg" alt="incognito" style={{ height: 16, width: 16 }} />
       <span style={{ fontSize: 12, fontWeight: 500, opacity: 0.9 }}>Off the record</span>
@@ -196,11 +192,7 @@ const Home = memo(() => {
           </div>
           {/* Input fixed at bottom */}
           <div style={{ background: isDark ? '#1f1f1e' : '#f9f8f7', flexShrink: 0, paddingBlock: 12, paddingInline: 20, transition: 'background 0.2s ease' }}>
-            <InputArea
-              activeTopicIdRef={activeTopicIdRef}
-              incognito={incognito}
-              onTopicReady={handleTopicReady}
-            />
+            <InputArea incognito={incognito} />
             {incognito && (
               <div style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)', fontSize: 12, fontWeight: 500, marginTop: 8, textAlign: 'center' }}>
                 Off the record
@@ -228,11 +220,7 @@ const Home = memo(() => {
 
           {/* Input */}
           <div style={{ maxWidth: 860, paddingInline: 20, position: 'relative', width: '100%' }}>
-            <InputArea
-              activeTopicIdRef={activeTopicIdRef}
-              incognito={incognito}
-              onTopicReady={handleTopicReady}
-            />
+            <InputArea incognito={incognito} />
             {incognito && (
               <div style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)', fontSize: 12, fontWeight: 500, marginTop: 8, textAlign: 'center' }}>
                 Off the record

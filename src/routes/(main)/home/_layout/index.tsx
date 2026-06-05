@@ -37,13 +37,13 @@ const Layout: FC<LayoutProps> = ({ children }) => {
 
   return (
     <Activity mode={isHomeRoute ? 'visible' : 'hidden'} name="DesktopHomeLayout">
-      <Flexbox className={styles.absoluteContainer} height={'100%'} width={'100%'}>
+      <Flexbox className={styles.absoluteContainer} height={'100%'} width={'100%'} style={{ contain: 'strict' }}>
         <Sidebar />
         <Flexbox
           className={isDarkMode ? styles.contentDark : styles.contentLight}
           flex={1}
           height={'100%'}
-          style={cssVariables}
+          style={{ ...cssVariables, contain: 'strict' }}
         >
           {content}
         </Flexbox>

@@ -64,6 +64,8 @@ interface DesktopChatInputProps extends ActionToolbarProps {
   rightContent?: ReactNode;
   runtimeConfigSlot?: ReactNode;
   sendAreaPrefix?: ReactNode;
+  /** When true, renders the editor inline inside the action bar row (home page style). */
+  showEditorInline?: boolean;
   showFootnote?: boolean;
   showRuntimeConfig?: boolean;
 }
@@ -74,7 +76,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
     inputContainerProps, extentHeaderContent, actionBarStyle,
     borderRadius, extraActionItems, dropdownPlacement, hidden,
     isConfigLoading = false, leftContent, placeholder, placeholderVariant,
-    rightContent, sendAreaPrefix,
+    rightContent, sendAreaPrefix, showEditorInline = false,
   }) => {
     const { t } = useTranslation('chat');
     const layoutContainerRef = use(LayoutContainerContext);
@@ -92,11 +94,9 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
     const skillDrop = useSkillDrop();
     const isDark = useIsDark();
 
-    // Rotating placeholder
+    // Rotating placeholder (only active when editor is inline)
     const [rotIdx, setRotIdx] = useState(0);
     const [rotVisible, setRotVisible] = useState(true);
-    const [hasText, setHasText] = useState(false);
-    const [inputFocused, setInputFocused] = useState(false);
 
     useEffect(() => {
       if (editor) editor.focus();
@@ -104,6 +104,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
     }, [chatKey, editor, setExpand]);
 
     useEffect(() => {
+      if (!showEditorInline) return;
       const iv = setInterval(() => {
         setRotVisible(false);
         setTimeout(() => {
@@ -112,7 +113,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
         }, 250);
       }, 3000);
       return () => clearInterval(iv);
-    }, []);
+    }, [showEditorInline]);
 
     const shouldShowContextContainer =
       leftActions.flat().includes('fileUpload') || hasContextSelections || hasFiles;
@@ -127,7 +128,21 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
       <Skeleton.Button active shape="round" size="small" style={{ height: 32, minWidth: 64, width: 64 }} />
     ) : null;
 
-    const isHomePage = !expand;
+    const rotatingPlaceholder = (
+      <span
+        style={{
+          color: isDark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.45)',
+          fontSize: 15,
+          opacity: rotVisible ? 1 : 0,
+          pointerEvents: 'none',
+          transition: 'opacity 0.25s ease',
+          userSelect: 'none',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {ROTATING[rotIdx]}
+      </span>
+    );
 
     const content = (
       <Flexbox
@@ -149,33 +164,20 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
             <ChatInputActionBar
               style={actionBarStyle ?? { paddingInline: 12, paddingBlock: 12 }}
               left={loadingLeft ?? leftContent ?? (
-                <Flexbox horizontal align="center" gap={8} style={{ cursor: 'text', flex: 1, minWidth: 0, position: 'relative' }}>
+                <Flexbox horizontal align="center" gap={8} style={{ cursor: 'text', flex: 1, minWidth: 0 }}>
                   <ActionBar
                     borderRadius={borderRadius}
                     dropdownPlacement={dropdownPlacement}
                     extraActionItems={extraActionItems}
                   />
-                  {/* Rotating placeholder - left aligned after + button */}
-                  {isHomePage && !hasText && !expand && (
-                    <span
-                      onClick={() => { setInputFocused(true); editor?.focus(); }}
-                      style={{
-                        color: isDark ? 'rgba(255,255,255,0.55)' : 'rgba(0,0,0,0.45)',
-                        cursor: 'text',
-                        flex: 1,
-                        fontSize: 15,
-                        opacity: rotVisible ? 1 : 0,
-                        overflow: 'hidden',
-                        pointerEvents: 'auto',
-                        textAlign: 'left',
-                        textOverflow: 'ellipsis',
-                        transition: 'opacity 0.25s ease',
-                        userSelect: 'none',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {ROTATING[rotIdx]}
-                    </span>
+                  {showEditorInline && (
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <InputEditor
+                        defaultRows={1}
+                        placeholder={rotatingPlaceholder}
+                        placeholderVariant={placeholderVariant}
+                      />
+                    </div>
                   )}
                 </Flexbox>
               )}
@@ -197,13 +199,14 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           }
           onSizeChange={(h) => {
             updateSystemStatus({ chatInputHeight: h });
-            setHasText(h > 10);
           }}
           {...inputContainerProps}
           className={cx(expand && styles.inputFullscreen, inputContainerProps?.className)}
-          styles={{ body: expand ? undefined : BODY_HIDDEN }}
+          styles={{ body: showEditorInline ? BODY_HIDDEN : undefined }}
         >
-          <InputEditor placeholder={placeholder} placeholderVariant={placeholderVariant} />
+          {!showEditorInline && (
+            <InputEditor placeholder={placeholder} placeholderVariant={placeholderVariant} />
+          )}
         </ChatInput>
         {runtimeConfigSlot ?? (showRuntimeConfig && <RuntimeConfig />)}
         {showFootnote && !expand && (

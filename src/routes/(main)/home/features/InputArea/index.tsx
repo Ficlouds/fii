@@ -75,6 +75,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
           <DesktopChatInput
             dropdownPlacement="topLeft"
             inputContainerProps={inputContainerProps}
+            showEditorInline
             showRuntimeConfig={false}
           />
         </ChatInputProvider>

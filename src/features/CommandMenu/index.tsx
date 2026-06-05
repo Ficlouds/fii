@@ -55,6 +55,20 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
   const [selected, setSelected] = useState<any>(null);
   const recents = useHomeStore(homeRecentSelectors.recents);
 
+  // Fetch messages for preview
+  const previewKey = selected ? `${selected.agentId || 'inbox'}_${selected.id}` : null;
+  const previewMessages = useChatStore((s) => previewKey ? s.dbMessagesMap[previewKey] : undefined);
+
+  useEffect(() => {
+    if (!selected) return;
+    try {
+      const state = useChatStore.getState() as any;
+      if (state.useFetchMessages) {
+        state.useFetchMessages({ agentId: selected.agentId || 'inbox', topicId: selected.id });
+      }
+    } catch (e) {}
+  }, [selected?.id]);
+
   // Show search results when typing, otherwise show recents
   const searchConvResults = searchResults.filter((r: any) => r.type === 'topic' || r.type === 'message');
   const recentItems = (recents || []).map((r: any) => ({

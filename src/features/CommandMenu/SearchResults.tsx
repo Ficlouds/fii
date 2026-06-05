@@ -1,36 +1,11 @@
-import { DEFAULT_AVATAR } from '@lobechat/const';
-import { Avatar, Flexbox } from '@lobehub/ui';
 import { Command } from 'cmdk';
 import dayjs from 'dayjs';
-import {
-  Bot,
-  Brain,
-  ChevronRight,
-  FileText,
-  Folder,
-  Library,
-  MessageCircle,
-  MessageSquare,
-  Plug,
-  Puzzle,
-  Sparkles,
-  Users,
-} from 'lucide-react';
-import { memo, type ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
+import { MessageSquare, Search } from 'lucide-react';
+import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { SESSION_CHAT_TOPIC_URL } from '@/const/url';
 import { type SearchResult } from '@/database/repositories/search';
-import { useCommandMenuContext } from '@/features/CommandMenu/CommandMenuContext';
-import { useImageStore } from '@/store/image';
-import { generationTopicSelectors as imageGenerationTopicSelectors } from '@/store/image/slices/generationTopic/selectors';
-import { useVideoStore } from '@/store/video';
-import { generationTopicSelectors as videoGenerationTopicSelectors } from '@/store/video/slices/generationTopic/selectors';
-import { markdownToTxt } from '@/utils/markdownToTxt';
-
-import { CommandItem } from './components';
-import { styles } from './styles';
 import { type ValidSearchType } from './utils/queryParser';
 
 interface SearchResultsProps {
@@ -42,580 +17,169 @@ interface SearchResultsProps {
   typeFilter: ValidSearchType | undefined;
 }
 
-interface LocalGenerationTopicResult {
-  createdAt: Date;
-  id: string;
-  title: string;
-  updatedAt: Date;
-}
+const fmt = (d: Date | string) => dayjs(d).format('D MMMM YYYY');
 
-/**
- * Search results from unified search index.
- */
-const SearchResults = memo<SearchResultsProps>(
-  ({ isLoading, onClose, onSetTypeFilter, results, searchQuery, typeFilter }) => {
-    const { t } = useTranslation('common');
-    const { t: tImage } = useTranslation('image');
-    const { t: tVideo } = useTranslation('video');
-    const navigate = useNavigate();
-    const { menuContext } = useCommandMenuContext();
-    const imageTopics = useImageStore(imageGenerationTopicSelectors.generationTopics);
-    const activeImageTopicId = useImageStore((s) => s.activeGenerationTopicId);
-    const videoTopics = useVideoStore(videoGenerationTopicSelectors.generationTopics);
-    const activeVideoTopicId = useVideoStore((s) => s.activeGenerationTopicId);
+// ── CHANGE THIS NUMBER TO SWITCH OPTION ──
+const ACTIVE_OPTION = 2;
 
-    const handleNavigate = (result: SearchResult) => {
-      switch (result.type) {
-        case 'agent': {
-          navigate(`/agent/${result.id}?agent=${result.id}`);
-          break;
-        }
-        case 'chatGroup': {
-          navigate(`/group/${result.id}`);
-          break;
-        }
-        case 'topic': {
-          if (result.agentId) {
-            navigate(SESSION_CHAT_TOPIC_URL(result.agentId, result.id));
-          } else {
-            navigate(`/chat?topic=${result.id}`);
-          }
-          break;
-        }
-        case 'message': {
-          // Navigate to the topic/agent where the message is
-          if (result.topicId && result.agentId) {
-            navigate(`${SESSION_CHAT_TOPIC_URL(result.agentId, result.topicId)}#${result.id}`);
-          } else if (result.topicId) {
-            navigate(`/chat?topic=${result.topicId}#${result.id}`);
-          } else if (result.agentId) {
-            navigate(`/agent/${result.agentId}#${result.id}`);
-          } else {
-            navigate(`/chat#${result.id}`);
-          }
-          break;
-        }
-        case 'file': {
-          // Navigate to resource library with file parameter
-          const fileUrl = result.knowledgeBaseId
-            ? `/resource/library/${result.knowledgeBaseId}?file=${result.id}`
-            : `/resource?file=${result.id}`;
-          console.info('[SearchResults] File navigation:', {
-            fileDetails: result,
-            url: fileUrl,
-          });
-          navigate(fileUrl);
-          break;
-        }
-        case 'folder': {
-          // Navigate to folder by slug
-          if (result.knowledgeBaseId && result.slug) {
-            navigate(`/resource/library/${result.knowledgeBaseId}/${result.slug}`);
-          } else if (result.slug) {
-            navigate(`/resource/library/${result.slug}`);
-          } else {
-            // Fallback to library root if no slug
-            navigate(`/resource/library`);
-          }
-          break;
-        }
-        case 'page': {
-          navigate(`/page/${result.id.split('_')[1]}`);
-          break;
-        }
-        case 'mcp': {
-          navigate(`/community/mcp/${result.identifier}`);
-          break;
-        }
-        case 'plugin': {
-          navigate(`/community/mcp/${result.identifier}`);
-          break;
-        }
-        case 'communityAgent': {
-          navigate(`/community/agent/${result.identifier}`);
-          break;
-        }
-        case 'memory': {
-          navigate(`/memory/preferences?preferenceId=${result.id}`);
-          break;
-        }
-        case 'knowledgeBase': {
-          navigate(`/resource/library/${result.id}`);
-          break;
-        }
-      }
-      onClose();
-    };
+const SearchResults = memo<SearchResultsProps>(({ isLoading, onClose, results, searchQuery }) => {
+  const navigate = useNavigate();
 
-    const getIcon = (type: SearchResult['type']) => {
-      switch (type) {
-        case 'agent': {
-          return <Sparkles size={16} />;
-        }
-        case 'chatGroup': {
-          return <Users size={16} />;
-        }
-        case 'topic': {
-          return <MessageSquare size={16} />;
-        }
-        case 'message': {
-          return <MessageCircle size={16} />;
-        }
-        case 'file': {
-          return <FileText size={16} />;
-        }
-        case 'folder': {
-          return <Folder size={16} />;
-        }
-        case 'page': {
-          return <FileText size={16} />;
-        }
-        case 'mcp': {
-          return <Puzzle size={16} />;
-        }
-        case 'plugin': {
-          return <Plug size={16} />;
-        }
-        case 'communityAgent': {
-          return <Bot size={16} />;
-        }
-        case 'memory': {
-          return <Brain size={16} />;
-        }
-        case 'knowledgeBase': {
-          return <Library size={16} />;
-        }
-      }
-    };
-
-    const getTypeLabel = (type: SearchResult['type']) => {
-      switch (type) {
-        case 'agent': {
-          return t('cmdk.search.agent');
-        }
-        case 'chatGroup': {
-          return t('cmdk.search.chatGroup');
-        }
-        case 'topic': {
-          return t('cmdk.search.topic');
-        }
-        case 'message': {
-          return t('cmdk.search.message');
-        }
-        case 'file': {
-          return t('cmdk.search.file');
-        }
-        case 'folder': {
-          return t('cmdk.search.folder');
-        }
-        case 'page': {
-          return t('cmdk.search.page');
-        }
-        case 'mcp': {
-          return t('cmdk.search.mcp');
-        }
-        case 'plugin': {
-          return t('cmdk.search.plugin');
-        }
-        case 'communityAgent': {
-          return t('cmdk.search.assistant');
-        }
-        case 'memory': {
-          return t('cmdk.search.memory');
-        }
-        case 'knowledgeBase': {
-          return t('cmdk.search.knowledgeBase');
-        }
-      }
-    };
-
-    const getItemValue = (result: SearchResult) => {
-      const meta = [result.title, result.description].filter(Boolean).join(' ');
-      // Prefix with "search-result" to ensure these items rank after built-in commands
-      // Include ID to ensure uniqueness when multiple items have the same title
-      return `search-result ${result.type} ${result.id} ${meta}`.trim();
-    };
-
-    const getDescription = (result: SearchResult) => {
-      if (!result.description) return null;
-      // Sanitize markdown content for message search results
-      if (result.type === 'message') {
-        return markdownToTxt(result.description);
-      }
-      return result.description;
-    };
-
-    const getSubtitle = (result: SearchResult): ReactNode => {
-      const description = getDescription(result);
-
-      // Topic results: prefix with agent identity (avatar + title) so users can
-      // distinguish topics with the same name (e.g. customer email) across agents.
-      if (result.type === 'topic') {
-        const formattedDate = dayjs(result.createdAt).format('MMM D, YYYY');
-        if (!result.agent) {
-          return description ? `${description} · ${formattedDate}` : formattedDate;
-        }
-        return (
-          <Flexbox horizontal align="center" gap={6} style={{ minWidth: 0 }}>
-            <Avatar
-              avatar={result.agent.avatar || DEFAULT_AVATAR}
-              background={result.agent.backgroundColor || undefined}
-              size={14}
-            />
-            <span style={{ flex: 'none' }}>{result.agent.title || t('defaultAgent')}</span>
-            <span style={{ flex: 'none' }}>·</span>
-            <span style={{ flex: 'none' }}>{formattedDate}</span>
-            {description && (
-              <>
-                <span style={{ flex: 'none' }}>·</span>
-                <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {description}
-                </span>
-              </>
-            )}
-          </Flexbox>
-        );
-      }
-
-      // For message results, append creation date
-      if (result.type === 'message') {
-        const formattedDate = dayjs(result.createdAt).format('MMM D, YYYY');
-        if (description) {
-          return `${description} · ${formattedDate}`;
-        }
-        return formattedDate;
-      }
-
-      return description;
-    };
-
-    const handleSearchMore = (type: ValidSearchType) => {
-      onSetTypeFilter(type);
-    };
-
-    const localImageTopicResults: LocalGenerationTopicResult[] =
-      menuContext === 'painting'
-        ? (imageTopics || [])
-            .filter((topic) => {
-              const title = topic.title || tImage('topic.untitled');
-              return title.toLowerCase().includes(searchQuery.toLowerCase());
-            })
-            .sort((a, b) => {
-              if (a.id === activeImageTopicId) return -1;
-              if (b.id === activeImageTopicId) return 1;
-              return b.updatedAt.getTime() - a.updatedAt.getTime();
-            })
-            .slice(0, 8)
-            .map((topic) => ({
-              createdAt: topic.createdAt,
-              id: topic.id,
-              title: topic.title || tImage('topic.untitled'),
-              updatedAt: topic.updatedAt,
-            }))
-        : [];
-
-    const localVideoTopicResults: LocalGenerationTopicResult[] =
-      menuContext === 'video'
-        ? (videoTopics || [])
-            .filter((topic) => {
-              const title = topic.title || tVideo('topic.untitled');
-              return title.toLowerCase().includes(searchQuery.toLowerCase());
-            })
-            .sort((a, b) => {
-              if (a.id === activeVideoTopicId) return -1;
-              if (b.id === activeVideoTopicId) return 1;
-              return b.updatedAt.getTime() - a.updatedAt.getTime();
-            })
-            .slice(0, 8)
-            .map((topic) => ({
-              createdAt: topic.createdAt,
-              id: topic.id,
-              title: topic.title || tVideo('topic.untitled'),
-              updatedAt: topic.updatedAt,
-            }))
-        : [];
-
-    const hasResults = results.length > 0;
-    const hasLocalTopicResults =
-      localImageTopicResults.length > 0 || localVideoTopicResults.length > 0;
-
-    // Group results by type
-    const messageResults = results.filter((r) => r.type === 'message');
-    const chatGroupResults = results.filter((r) => r.type === 'chatGroup');
-    const agentResults = results.filter((r) => r.type === 'agent');
-    const topicResults = results.filter((r) => r.type === 'topic');
-    const fileResults = results.filter((r) => r.type === 'file');
-    const folderResults = results.filter((r) => r.type === 'folder');
-    const pageResults = results.filter((r) => r.type === 'page');
-    const memoryResults = results.filter((r) => r.type === 'memory');
-    const mcpResults = results.filter((r) => r.type === 'mcp');
-    const pluginResults = results.filter((r) => r.type === 'plugin');
-    const knowledgeBaseResults = results.filter((r) => r.type === 'knowledgeBase');
-    const assistantResults = results.filter((r) => r.type === 'communityAgent');
-
-    // Don't render anything if no results and not loading
-    if (!hasResults && !hasLocalTopicResults && !isLoading) {
-      return null;
+  const handleNavigate = (result: SearchResult) => {
+    if (result.type === 'topic') {
+      result.agentId
+        ? navigate(SESSION_CHAT_TOPIC_URL(result.agentId, result.id))
+        : navigate(`/chat?topic=${result.id}`);
+    } else if (result.type === 'message') {
+      result.topicId && result.agentId
+        ? navigate(`${SESSION_CHAT_TOPIC_URL(result.agentId, result.topicId)}#${result.id}`)
+        : navigate(`/chat#${result.id}`);
     }
+    onClose();
+  };
 
-    // Render a single result item with type prefix (like "Message > content")
-    const renderResultItem = (result: SearchResult) => {
-      const typeLabel = getTypeLabel(result.type);
-      const subtitle = getSubtitle(result);
+  const convResults = results.filter((r) => r.type === 'topic' || r.type === 'message');
 
-      // Hide type prefix when filtering by specific type
-      const showTypePrefix = !typeFilter;
+  if (!isLoading && convResults.length === 0 && searchQuery) {
+    return (
+      <Command.Empty>
+        <div style={{ color: 'rgba(0,0,0,0.3)', fontSize: 13, padding: '40px 20px', textAlign: 'center' }}>
+          No conversations found for "<strong style={{ color: '#111' }}>{searchQuery}</strong>"
+        </div>
+      </Command.Empty>
+    );
+  }
 
-      // Create title with or without type prefix
-      const titleWithPrefix = showTypePrefix ? (
-        <>
-          <span style={{ opacity: 0.5 }}>{typeLabel}</span>
-          <ChevronRight
-            size={14}
-            style={{
-              display: 'inline',
-              marginInline: '6px',
-              opacity: 0.5,
-              verticalAlign: 'middle',
-            }}
-          />
-          {result.title}
-        </>
-      ) : (
-        result.title
-      );
+  if (!isLoading && convResults.length === 0) return null;
 
-      return (
-        <CommandItem
-          forceMount
-          description={subtitle}
-          icon={getIcon(result.type)}
-          key={result.id}
-          title={titleWithPrefix}
-          value={getItemValue(result)}
-          variant="detailed"
-          onSelect={() => handleNavigate(result)}
-        />
-      );
-    };
+  // ── OPTION 1: Clean minimal rows with date on right ──
+  const Option1 = () => (
+    <Command.Group>
+      {convResults.map((r) => (
+        <Command.Item forceMount key={r.id} value={`search-result ${r.type} ${r.id} ${r.title}`} onSelect={() => handleNavigate(r)}>
+          <div style={{ alignItems: 'center', display: 'flex', gap: 12, padding: '10px 16px', width: '100%' }}>
+            <MessageSquare size={15} style={{ color: 'rgba(0,0,0,0.35)', flexShrink: 0 }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ color: '#111', fontSize: 14, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title || 'Untitled'}</div>
+              {r.description && <div style={{ color: 'rgba(0,0,0,0.4)', fontSize: 12, marginTop: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.description}</div>}
+            </div>
+            <div style={{ color: 'rgba(0,0,0,0.28)', flexShrink: 0, fontSize: 11 }}>{r.createdAt ? fmt(r.createdAt) : ''}</div>
+          </div>
+        </Command.Item>
+      ))}
+    </Command.Group>
+  );
 
-    // Helper to render "Search More" button
-    const renderSearchMore = (type: ValidSearchType, count: number) => {
-      // Don't show if already filtering by this type
-      if (typeFilter) return null;
+  // ── OPTION 2: Card style with subtle background ──
+  const Option2 = () => (
+    <Command.Group>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, padding: '8px 12px' }}>
+        {convResults.map((r) => (
+          <Command.Item forceMount key={r.id} value={`search-result ${r.type} ${r.id} ${r.title}`} onSelect={() => handleNavigate(r)} style={{ borderRadius: 10 }}>
+            <div style={{ alignItems: 'flex-start', background: 'rgba(0,0,0,0.02)', border: '1px solid rgba(0,0,0,0.05)', borderRadius: 10, display: 'flex', gap: 12, padding: '10px 14px', width: '100%' }}>
+              <div style={{ alignItems: 'center', background: '#f0f0f0', borderRadius: 8, display: 'flex', flexShrink: 0, height: 34, justifyContent: 'center', width: 34 }}>
+                <MessageSquare size={15} style={{ color: '#666' }} />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ color: '#111', fontSize: 14, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title || 'Untitled'}</div>
+                {r.description && <div style={{ color: 'rgba(0,0,0,0.45)', fontSize: 12, marginTop: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.description}</div>}
+                <div style={{ color: 'rgba(0,0,0,0.3)', fontSize: 11, marginTop: 4 }}>{r.createdAt ? fmt(r.createdAt) : ''}</div>
+              </div>
+            </div>
+          </Command.Item>
+        ))}
+      </div>
+    </Command.Group>
+  );
 
-      // Show if there are results (might have more)
-      if (count === 0) return null;
-
-      const typeLabel = getTypeLabel(type);
-      const titleText = `${t('cmdk.search.searchMore', { type: typeLabel })} with "${searchQuery}"`;
-
-      return (
-        <Command.Item
-          forceMount
-          key={`search-more-${type}`}
-          keywords={[`zzz-action-${type}`]}
-          value={`zzz-action-${type}-search-more`}
-          onSelect={() => handleSearchMore(type)}
-        >
-          <div className={styles.itemContent}>
-            <div className={styles.itemIcon}>{getIcon(type)}</div>
-            <div className={styles.itemDetails}>
-              <div className={styles.itemTitle}>{titleText}</div>
+  // ── OPTION 3: Two-line compact with left accent ──
+  const Option3 = () => (
+    <Command.Group>
+      {convResults.map((r) => (
+        <Command.Item forceMount key={r.id} value={`search-result ${r.type} ${r.id} ${r.title}`} onSelect={() => handleNavigate(r)}>
+          <div style={{ alignItems: 'stretch', display: 'flex', gap: 0, padding: '0 16px', width: '100%' }}>
+            <div style={{ background: '#111', borderRadius: 2, flexShrink: 0, marginBlock: 10, marginRight: 12, width: 3 }} />
+            <div style={{ flex: 1, minWidth: 0, paddingBlock: 10 }}>
+              <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ color: '#111', fontSize: 14, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title || 'Untitled'}</div>
+                <div style={{ color: 'rgba(0,0,0,0.28)', flexShrink: 0, fontSize: 11, marginLeft: 12 }}>{r.createdAt ? fmt(r.createdAt) : ''}</div>
+              </div>
+              {r.description && <div style={{ color: 'rgba(0,0,0,0.4)', fontSize: 12, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.description}</div>}
             </div>
           </div>
         </Command.Item>
-      );
-    };
+      ))}
+    </Command.Group>
+  );
 
-    return (
-      <>
-        {localImageTopicResults.length > 0 && (
-          <Command.Group forceMount>
-            {localImageTopicResults.map((result) => {
-              const formattedDate = dayjs(result.updatedAt).format('MMM D, YYYY');
-              return (
-                <CommandItem
-                  forceMount
-                  description={formattedDate}
-                  icon={<MessageSquare size={16} />}
-                  key={`image-topic-${result.id}`}
-                  value={`local-image-topic ${result.id} ${result.title}`}
-                  variant="detailed"
-                  title={
-                    <>
-                      <span style={{ opacity: 0.5 }}>{t('tab.image')}</span>
-                      <ChevronRight
-                        size={14}
-                        style={{
-                          display: 'inline',
-                          marginInline: '6px',
-                          opacity: 0.5,
-                          verticalAlign: 'middle',
-                        }}
-                      />
-                      {result.title}
-                    </>
-                  }
-                  onSelect={() => {
-                    navigate(`/image?topic=${result.id}`);
-                    onClose();
-                  }}
-                />
-              );
-            })}
-          </Command.Group>
-        )}
+  // ── OPTION 4: Spotlight style - large title, date below ──
+  const Option4 = () => (
+    <Command.Group heading={<span style={{ color: 'rgba(0,0,0,0.35)', fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', padding: '0 16px', textTransform: 'uppercase' }}>Conversations</span>}>
+      {convResults.map((r) => (
+        <Command.Item forceMount key={r.id} value={`search-result ${r.type} ${r.id} ${r.title}`} onSelect={() => handleNavigate(r)}>
+          <div style={{ alignItems: 'center', display: 'flex', gap: 14, padding: '12px 16px', width: '100%' }}>
+            <div style={{ alignItems: 'center', background: 'linear-gradient(135deg, #f5f5f5, #ebebeb)', borderRadius: 10, display: 'flex', flexShrink: 0, height: 38, justifyContent: 'center', width: 38 }}>
+              <MessageSquare size={16} style={{ color: '#555' }} />
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ color: '#111', fontSize: 15, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title || 'Untitled'}</div>
+              <div style={{ color: 'rgba(0,0,0,0.35)', fontSize: 12, marginTop: 2 }}>{r.createdAt ? fmt(r.createdAt) : ''}</div>
+            </div>
+            <div style={{ color: 'rgba(0,0,0,0.2)', flexShrink: 0, fontSize: 20 }}>›</div>
+          </div>
+        </Command.Item>
+      ))}
+    </Command.Group>
+  );
 
-        {localVideoTopicResults.length > 0 && (
-          <Command.Group forceMount>
-            {localVideoTopicResults.map((result) => {
-              const formattedDate = dayjs(result.updatedAt).format('MMM D, YYYY');
-              return (
-                <CommandItem
-                  forceMount
-                  description={formattedDate}
-                  icon={<MessageSquare size={16} />}
-                  key={`video-topic-${result.id}`}
-                  value={`local-video-topic ${result.id} ${result.title}`}
-                  variant="detailed"
-                  title={
-                    <>
-                      <span style={{ opacity: 0.5 }}>{t('tab.video')}</span>
-                      <ChevronRight
-                        size={14}
-                        style={{
-                          display: 'inline',
-                          marginInline: '6px',
-                          opacity: 0.5,
-                          verticalAlign: 'middle',
-                        }}
-                      />
-                      {result.title}
-                    </>
-                  }
-                  onSelect={() => {
-                    navigate(`/video?topic=${result.id}`);
-                    onClose();
-                  }}
-                />
-              );
-            })}
-          </Command.Group>
-        )}
+  // ── OPTION 5: Timeline style grouped by date ──
+  const grouped = convResults.reduce((acc: Record<string, SearchResult[]>, r) => {
+    const key = r.createdAt ? fmt(r.createdAt) : 'Unknown';
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(r);
+    return acc;
+  }, {});
 
-        {/* Render search results grouped by type without headers */}
-        {messageResults.length > 0 && (
-          <Command.Group forceMount>
-            {messageResults.map((result) => renderResultItem(result))}
-            {renderSearchMore('message', messageResults.length)}
-          </Command.Group>
-        )}
+  const Option5 = () => (
+    <>
+      {Object.entries(grouped).map(([date, items]) => (
+        <Command.Group key={date} heading={<span style={{ color: 'rgba(0,0,0,0.35)', fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', padding: '0 16px', textTransform: 'uppercase' }}>{date}</span>}>
+          {items.map((r) => (
+            <Command.Item forceMount key={r.id} value={`search-result ${r.type} ${r.id} ${r.title}`} onSelect={() => handleNavigate(r)}>
+              <div style={{ alignItems: 'center', display: 'flex', gap: 10, padding: '8px 16px 8px 28px', width: '100%' }}>
+                <MessageSquare size={14} style={{ color: 'rgba(0,0,0,0.3)', flexShrink: 0 }} />
+                <div style={{ color: '#111', flex: 1, fontSize: 14, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title || 'Untitled'}</div>
+              </div>
+            </Command.Item>
+          ))}
+        </Command.Group>
+      ))}
+    </>
+  );
 
-        {agentResults.length > 0 && (
-          <Command.Group forceMount>
-            {agentResults.map((result) => renderResultItem(result))}
-            {renderSearchMore('agent', agentResults.length)}
-          </Command.Group>
-        )}
+  const options: Record<number, JSX.Element> = { 1: <Option1 />, 2: <Option2 />, 3: <Option3 />, 4: <Option4 />, 5: <Option5 /> };
 
-        {chatGroupResults.length > 0 && (
-          <Command.Group forceMount>
-            {chatGroupResults.map((result) => renderResultItem(result))}
-            {renderSearchMore('chatGroup', chatGroupResults.length)}
-          </Command.Group>
-        )}
-
-        {topicResults.length > 0 && (
-          <Command.Group forceMount>
-            {topicResults.map((result) => renderResultItem(result))}
-            {renderSearchMore('topic', topicResults.length)}
-          </Command.Group>
-        )}
-
-        {pageResults.length > 0 && (
-          <Command.Group forceMount>
-            {pageResults.map((result) => renderResultItem(result))}
-            {renderSearchMore('page', pageResults.length)}
-          </Command.Group>
-        )}
-
-        {memoryResults.length > 0 && (
-          <Command.Group forceMount>
-            {memoryResults.map((result) => renderResultItem(result))}
-            {renderSearchMore('memory', memoryResults.length)}
-          </Command.Group>
-        )}
-
-        {fileResults.length > 0 && (
-          <Command.Group forceMount>
-            {fileResults.map((result) => renderResultItem(result))}
-            {renderSearchMore('file', fileResults.length)}
-          </Command.Group>
-        )}
-
-        {folderResults.length > 0 && (
-          <Command.Group forceMount>
-            {folderResults.map((result) => renderResultItem(result))}
-            {renderSearchMore('folder', folderResults.length)}
-          </Command.Group>
-        )}
-
-        {knowledgeBaseResults.length > 0 && (
-          <Command.Group forceMount>
-            {knowledgeBaseResults.map((result) => renderResultItem(result))}
-            {renderSearchMore('knowledgeBase', knowledgeBaseResults.length)}
-          </Command.Group>
-        )}
-
-        {mcpResults.length > 0 && (
-          <Command.Group forceMount>
-            {mcpResults.map((result) => renderResultItem(result))}
-            {renderSearchMore('mcp', mcpResults.length)}
-          </Command.Group>
-        )}
-
-        {pluginResults.length > 0 && (
-          <Command.Group forceMount>
-            {pluginResults.map((result) => renderResultItem(result))}
-            {renderSearchMore('plugin', pluginResults.length)}
-          </Command.Group>
-        )}
-
-        {assistantResults.length > 0 && (
-          <Command.Group forceMount>
-            {assistantResults.map((result) => renderResultItem(result))}
-            {renderSearchMore('communityAgent', assistantResults.length)}
-          </Command.Group>
-        )}
-
-        {/* Show loading skeleton below existing results */}
-        {isLoading && (
-          <Command.Group forceMount>
-            {[1, 2, 3].map((i) => (
-              <Command.Item
-                disabled
-                key={`skeleton-${i}`}
-                keywords={[searchQuery]}
-                value={`${searchQuery}-loading-skeleton-${i}`}
-              >
-                <div className={styles.skeleton} style={{ height: 20, width: 20 }} />
-                <div style={{ display: 'flex', flex: 1, flexDirection: 'column', gap: 4 }}>
-                  <div className={styles.skeleton} style={{ width: `${60 + i * 10}%` }} />
-                  <div
-                    className={styles.skeleton}
-                    style={{ height: 12, width: `${40 + i * 5}%` }}
-                  />
+  return (
+    <>
+      {options[ACTIVE_OPTION]}
+      {isLoading && (
+        <Command.Group>
+          {[1, 2, 3].map((i) => (
+            <Command.Item disabled key={`sk-${i}`} value={`loading-${i}`}>
+              <div style={{ alignItems: 'center', display: 'flex', gap: 12, padding: '10px 16px', width: '100%' }}>
+                <div style={{ background: 'rgba(0,0,0,0.06)', borderRadius: 6, flexShrink: 0, height: 28, width: 28 }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ background: 'rgba(0,0,0,0.06)', borderRadius: 4, height: 13, marginBottom: 5, width: `${50 + i * 15}%` }} />
+                  <div style={{ background: 'rgba(0,0,0,0.04)', borderRadius: 4, height: 11, width: `${30 + i * 10}%` }} />
                 </div>
-              </Command.Item>
-            ))}
-          </Command.Group>
-        )}
-      </>
-    );
-  },
-);
+              </div>
+            </Command.Item>
+          ))}
+        </Command.Group>
+      )}
+    </>
+  );
+});
 
 SearchResults.displayName = 'SearchResults';
-
 export default SearchResults;

@@ -105,9 +105,9 @@ export const styles = createStaticStyles(({ css, cssVar }) => ({
     display: flex;
     flex-direction: column;
 
-    width: min(640px, 90vw);
+    width: min(680px, 92vw);
     max-height: min(500px, 70vh);
-    border-radius: ${cssVar.borderRadiusLG};
+    border-radius: 16px;
 
     background: ${cssVar.colorBgElevated};
     box-shadow: ${cssVar.boxShadowSecondary};

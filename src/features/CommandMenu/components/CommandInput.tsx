@@ -115,14 +115,7 @@ const CommandInput = memo(() => {
           value={search}
           onValueChange={setSearch}
         />
-        {page !== 'ask-ai' && !hasSelectedAgent && search.trim() ? (
-          <>
-            <span style={{ fontSize: '14px', opacity: 0.6 }}>{t('cmdk.askAI')}</span>
-            <Tag>{t('cmdk.keyboard.Tab')}</Tag>
-          </>
-        ) : (
-          <Tag>{t('cmdk.keyboard.ESC')}</Tag>
-        )}
+        <Tag>{t('cmdk.keyboard.ESC')}</Tag>
       </div>
     </>
   );

@@ -13,8 +13,9 @@ const Home: FC = () => {
       <HomePageTracker />
       <NavHeader />
       <Flexbox
+        flex={1}
         height={'100%'}
-        style={{ overflowY: 'auto', paddingBlock: '44px 16vh' }}
+        style={{ overflow: 'hidden' }}
         width={'100%'}
       >
         <WideScreenContainer>

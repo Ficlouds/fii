@@ -83,6 +83,7 @@ const Layout: FC = () => {
           }
         >
           <NavPanel />
+          <div style={{ flex: 1, minWidth: 0, transition: 'margin-left 0.25s ease', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column' }}>
           <DesktopLayoutContainer>
             <MarketAuthProvider isDesktop={isDesktop}>
               <DesktopHomeLayout>
@@ -93,6 +94,7 @@ const Layout: FC = () => {
               </Suspense>
             </MarketAuthProvider>
           </DesktopLayoutContainer>
+          </div>
         </Flexbox>
       </DndContextWrapper>
       <Suspense fallback={null}>

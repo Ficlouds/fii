@@ -280,4 +280,38 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   }
 
 
+
+  /* HOME PAGE: Make editor body and action bar appear as ONE row */
+  /* The editor body sits behind, action bar overlays on top */
+  [data-testid="chat-input"] {
+    position: relative !important;
+    min-height: 60px !important;
+  }
+  /* Editor body - takes full space of container */
+  [data-testid="chat-input"] .acss-1uegmkh {
+    position: absolute !important;
+    inset: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    padding-inline: 56px 160px !important;
+    min-height: 60px !important;
+    z-index: 1 !important;
+    overflow: hidden !important;
+  }
+  [data-testid="chat-input"] .acss-3kh57l {
+    min-height: 0 !important;
+    width: 100% !important;
+  }
+  /* Action bar footer overlays on top of editor */
+  [data-testid="chat-input"] .acss-1pldu16 {
+    position: relative !important;
+    z-index: 2 !important;
+    background: transparent !important;
+    min-height: 60px !important;
+    pointer-events: auto !important;
+  }
+  /* Make action bar background transparent so editor shows through */
+  [data-testid="chat-input"] .acss-1pldu16 > div {
+    background: transparent !important;
+  }
 `;

@@ -223,4 +223,32 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   html[data-theme='dark'] div[style*="color: #111"] {
     color: #ffffff !important;
   }
+
+  /* Send button - replace icon with up arrow */
+  html[data-theme='dark'] .ant-btn-primary svg,
+  html[data-theme='light'] .ant-btn-primary svg {
+    display: none !important;
+  }
+  html[data-theme='dark'] .ant-btn-primary::after,
+  html[data-theme='light'] .ant-btn-primary::after {
+    content: '↑';
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* Mic button more visible in dark mode */
+  html[data-theme='dark'] [aria-label="Voice Input"] svg,
+  html[data-theme='dark'] [aria-label*="mic"] svg,
+  html[data-theme='dark'] [aria-label*="Voice"] svg {
+    color: rgba(255,255,255,0.8) !important;
+    stroke: rgba(255,255,255,0.8) !important;
+  }
+
+  /* Placeholder text left aligned */
+  html[data-theme='dark'] [data-testid="chat-input"] [cmdk-input]::placeholder,
+  html[data-theme='dark'] [data-testid="chat-input"] input::placeholder {
+    color: rgba(255,255,255,0.35) !important;
+    text-align: left !important;
+  }
 `;

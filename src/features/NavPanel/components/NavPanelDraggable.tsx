@@ -77,11 +77,18 @@ const styles = createStaticStyles(({ css }) => ({
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    color: rgba(0,0,0,0.6);
+    color: rgba(255,255,255,0.7);
     transition: background 0.15s, color 0.15s;
+    html[data-theme='light'] & {
+      color: rgba(0,0,0,0.6);
+    }
     &:hover {
-      background: rgba(0,0,0,0.07);
-      color: #111;
+      background: rgba(255,255,255,0.08);
+      color: #ffffff;
+      html[data-theme='light'] & {
+        background: rgba(0,0,0,0.07);
+        color: #111;
+      }
     }
     &:hover .tooltip {
       opacity: 1;

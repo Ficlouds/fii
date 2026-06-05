@@ -118,7 +118,7 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   html[data-theme='dark'] aside span,
   html[data-theme='dark'] aside a,
   html[data-theme='dark'] aside div span {
-    color: rgba(255,255,255,0.85) !important;
+    color: #ffffff !important;
   }
   html[data-theme='dark'] aside svg {
     color: rgba(255,255,255,0.7) !important;
@@ -133,7 +133,7 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     color: #ececec !important;
   }
   html[data-theme='dark'] [cmdk-item] {
-    color: rgba(255,255,255,0.85) !important;
+    color: #ffffff !important;
   }
   html[data-theme='dark'] [cmdk-item][aria-selected='true'] {
     background: rgba(255,255,255,0.06) !important;
@@ -199,13 +199,13 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   html[data-theme='dark'] * {
     --lobe-color-text: #ffffff;
     --ant-color-text: #ffffff;
-    --ant-color-text-secondary: rgba(255,255,255,0.75);
+    --ant-color-text-secondary: rgba(255,255,255,0.95);
   }
 
   /* Athena/model selector button */
   html[data-theme='dark'] button[style*="border-radius: 20px"],
   html[data-theme='dark'] button[style*="border-radius: 16px"] {
-    color: rgba(255,255,255,0.9) !important;
+    color: #ffffff !important;
     border-color: rgba(255,255,255,0.2) !important;
   }
 
@@ -214,13 +214,13 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   html[data-theme='dark'] [class*='email'],
   html[data-theme='dark'] [class*='user'] span,
   html[data-theme='dark'] [class*='User'] span {
-    color: rgba(255,255,255,0.85) !important;
+    color: #ffffff !important;
   }
 
   /* Any remaining black text in dark mode */
   html[data-theme='dark'] span[style*="color: rgb(17"],
   html[data-theme='dark'] span[style*="color: #111"],
   html[data-theme='dark'] div[style*="color: #111"] {
-    color: rgba(255,255,255,0.9) !important;
+    color: #ffffff !important;
   }
 `;

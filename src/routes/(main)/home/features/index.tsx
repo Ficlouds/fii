@@ -137,15 +137,15 @@ const Home = memo(() => {
   }, []);
 
   return (
-    <div style={{ background: '#f9f8f7', height: '100%', overflow: 'hidden', position: 'relative', width: '100%' }}>
+    <div style={{ background: '#f9f8f7', display: 'flex', flexDirection: 'column', height: '100%', position: 'relative', width: '100%' }}>
       {/* Incognito icon top right */}
       <button onClick={toggleIncognito} title={incognito ? 'Incognito on' : 'Incognito mode'}
         style={{ alignItems: 'center', background: incognito ? 'rgba(0,0,0,0.08)' : 'transparent', border: 'none', borderRadius: 8, cursor: 'pointer', display: 'flex', padding: 7, position: 'absolute', right: 4, top: 8, zIndex: 10 }}>
         <IncognitoIcon active={incognito} />
       </button>
 
-      {/* Content centered on full page */}
-      <div style={{ alignItems: 'center', bottom: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', left: 0, paddingBottom: 20, paddingTop: 220, position: 'absolute', right: 0, top: 0 }}>
+      {/* Content centered */}
+      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', paddingBottom: 20, paddingTop: 120, width: '100%' }}>
         {/* Fi logo */}
         <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src="/logos/fi-icon.svg" alt="Fi" style={{ height: 72, width: 'auto' }} /></div>
 

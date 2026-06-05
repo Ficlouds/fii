@@ -86,7 +86,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
       onClick={onClose}
       style={{
         animation: isClosing ? 'fiOut 0.15s ease-out forwards' : 'fiIn 0.15s ease-out',
-        background: 'rgba(0,0,0,0.15)',
+        background: isDark ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.15)',
         display: 'flex',
         inset: 0,
         position: 'fixed',
@@ -104,7 +104,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
-          background: isDark ? '#2f2f2f' : '#ffffff',
+          background: isDark ? '#1a1a19' : '#ffffff',
           borderRadius: 16,
           boxShadow: isDark ? '0 8px 60px rgba(0,0,0,0.5)' : '0 8px 60px rgba(0,0,0,0.15)',
           display: 'flex',
@@ -183,12 +183,12 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
           <div style={{ alignItems: 'center', background: '#fafafa', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
             {selected ? (
               <div style={{ padding: 24, width: '100%' }}>
-                <div style={{ color: '#111', fontSize: 18, fontWeight: 600, marginBottom: 8 }}>{selected.title || 'Untitled'}</div>
-                <div style={{ color: 'rgba(0,0,0,0.4)', fontSize: 13, marginBottom: 16 }}>{selected.createdAt ? dayjs(selected.createdAt).format('D MMMM YYYY') : ''}</div>
-                {selected.description && <div style={{ color: 'rgba(0,0,0,0.6)', fontSize: 14, lineHeight: 1.6 }}>{selected.description}</div>}
+                <div style={{ color: isDark ? '#ffffff' : '#111', fontSize: 18, fontWeight: 600, marginBottom: 8 }}>{selected.title || 'Untitled'}</div>
+                <div style={{ color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)', fontSize: 13, marginBottom: 16 }}>{selected.createdAt ? dayjs(selected.createdAt).format('D MMMM YYYY') : ''}</div>
+                {selected.description && <div style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)', fontSize: 14, lineHeight: 1.6 }}>{selected.description}</div>}
                 <button
                   onClick={() => handleSelect(selected)}
-                  style={{ background: '#111', border: 'none', borderRadius: 20, color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 600, marginTop: 20, padding: '8px 20px' }}
+                  style={{ background: isDark ? '#ffffff' : '#111', border: 'none', borderRadius: 20, color: isDark ? '#111' : '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 600, marginTop: 20, padding: '8px 20px' }}
                 >
                   Open conversation →
                 </button>

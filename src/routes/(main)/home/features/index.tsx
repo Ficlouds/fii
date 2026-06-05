@@ -1,7 +1,12 @@
 'use client';
 import { Discord, Slack, Telegram } from '@lobehub/ui/icons';
 import { memo, useCallback, useEffect, useState } from 'react';
+import { useGlobalStore } from '@/store/global';
+import { systemStatusSelectors } from '@/store/global/selectors';
 import InputArea from './InputArea';
+
+const EXPANDED_WIDTH = 260;
+const COLLAPSED_WIDTH = 48;
 
 const INCOGNITO_KEY = 'fi-incognito-mode';
 const MAX_WIDTH = 860;
@@ -122,6 +127,8 @@ const ConnectOption5 = ({ onDismiss }: { onDismiss: () => void }) => (
 const Home = memo(() => {
   const [incognito, setIncognito] = useState(false);
   const [bannerDismissed, setBannerDismissed] = useState(false);
+  const expand = useGlobalStore(systemStatusSelectors.showLeftPanel);
+  const sidebarWidth = expand ? EXPANDED_WIDTH : COLLAPSED_WIDTH;
 
   useEffect(() => {
     if (localStorage.getItem(INCOGNITO_KEY) === 'true') setIncognito(true);
@@ -144,8 +151,8 @@ const Home = memo(() => {
         <IncognitoIcon active={incognito} />
       </button>
 
-      {/* Content - centered in available space */}
-      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+      {/* Content - centered on full viewport offset by sidebar */}
+      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', marginLeft: `-${sidebarWidth}px`, transition: 'margin-left 0.15s ease', width: `calc(100% + ${sidebarWidth}px)` }}>
         <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%', maxWidth: 860, paddingInline: 20 }}>
         {/* Fi logo */}
         <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src="/logos/fi-icon.svg" alt="Fi" style={{ height: 72, width: 'auto' }} /></div>

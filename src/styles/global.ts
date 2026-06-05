@@ -58,6 +58,19 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     width: auto !important;
   }
 
+  /* Disable Activity component cross-fade, use width transition only */
+  [data-activity-component="DesktopHomeLayout"],
+  [name="DesktopHomeLayout"] {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  /* Smooth sidebar width transition */
+  [data-activity-component="DesktopHomeLayout"] > div,
+  [name="DesktopHomeLayout"] > div {
+    transition: none !important;
+  }
+
   /* Remove container padding and border radius causing floating effect */
   .acss-12cbrsv,
   [class*='lobe-flex'][style*='--lobe-flex-padding: 8px'] {

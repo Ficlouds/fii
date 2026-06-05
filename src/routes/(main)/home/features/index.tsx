@@ -3,6 +3,7 @@ import { Discord, Slack, Telegram } from '@lobehub/ui/icons';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useGlobalStore } from '@/store/global';
 import { systemStatusSelectors } from '@/store/global/selectors';
+import { useIsDark } from '@/hooks/useIsDark';
 import InputArea from './InputArea';
 
 const EXPANDED_WIDTH = 260;
@@ -129,6 +130,7 @@ const Home = memo(() => {
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const expand = useGlobalStore(systemStatusSelectors.showLeftPanel);
   const sidebarW = expand ? 260 : 48;
+  const isDark = useIsDark();
 
   useEffect(() => {
     if (localStorage.getItem(INCOGNITO_KEY) === 'true') setIncognito(true);
@@ -144,7 +146,7 @@ const Home = memo(() => {
   }, []);
 
   return (
-    <div style={{ background: '#f9f8f7', height: '100%', overflow: 'hidden', position: 'relative', width: '100%' }}>
+    <div style={{ background: isDark ? '#171717' : '#f9f8f7', height: '100%', overflow: 'hidden', position: 'relative', transition: 'background 0.2s ease', width: '100%' }}>
       {/* Incognito sidebar blur overlay */}
       {incognito && (
         <>

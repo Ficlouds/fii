@@ -7,7 +7,7 @@ import { styles } from '../styles';
 /**
  * Show avaialble keyboard action for the CMDK Menu.
  */
-const CommandFooter = memo(() => {
+const CommandFooter = memo(() => { return null;
   const { t } = useTranslation('common');
 
   return (

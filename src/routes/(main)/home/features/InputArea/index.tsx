@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useIsDark } from '@/hooks/useIsDark';
 import DragUploadZone, { useUploadFiles } from '@/components/DragUploadZone';
 import { type ActionKeys } from '@/features/ChatInput';
 import { ChatInputProvider, DesktopChatInput } from '@/features/ChatInput';
@@ -17,6 +18,7 @@ interface InputAreaProps {
 
 const InputArea = ({ incognito = false }: InputAreaProps) => {
   const { loading, send, agentId } = useSend();
+  const isDark = useIsDark();
   useInitAgentConfig(agentId);
   const isAgentConfigLoading = useAgentStore((s) =>
     agentByIdSelectors.isAgentConfigLoadingById(agentId ?? '')(s),
@@ -36,7 +38,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
         border: incognito ? '1.5px solid rgba(255,255,255,0.10)' : '1.5px solid rgba(0,0,0,0.06)',
         borderRadius: 32,
         boxShadow: 'none',
-        color: incognito ? '#ffffff' : '#111111',
+        color: incognito ? '#ffffff' : isDark ? '#ececec' : '#111111',
         minHeight: 60,
         transition: 'background 0.25s ease, color 0.25s ease',
         width: '100%',

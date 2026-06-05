@@ -90,6 +90,23 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     border-radius: 0 !important;
   }
 
+  /* Sidebar colors - light and dark */
+  html[data-theme='dark'] .acss-12lasj6,
+  html[data-theme='dark'] [class*='NavPanelDraggable'] {
+    background: #212121 !important;
+    border-right-color: rgba(255,255,255,0.06) !important;
+  }
+
+  /* Dark mode nav item hover */
+  html[data-theme='dark'] [class*='NavItem']:hover {
+    background: rgba(255,255,255,0.06) !important;
+  }
+
+  /* Dark mode accordion */
+  html[data-theme='dark'] .accordion-he {
+    color: rgba(255,255,255,0.8) !important;
+  }
+
   /* Sidebar #FCFCFC */
   html[data-theme='light'] [class*='NavPanel'],
   html[data-theme='light'] [class*='navPanel'],

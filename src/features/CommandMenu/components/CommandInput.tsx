@@ -1,7 +1,5 @@
-import { DEFAULT_AVATAR } from '@lobechat/const';
-import { Avatar, Tag } from '@lobehub/ui';
 import { Command } from 'cmdk';
-import { ArrowLeft, X } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -56,68 +54,26 @@ const CommandInput = memo(() => {
   };
 
   return (
-    <>
-      {(menuContext !== 'general' || typeFilter) && !hasPages && !hasSelectedAgent && (
-        <div className={styles.contextWrapper}>
-          {hasActiveAgent ? (
-            <Tag
-              className={styles.contextTag}
-              icon={
-                <Avatar
-                  emojiScaleWithBackground
-                  avatar={activeAgentMeta?.avatar || DEFAULT_AVATAR}
-                  background={activeAgentMeta?.backgroundColor}
-                  shape="square"
-                  size={14}
-                />
-              }
-            >
-              {activeAgentMeta?.title || t('defaultAgent')}
-            </Tag>
-          ) : (
-            menuContext !== 'general' && <Tag className={styles.contextTag}>{contextName}</Tag>
-          )}
-          {typeFilter && (
-            <Tag
-              className={styles.backTag}
-              icon={<X size={12} />}
-              onClick={() => setTypeFilter(undefined)}
-            >
-              {getTypeLabel(typeFilter)}
-            </Tag>
-          )}
-        </div>
+    <div style={{ alignItems: 'center', borderBottom: '1px solid rgba(0,0,0,0.07)', display: 'flex', gap: 12, padding: '18px 20px' }}>
+      <Search size={20} style={{ color: 'rgba(0,0,0,0.35)', flexShrink: 0 }} />
+      <Command.Input
+        autoFocus
+        maxLength={500}
+        placeholder="Search conversations..."
+        value={search}
+        onValueChange={setSearch}
+        style={{ background: 'transparent', border: 'none', color: '#111', flex: 1, fontSize: 17, fontWeight: 400, minWidth: 0, outline: 'none' }}
+      />
+      {search && (
+        <button
+          onClick={() => setSearch('')}
+          style={{ alignItems: 'center', background: 'rgba(0,0,0,0.07)', border: 'none', borderRadius: '50%', color: 'rgba(0,0,0,0.4)', cursor: 'pointer', display: 'flex', flexShrink: 0, height: 20, justifyContent: 'center', width: 20 }}
+        >
+          <X size={12} />
+        </button>
       )}
-      <div className={styles.inputWrapper}>
-        {hasPages && !hasSelectedAgent && (
-          <Tag className={styles.backTag} icon={<ArrowLeft size={12} />} onClick={handleBack} />
-        )}
-        {hasSelectedAgent && (
-          <Tag
-            closable
-            icon={
-              <Avatar
-                emojiScaleWithBackground
-                avatar={selectedAgent.avatar}
-                shape="square"
-                size={14}
-              />
-            }
-            onClose={() => setSelectedAgent(undefined)}
-          >
-            {selectedAgent.title}
-          </Tag>
-        )}
-        <Command.Input
-          autoFocus
-          maxLength={500}
-          placeholder={getPlaceholder()}
-          value={search}
-          onValueChange={setSearch}
-        />
-        <Tag>{t('cmdk.keyboard.ESC')}</Tag>
-      </div>
-    </>
+      <kbd style={{ background: 'rgba(0,0,0,0.06)', borderRadius: 6, color: 'rgba(0,0,0,0.35)', fontSize: 11, fontWeight: 500, padding: '3px 7px' }}>ESC</kbd>
+    </div>
   );
 });
 

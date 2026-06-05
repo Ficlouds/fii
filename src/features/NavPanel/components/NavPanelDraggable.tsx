@@ -41,11 +41,12 @@ const styles = createStaticStyles(({ css }) => ({
     height: 100%;
     background: #fcfcfc;
     border-right: 1px solid rgba(0,0,0,0.06);
-    transition: width 0.15s ease;
+    transition: width 0.25s ease;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     position: relative;
+    z-index: 100;
   `,
   inner: css`
     position: absolute;

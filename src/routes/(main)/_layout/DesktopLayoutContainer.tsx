@@ -16,6 +16,8 @@ const DesktopLayoutContainer: FC<PropsWithChildren> = ({ children }) => {
   const innerContainerRef = useRef<HTMLDivElement>(null);
   const isDarkMode = useIsDark();
   const [expand] = useGlobalStore((s) => [systemStatusSelectors.showLeftPanel(s)]);
+  const SIDEBAR_EXPANDED = 260;
+  const SIDEBAR_COLLAPSED = 48;
 
   // CSS variables for dynamic styling
   const outerCssVariables = useMemo<Record<string, string>>(
@@ -46,7 +48,7 @@ const DesktopLayoutContainer: FC<PropsWithChildren> = ({ children }) => {
       flex={1}
       height={'100%'}
       padding={0}
-      style={{ ...outerCssVariables, transition: 'width 0.25s ease, flex 0.25s ease', minWidth: 0 }}
+      style={{ ...outerCssVariables, minWidth: 0 }}
     >
       <Flexbox
         className={styles.innerContainer}

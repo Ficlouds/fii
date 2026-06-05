@@ -128,6 +128,7 @@ const Home = memo(() => {
   const [incognito, setIncognito] = useState(false);
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const expand = useGlobalStore(systemStatusSelectors.showLeftPanel);
+  const sidebarW = expand ? 260 : 48;
 
   useEffect(() => {
     if (localStorage.getItem(INCOGNITO_KEY) === 'true') setIncognito(true);

@@ -144,9 +144,9 @@ const Home = memo(() => {
         <IncognitoIcon active={incognito} />
       </button>
 
-      {/* Content centered on full viewport - no shift on sidebar collapse */}
-      <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100vh', left: 0, position: 'fixed', top: 0, width: '100vw', zIndex: 0, pointerEvents: 'none' }}>
-      <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', pointerEvents: 'auto', width: '100%', maxWidth: 920, paddingInline: 20 }}>
+      {/* Content - centered in available space */}
+      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', width: '100%' }}>
+        <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%', maxWidth: 860, paddingInline: 20 }}>
         {/* Fi logo */}
         <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}><img src="/logos/fi-icon.svg" alt="Fi" style={{ height: 72, width: 'auto' }} /></div>
 
@@ -161,9 +161,9 @@ const Home = memo(() => {
           )}
         </div>
 
-        {/* Connect bar — change ConnectOption3 to any option 1-5 */}
-        {!bannerDismissed && <ConnectOption1 onDismiss={() => setBannerDismissed(true)} />}
-      </div>
+          {/* Connect bar */}
+          {!bannerDismissed && <ConnectOption1 onDismiss={() => setBannerDismissed(true)} />}
+        </div>
       </div>
     </div>
   );

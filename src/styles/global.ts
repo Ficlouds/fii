@@ -52,6 +52,13 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     .${CLASSNAMES.DropdownMenuTrigger}[data-popup-open]:not([data-no-highlight])
   ) { opacity: 1; }
 
+  /* Smooth sidebar collapse - transition all flex children */
+  [class*='mainContainer'] {
+    & > * {
+      transition: width 0.25s ease, min-width 0.25s ease, max-width 0.25s ease, flex 0.25s ease !important;
+    }
+  }
+
   /* Toggle panel button - only show in expanded sidebar */
   #toggle_left_panel_button {
     opacity: 1 !important;

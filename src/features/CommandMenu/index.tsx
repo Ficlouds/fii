@@ -51,7 +51,6 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
   const { hasSearch, isSearching, searchResults } = useCommandMenu();
   const isDark = useIsDark();
   const { search, setSearch } = useCommandMenuContext();
-  const navigate = useNavigate();
   const [selected, setSelected] = useState<any>(null);
   const recents = useHomeStore(homeRecentSelectors.recents);
 
@@ -69,15 +68,12 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
   const grouped = groupByDate(convResults);
 
   const handleSelect = (result: any) => {
-    if (result.type === 'topic') {
-      result.agentId
-        ? navigate(SESSION_CHAT_TOPIC_URL(result.agentId, result.id))
-        : navigate(`/chat?topic=${result.id}`);
-    } else {
-      result.topicId && result.agentId
-        ? navigate(`${SESSION_CHAT_TOPIC_URL(result.agentId, result.topicId)}#${result.id}`)
-        : navigate(`/chat#${result.id}`);
-    }
+    const topicId = result.type === 'topic' ? result.id : result.topicId;
+    const agentId = result.agentId;
+    useChatStore.setState({
+      activeTopicId: topicId || null,
+      activeAgentId: agentId || null,
+    });
     onClose();
   };
 

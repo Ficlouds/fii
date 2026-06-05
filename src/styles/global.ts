@@ -279,29 +279,5 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     align-items: center !important;
   }
 
-  /* Fix editor body - hide first empty div, make action bar + editor in same row */
-  [data-testid="chat-input"] > div:first-child:empty {
-    display: none !important;
-  }
-  /* Wrap action bar and editor body in same row */
-  [data-testid="chat-input"] .acss-1pldu16 {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    flex: 1 !important;
-    min-width: 0 !important;
-  }
-  /* Editor body sits inline after action bar buttons */
-  [data-testid="chat-input"] .acss-1uegmkh {
-    flex: 1 !important;
-    min-height: 0 !important;
-    max-height: 120px !important;
-    overflow-y: auto !important;
-    display: flex !important;
-    align-items: center !important;
-  }
-  [data-testid="chat-input"] .acss-3kh57l {
-    min-height: 0 !important;
-    width: 100% !important;
-  }
+
 `;

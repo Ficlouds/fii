@@ -55,7 +55,7 @@ const DriveIcon = () => (
   </svg>
 );
 
-const ConnectOption1 = ({ onDismiss }: { onDismiss: () => void }) => (
+const ConnectOption1 = ({ onDismiss, isDark = false }: { onDismiss: () => void; isDark?: boolean }) => (
   <div style={{ alignItems: 'center', display: 'flex', gap: 10, justifyContent: 'center', marginTop: 16, width: '100%', maxWidth: MAX_WIDTH, paddingInline: 20, flexWrap: 'nowrap' }}>
     <div style={{ alignItems: 'center', display: 'flex', gap: 8 }}>
       <Telegram.Color size={20} />
@@ -64,9 +64,9 @@ const ConnectOption1 = ({ onDismiss }: { onDismiss: () => void }) => (
       <GmailIcon />
       <DriveIcon />
     </div>
-    <span style={{ color: 'rgba(0,0,0,0.45)', fontSize: 13 }}>Connect Fi to your channels & apps</span>
-    <button onClick={() => window.location.href = '/settings/messenger'} style={{ background: 'none', border: '1px solid rgba(0,0,0,0.15)', borderRadius: 20, color: '#111', cursor: 'pointer', fontSize: 12, fontWeight: 600, padding: '5px 16px' }}>Connect →</button>
-    <button onClick={onDismiss} style={{ background: 'none', border: 'none', color: 'rgba(0,0,0,0.3)', cursor: 'pointer', fontSize: 20, lineHeight: 1, padding: 0 }}>×</button>
+    <span style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.45)', fontSize: 13 }}>Connect Fi to your channels & apps</span>
+    <button onClick={() => window.location.href = '/settings/messenger'} style={{ background: 'none', border: isDark ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,0,0,0.15)', borderRadius: 20, color: isDark ? '#fff' : '#111', cursor: 'pointer', fontSize: 12, fontWeight: 600, padding: '5px 16px' }}>Connect →</button>
+    <button onClick={onDismiss} style={{ background: 'none', border: 'none', color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.3)', cursor: 'pointer', fontSize: 20, lineHeight: 1, padding: 0 }}>×</button>
   </div>
 );
 
@@ -202,14 +202,14 @@ const Home = memo(() => {
           <InputArea incognito={incognito} />
 
           {incognito && (
-            <div style={{ color: 'rgba(0,0,0,0.4)', fontSize: 12, fontWeight: 500, marginTop: 8, textAlign: 'center' }}>
+            <div style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)', fontSize: 12, fontWeight: 500, marginTop: 8, textAlign: 'center' }}>
               Off the record
             </div>
           )}
         </div>
 
           {/* Connect bar */}
-          {!bannerDismissed && <ConnectOption1 onDismiss={() => setBannerDismissed(true)} />}
+          {!bannerDismissed && <ConnectOption1 onDismiss={() => setBannerDismissed(true)} isDark={isDark} />}
         </div>
       </div>
     </div>

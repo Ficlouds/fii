@@ -71,7 +71,15 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
       .then(r => r.json())
       .then(data => {
         const msgs = data?.result?.data?.json || [];
-        setPreviewMessages(msgs.slice(0, 20));
+        // Filter only user/assistant text messages, skip tool calls and system messages
+        const filtered = msgs.filter((m: any) => {
+          if (!m.role || m.role === 'system' || m.role === 'tool') return false;
+          const content = typeof m.content === 'string' ? m.content : m.content?.[0]?.text || '';
+          if (!content.trim()) return false;
+          if (content.startsWith('<') && content.includes('>')) return false; // skip XML tool results
+          return true;
+        }).slice(0, 20);
+        setPreviewMessages(filtered);
         setPreviewLoading(false);
       })
       .catch(() => setPreviewLoading(false));
@@ -236,14 +244,14 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
                   <button
                     onClick={() => handleSelect(selected)}
                     style={{
-                      background: isDark ? '#ffffff' : '#111',
-                      border: 'none',
+                      background: 'transparent',
+                      border: `1px solid ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)'}`,
                       borderRadius: 20,
-                      color: isDark ? '#111' : '#fff',
+                      color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
                       cursor: 'pointer',
-                      fontSize: 13,
-                      fontWeight: 600,
-                      padding: '9px 22px',
+                      fontSize: 12,
+                      fontWeight: 500,
+                      padding: '7px 18px',
                       width: '100%',
                     }}
                   >

@@ -93,8 +93,8 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
             : '0 8px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.06)',
           display: 'flex',
           flexDirection: 'column',
-          maxHeight: results.length === 0 && !hasSearch ? 'auto' : '65vh',
-          overflow: 'hidden',
+          maxHeight: hasSearch && results.length > 0 ? '65vh' : 'auto',
+          overflow: hasSearch && results.length > 0 ? 'hidden' : 'visible',
           width: 'min(540px, 92vw)',
         }}
       >
@@ -171,11 +171,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
               No conversations found
             </div>
           )}
-          {!hasSearch && results.length === 0 && (
-            <div style={{ color: textSecondary, fontSize: 13, padding: '16px 18px', textAlign: 'center' }}>
-              Start typing to search
-            </div>
-          )}
+
           {results.map((r: any) => (
             <div
               key={r.id}

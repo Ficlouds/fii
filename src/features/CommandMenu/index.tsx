@@ -38,7 +38,6 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
 
   useEffect(() => { inputRef.current?.focus(); }, []);
 
-  const searchConvResults = searchResults.filter((r: any) => r.type === 'topic' || r.type === 'message');
   const recentItems = (recents || []).map((r: any) => ({
     agentId: r.agentId,
     createdAt: r.updatedAt || r.createdAt,
@@ -46,7 +45,11 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
     title: r.title,
     type: 'topic',
   }));
-  const results = hasSearch ? searchConvResults : [];
+
+  // Client-side filter since ParadeDB not available on this DB
+  const results = search.trim().length > 0
+    ? recentItems.filter((r) => r.title?.toLowerCase().includes(search.toLowerCase()))
+    : [];
 
   const handleSelect = (result: any) => {
     const topicId = result.type === 'topic' ? result.id : result.topicId;
@@ -159,12 +162,12 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
         </div>
 
         {/* Section label - only show when searching */}
-        {hasSearch && (
+        {search.trim().length > 0 && (
           <div style={{ color: textSecondary, fontSize: 11, fontWeight: 600, letterSpacing: '0.05em', padding: '10px 18px 4px', textTransform: 'uppercase' }}>
-            {isSearching ? 'Searching...' : results.length === 0 ? 'No results' : `${results.length} conversation${results.length !== 1 ? 's' : ''}`}
+            {results.length === 0 ? 'No results' : `${results.length} conversation${results.length !== 1 ? 's' : ''}`}
           </div>
         )}
-        {search.trim().length > 0 && !hasSearch && (
+        {false && (
           <div style={{ color: textSecondary, fontSize: 13, padding: '16px 18px', textAlign: 'center' }}>Searching...</div>
         )}
 

@@ -7,7 +7,7 @@ import { cx } from 'antd-style';
 import { type FC } from 'react';
 import { lazy, Suspense } from 'react';
 import { HotkeysProvider } from 'react-hotkeys-hook';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 import Loading from '@/components/Loading/BrandTextLoading';
 import { isDesktop } from '@/const/version';
@@ -45,6 +45,8 @@ const CloudBanner = dynamic(() => import('@/features/AlertBanner/CloudBanner'));
 
 const Layout: FC = () => {
   const { isPWA } = usePlatform();
+  const location = useLocation();
+  const isStandalonePage = ['/connect'].includes(location.pathname);
   const { showCloudPromotion } = useServerConfigStore(featureFlagsSelectors);
   const {
     initialValues: feedbackInitialValues,
@@ -86,9 +88,11 @@ const Layout: FC = () => {
           <div style={{ flex: 1, minWidth: 0, transition: 'margin-left 0.25s ease', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column' }}>
           <DesktopLayoutContainer>
             <MarketAuthProvider isDesktop={isDesktop}>
+              {!isStandalonePage && (
               <DesktopHomeLayout>
                 <DesktopHome />
               </DesktopHomeLayout>
+              )}
               <Suspense fallback={<Loading debugId="DesktopMainLayout > Outlet" />}>
                 <Outlet />
               </Suspense>

@@ -188,7 +188,9 @@ const Home = memo(() => {
         >
           {/* Messages — scrollable, takes all available space */}
           <div style={{ flex: 1, minHeight: 0, overflowX: 'hidden', overflowY: 'auto', position: 'relative' }}>
-            <ChatList />
+            <div style={{ margin: '0 auto', maxWidth: 860, paddingInline: 20, width: '100%' }}>
+              <ChatList />
+            </div>
           </div>
           {/* Input fixed at bottom */}
           <div style={{ background: isDark ? '#1f1f1e' : '#f9f8f7', flexShrink: 0, paddingBlock: 8, paddingInline: 20, transition: 'background 0.2s ease' }}>

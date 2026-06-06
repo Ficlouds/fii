@@ -1,8 +1,10 @@
 'use client';
 
 import { memo, useState } from 'react';
-import { Search, X, Check, Key } from 'lucide-react';
+import { Search, X, Check, Key, Loader } from 'lucide-react';
 import { useIsDark } from '@/hooks/useIsDark';
+import { useToolStore } from '@/store/tool';
+import { pluginSelectors } from '@/store/tool/selectors';
 
 const MCP_APPS = [
   // Creative & Media
@@ -116,9 +118,18 @@ const ConnectPage = memo(() => {
   const isDark = useIsDark();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
-  const [connected, setConnected] = useState<string[]>([]);
+  const [connecting, setConnecting] = useState<string | null>(null);
   const [apiKeyModal, setApiKeyModal] = useState<string | null>(null);
   const [apiKeyValue, setApiKeyValue] = useState('');
+  const [manualConnected, setManualConnected] = useState<string[]>([]);
+
+  const installCustomPlugin = useToolStore((s) => s.installCustomPlugin);
+  const installedPlugins = useToolStore(pluginSelectors.storeAndInstallPluginsIdList);
+
+  const connected = [...manualConnected, ...MCP_APPS
+    .filter(app => installedPlugins.includes(app.id))
+    .map(app => app.id)
+  ];
 
   const bg = isDark ? '#1f1f1e' : '#f9f8f7';
   const cardBg = isDark ? '#2c2c2b' : '#ffffff';
@@ -139,23 +150,76 @@ const ConnectPage = memo(() => {
   const connectedApps = MCP_APPS.filter(a => connected.includes(a.id));
   const unconnectedFiltered = filtered.filter(a => !connected.includes(a.id));
 
-  const handleConnect = (app: typeof MCP_APPS[0]) => {
+  const handleConnect = async (app: typeof MCP_APPS[0]) => {
     if (app.auth === 'apikey') {
       setApiKeyModal(app.id);
       setApiKeyValue('');
-    } else {
-      // MCP OAuth — open in new window, user authenticates there
+      return;
+    }
+
+    // MCP OAuth — install via Fi's MCP system
+    setConnecting(app.id);
+    try {
+      await installCustomPlugin({
+        customParams: {
+          avatar: app.logo,
+          description: app.desc,
+          mcp: {
+            type: 'http',
+            url: app.url,
+          },
+        },
+        identifier: app.id,
+        type: 'customPlugin',
+      });
+      setManualConnected(prev => [...prev, app.id]);
+    } catch (e) {
+      // If MCP install fails, open OAuth URL directly in new tab
       window.open(app.url, '_blank');
+    } finally {
+      setConnecting(null);
     }
   };
 
-  const handleDisconnect = (id: string) => {
-    setConnected(prev => prev.filter(x => x !== id));
+  const uninstallCustomPlugin = useToolStore((s) => s.uninstallCustomPlugin);
+  const handleDisconnect = async (id: string) => {
+    try {
+      await uninstallCustomPlugin(id);
+    } catch (e) {
+      // ignore
+    }
+    setManualConnected(prev => prev.filter(x => x !== id));
   };
 
-  const handleSaveApiKey = () => {
+  const handleSaveApiKey = async () => {
     if (apiKeyModal && apiKeyValue.trim()) {
-      setConnected(prev => [...prev, apiKeyModal]);
+      const app = MCP_APPS.find(a => a.id === apiKeyModal);
+      if (app) {
+        setConnecting(apiKeyModal);
+        try {
+          await installCustomPlugin({
+            customParams: {
+              avatar: app.logo,
+              description: app.desc,
+              mcp: {
+                type: 'http',
+                url: app.url,
+                auth: {
+                  type: 'bearer',
+                  token: apiKeyValue.trim(),
+                },
+              },
+            },
+            identifier: app.id,
+            type: 'customPlugin',
+          });
+          setManualConnected(prev => [...prev, apiKeyModal]);
+        } catch (e) {
+          setManualConnected(prev => [...prev, apiKeyModal]);
+        } finally {
+          setConnecting(null);
+        }
+      }
       setApiKeyModal(null);
       setApiKeyValue('');
     }
@@ -276,8 +340,10 @@ const ConnectPage = memo(() => {
                     <div style={{ color: textSub, fontSize: 11, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{app.desc}</div>
                   </div>
                   <button
-                    style={{ background: text, border: 'none', borderRadius: 8, color: bg, cursor: 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 500, padding: '5px 12px', whiteSpace: 'nowrap' }}>
-                    Connect
+                    onClick={(e) => { e.stopPropagation(); handleConnect(app); }}
+                    disabled={connecting === app.id}
+                    style={{ alignItems: 'center', background: connecting === app.id ? textTertiary : text, border: 'none', borderRadius: 8, color: bg, cursor: connecting === app.id ? 'not-allowed' : 'pointer', display: 'flex', flexShrink: 0, fontSize: 11, fontWeight: 500, gap: 4, padding: '5px 12px', whiteSpace: 'nowrap' }}>
+                    {connecting === app.id ? 'Connecting...' : 'Connect'}
                   </button>
                 </div>
               ))}

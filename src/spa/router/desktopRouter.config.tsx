@@ -684,6 +684,15 @@ export const desktopRoutes: RouteObject[] = [
         path: 'page',
       },
 
+
+      // Connect page (standalone, full screen)
+      {
+        element: dynamicElement(
+          () => import('@/routes/(main)/connect'),
+          'Desktop > Connect',
+        ),
+        path: 'connect',
+      },
       // Default route - home page (handled by persistent layout)
       {
         handle: {

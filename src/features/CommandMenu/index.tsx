@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom';
 import { useGlobalStore } from '@/store/global';
 import { useIsDark } from '@/hooks/useIsDark';
 import { useChatStore } from '@/store/chat';
-import { messageMapKey } from '@/store/chat/slices/message/utils';
+import { messageMapKey } from '@/store/chat/utils/messageMapKey';
 import { useHomeStore } from '@/store/home';
 import { homeRecentSelectors } from '@/store/home/selectors';
 
@@ -55,18 +55,23 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
   const [selected, setSelected] = useState<any>(null);
   const recents = useHomeStore(homeRecentSelectors.recents);
 
-  // Fetch messages for preview
-  const previewKey = selected ? `${selected.agentId || 'inbox'}_${selected.id}` : null;
+  // Fetch messages for preview using correct messageMapKey format
+  const previewKey = selected
+    ? messageMapKey({ agentId: selected.agentId || 'inbox', topicId: selected.id })
+    : null;
   const previewMessages = useChatStore((s) => previewKey ? s.dbMessagesMap[previewKey] : undefined);
 
   useEffect(() => {
     if (!selected) return;
-    try {
-      const state = useChatStore.getState() as any;
-      if (state.useFetchMessages) {
-        state.useFetchMessages({ agentId: selected.agentId || 'inbox', topicId: selected.id });
-      }
-    } catch (e) {}
+    const agentId = selected.agentId || 'inbox';
+    const topicId = selected.id;
+    // Trigger message fetch via store
+    const state = useChatStore.getState() as any;
+    if (state.refreshMessages) {
+      state.refreshMessages(agentId, topicId);
+    } else if (state.fetchMessages) {
+      state.fetchMessages(agentId, topicId);
+    }
   }, [selected?.id]);
 
   // Show search results when typing, otherwise show recents

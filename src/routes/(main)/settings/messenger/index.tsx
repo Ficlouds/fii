@@ -1,6 +1,6 @@
 'use client';
 
-import { KLAVIS_SERVER_TYPES, type KlavisServerType } from '@lobechat/const';
+import { KLAVIS_SERVER_TYPES, type KlavisServerType } from '@/../packages/const/src/klavis';
 import { Avatar, Icon } from '@lobehub/ui';
 import { cssVar } from 'antd-style';
 import { CheckCircle2, Loader2, PlugZap, SquareArrowOutUpRight } from 'lucide-react';

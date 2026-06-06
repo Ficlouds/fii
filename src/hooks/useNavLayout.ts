@@ -1,7 +1,6 @@
 import { BoxIcon, FolderIcon, PlusIcon, SearchIcon, ZapIcon } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { createSkillStoreModal } from '@/features/SkillStore';
 import { useGlobalStore } from '@/store/global';
 import { useActiveConversationStore } from '@/store/home/activeConversation';
 import { featureFlagsSelectors, useServerConfigStore } from '@/store/serverConfig';
@@ -34,7 +33,6 @@ export const useNavLayout = (): NavLayout => {
   const { hideGitHub } = useServerConfigStore(featureFlagsSelectors);
   const setConversation = useActiveConversationStore((s) => s.setConversation);
   const handleNewChat = useCallback(() => setConversation(null), [setConversation]);
-  const handleConnect = useCallback(() => createSkillStoreModal(), []);
   const topNavItems = useMemo(
     () => [
       {
@@ -53,7 +51,7 @@ export const useNavLayout = (): NavLayout => {
       {
         icon: ZapIcon,
         key: 'connect',
-        onClick: handleConnect,
+        url: '/settings/messenger',
         title: 'Connect',
       },
       {

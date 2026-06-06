@@ -1,5 +1,6 @@
 import { BoxIcon, FolderIcon, PlusIcon, SearchIcon, ZapIcon } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useGlobalStore } from '@/store/global';
 import { useActiveConversationStore } from '@/store/home/activeConversation';
@@ -32,6 +33,7 @@ export const useNavLayout = (): NavLayout => {
   const toggleCommandMenu = useGlobalStore((s) => s.toggleCommandMenu);
   const { hideGitHub } = useServerConfigStore(featureFlagsSelectors);
   const setConversation = useActiveConversationStore((s) => s.setConversation);
+  const navigate = useNavigate();
   const handleNewChat = useCallback(() => setConversation(null), [setConversation]);
   const topNavItems = useMemo(
     () => [
@@ -51,6 +53,7 @@ export const useNavLayout = (): NavLayout => {
       {
         icon: ZapIcon,
         key: 'connect',
+        onClick: () => navigate('/connect'),
         url: '/connect',
         title: 'Connect',
       },

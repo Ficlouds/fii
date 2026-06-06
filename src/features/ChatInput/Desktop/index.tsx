@@ -180,7 +180,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           slashMenuRef={slashMenuRef}
           footer={
             <ChatInputActionBar
-              style={actionBarStyle ?? { paddingInline: 12, paddingBlock: 8 }}
+              style={actionBarStyle ?? { paddingInline: 12, paddingBlock: 10 }}
               left={loadingLeft ?? leftContent ?? (
                 <Flexbox horizontal align="center" gap={8} style={{ cursor: 'text', flex: 1, minWidth: 0 }}>
                   <div className={styles.actionBarFix}>

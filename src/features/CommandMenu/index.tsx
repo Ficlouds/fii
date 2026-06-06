@@ -132,10 +132,10 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
               onClick={() => setSearch('')}
               style={{
                 alignItems: 'center',
-                background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+                background: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)',
                 border: 'none',
                 borderRadius: '50%',
-                color: textSecondary,
+                color: isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.6)',
                 cursor: 'pointer',
                 display: 'flex',
                 flexShrink: 0,

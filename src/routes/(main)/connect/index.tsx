@@ -5,6 +5,7 @@ import { Search, X, Check, Key } from 'lucide-react';
 import { useIsDark } from '@/hooks/useIsDark';
 import { useToolStore } from '@/store/tool';
 import { pluginSelectors } from '@/store/tool/selectors';
+import { signIn } from '@/libs/better-auth/auth-client';
 
 const MCP_APPS = [
   { id: 'higgsfield', name: 'Higgsfield', desc: 'AI video generation — Sora, Veo3, Kling, 30+ models', category: 'Creative', url: 'https://mcp.higgsfield.ai/mcp', logo: 'higgsfield.ai', auth: 'oauth' },
@@ -66,10 +67,10 @@ const MCP_APPS = [
   { id: 'hex', name: 'Hex', desc: 'Data notebooks, analytics and interactive charts', category: 'Analytics', url: 'https://mcp.hex.tech/mcp', logo: 'hex.tech', auth: 'oauth' },
   { id: 'mixpanel', name: 'Mixpanel', desc: 'Product analytics and user behaviour', category: 'Analytics', url: 'https://mixpanel.com', logo: 'mixpanel.com', auth: 'apikey' },
   { id: 'googleanalytics', name: 'Google Analytics', desc: 'Web analytics and traffic reporting', category: 'Analytics', url: 'https://analytics.google.com', logo: 'analytics.google.com', auth: 'apikey' },
+  { id: 'googleads', name: 'Google Ads', desc: 'Manage and optimize ad campaigns', category: 'Analytics', url: 'https://ads.google.com', logo: 'ads.google.com', auth: 'apikey' },
   { id: 'segment', name: 'Segment', desc: 'Customer data platform and analytics', category: 'Analytics', url: 'https://segment.com', logo: 'segment.com', auth: 'apikey' },
   { id: 'datadog', name: 'Datadog', desc: 'Monitoring, logs and infrastructure analytics', category: 'Analytics', url: 'https://datadoghq.com', logo: 'datadoghq.com', auth: 'apikey' },
   { id: 'hotjar', name: 'Hotjar', desc: 'Heatmaps, session recordings and feedback', category: 'Analytics', url: 'https://hotjar.com', logo: 'hotjar.com', auth: 'apikey' },
-  { id: 'googleads', name: 'Google Ads', desc: 'Manage and optimize ad campaigns', category: 'Analytics', url: 'https://ads.google.com', logo: 'ads.google.com', auth: 'apikey' },
   { id: 'gmail', name: 'Gmail', desc: 'Read, compose and manage your emails', category: 'Google', url: 'https://gmailmcp.googleapis.com/mcp/v1', logo: 'gmail.com', auth: 'google' },
   { id: 'gdrive', name: 'Google Drive', desc: 'Search, read and upload files', category: 'Google', url: 'https://drivemcp.googleapis.com/mcp/v1', logo: 'drive.google.com', auth: 'google' },
   { id: 'gcalendar', name: 'Google Calendar', desc: 'Manage events and schedule meetings', category: 'Google', url: 'https://calendarmcp.googleapis.com/mcp/v1', logo: 'calendar.google.com', auth: 'google' },
@@ -81,6 +82,9 @@ const MCP_APPS = [
   { id: 'gchat', name: 'Google Chat', desc: 'Team messaging and collaboration', category: 'Google', url: 'https://drivemcp.googleapis.com/mcp/v1', logo: 'chat.google.com', auth: 'google' },
   { id: 'gtasks', name: 'Google Tasks', desc: 'Task lists and to-dos', category: 'Google', url: 'https://drivemcp.googleapis.com/mcp/v1', logo: 'tasks.google.com', auth: 'google' },
   { id: 'youtube', name: 'YouTube', desc: 'Video search, analytics and channel management', category: 'Google', url: 'https://youtube.com', logo: 'youtube.com', auth: 'apikey' },
+  { id: 'youtubeanalytics', name: 'YouTube Analytics', desc: 'Channel performance and video analytics', category: 'Google', url: 'https://youtube.com', logo: 'youtube.com', auth: 'apikey' },
+  { id: 'googlebigquery', name: 'Google BigQuery', desc: 'Serverless data warehouse and analytics', category: 'Google', url: 'https://cloud.google.com/bigquery', logo: 'cloud.google.com', auth: 'apikey' },
+  { id: 'looker', name: 'Looker Studio', desc: 'Business intelligence and data visualization', category: 'Google', url: 'https://lookerstudio.google.com', logo: 'lookerstudio.google.com', auth: 'apikey' },
   { id: 'outlook', name: 'Outlook', desc: 'Email, calendar and contacts', category: 'Microsoft', url: 'https://agent365.svc.cloud.microsoft', logo: 'outlook.com', auth: 'microsoft' },
   { id: 'onedrive', name: 'OneDrive', desc: 'Cloud file storage and sharing', category: 'Microsoft', url: 'https://agent365.svc.cloud.microsoft', logo: 'onedrive.live.com', auth: 'microsoft' },
   { id: 'teams', name: 'Microsoft Teams', desc: 'Team messaging, calls and collaboration', category: 'Microsoft', url: 'https://agent365.svc.cloud.microsoft', logo: 'teams.microsoft.com', auth: 'microsoft' },
@@ -90,6 +94,7 @@ const MCP_APPS = [
   { id: 'sharepoint', name: 'SharePoint', desc: 'Team sites and document management', category: 'Microsoft', url: 'https://agent365.svc.cloud.microsoft', logo: 'sharepoint.com', auth: 'microsoft' },
   { id: 'onenote', name: 'OneNote', desc: 'Digital notebooks and note taking', category: 'Microsoft', url: 'https://agent365.svc.cloud.microsoft', logo: 'onenote.com', auth: 'microsoft' },
   { id: 'mstodo', name: 'Microsoft To Do', desc: 'Task lists and reminders', category: 'Microsoft', url: 'https://agent365.svc.cloud.microsoft', logo: 'todo.microsoft.com', auth: 'microsoft' },
+  { id: 'msplanner', name: 'Microsoft Planner', desc: 'Visual task and project planning', category: 'Microsoft', url: 'https://agent365.svc.cloud.microsoft', logo: 'office.com', auth: 'microsoft' },
   { id: 'twitter', name: 'X (Twitter)', desc: 'Post, search and manage tweets', category: 'Social', url: 'https://x.com', logo: 'x.com', auth: 'apikey' },
   { id: 'linkedin', name: 'LinkedIn', desc: 'Professional network and content', category: 'Social', url: 'https://linkedin.com', logo: 'linkedin.com', auth: 'apikey' },
   { id: 'wordpress', name: 'WordPress', desc: 'CMS, blog and website management', category: 'Social', url: 'https://wordpress.com', logo: 'wordpress.com', auth: 'apikey' },
@@ -102,6 +107,8 @@ const MCP_APPS = [
   { id: 'woocommerce', name: 'WooCommerce', desc: 'WordPress e-commerce platform', category: 'E-commerce', url: 'https://woocommerce.com', logo: 'woocommerce.com', auth: 'apikey' },
   { id: 'amazon', name: 'Amazon Seller', desc: 'Amazon marketplace seller tools', category: 'E-commerce', url: 'https://sellercentral.amazon.com', logo: 'amazon.com', auth: 'apikey' },
   { id: 'flipkart', name: 'Flipkart Seller', desc: 'Flipkart marketplace seller tools', category: 'E-commerce', url: 'https://seller.flipkart.com', logo: 'flipkart.com', auth: 'apikey' },
+  { id: 'meesho', name: 'Meesho', desc: 'Indian social commerce platform', category: 'E-commerce', url: 'https://meesho.com', logo: 'meesho.com', auth: 'apikey' },
+  { id: 'wix', name: 'Wix', desc: 'Website builder and e-commerce platform', category: 'E-commerce', url: 'https://wix.com', logo: 'wix.com', auth: 'apikey' },
 ];
 
 const CATEGORIES = ['All', 'Creative', 'Communication', 'Productivity', 'CRM', 'Developer', 'Finance', 'Analytics', 'Google', 'Microsoft', 'Social', 'E-commerce'];
@@ -144,8 +151,14 @@ const ConnectPage = memo(() => {
   unconnectedFiltered.forEach(app => { if (!groupedByCategory[app.category]) groupedByCategory[app.category] = []; groupedByCategory[app.category].push(app); });
   const handleConnect = async (app: typeof MCP_APPS[0]) => {
     if (app.auth === 'apikey') { setApiKeyModal(app.id); setApiKeyValue(''); return; }
-    if (app.auth === 'google') { window.location.href = `/api/auth/signin/google?callbackUrl=${encodeURIComponent('/connect')}`; return; }
-    if (app.auth === 'microsoft') { window.location.href = `/api/auth/signin/microsoft?callbackUrl=${encodeURIComponent('/connect')}`; return; }
+    if (app.auth === 'google') {
+      try { await (signIn as any).social({ callbackURL: '/connect', provider: 'google' }); } catch { window.location.href = '/signin?callbackUrl=/connect'; }
+      return;
+    }
+    if (app.auth === 'microsoft') {
+      try { await (signIn as any).social({ callbackURL: '/connect', provider: 'microsoft' }); } catch { window.location.href = '/signin?callbackUrl=/connect'; }
+      return;
+    }
     setConnecting(app.id);
     try {
       await installCustomPlugin({ customParams: { avatar: `https://www.google.com/s2/favicons?domain=${app.logo}&sz=64`, description: app.desc, mcp: { type: 'http', url: app.url } }, identifier: app.id, type: 'customPlugin' });

@@ -54,6 +54,7 @@ import CommunityListModelLayout from '@/routes/(main)/community/(list)/model/_la
 import CommunityListProviderPage from '@/routes/(main)/community/(list)/provider';
 import CommunityListSkillPage from '@/routes/(main)/community/(list)/skill';
 import CommunityListSkillLayout from '@/routes/(main)/community/(list)/skill/_layout';
+import ConnectPage from '@/routes/(main)/connect';
 import DevtoolsIndexPage from '@/routes/(main)/devtools';
 import DevtoolsLayout from '@/routes/(main)/devtools/_layout';
 import DevtoolsToolPage from '@/routes/(main)/devtools/[identifier]';
@@ -562,6 +563,12 @@ export const desktopRoutes: RouteObject[] = [
         element: <DesktopPageLayout />,
         errorElement: <ErrorBoundary />,
         path: 'page',
+      },
+
+      // Connect page
+      {
+        element: <ConnectPage />,
+        path: 'connect',
       },
 
       // Default route - home page (handled by persistent layout)

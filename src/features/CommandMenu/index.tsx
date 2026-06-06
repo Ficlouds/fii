@@ -46,7 +46,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
     title: r.title,
     type: 'topic',
   }));
-  const results = hasSearch ? searchConvResults : recentItems;
+  const results = hasSearch ? searchConvResults : [];
 
   const handleSelect = (result: any) => {
     const topicId = result.type === 'topic' ? result.id : result.topicId;

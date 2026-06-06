@@ -71,12 +71,19 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
       .then(r => r.json())
       .then(data => {
         const msgs = data?.result?.data?.json || [];
-        // Filter only user/assistant text messages, skip tool calls and system messages
+        // Filter only clean user/assistant messages
         const filtered = msgs.filter((m: any) => {
-          if (!m.role || m.role === 'system' || m.role === 'tool') return false;
-          const content = typeof m.content === 'string' ? m.content : m.content?.[0]?.text || '';
-          if (!content.trim()) return false;
-          if (content.startsWith('<') && content.includes('>')) return false; // skip XML tool results
+          // Only user and assistant roles
+          if (!m.role || !['user', 'assistant'].includes(m.role)) return false;
+          // Skip tool use messages
+          if (m.plugin || m.tools || m.tool_calls) return false;
+          // Get content
+          const c = typeof m.content === 'string' ? m.content : m.content?.[0]?.text || '';
+          if (!c.trim()) return false;
+          // Skip XML tool results
+          if (c.startsWith('<') && c.includes('>')) return false;
+          // Skip short thinking steps
+          if (m.role === 'assistant' && c.length < 20 && c.endsWith(':')) return false;
           return true;
         }).slice(0, 20);
         setPreviewMessages(filtered);

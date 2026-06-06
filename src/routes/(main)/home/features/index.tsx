@@ -200,7 +200,7 @@ const Home = memo(() => {
                 Off the record
               </div>
             )}
-            </div>
+          </div>
           </div>
         </ConversationProvider>
       </div>
@@ -229,7 +229,7 @@ const Home = memo(() => {
                 Off the record
               </div>
             )}
-            </div>
+          </div>
           </div>
 
           {/* Connect bar */}

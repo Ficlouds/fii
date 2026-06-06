@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { Search, X, Check, Key } from 'lucide-react';
 import { signIn } from '@/libs/better-auth/auth-client';
 import { useIsDark } from '@/hooks/useIsDark';
@@ -20,7 +20,7 @@ const MCP_APPS = [
   { id: 'slack', name: 'Slack', desc: 'Send messages, search conversations, manage channels', category: 'Communication', url: 'https://mcp.slack.com/mcp', logo: fav('slack.com'), auth: 'oauth' },
   { id: 'discord', name: 'Discord', desc: 'Messaging, servers and community management', category: 'Communication', url: 'https://discord.com', logo: fav('discord.com'), auth: 'apikey' },
   { id: 'telegram', name: 'Telegram', desc: 'Messaging and bot automation', category: 'Communication', url: 'https://telegram.org', logo: fav('telegram.org'), auth: 'apikey' },
-  { id: 'whatsapp', name: 'WhatsApp Business', desc: 'Business messaging and customer engagement', category: 'Communication', url: 'https://business.whatsapp.com', logo: fav('whatsapp.com'), auth: 'apikey' },
+  { id: 'whatsapp', name: 'WhatsApp Business', desc: 'Business messaging and customer engagement', category: 'Communication', url: 'https://business.whatsapp.com', logo: fav('business.whatsapp.com'), auth: 'apikey' },
   { id: 'zoom', name: 'Zoom', desc: 'Video meetings, webinars and recordings', category: 'Communication', url: 'https://zoom.us', logo: fav('zoom.us'), auth: 'apikey' },
   { id: 'twilio', name: 'Twilio', desc: 'SMS, voice calls and messaging APIs', category: 'Communication', url: 'https://twilio.com', logo: fav('twilio.com'), auth: 'apikey' },
   // Productivity
@@ -49,7 +49,8 @@ const MCP_APPS = [
   { id: 'supabase', name: 'Supabase', desc: 'Database, auth, storage and realtime', category: 'Developer', url: 'https://mcp.supabase.com/mcp', logo: fav('supabase.com'), auth: 'oauth' },
   { id: 'cloudflare', name: 'Cloudflare', desc: 'Workers, KV storage and DNS management', category: 'Developer', url: 'https://mcp.cloudflare.com/mcp', logo: fav('cloudflare.com'), auth: 'oauth' },
   { id: 'neon', name: 'Neon', desc: 'Serverless Postgres with branching', category: 'Developer', url: 'https://mcp.neon.tech/mcp', logo: fav('neon.tech'), auth: 'oauth' },
-  { id: 'atlassian', name: 'Jira & Confluence', desc: 'Issues, tickets and team documentation', category: 'Developer', url: 'https://mcp.atlassian.com/v1/mcp', logo: fav('atlassian.com'), auth: 'oauth' },
+  { id: 'atlassian', name: 'Jira & Confluence', desc: 'Issues, tickets and team documentation', category: 'Developer', url: 'https://mcp.atlassian.com/v1/mcp', logo: fav('jira.atlassian.com'), auth: 'oauth' },
+  { id: 'firebase', name: 'Firebase', desc: 'App backend, Firestore, Auth and hosting', category: 'Developer', url: 'https://firebase.google.com', logo: fav('firebase.google.com'), auth: 'apikey' },
   { id: 'postman', name: 'Postman', desc: 'API development and testing platform', category: 'Developer', url: 'https://postman.com', logo: fav('postman.com'), auth: 'apikey' },
   { id: 'aws', name: 'AWS', desc: 'Cloud infrastructure and services', category: 'Developer', url: 'https://aws.amazon.com', logo: fav('aws.amazon.com'), auth: 'apikey' },
   { id: 'datadog', name: 'Datadog', desc: 'Monitoring, metrics and observability', category: 'Developer', url: 'https://datadoghq.com', logo: fav('datadoghq.com'), auth: 'apikey' },
@@ -69,13 +70,14 @@ const MCP_APPS = [
   { id: 'googleanalytics', name: 'Google Analytics', desc: 'Web analytics and reporting', category: 'Analytics', url: 'https://analytics.google.com', logo: fav('analytics.google.com'), auth: 'apikey' },
   { id: 'segment', name: 'Segment', desc: 'Customer data platform and event tracking', category: 'Analytics', url: 'https://segment.com', logo: fav('segment.com'), auth: 'apikey' },
   { id: 'looker', name: 'Looker', desc: 'Business intelligence and data exploration', category: 'Analytics', url: 'https://looker.com', logo: fav('looker.com'), auth: 'apikey' },
-  // Google Workspace — use Better Auth Google social sign-in
+  // Google Workspace — Better Auth Google sign-in
   { id: 'gmail', name: 'Gmail', desc: 'Read, compose and manage your emails', category: 'Google', url: 'https://gmailmcp.googleapis.com/mcp/v1', logo: fav('mail.google.com'), auth: 'google' },
   { id: 'gdrive', name: 'Google Drive', desc: 'Search, read and upload files', category: 'Google', url: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('drive.google.com'), auth: 'google' },
   { id: 'gcalendar', name: 'Google Calendar', desc: 'Manage events and schedule meetings', category: 'Google', url: 'https://calendarmcp.googleapis.com/mcp/v1', logo: fav('calendar.google.com'), auth: 'google' },
   { id: 'gsheets', name: 'Google Sheets', desc: 'Spreadsheets and data analysis', category: 'Google', url: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('sheets.google.com'), auth: 'google' },
   { id: 'gdocs', name: 'Google Docs', desc: 'Documents and collaborative writing', category: 'Google', url: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('docs.google.com'), auth: 'google' },
   { id: 'gslides', name: 'Google Slides', desc: 'Presentations and slide decks', category: 'Google', url: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('slides.google.com'), auth: 'google' },
+  { id: 'gforms', name: 'Google Forms', desc: 'Surveys, quizzes and form responses', category: 'Google', url: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('forms.google.com'), auth: 'google' },
   { id: 'gmeet', name: 'Google Meet', desc: 'Video meetings and conferencing', category: 'Google', url: 'https://meet.google.com', logo: fav('meet.google.com'), auth: 'google' },
   { id: 'gchat', name: 'Google Chat', desc: 'Team messaging and spaces', category: 'Google', url: 'https://chat.google.com', logo: fav('chat.google.com'), auth: 'google' },
   { id: 'gtasks', name: 'Google Tasks', desc: 'Task lists and to-dos', category: 'Google', url: 'https://tasks.google.com', logo: fav('tasks.google.com'), auth: 'google' },
@@ -84,7 +86,7 @@ const MCP_APPS = [
   { id: 'gads', name: 'Google Ads', desc: 'Ad campaigns, keywords and performance', category: 'Google', url: 'https://ads.google.com', logo: fav('ads.google.com'), auth: 'google' },
   { id: 'bigquery', name: 'BigQuery', desc: 'Serverless data warehouse and SQL analytics', category: 'Google', url: 'https://cloud.google.com', logo: fav('cloud.google.com'), auth: 'google' },
   { id: 'lookerstudio', name: 'Looker Studio', desc: 'Dashboards and data visualisation', category: 'Google', url: 'https://lookerstudio.google.com', logo: fav('lookerstudio.google.com'), auth: 'google' },
-  // Microsoft 365 — use Better Auth Microsoft social sign-in
+  // Microsoft 365 — Better Auth Microsoft sign-in
   { id: 'outlook', name: 'Outlook', desc: 'Email, calendar and contacts', category: 'Microsoft', url: 'https://agent365.svc.cloud.microsoft', logo: fav('outlook.live.com'), auth: 'microsoft' },
   { id: 'onedrive', name: 'OneDrive', desc: 'Cloud file storage and sharing', category: 'Microsoft', url: 'https://agent365.svc.cloud.microsoft', logo: fav('onedrive.live.com'), auth: 'microsoft' },
   { id: 'teams', name: 'Microsoft Teams', desc: 'Team messaging and video meetings', category: 'Microsoft', url: 'https://agent365.svc.cloud.microsoft', logo: fav('teams.microsoft.com'), auth: 'microsoft' },
@@ -109,6 +111,7 @@ const MCP_APPS = [
   { id: 'bigcommerce', name: 'BigCommerce', desc: 'Enterprise ecommerce platform', category: 'E-commerce', url: 'https://bigcommerce.com', logo: fav('bigcommerce.com'), auth: 'apikey' },
   { id: 'etsy', name: 'Etsy', desc: 'Marketplace listings, orders and shop analytics', category: 'E-commerce', url: 'https://etsy.com', logo: fav('etsy.com'), auth: 'apikey' },
   { id: 'amazon', name: 'Amazon Seller', desc: 'Product listings, orders and FBA management', category: 'E-commerce', url: 'https://sellercentral.amazon.com', logo: fav('sellercentral.amazon.com'), auth: 'apikey' },
+  { id: 'flipkart', name: 'Flipkart Seller', desc: 'Product listings and seller account management', category: 'E-commerce', url: 'https://seller.flipkart.com', logo: fav('seller.flipkart.com'), auth: 'apikey' },
   { id: 'klaviyo', name: 'Klaviyo', desc: 'Email and SMS marketing for ecommerce', category: 'E-commerce', url: 'https://klaviyo.com', logo: fav('klaviyo.com'), auth: 'apikey' },
   // AI Tools
   { id: 'openai', name: 'OpenAI', desc: 'GPT models, DALL-E and Whisper', category: 'AI', url: 'https://openai.com', logo: fav('openai.com'), auth: 'apikey' },
@@ -119,10 +122,16 @@ const MCP_APPS = [
   { id: 'perplexity', name: 'Perplexity', desc: 'AI-powered search and research', category: 'AI', url: 'https://perplexity.ai', logo: fav('perplexity.ai'), auth: 'apikey' },
 ];
 
+const LS_KEY = 'fi:connected-apps';
+
 type AppAuth = 'oauth' | 'google' | 'microsoft' | 'apikey';
 interface McpApp { id: string; name: string; desc: string; category: string; url: string; logo: string; auth: AppAuth }
 
 const CATEGORIES = ['All', 'Creative', 'Communication', 'Productivity', 'CRM', 'Developer', 'Finance', 'Analytics', 'Google', 'Microsoft', 'Social', 'E-commerce', 'AI'];
+
+const readConnected = (): string[] => {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { return []; }
+};
 
 const AppIcon = ({ logo, name }: { logo: string; name: string }) => {
   const isDark = useIsDark();
@@ -159,8 +168,9 @@ const ConnectPage = memo(() => {
   const isDark = useIsDark();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
-  const [connected, setConnected] = useState<string[]>([]);
+  const [connected, setConnected] = useState<string[]>(readConnected);
   const [connecting, setConnecting] = useState<string | null>(null);
+  const [oauthModal, setOauthModal] = useState<McpApp | null>(null);
   const [apiKeyModal, setApiKeyModal] = useState<string | null>(null);
   const [apiKeyValue, setApiKeyValue] = useState('');
   const [savingKey, setSavingKey] = useState(false);
@@ -176,17 +186,39 @@ const ConnectPage = memo(() => {
 
   const apps = MCP_APPS as McpApp[];
 
-  const filtered = apps.filter((app) => {
-    const matchSearch = !search.trim() ||
-      app.name.toLowerCase().includes(search.toLowerCase()) ||
-      app.desc.toLowerCase().includes(search.toLowerCase()) ||
-      app.category.toLowerCase().includes(search.toLowerCase());
-    const matchCat = activeCategory === 'All' || app.category === activeCategory;
-    return matchSearch && matchCat;
-  });
+  const markConnected = useCallback((id: string) => {
+    setConnected(prev => {
+      const next = prev.includes(id) ? prev : [...prev, id];
+      try { localStorage.setItem(LS_KEY, JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }, []);
 
-  const connectedApps = apps.filter(a => connected.includes(a.id));
-  const unconnectedFiltered = filtered.filter(a => !connected.includes(a.id));
+  const handleDisconnect = useCallback((id: string) => {
+    setConnected(prev => {
+      const next = prev.filter(x => x !== id);
+      try { localStorage.setItem(LS_KEY, JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }, []);
+
+  // Called when user clicks "Connect" inside the OAuth info modal
+  const handleOauthConfirm = useCallback(() => {
+    if (!oauthModal) return;
+    const app = oauthModal;
+    setOauthModal(null);
+    setConnecting(app.id);
+    window.open(app.url, '_blank');
+    // Wait for user to complete OAuth and return focus to this tab
+    setTimeout(() => {
+      const onFocus = () => {
+        window.removeEventListener('focus', onFocus);
+        setConnecting(null);
+        markConnected(app.id);
+      };
+      window.addEventListener('focus', onFocus);
+    }, 500);
+  }, [oauthModal, markConnected]);
 
   const handleConnect = async (app: McpApp) => {
     if (app.auth === 'google') {
@@ -194,7 +226,7 @@ const ConnectPage = memo(() => {
       try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await signIn.social({ callbackURL: '/connect', provider: 'google' as any });
-        setConnected(prev => [...prev, app.id]);
+        markConnected(app.id);
       } catch (e) {
         console.error('Google sign-in error:', e);
       } finally {
@@ -208,7 +240,7 @@ const ConnectPage = memo(() => {
       try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await signIn.social({ callbackURL: '/connect', provider: 'microsoft' as any });
-        setConnected(prev => [...prev, app.id]);
+        markConnected(app.id);
       } catch (e) {
         console.error('Microsoft sign-in error:', e);
       } finally {
@@ -218,18 +250,13 @@ const ConnectPage = memo(() => {
     }
 
     if (app.auth === 'oauth') {
-      // Open the MCP server's OAuth URL in a new tab for the user to authenticate
-      window.open(app.url, '_blank');
+      setOauthModal(app);
       return;
     }
 
     // apikey — open modal
     setApiKeyModal(app.id);
     setApiKeyValue('');
-  };
-
-  const handleDisconnect = (id: string) => {
-    setConnected(prev => prev.filter(x => x !== id));
   };
 
   const handleSaveApiKey = async () => {
@@ -250,7 +277,7 @@ const ConnectPage = memo(() => {
         identifier: `connect-${app.id}`,
         type: 'customPlugin',
       });
-      setConnected(prev => [...prev, apiKeyModal]);
+      markConnected(apiKeyModal);
       setApiKeyModal(null);
       setApiKeyValue('');
     } catch (e) {
@@ -259,6 +286,18 @@ const ConnectPage = memo(() => {
       setSavingKey(false);
     }
   };
+
+  const filtered = apps.filter((app) => {
+    const matchSearch = !search.trim() ||
+      app.name.toLowerCase().includes(search.toLowerCase()) ||
+      app.desc.toLowerCase().includes(search.toLowerCase()) ||
+      app.category.toLowerCase().includes(search.toLowerCase());
+    const matchCat = activeCategory === 'All' || app.category === activeCategory;
+    return matchSearch && matchCat;
+  });
+
+  const connectedApps = apps.filter(a => connected.includes(a.id));
+  const unconnectedFiltered = filtered.filter(a => !connected.includes(a.id));
 
   const groupedByCategory: Record<string, McpApp[]> = {};
   unconnectedFiltered.forEach(app => {
@@ -283,8 +322,8 @@ const ConnectPage = memo(() => {
         </div>
 
         {/* Search + Categories */}
-        <div style={{ display: 'flex', gap: 12, marginTop: 16, alignItems: 'center' }}>
-          <div style={{ alignItems: 'center', background: cardBg, border: `0.5px solid ${border}`, borderRadius: 10, display: 'flex', gap: 8, padding: '7px 12px', width: 280, flexShrink: 0 }}>
+        <div style={{ alignItems: 'center', display: 'flex', gap: 12, marginTop: 16 }}>
+          <div style={{ alignItems: 'center', background: cardBg, border: `0.5px solid ${border}`, borderRadius: 10, display: 'flex', flexShrink: 0, gap: 8, padding: '7px 12px', width: 280 }}>
             <Search size={14} style={{ color: textTertiary, flexShrink: 0 }} />
             <input
               placeholder="Search connectors..."
@@ -293,12 +332,12 @@ const ConnectPage = memo(() => {
               style={{ background: 'transparent', border: 'none', color: text, flex: 1, fontSize: 13, outline: 'none' }}
             />
             {search && (
-              <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', color: textTertiary, cursor: 'pointer', padding: 0, display: 'flex' }}>
+              <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', color: textTertiary, cursor: 'pointer', display: 'flex', padding: 0 }}>
                 <X size={13} />
               </button>
             )}
           </div>
-          <div style={{ display: 'flex', gap: 6, overflowX: 'auto', flex: 1 }}>
+          <div style={{ display: 'flex', flex: 1, gap: 6, overflowX: 'auto' }}>
             {CATEGORIES.map(cat => (
               <button key={cat} onClick={() => setActiveCategory(cat)}
                 style={{
@@ -374,7 +413,9 @@ const ConnectPage = memo(() => {
                           </span>
                         )}
                       </div>
-                      <div style={{ color: textSub, fontSize: 11, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{app.desc}</div>
+                      <div style={{ color: textSub, fontSize: 11, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {isConnecting ? 'Connecting...' : app.desc}
+                      </div>
                     </div>
                     <button
                       disabled={isConnecting}
@@ -395,7 +436,62 @@ const ConnectPage = memo(() => {
         )}
       </div>
 
-      {/* API Key Modal */}
+      {/* MCP OAuth info modal */}
+      {oauthModal && (
+        <div style={{ alignItems: 'center', background: 'rgba(0,0,0,0.5)', bottom: 0, display: 'flex', justifyContent: 'center', left: 0, position: 'absolute', right: 0, top: 0, zIndex: 100 }}>
+          <div style={{ background: cardBg, border: `0.5px solid ${border}`, borderRadius: 16, boxShadow: '0 8px 32px rgba(0,0,0,0.3)', padding: '28px 24px 24px', width: 420 }}>
+            {/* Logo + name */}
+            <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 }}>
+              <div style={{ alignItems: 'center', background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)', border: `0.5px solid ${border}`, borderRadius: 12, display: 'flex', height: 52, justifyContent: 'center', width: 52 }}>
+                <img
+                  src={oauthModal.logo}
+                  alt={oauthModal.name}
+                  style={{ height: 32, objectFit: 'contain', width: 32 }}
+                  onError={(e) => {
+                    const el = e.target as HTMLImageElement;
+                    el.style.display = 'none';
+                    if (el.parentElement) el.parentElement.innerHTML = `<span style="font-size:14px;font-weight:600;color:${text}">${oauthModal.name.slice(0,2).toUpperCase()}</span>`;
+                  }}
+                />
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ color: text, fontSize: 16, fontWeight: 600 }}>{oauthModal.name}</div>
+                <div style={{ color: textTertiary, fontSize: 12, marginTop: 2 }}>{oauthModal.category}</div>
+              </div>
+            </div>
+
+            {/* Description */}
+            <p style={{ color: textSub, fontSize: 13, lineHeight: 1.5, margin: '0 0 16px' }}>{oauthModal.desc}</p>
+
+            {/* Server URL */}
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ color: textTertiary, fontSize: 11, fontWeight: 500, letterSpacing: '0.04em', marginBottom: 6, textTransform: 'uppercase' }}>Server URL</div>
+              <div style={{ background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)', border: `0.5px solid ${border}`, borderRadius: 8, color: textSub, fontFamily: 'ui-monospace, monospace', fontSize: 11, overflow: 'hidden', padding: '8px 12px', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {oauthModal.url}
+              </div>
+            </div>
+
+            {/* Disclaimer */}
+            <div style={{ background: isDark ? 'rgba(255,200,0,0.06)' : 'rgba(180,130,0,0.06)', border: `0.5px solid ${isDark ? 'rgba(255,200,0,0.15)' : 'rgba(180,130,0,0.15)'}`, borderRadius: 8, color: isDark ? 'rgba(255,200,80,0.7)' : 'rgba(140,100,0,0.8)', fontSize: 11, lineHeight: 1.5, marginBottom: 20, padding: '10px 12px' }}>
+              Third-party connectors are not built or maintained by Fi. Use caution when granting access to external services. Review the permissions before connecting.
+            </div>
+
+            {/* Actions */}
+            <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+              <button onClick={() => setOauthModal(null)}
+                style={{ background: 'transparent', border: `0.5px solid ${border}`, borderRadius: 8, color: textSub, cursor: 'pointer', fontSize: 13, padding: '8px 18px' }}>
+                Cancel
+              </button>
+              <button onClick={handleOauthConfirm}
+                style={{ background: text, border: 'none', borderRadius: 8, color: bg, cursor: 'pointer', fontSize: 13, fontWeight: 500, padding: '8px 18px' }}>
+                Connect
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* API Key modal */}
       {apiKeyModal && modalApp && (
         <div style={{ alignItems: 'center', background: 'rgba(0,0,0,0.5)', bottom: 0, display: 'flex', justifyContent: 'center', left: 0, position: 'absolute', right: 0, top: 0, zIndex: 100 }}>
           <div style={{ background: cardBg, border: `0.5px solid ${border}`, borderRadius: 16, boxShadow: '0 8px 32px rgba(0,0,0,0.3)', padding: '24px', width: 400 }}>

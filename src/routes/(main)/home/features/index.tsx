@@ -200,6 +200,9 @@ const Home = memo(() => {
                 Off the record
               </div>
             )}
+          <div style={{ color: 'rgba(128,128,128,0.6)', fontSize: 11, paddingBottom: 4, textAlign: 'center' }}>
+              Fi is AI and can make mistakes. Please verify important responses.
+            </div>
           </div>
         </ConversationProvider>
       </div>

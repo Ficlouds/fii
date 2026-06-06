@@ -30,7 +30,7 @@ const ConnectPage = memo(() => {
   const isDark = useIsDark();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
-  const installedKlavis = useToolStore((s) => s.installedKlavisServers ?? []);
+  const installedKlavis = useToolStore((s) => (s as any).servers ?? []);
 
   const bg = isDark ? '#1f1f1e' : '#f9f8f7';
   const cardBg = isDark ? '#2c2c2b' : '#ffffff';
@@ -50,7 +50,7 @@ const ConnectPage = memo(() => {
     installedKlavis.some((s) => s.identifier === id && s.status === 'active');
 
   return (
-    <div style={{ background: bg, height: '100%', overflowY: 'auto', padding: '32px 40px' }}>
+    <div style={{ background: bg, height: '100%', overflowY: 'auto', overflowX: 'hidden', padding: '32px 40px', boxSizing: 'border-box' }}>
       <div style={{ marginBottom: 28 }}>
         <h1 style={{ color: text, fontSize: 24, fontWeight: 700, margin: 0 }}>Connect</h1>
         <p style={{ color: textSub, fontSize: 14, margin: '6px 0 0' }}>

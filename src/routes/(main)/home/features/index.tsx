@@ -192,7 +192,7 @@ const Home = memo(() => {
           </div>
           {/* Input fixed at bottom */}
           <div style={{ background: isDark ? '#1f1f1e' : '#f9f8f7', flexShrink: 0, paddingBlock: 8, paddingInline: 20, transition: 'background 0.2s ease' }}>
-            <div style={{ margin: '0 auto', maxWidth: 860, width: '100%' }}>
+            <div style={{ margin: '0 auto', maxWidth: 860, marginBottom: 4, width: '100%' }}>
               <InputArea incognito={incognito} />
             </div>
             {incognito && (
@@ -200,7 +200,7 @@ const Home = memo(() => {
                 Off the record
               </div>
             )}
-          <div style={{ color: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.4)', fontSize: 11, paddingBottom: 4, textAlign: 'center' }}>
+          <div style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11, marginTop: 6, paddingBottom: 6, textAlign: 'center' }}>
               Fi is AI and can make mistakes. Please verify important responses.
             </div>
           </div>

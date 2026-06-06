@@ -93,9 +93,9 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
             : '0 8px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.06)',
           display: 'flex',
           flexDirection: 'column',
-          maxHeight: '65vh',
+          maxHeight: results.length === 0 && !hasSearch ? 'auto' : '65vh',
           overflow: 'hidden',
-          width: 'min(560px, 92vw)',
+          width: 'min(540px, 92vw)',
         }}
       >
         {/* Search input */}
@@ -157,16 +157,23 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
           )}
         </div>
 
-        {/* Section label */}
-        <div style={{ color: textSecondary, fontSize: 11, fontWeight: 600, letterSpacing: '0.05em', padding: '10px 18px 4px', textTransform: 'uppercase' }}>
-          {hasSearch ? `Results${isSearching ? '...' : ` (${results.length})`}` : 'Recent conversations'}
-        </div>
+        {/* Section label - only show when searching */}
+        {hasSearch && (
+          <div style={{ color: textSecondary, fontSize: 11, fontWeight: 600, letterSpacing: '0.05em', padding: '10px 18px 4px', textTransform: 'uppercase' }}>
+            {isSearching ? 'Searching...' : `${results.length} result${results.length !== 1 ? 's' : ''}`}
+          </div>
+        )}
 
         {/* Results list */}
         <div style={{ flex: 1, overflowY: 'auto' }}>
-          {results.length === 0 && !isSearching && (
-            <div style={{ color: textSecondary, fontSize: 13, padding: '24px 18px', textAlign: 'center' }}>
-              {hasSearch ? 'No conversations found' : 'No recent conversations'}
+          {results.length === 0 && !isSearching && hasSearch && (
+            <div style={{ color: textSecondary, fontSize: 13, padding: '20px 18px', textAlign: 'center' }}>
+              No conversations found
+            </div>
+          )}
+          {!hasSearch && results.length === 0 && (
+            <div style={{ color: textSecondary, fontSize: 13, padding: '16px 18px', textAlign: 'center' }}>
+              Start typing to search
             </div>
           )}
           {results.map((r: any) => (

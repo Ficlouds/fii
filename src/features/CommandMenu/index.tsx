@@ -71,6 +71,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
         background: isDark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.2)',
         display: 'flex',
         inset: 0,
+        alignItems: 'flex-start',
         justifyContent: 'center',
         paddingTop: 80,
         position: 'fixed',

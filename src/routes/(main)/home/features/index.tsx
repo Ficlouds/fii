@@ -193,8 +193,8 @@ const Home = memo(() => {
             </div>
           </div>
           {/* Input fixed at bottom */}
-          <div style={{ background: isDark ? '#1f1f1e' : '#f9f8f7', flexShrink: 0, paddingBlock: 8, paddingInline: 20, transition: 'background 0.2s ease' }}>
-            <div style={{ margin: '0 auto', maxWidth: 860, marginBottom: 4, width: '100%' }}>
+          <div style={{ background: isDark ? '#1f1f1e' : '#f9f8f7', flexShrink: 0, paddingBlock: 8, paddingInline: 0, transition: 'background 0.2s ease' }}>
+            <div style={{ margin: '0 auto', maxWidth: 860, marginBottom: 4, paddingInline: 20, width: '100%' }}>
               <InputArea incognito={incognito} />
             </div>
             {incognito && (

@@ -46,10 +46,10 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
     type: 'topic',
   }));
 
-  // Client-side filter since ParadeDB not available on this DB
+  // Show recents by default, filter as user types
   const results = search.trim().length > 0
     ? recentItems.filter((r) => r.title?.toLowerCase().includes(search.toLowerCase()))
-    : [];
+    : recentItems.slice(0, 5);
 
   const handleSelect = (result: any) => {
     const topicId = result.type === 'topic' ? result.id : result.topicId;
@@ -162,9 +162,9 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
         </div>
 
         {/* Section label - only show when searching */}
-        {search.trim().length > 0 && (
+        {(
           <div style={{ color: textSecondary, fontSize: 11, fontWeight: 600, letterSpacing: '0.05em', padding: '10px 18px 4px', textTransform: 'uppercase' }}>
-            {results.length === 0 ? 'No results' : `${results.length} conversation${results.length !== 1 ? 's' : ''}`}
+            {search.trim() ? (results.length === 0 ? 'No results' : `${results.length} result${results.length !== 1 ? 's' : ''}`) : 'Recent conversations'}
           </div>
         )}
         {false && (

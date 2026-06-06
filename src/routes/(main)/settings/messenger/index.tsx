@@ -1,316 +1,112 @@
 'use client';
 
-import { KLAVIS_SERVER_TYPES, type KlavisServerType } from '@/../packages/const/src/klavis';
-import { Avatar, Icon } from '@lobehub/ui';
-import { cssVar } from 'antd-style';
-import { CheckCircle2, Loader2, PlugZap, SquareArrowOutUpRight } from 'lucide-react';
-import { memo, useMemo, useState } from 'react';
-
+import { memo, useState } from 'react';
+import { Search } from 'lucide-react';
+import { KLAVIS_SERVER_TYPES } from '@/../packages/const/src/klavis';
 import { createKlavisSkillDetailModal } from '@/features/SkillStore/SkillDetail';
 import { useIsDark } from '@/hooks/useIsDark';
 import { useToolStore } from '@/store/tool';
-import { klavisStoreSelectors } from '@/store/tool/selectors';
-import { KlavisServerStatus } from '@/store/tool/slices/klavisStore';
-
 import SettingHeader from '../features/SettingHeader';
 
-// ─── Categories ──────────────────────────────────────────────────────────────
+const CATEGORIES = [
+  { id: 'all', label: 'All' },
+  { id: 'google', label: 'Google' },
+  { id: 'microsoft', label: 'Microsoft' },
+  { id: 'communication', label: 'Communication' },
+  { id: 'productivity', label: 'Productivity' },
+  { id: 'crm', label: 'CRM & Sales' },
+  { id: 'storage', label: 'Storage' },
+];
 
-const CATEGORY_LABELS: Record<string, string> = {
-  all: 'All',
-  communication: 'Communication',
-  crm: 'CRM & Sales',
-  developer: 'Developer',
-  productivity: 'Productivity',
-  project: 'Project Management',
-  social: 'Social & Media',
+const CATEGORY_MAP: Record<string, string[]> = {
+  google: ['gmail', 'google-calendar', 'google-drive', 'google-docs', 'google-sheets'],
+  microsoft: ['onedrive', 'outlook-mail'],
+  communication: ['slack', 'whatsapp', 'youtube', 'zendesk'],
+  productivity: ['clickup', 'jira', 'confluence', 'airtable', 'figma', 'cal-com'],
+  crm: ['hubspot', 'salesforce', 'zendesk'],
+  storage: ['google-drive', 'onedrive', 'dropbox'],
 };
-
-const IDENTIFIER_TO_CATEGORY: Record<string, string> = {
-  'airtable': 'productivity',
-  'cal-com': 'productivity',
-  'clickup': 'project',
-  'confluence': 'project',
-  'dropbox': 'productivity',
-  'figma': 'developer',
-  'gmail': 'communication',
-  'google-calendar': 'productivity',
-  'google-docs': 'productivity',
-  'google-drive': 'productivity',
-  'google-sheets': 'productivity',
-  'hubspot': 'crm',
-  'jira': 'project',
-  'onedrive': 'productivity',
-  'outlook-mail': 'communication',
-  'salesforce': 'crm',
-  'slack': 'communication',
-  'supabase': 'developer',
-  'whatsapp': 'communication',
-  'youtube': 'social',
-  'zendesk': 'crm',
-};
-
-// ─── Connector Card ───────────────────────────────────────────────────────────
-
-interface ConnectorCardProps {
-  isDark: boolean;
-  serverType: KlavisServerType;
-}
-
-const ConnectorCard = memo<ConnectorCardProps>(({ serverType, isDark }) => {
-  const server = useToolStore(klavisStoreSelectors.getServerByIdentifier(serverType.identifier));
-  const [busy, setBusy] = useState(false);
-
-  const isConnected = server?.status === KlavisServerStatus.CONNECTED;
-  const isPending = server?.status === KlavisServerStatus.PENDING_AUTH;
-
-  const handleClick = () => {
-    createKlavisSkillDetailModal({
-      identifier: serverType.identifier,
-      serverName: serverType.serverName,
-    });
-  };
-
-  const renderIcon = () => {
-    const { icon, label } = serverType;
-    if (typeof icon === 'string') {
-      return <Avatar alt={label} avatar={icon} size={40} />;
-    }
-    return <Icon fill={cssVar.colorText} icon={icon} size={40} />;
-  };
-
-  const statusBadge = isConnected ? (
-    <span style={{
-      alignItems: 'center',
-      background: isDark ? 'rgba(52,199,89,0.15)' : 'rgba(52,199,89,0.12)',
-      borderRadius: 20,
-      color: '#34C759',
-      display: 'inline-flex',
-      fontSize: 11,
-      fontWeight: 600,
-      gap: 4,
-      padding: '2px 8px',
-    }}>
-      <CheckCircle2 size={11} />
-      Connected
-    </span>
-  ) : isPending ? (
-    <span style={{
-      background: isDark ? 'rgba(255,159,10,0.15)' : 'rgba(255,159,10,0.12)',
-      borderRadius: 20,
-      color: '#FF9F0A',
-      fontSize: 11,
-      fontWeight: 600,
-      padding: '2px 8px',
-    }}>
-      Needs auth
-    </span>
-  ) : null;
-
-  return (
-    <div
-      style={{
-        background: isDark ? '#2c2c2b' : '#ffffff',
-        border: isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.06)',
-        borderRadius: 16,
-        cursor: 'pointer',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 0,
-        padding: 20,
-        transition: 'box-shadow 0.15s ease, transform 0.1s ease',
-      }}
-      onClick={handleClick}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.boxShadow = isDark
-          ? '0 4px 20px rgba(0,0,0,0.4)'
-          : '0 4px 20px rgba(0,0,0,0.1)';
-        (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-        (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-      }}
-    >
-      {/* Icon + status row */}
-      <div style={{ alignItems: 'flex-start', display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-        <div style={{ opacity: isConnected ? 1 : 0.85 }}>{renderIcon()}</div>
-        {statusBadge}
-      </div>
-
-      {/* Name */}
-      <div style={{
-        color: isDark ? (isConnected ? '#ffffff' : 'rgba(255,255,255,0.9)') : (isConnected ? '#111111' : '#111111'),
-        fontSize: 15,
-        fontWeight: 600,
-        marginBottom: 6,
-      }}>
-        {serverType.label}
-      </div>
-
-      {/* Description */}
-      <div style={{
-        WebkitBoxOrient: 'vertical',
-        WebkitLineClamp: 2,
-        color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.45)',
-        display: '-webkit-box',
-        flex: 1,
-        fontSize: 13,
-        lineHeight: 1.5,
-        marginBottom: 16,
-        overflow: 'hidden',
-      }}>
-        {serverType.description}
-      </div>
-
-      {/* Connect button */}
-      <button
-        style={{
-          alignItems: 'center',
-          background: isConnected
-            ? (isDark ? 'rgba(52,199,89,0.12)' : 'rgba(52,199,89,0.08)')
-            : (isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'),
-          border: isConnected
-            ? '1px solid rgba(52,199,89,0.3)'
-            : (isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)'),
-          borderRadius: 8,
-          color: isConnected ? '#34C759' : (isDark ? 'rgba(255,255,255,0.8)' : '#333'),
-          cursor: 'pointer',
-          display: 'flex',
-          fontSize: 13,
-          fontWeight: 600,
-          gap: 6,
-          justifyContent: 'center',
-          padding: '8px 12px',
-          transition: 'background 0.15s ease',
-          width: '100%',
-        }}
-        onClick={(e) => {
-          e.stopPropagation();
-          handleClick();
-        }}
-      >
-        {busy ? (
-          <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} />
-        ) : isConnected ? (
-          <CheckCircle2 size={14} />
-        ) : (
-          <SquareArrowOutUpRight size={14} />
-        )}
-        {isConnected ? 'Manage' : isPending ? 'Authorize' : 'Connect'}
-      </button>
-    </div>
-  );
-});
-
-ConnectorCard.displayName = 'ConnectorCard';
-
-// ─── Main Page ────────────────────────────────────────────────────────────────
 
 const ConnectPage = memo(() => {
   const isDark = useIsDark();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
+  const servers = useToolStore((s: any) => s.servers ?? []);
 
-  const connectedCount = useToolStore((s) => klavisStoreSelectors.getConnectedServers(s).length);
+  const bg = isDark ? '#1f1f1e' : '#f9f8f7';
+  const cardBg = isDark ? '#2c2c2b' : '#ffffff';
+  const border = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
+  const text = isDark ? '#ffffff' : '#111111';
+  const textSub = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)';
 
-  const filtered = useMemo(() => {
-    let list: KlavisServerType[] = KLAVIS_SERVER_TYPES;
-    if (activeCategory !== 'all') {
-      list = list.filter((s) => IDENTIFIER_TO_CATEGORY[s.identifier] === activeCategory);
-    }
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      list = list.filter(
-        (s) => s.label.toLowerCase().includes(q) || s.description.toLowerCase().includes(q),
-      );
-    }
-    return list;
-  }, [search, activeCategory]);
+  const filtered = KLAVIS_SERVER_TYPES.filter((s) => {
+    const matchSearch = !search.trim() ||
+      s.label.toLowerCase().includes(search.toLowerCase()) ||
+      s.description.toLowerCase().includes(search.toLowerCase());
+    const matchCat = activeCategory === 'all' || (CATEGORY_MAP[activeCategory] ?? []).includes(s.identifier);
+    return matchSearch && matchCat;
+  });
 
-  const categories = Object.entries(CATEGORY_LABELS);
+  const isConnected = (id: string) =>
+    servers.some((s: any) => s.identifier === id && s.status === 'connected');
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <SettingHeader
-        title="Connect"
-        extra={
-          <div style={{ alignItems: 'center', display: 'flex', gap: 6 }}>
-            <PlugZap size={16} style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)' }} />
-            <span style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)', fontSize: 13 }}>
-              {KLAVIS_SERVER_TYPES.length} integrations
-            </span>
-          </div>
-        }
-      />
+    <>
+      <SettingHeader title="Connect" />
+      <div style={{ padding: '0 24px 24px', overflowY: 'auto', flex: 1 }}>
+        <p style={{ color: textSub, fontSize: 13, margin: '0 0 20px' }}>
+          Connect Fi to your apps via secure OAuth login — no API keys needed.
+        </p>
 
-      {/* Search + filters */}
-      <div style={{ marginBottom: 24 }}>
-        <input
-          placeholder="Search integrations..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{
-            background: isDark ? '#2c2c2b' : '#ffffff',
-            border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)',
-            borderRadius: 10,
-            color: isDark ? '#ffffff' : '#111',
-            fontSize: 14,
-            marginBottom: 16,
-            outline: 'none',
-            padding: '10px 14px',
-            width: '100%',
-          }}
-        />
+        <div style={{ alignItems: 'center', background: cardBg, border: `1px solid ${border}`, borderRadius: 10, display: 'flex', gap: 8, marginBottom: 16, padding: '8px 14px' }}>
+          <Search size={14} style={{ color: textSub }} />
+          <input placeholder="Search connectors..." value={search} onChange={(e) => setSearch(e.target.value)}
+            style={{ background: 'transparent', border: 'none', color: text, flex: 1, fontSize: 13, outline: 'none' }} />
+          {search && <button onClick={() => setSearch('')} style={{ background: 'none', border: 'none', color: textSub, cursor: 'pointer', fontSize: 16, padding: 0 }}>×</button>}
+        </div>
 
-        {/* Category pills */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-          {categories.map(([key, label]) => {
-            const isActive = activeCategory === key;
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
+          {CATEGORIES.map((cat) => (
+            <button key={cat.id} onClick={() => setActiveCategory(cat.id)}
+              style={{ background: activeCategory === cat.id ? (isDark ? '#fff' : '#111') : 'transparent', border: `1px solid ${activeCategory === cat.id ? 'transparent' : border}`, borderRadius: 20, color: activeCategory === cat.id ? (isDark ? '#111' : '#fff') : text, cursor: 'pointer', fontSize: 12, fontWeight: 500, padding: '5px 14px' }}>
+              {cat.label}
+            </button>
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gap: 10, gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))' }}>
+          {filtered.map((server) => {
+            const connected = isConnected(server.identifier);
             return (
-              <button
-                key={key}
-                onClick={() => setActiveCategory(key)}
-                style={{
-                  background: isActive
-                    ? (isDark ? 'rgba(255,255,255,0.15)' : '#111')
-                    : (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
-                  border: 'none',
-                  borderRadius: 20,
-                  color: isActive
-                    ? (isDark ? '#ffffff' : '#ffffff')
-                    : (isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.55)'),
-                  cursor: 'pointer',
-                  fontSize: 13,
-                  fontWeight: isActive ? 600 : 400,
-                  padding: '6px 14px',
-                  transition: 'all 0.15s ease',
-                }}
-              >
-                {label}
-              </button>
+              <div key={server.identifier} onClick={() => createKlavisSkillDetailModal({ serverType: server })}
+                onMouseEnter={(e) => { e.currentTarget.style.boxShadow = isDark ? '0 4px 12px rgba(0,0,0,0.3)' : '0 4px 12px rgba(0,0,0,0.08)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none'; }}
+                style={{ alignItems: 'center', background: cardBg, border: `1px solid ${connected ? 'rgba(74,222,128,0.4)' : border}`, borderRadius: 12, cursor: 'pointer', display: 'flex', gap: 12, padding: '14px 16px', transition: 'box-shadow 0.15s' }}>
+                <div style={{ alignItems: 'center', background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)', borderRadius: 8, display: 'flex', flexShrink: 0, height: 40, justifyContent: 'center', width: 40 }}>
+                  {typeof server.icon === 'string'
+                    ? <img src={server.icon} alt={server.label} style={{ height: 24, objectFit: 'contain', width: 24 }} onError={(e: any) => { e.target.style.display = 'none'; }} />
+                    : <server.icon size={24} />}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ alignItems: 'center', display: 'flex', gap: 6 }}>
+                    <span style={{ color: text, fontSize: 13, fontWeight: 600 }}>{server.label}</span>
+                    {connected && <span style={{ background: 'rgba(74,222,128,0.15)', borderRadius: 6, color: '#4ade80', fontSize: 10, fontWeight: 700, padding: '1px 6px' }}>Connected</span>}
+                  </div>
+                  <div style={{ color: textSub, fontSize: 11, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {server.description.slice(0, 60)}{server.description.length > 60 ? '...' : ''}
+                  </div>
+                </div>
+                <button onClick={(e) => { e.stopPropagation(); createKlavisSkillDetailModal({ serverType: server }); }}
+                  style={{ background: connected ? 'transparent' : (isDark ? '#fff' : '#111'), border: connected ? `1px solid ${border}` : 'none', borderRadius: 16, color: connected ? textSub : (isDark ? '#111' : '#fff'), cursor: 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 600, padding: '5px 12px', whiteSpace: 'nowrap' }}>
+                  {connected ? 'Manage' : 'Connect'}
+                </button>
+              </div>
             );
           })}
         </div>
+        {filtered.length === 0 && <div style={{ color: textSub, fontSize: 13, padding: '40px 0', textAlign: 'center' }}>No connectors found</div>}
       </div>
-
-      {/* Grid */}
-      {filtered.length === 0 ? (
-        <div style={{ alignItems: 'center', color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)', display: 'flex', flex: 1, fontSize: 14, justifyContent: 'center' }}>
-          No integrations found
-        </div>
-      ) : (
-        <div style={{
-          display: 'grid',
-          gap: 16,
-          gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-        }}>
-          {filtered.map((serverType) => (
-            <ConnectorCard key={serverType.identifier} isDark={isDark} serverType={serverType} />
-          ))}
-        </div>
-      )}
-    </div>
+    </>
   );
 });
 

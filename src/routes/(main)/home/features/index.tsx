@@ -192,12 +192,15 @@ const Home = memo(() => {
           </div>
           {/* Input fixed at bottom */}
           <div style={{ background: isDark ? '#1f1f1e' : '#f9f8f7', flexShrink: 0, paddingBlock: 12, paddingInline: 20, transition: 'background 0.2s ease' }}>
-            <InputArea incognito={incognito} />
+            <div style={{ margin: '0 auto', maxWidth: 860, width: '100%' }}>
+              <InputArea incognito={incognito} />
+            </div>
             {incognito && (
               <div style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)', fontSize: 12, fontWeight: 500, marginTop: 8, textAlign: 'center' }}>
                 Off the record
               </div>
             )}
+            </div>
           </div>
         </ConversationProvider>
       </div>
@@ -226,6 +229,7 @@ const Home = memo(() => {
                 Off the record
               </div>
             )}
+            </div>
           </div>
 
           {/* Connect bar */}

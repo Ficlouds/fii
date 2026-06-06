@@ -96,7 +96,7 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
           flexDirection: 'column',
           maxHeight: hasSearch && results.length > 0 ? '65vh' : 'auto',
           overflow: hasSearch && results.length > 0 ? 'hidden' : 'visible',
-          width: 'min(540px, 92vw)',
+          width: 'min(620px, 92vw)',
         }}
       >
         {/* Search input */}
@@ -161,8 +161,11 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
         {/* Section label - only show when searching */}
         {hasSearch && (
           <div style={{ color: textSecondary, fontSize: 11, fontWeight: 600, letterSpacing: '0.05em', padding: '10px 18px 4px', textTransform: 'uppercase' }}>
-            {isSearching ? 'Searching...' : `${results.length} result${results.length !== 1 ? 's' : ''}`}
+            {isSearching ? 'Searching...' : results.length === 0 ? 'No results' : `${results.length} conversation${results.length !== 1 ? 's' : ''}`}
           </div>
+        )}
+        {search.trim().length > 0 && !hasSearch && (
+          <div style={{ color: textSecondary, fontSize: 13, padding: '16px 18px', textAlign: 'center' }}>Searching...</div>
         )}
 
         {/* Results list */}

@@ -201,7 +201,6 @@ const Home = memo(() => {
               </div>
             )}
           </div>
-          </div>
         </ConversationProvider>
       </div>
     );

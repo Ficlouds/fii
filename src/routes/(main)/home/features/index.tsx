@@ -229,7 +229,6 @@ const Home = memo(() => {
               </div>
             )}
           </div>
-          </div>
 
           {/* Connect bar */}
           {!bannerDismissed && <ConnectOption1 onDismiss={() => setBannerDismissed(true)} isDark={isDark} />}

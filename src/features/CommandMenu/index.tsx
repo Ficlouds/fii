@@ -10,7 +10,6 @@ import { useLocation } from 'react-router-dom';
 import { useGlobalStore } from '@/store/global';
 import { useIsDark } from '@/hooks/useIsDark';
 import { useChatStore } from '@/store/chat';
-import { messageMapKey } from '@/store/chat/utils/messageMapKey';
 import { useHomeStore } from '@/store/home';
 import { homeRecentSelectors } from '@/store/home/selectors';
 
@@ -55,23 +54,27 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
   const [selected, setSelected] = useState<any>(null);
   const recents = useHomeStore(homeRecentSelectors.recents);
 
-  // Fetch messages for preview using correct messageMapKey format
-  const previewKey = selected
-    ? messageMapKey({ agentId: selected.agentId || 'inbox', topicId: selected.id })
-    : null;
-  const previewMessages = useChatStore((s) => previewKey ? s.dbMessagesMap[previewKey] : undefined);
+  // Fetch messages for preview directly via API
+  const [previewMessages, setPreviewMessages] = useState<any[]>([]);
+  const [previewLoading, setPreviewLoading] = useState(false);
 
   useEffect(() => {
     if (!selected) return;
-    const agentId = selected.agentId || 'inbox';
+    setPreviewMessages([]);
+    setPreviewLoading(true);
     const topicId = selected.id;
-    // Trigger message fetch via store
-    const state = useChatStore.getState() as any;
-    if (state.refreshMessages) {
-      state.refreshMessages(agentId, topicId);
-    } else if (state.fetchMessages) {
-      state.fetchMessages(agentId, topicId);
-    }
+    const agentId = selected.agentId;
+    const params = new URLSearchParams();
+    if (topicId) params.set('topicId', topicId);
+    if (agentId) params.set('agentId', agentId);
+    fetch(`/trpc/lambda/message.getMessages?input=${encodeURIComponent(JSON.stringify({ json: { topicId, agentId } }))}`)
+      .then(r => r.json())
+      .then(data => {
+        const msgs = data?.result?.data?.json || [];
+        setPreviewMessages(msgs.slice(0, 20));
+        setPreviewLoading(false);
+      })
+      .catch(() => setPreviewLoading(false));
   }, [selected?.id]);
 
   // Show search results when typing, otherwise show recents
@@ -208,10 +211,10 @@ const CommandMenuContent = memo<{ isClosing: boolean; onClose: () => void }>(({ 
                 </div>
                 {/* Messages */}
                 <div style={{ flex: 1, overflowY: 'auto', padding: '12px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  {!previewMessages && (
+                  {previewLoading && (
                     <div style={{ color: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', fontSize: 13, paddingTop: 20, textAlign: 'center' }}>Loading...</div>
                   )}
-                  {previewMessages?.slice(0, 20).map((msg: any) => (
+                  {previewMessages.map((msg: any) => (
                     <div key={msg.id} style={{
                       alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
                       background: msg.role === 'user'

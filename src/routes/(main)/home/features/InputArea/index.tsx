@@ -39,7 +39,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
         borderRadius: 32,
         boxShadow: 'none',
         color: isDark ? '#ececec' : '#111111',
-        minHeight: 60,
+        minHeight: 52,
         transition: 'background 0.25s ease, color 0.25s ease',
         width: '100%',
       },

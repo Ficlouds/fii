@@ -785,6 +785,21 @@ const ConnectPage = memo(() => {
   // comes back to this tab, check localStorage immediately instead of waiting for the next tick
   // Focus listener removed - polling only happens after popup closes
 
+  // When user navigates away or refreshes while OAuth is pending,
+  // revoke the INITIALIZING connection so it doesn't cause false positives later
+  useEffect(() => {
+    const handleUnload = () => {
+      if (!pendingOAuthApp.current) return;
+      const appId = pendingOAuthApp.current;
+      const composioSlug = COMPOSIO_APP_MAP[appId] || appId;
+      // Use sendBeacon for reliability during page unload
+      navigator.sendBeacon(
+        `/api/composio/revoke-pending?app=${composioSlug}`,
+      );
+    };
+    window.addEventListener('beforeunload', handleUnload);
+    return () => window.removeEventListener('beforeunload', handleUnload);
+  }, []);
 
   // When the info modal is dismissed or switches to a different app, cancel any polling
   // interval left running from a previous, abandoned attempt

@@ -8,6 +8,44 @@ import { useToolStore } from '@/store/tool';
 
 const fav = (domain: string) => `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 
+const BROWSE_NAME_MAP: Record<string, string> = {
+  acculynx: 'AccuLynx', adp_workforce: 'ADP Workforce', agencyzoom: 'AgencyZoom',
+  bamboohr: 'BambooHR', borneo: 'Borneo', browser_tool: 'Browser Tool',
+  browserbase_tool: 'Browserbase', clickup: 'ClickUp', codeinterpreter: 'Code Interpreter',
+  docusign: 'DocuSign', hubspot: 'HubSpot',
+  composio_search: 'Composio Search', discordbot: 'Discord Bot', google_maps: 'Google Maps',
+  googleanalytics: 'Google Analytics', googlebigquery: 'BigQuery', googlecalendar: 'Google Calendar',
+  googledocs: 'Google Docs', googledrive: 'Google Drive', googlemeet: 'Google Meet',
+  googlephotos: 'Google Photos', googlesheets: 'Google Sheets', googlesuper: 'Google Super',
+  googletasks: 'Google Tasks', heygen: 'HeyGen', junglescout: 'Amazon',
+  linkup: 'LinkUp', listennotes: 'Listen Notes', lmnt: 'LMNT',
+  metaads: 'Meta Ads', microsoft_clarity: 'Microsoft Clarity', microsoft_teams: 'Microsoft Teams',
+  one_drive: 'OneDrive', peopledatalabs: 'People Data Labs', posthog: 'PostHog',
+  quickbooks: 'QuickBooks', rippling_hr: 'Rippling HR', semanticscholar: 'Semantic Scholar',
+  sendgrid: 'SendGrid', slackbot: 'Slack Bot', text_to_pdf: 'Text to PDF',
+  weathermap: 'Weather Map', yousearch: 'YouSearch', zenrows: 'ZenRows',
+};
+
+const formatAppName = (slug: string): string =>
+  BROWSE_NAME_MAP[slug] || slug.charAt(0).toUpperCase() + slug.slice(1).replaceAll('_', ' ');
+
+const BROWSE_DOMAIN_MAP: Record<string, string> = {
+  acculynx: 'acculynx.com', adp_workforce: 'adp.com', agencyzoom: 'agencyzoom.com',
+  borneo: 'borneo.io', browserbase_tool: 'browserbase.com', canva: 'canva.com', canvas: 'canva.com',
+  codeinterpreter: 'code.visualstudio.com', composio_search: 'composio.dev',
+  discordbot: 'discord.com', google_maps: 'maps.google.com', googleanalytics: 'analytics.google.com',
+  googlebigquery: 'cloud.google.com', googlecalendar: 'calendar.google.com', googledocs: 'docs.google.com',
+  googledrive: 'drive.google.com', googlemeet: 'meet.google.com', googlephotos: 'photos.google.com',
+  googlesheets: 'sheets.google.com', googletasks: 'tasks.google.com', junglescout: 'junglescout.com',
+  linkup: 'linkup.so', listennotes: 'listennotes.com', lmnt: 'lmnt.com', metaads: 'facebook.com',
+  microsoft_clarity: 'clarity.microsoft.com', microsoft_teams: 'teams.microsoft.com',
+  one_drive: 'onedrive.com', peopledatalabs: 'peopledatalabs.com', rippling_hr: 'rippling.com',
+  semanticscholar: 'semanticscholar.org', slackbot: 'slack.com', weathermap: 'openweathermap.org',
+  yousearch: 'you.com', zenrows: 'zenrows.com',
+};
+
+const slugToDomain = (slug: string): string => BROWSE_DOMAIN_MAP[slug] || `${slug.replaceAll('_', '')}.com`;
+
 const LOGO_MAP: Record<string, string> = {
   airtable: 'https://airtable.com/favicon.ico',
   amazon: 'https://www.amazon.com/favicon.ico',
@@ -371,32 +409,12 @@ const CATEGORIES = ['All', 'Creative', 'Communication', 'Productivity', 'CRM', '
 // Competitor AI slugs to hide from the "Browse all integrations" search results
 const COMPETITOR_SLUGS = ['openai', 'anthropic', 'perplexityai', 'deepseek', 'grok', 'gemini', 'mistral', 'cohere', 'claude'];
 
-interface ComposioToolkit {
-  categories?: Array<{ name?: string } | string>;
-  description?: string;
+interface BrowseApp {
+  category?: string;
   logo?: string;
-  meta?: { categories?: Array<{ name?: string } | string>; description?: string; logo?: string };
   name?: string;
   slug: string;
 }
-
-const toolkitDesc = (t: ComposioToolkit) => t.meta?.description || t.description || 'Composio integration';
-const toolkitLogo = (t: ComposioToolkit) => t.meta?.logo || t.logo || fav(`${t.slug}.com`);
-const toolkitCategory = (t: ComposioToolkit) => {
-  const cats = t.meta?.categories || t.categories || [];
-  const first = cats[0];
-  if (!first) return 'Other';
-  return typeof first === 'string' ? first : (first.name || 'Other');
-};
-const toolkitToApp = (t: ComposioToolkit): McpApp => ({
-  auth: 'composio',
-  category: toolkitCategory(t),
-  desc: toolkitDesc(t),
-  id: t.slug,
-  logo: toolkitLogo(t),
-  mcpUrl: '',
-  name: t.name || t.slug,
-});
 
 const PRIVACY_BULLETS_THIRD_PARTY = [
   'Third-party connector - not built or maintained by Fi',
@@ -453,6 +471,34 @@ const AppIcon = memo(({ app, size = 36 }: { app: McpApp; size?: number }) => {
 });
 AppIcon.displayName = 'AppIcon';
 
+const BrowseAppCard = memo(({ app, onConnect }: { app: McpApp; onConnect: () => void }) => {
+  const isDark = useIsDark();
+  const cardBg = isDark ? '#2c2c2b' : '#ffffff';
+  const border = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
+  const text = isDark ? '#ffffff' : '#111111';
+  const textSub = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)';
+
+  return (
+    <div style={{ alignItems: 'center', background: cardBg, border: `0.5px solid ${border}`, borderRadius: 12, display: 'flex', gap: 12, padding: '12px 14px' }}>
+      <AppIcon app={app} />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ color: text, fontSize: 13, fontWeight: 500 }}>{app.name}</div>
+        <div style={{ alignItems: 'center', display: 'flex', marginTop: 2 }}>
+          <span style={{ background: isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)', borderRadius: 6, color: textSub, fontSize: 10, padding: '1px 6px' }}>
+            {app.desc}
+          </span>
+        </div>
+      </div>
+      <button
+        style={{ background: 'transparent', border: `1.5px solid ${isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}`, borderRadius: 8, color: text, cursor: 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 700, padding: '5px 14px', whiteSpace: 'nowrap' }}
+        onClick={onConnect}>
+        Connect
+      </button>
+    </div>
+  );
+});
+BrowseAppCard.displayName = 'BrowseAppCard';
+
 const ConnectPage = memo(() => {
   const isDark = useIsDark();
   const [search, setSearch] = useState('');
@@ -469,8 +515,11 @@ const ConnectPage = memo(() => {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(() => new Set());
   const [browseOpen, setBrowseOpen] = useState(false);
   const [browseQuery, setBrowseQuery] = useState('');
-  const [browseResults, setBrowseResults] = useState<ComposioToolkit[]>([]);
+  const [browseResults, setBrowseResults] = useState<BrowseApp[]>([]);
+  const [browseTotal, setBrowseTotal] = useState(0);
   const [browseLoading, setBrowseLoading] = useState(false);
+  const [browseCategory, setBrowseCategory] = useState('All');
+  const [disconnectConfirm, setDisconnectConfirm] = useState<string | null>(null);
 
   // Tracks which app the currently-open OAuth tab belongs to, so a stale poll/focus
   // event for a previous app can't mark the wrong app as connected
@@ -590,13 +639,15 @@ const ConnectPage = memo(() => {
     const timer = setTimeout(() => {
       fetch(`/api/composio/search?q=${encodeURIComponent(query)}`)
         .then(r => r.json())
-        .then(({ items }: { items?: ComposioToolkit[] }) => {
+        .then(({ items, total }: { items?: BrowseApp[]; total?: number }) => {
           const filtered = (items || []).filter(
             item => !COMPETITOR_SLUGS.includes(item.slug?.toLowerCase()),
           );
           setBrowseResults(filtered);
+          setBrowseTotal(total ?? filtered.length);
+          setBrowseCategory('All');
         })
-        .catch(() => setBrowseResults([]))
+        .catch(() => { setBrowseResults([]); setBrowseTotal(0); })
         .finally(() => setBrowseLoading(false));
     }, 300);
     return () => clearTimeout(timer);
@@ -941,9 +992,26 @@ const ConnectPage = memo(() => {
     groupedByCategory[app.category].push(app);
   });
 
+  const isBrowseSearching = browseQuery.trim().length >= 2;
+
+  const browseApps: McpApp[] = browseResults.map(item => ({
+    auth: 'composio',
+    category: item.category || 'Other',
+    desc: item.category || 'Integration',
+    id: item.slug,
+    logo: fav(slugToDomain(item.slug)),
+    mcpUrl: '',
+    name: formatAppName(item.slug),
+  }));
+
+  const browseCategories = ['All', ...Array.from(new Set(browseApps.map(a => a.category))).sort()];
+
+  const browseFiltered = browseCategory === 'All'
+    ? browseApps
+    : browseApps.filter(a => a.category === browseCategory);
+
   const browseGrouped: Record<string, McpApp[]> = {};
-  browseResults.forEach(toolkit => {
-    const app = toolkitToApp(toolkit);
+  browseFiltered.forEach(app => {
     if (!browseGrouped[app.category]) browseGrouped[app.category] = [];
     browseGrouped[app.category].push(app);
   });
@@ -952,6 +1020,7 @@ const ConnectPage = memo(() => {
 
   return (
     <div style={{ background: bg, display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
+      <style>{'.hide-scrollbar::-webkit-scrollbar { display: none; }'}</style>
 
       {/* Header */}
       <div style={{ background: isDark ? '#1e1e1d' : '#ffffff', borderBottom: `0.5px solid ${border}`, flexShrink: 0, padding: '20px 32px 16px' }}>
@@ -992,7 +1061,7 @@ const ConnectPage = memo(() => {
               </button>
             )}
           </div>
-          <div style={{ display: 'flex', flex: 1, gap: 6, overflowX: 'auto' }}>
+          <div className="hide-scrollbar" style={{ display: 'flex', flex: 1, gap: 6, msOverflowStyle: 'none' as any, overflowX: 'auto', scrollbarWidth: 'none' as any }}>
             {CATEGORIES.map(cat => (
               <button key={cat} style={{ background: activeCategory === cat ? text : 'transparent', border: `0.5px solid ${activeCategory === cat ? 'transparent' : border}`, borderRadius: 20, color: activeCategory === cat ? bg : (isDark ? 'rgba(255,255,255,0.65)' : 'rgba(0,0,0,0.65)'), cursor: 'pointer', flexShrink: 0, fontSize: 12, fontWeight: 500, padding: '5px 14px', transition: 'all 0.15s' }}
                 onClick={() => setActiveCategory(cat)}>
@@ -1063,7 +1132,7 @@ const ConnectPage = memo(() => {
                       </div>
                     </div>
                     <button style={{ background: 'transparent', border: `0.5px solid ${border}`, borderRadius: 8, color: textSub, cursor: 'pointer', fontSize: 11, flexShrink: 0, padding: '4px 10px', whiteSpace: 'nowrap' }}
-                      onClick={() => handleDisconnect(app.id)}>
+                      onClick={() => setDisconnectConfirm(app.id)}>
                       Disconnect
                     </button>
                   </div>
@@ -1197,7 +1266,22 @@ const ConnectPage = memo(() => {
                 onChange={e => setBrowseQuery(e.target.value)}
               />
             </div>
-            <div style={{ color: textTertiary, fontSize: 11, marginTop: 8 }}>1,000+ integrations available</div>
+            <div style={{ color: textTertiary, fontSize: 11, marginTop: 8 }}>
+              {isBrowseSearching
+                ? `${browseFiltered.length} results for "${browseQuery.trim()}"`
+                : `${browseTotal || browseApps.length} apps available`}
+            </div>
+            {browseCategories.length > 2 && (
+              <div className="hide-scrollbar" style={{ display: 'flex', gap: 6, marginTop: 12, msOverflowStyle: 'none' as any, overflowX: 'auto', scrollbarWidth: 'none' as any }}>
+                {browseCategories.map(cat => (
+                  <button key={cat}
+                    style={{ background: browseCategory === cat ? text : 'transparent', border: `0.5px solid ${browseCategory === cat ? 'transparent' : border}`, borderRadius: 20, color: browseCategory === cat ? bg : (isDark ? 'rgba(255,255,255,0.65)' : 'rgba(0,0,0,0.65)'), cursor: 'pointer', flexShrink: 0, fontSize: 12, fontWeight: 500, padding: '5px 14px', transition: 'all 0.15s' }}
+                    onClick={() => setBrowseCategory(cat)}>
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
@@ -1205,33 +1289,22 @@ const ConnectPage = memo(() => {
               <div style={{ color: textSub, fontSize: 13, padding: '60px 0', textAlign: 'center' }}>
                 Searching...
               </div>
-            ) : browseResults.length === 0 ? (
+            ) : browseFiltered.length === 0 ? (
               <div style={{ color: textSub, fontSize: 13, padding: '60px 0', textAlign: 'center' }}>
                 No integrations found for &ldquo;{browseQuery}&rdquo;
+              </div>
+            ) : isBrowseSearching ? (
+              <div style={{ display: 'grid', gap: 8, gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+                {browseFiltered.map(app => <BrowseAppCard app={app} key={app.id} onConnect={() => { setBrowseOpen(false); handleConnect(app); }} />)}
               </div>
             ) : (
               Object.entries(browseGrouped).map(([category, apps]) => (
                 <div key={category} style={{ marginBottom: 24 }}>
                   <div style={{ color: textTertiary, fontSize: 11, fontWeight: 500, letterSpacing: '0.06em', marginBottom: 10, textTransform: 'uppercase' }}>
-                    {category}
+                    {category} ({apps.length})
                   </div>
                   <div style={{ display: 'grid', gap: 8, gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
-                    {apps.map(app => (
-                      <div key={app.id} style={{ alignItems: 'center', background: cardBg, border: `0.5px solid ${border}`, borderRadius: 12, display: 'flex', gap: 12, padding: '12px 14px' }}>
-                        <AppIcon app={app} />
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ color: text, fontSize: 13, fontWeight: 500 }}>{app.name}</div>
-                          <div style={{ color: textSub, fontSize: 11, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                            {app.desc}
-                          </div>
-                        </div>
-                        <button
-                          style={{ background: 'transparent', border: `1.5px solid ${isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}`, borderRadius: 8, color: text, cursor: 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 700, padding: '5px 14px', whiteSpace: 'nowrap' }}
-                          onClick={() => { setBrowseOpen(false); handleConnect(app); }}>
-                          Connect
-                        </button>
-                      </div>
-                    ))}
+                    {apps.map(app => <BrowseAppCard app={app} key={app.id} onConnect={() => { setBrowseOpen(false); handleConnect(app); }} />)}
                   </div>
                 </div>
               ))
@@ -1283,6 +1356,35 @@ const ConnectPage = memo(() => {
           </div>
         </div>
       )}
+
+      {/* Disconnect confirmation modal */}
+      {disconnectConfirm && (() => {
+        const app = MCP_APPS.find(a => a.id === disconnectConfirm);
+        return (
+          <div style={{ alignItems: 'center', background: 'rgba(0,0,0,0.5)', bottom: 0, display: 'flex', justifyContent: 'center', left: 0, position: 'absolute', right: 0, top: 0, zIndex: 200 }}
+            onClick={() => setDisconnectConfirm(null)}>
+            <div style={{ background: cardBg, border: `0.5px solid ${border}`, borderRadius: 16, padding: '24px', width: 380 }}
+              onClick={e => e.stopPropagation()}>
+              <div style={{ color: text, fontSize: 15, fontWeight: 500, marginBottom: 8 }}>
+                Disconnect {app?.name}?
+              </div>
+              <div style={{ color: textSub, fontSize: 13, lineHeight: 1.5, marginBottom: 20 }}>
+                This will remove {app?.name}&apos;s access to your Fi account. You can reconnect at any time.
+              </div>
+              <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+                <button style={{ background: 'transparent', border: `0.5px solid ${border}`, borderRadius: 8, color: textSub, cursor: 'pointer', fontSize: 13, padding: '8px 16px' }}
+                  onClick={() => setDisconnectConfirm(null)}>
+                  Cancel
+                </button>
+                <button style={{ background: '#dc2626', border: 'none', borderRadius: 8, color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 500, padding: '8px 16px' }}
+                  onClick={() => { handleDisconnect(disconnectConfirm); setDisconnectConfirm(null); }}>
+                  Disconnect
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* API Key modal */}
       {apiKeyModal && modalApp && (

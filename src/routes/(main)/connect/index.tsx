@@ -1,10 +1,10 @@
 'use client';
 
-import {Check, Key, Search, X } from 'lucide-react';
+import { Check, Key, Search, X } from 'lucide-react';
 import { memo, useCallback, useEffect, useState } from 'react';
 
 import { useIsDark } from '@/hooks/useIsDark';
-import { listAccounts,signIn } from '@/libs/better-auth/auth-client';
+import { listAccounts, signIn } from '@/libs/better-auth/auth-client';
 import { useToolStore } from '@/store/tool';
 
 const fav = (domain: string) => `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
@@ -121,19 +121,19 @@ const GOOGLE_APP_IDS = ['gmail','gdrive','gcalendar','gsheets','gdocs','gslides'
 const MICROSOFT_APP_IDS = ['outlook','onedrive','teams','excel','word','powerpoint','sharepoint','onenote','mstodo','msplanner'];
 
 const OAUTH_URLS: Record<string, string> = {
-  slack: 'https://slack.com/oauth/v2/authorize?client_id=11283223980215.11300538241825&scope=channels:read,channels:history,chat:write,users:read,search:read,files:read,groups:read,im:read,mpim:read&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Fauth%2Fcallback%2Fslack',
-  hubspot: 'https://app.hubspot.com/oauth/authorize?client_id=f030ab61-bfaf-4a80-8c27-2a4d2784016b&scope=crm.objects.contacts.read%20crm.objects.deals.read%20crm.objects.companies.read&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Fauth%2Fcallback%2Fhubspot',
-  notion: 'https://api.notion.com/v1/oauth/authorize?client_id=377d872b-594c-81fc-9c4f-00374782bd6e&response_type=code&owner=user&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Fauth%2Fcallback%2Fnotion',
-  github: 'https://github.com/login/oauth/authorize?client_id=Ov23lijVWI91JZFThB12&scope=repo%2Cuser%2Cread%3Aorg&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Fauth%2Fcallback%2Fgithub',
-  figma: 'https://www.figma.com/oauth?client_id=jAAgh1HbOPtzxprXTIx6UE&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Fauth%2Fcallback%2Ffigma&scope=file_read&response_type=code',
-  linear: 'https://linear.app/oauth/authorize?client_id=4a55ee60d83c5cb6dfbd1e8f23a87b13&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Fauth%2Fcallback%2Flinear&response_type=code&scope=read%2Cwrite',
-  asana: 'https://app.asana.com/-/oauth_authorize?client_id=1215470227190828&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Fauth%2Fcallback%2Fasana&response_type=code',
-  atlassian: 'https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=JGpbzD66rrV2TRfAleKCthJ6NgJh2GyA&scope=read%3Ajira-work%20write%3Ajira-work%20read%3Aconfluence-content.all&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Fauth%2Fcallback%2Fatlassian&response_type=code&prompt=consent',
-  box: 'https://account.box.com/api/oauth2/authorize?client_id=kkhdqrucdyucer9ebvsb8xtpd9siugxl&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Fauth%2Fcallback%2Fbox&response_type=code',
-  dropbox: 'https://www.dropbox.com/oauth2/authorize?client_id=vgnmbsj727pkesr&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Fauth%2Fcallback%2Fdropbox&response_type=code&token_access_type=offline',
-  canva: 'https://www.canva.com/api/oauth/authorize?client_id=OC-AZ6en9YG18wS&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Fauth%2Fcallback%2Fcanva&response_type=code&scope=asset%3Aread%20asset%3Awrite%20design%3Acontent%3Aread%20design%3Acontent%3Awrite%20design%3Ameta%3Aread%20profile%3Aread',
-  shopify: 'https://accounts.shopify.com/oauth/authorize?client_id=f24744b60760fff8f77947d688f78849&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Fauth%2Fcallback%2Fshopify&response_type=code',
-  paypal: 'https://www.sandbox.paypal.com/signin/authorize?client_id=AWgCuTemLtUiU1FFt27zA8yPqbU6D-rb3Wcucw9EVPNl_kPDaFMAfTjnFD5cJbxENvsZORvISEUMjvgz&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Fauth%2Fcallback%2Fpaypal&response_type=code&scope=openid%20profile%20email',
+  slack: 'https://slack.com/oauth/v2/authorize?client_id=11283223980215.11300538241825&scope=channels:read,channels:history,chat:write,users:read,search:read,files:read,groups:read,im:read,mpim:read&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fslack',
+  hubspot: 'https://app.hubspot.com/oauth/authorize?client_id=f030ab61-bfaf-4a80-8c27-2a4d2784016b&scope=crm.objects.contacts.read%20crm.objects.deals.read%20crm.objects.companies.read&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fhubspot',
+  notion: 'https://api.notion.com/v1/oauth/authorize?client_id=377d872b-594c-81fc-9c4f-00374782bd6e&response_type=code&owner=user&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fnotion',
+  github: 'https://github.com/login/oauth/authorize?client_id=Ov23lijVWI91JZFThB12&scope=repo%2Cuser%2Cread%3Aorg&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fgithub',
+  figma: 'https://www.figma.com/oauth?client_id=jAAgh1HbOPtzxprXTIx6UE&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Ffigma&scope=file_read&response_type=code',
+  linear: 'https://linear.app/oauth/authorize?client_id=4a55ee60d83c5cb6dfbd1e8f23a87b13&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Flinear&response_type=code&scope=read%2Cwrite',
+  asana: 'https://app.asana.com/-/oauth_authorize?client_id=1215470227190828&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fasana&response_type=code',
+  atlassian: 'https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=JGpbzD66rrV2TRfAleKCthJ6NgJh2GyA&scope=read%3Ajira-work%20write%3Ajira-work%20read%3Aconfluence-content.all&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fatlassian&response_type=code&prompt=consent',
+  box: 'https://account.box.com/api/oauth2/authorize?client_id=kkhdqrucdyucer9ebvsb8xtpd9siugxl&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fbox&response_type=code',
+  dropbox: 'https://www.dropbox.com/oauth2/authorize?client_id=vgnmbsj727pkesr&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fdropbox&response_type=code&token_access_type=offline',
+  canva: 'https://www.canva.com/api/oauth/authorize?client_id=OC-AZ6en9YG18wS&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fcanva&response_type=code&scope=asset%3Aread%20asset%3Awrite%20design%3Acontent%3Aread%20design%3Acontent%3Awrite%20design%3Ameta%3Aread%20profile%3Aread',
+  shopify: 'https://accounts.shopify.com/oauth/authorize?client_id=f24744b60760fff8f77947d688f78849&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fshopify&response_type=code',
+  paypal: 'https://www.sandbox.paypal.com/signin/authorize?client_id=AWgCuTemLtUiU1FFt27zA8yPqbU6D-rb3Wcucw9EVPNl_kPDaFMAfTjnFD5cJbxENvsZORvISEUMjvgz&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fpaypal&response_type=code&scope=openid%20profile%20email',
 };
 
 type AppAuth = 'google' | 'microsoft' | 'oauth_registered' | 'oauth_dcr' | 'apikey' | 'coming_soon';
@@ -263,13 +263,28 @@ const MCP_APPS: McpApp[] = [
 ];
 
 const LS_KEY = 'fi:connected-apps';
-const LS_PENDING_KEY = 'fi:pending-oauth';
+const LS_VERSION_KEY = 'fi:connect-version';
+const LS_VERSION = '2';
+const LS_OAUTH_SUCCESS_KEY = 'fi:oauth-success';
+const LS_OAUTH_FAILED_KEY = 'fi:oauth-failed';
 
 const readLS = (key: string): string[] => {
   try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch { return []; }
 };
 const writeLS = (key: string, val: string[]) => {
   try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+};
+
+// The old elapsed-time heuristic produced false "connected" states — wipe them once on upgrade
+const getInitialConnected = (): string[] => {
+  try {
+    if (localStorage.getItem(LS_VERSION_KEY) !== LS_VERSION) {
+      localStorage.removeItem(LS_KEY);
+      localStorage.setItem(LS_VERSION_KEY, LS_VERSION);
+      return [];
+    }
+  } catch {}
+  return readLS(LS_KEY);
 };
 
 const CATEGORIES = ['All', 'Creative', 'Communication', 'Productivity', 'CRM', 'Developer', 'Finance', 'Analytics', 'Google', 'Microsoft', 'Social', 'E-commerce', 'AI'];
@@ -287,7 +302,7 @@ const PRIVACY_BULLETS_THIRD_PARTY = [
 
 interface BannerState {
   message: string;
-  type: 'success' | 'cancelled' | 'error';
+  type: 'success' | 'error';
 }
 
 const AppIcon = memo(({ app, size = 36 }: { app: McpApp; size?: number }) => {
@@ -338,8 +353,9 @@ const ConnectPage = memo(() => {
   const isDark = useIsDark();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
-  const [connected, setConnected] = useState<string[]>(() => readLS(LS_KEY));
+  const [connected, setConnected] = useState<string[]>(getInitialConnected);
   const [connecting, setConnecting] = useState<string | null>(null);
+  const [pollingApp, setPollingApp] = useState<string | null>(null);
   const [infoModalApp, setInfoModalApp] = useState<McpApp | null>(null);
   const [banner, setBanner] = useState<BannerState | null>(null);
   const [bannerVisible, setBannerVisible] = useState(false);
@@ -390,9 +406,32 @@ const ConnectPage = memo(() => {
     });
   }, []);
 
-  // On mount: restore connected state from localStorage, session, and pending-oauth flag
+  // On mount: restore connected state from the URL, the session, and pending first-party flags
   useEffect(() => {
-    const pendingId = localStorage.getItem(LS_PENDING_KEY);
+    const params = new URLSearchParams(window.location.search);
+    const oauthSuccessParam = params.get('oauth_success');
+
+    if (oauthSuccessParam) {
+      if (oauthSuccessParam === 'google') {
+        markConnectedBulk(GOOGLE_APP_IDS);
+        showBanner('success', 'Google connected successfully');
+      } else if (oauthSuccessParam === 'microsoft') {
+        markConnectedBulk(MICROSOFT_APP_IDS);
+        showBanner('success', 'Microsoft connected successfully');
+      } else {
+        const app = MCP_APPS.find(a => a.id === oauthSuccessParam);
+        if (app) {
+          markConnected(app.id);
+          showBanner('success', `${app.name} connected successfully`);
+        }
+      }
+      params.delete('oauth_success');
+      const rest = params.toString();
+      window.history.replaceState({}, '', `${window.location.pathname}${rest ? `?${rest}` : ''}`);
+    }
+
+    const pendingGoogle = localStorage.getItem('fi:pending-google');
+    const pendingMicrosoft = localStorage.getItem('fi:pending-microsoft');
 
     listAccounts()
       .then(result => {
@@ -404,107 +443,58 @@ const ConnectPage = memo(() => {
         if (hasGoogle) markConnectedBulk(GOOGLE_APP_IDS);
         if (hasMicrosoft) markConnectedBulk(MICROSOFT_APP_IDS);
 
-        if (pendingId) {
-          const pendingApp = MCP_APPS.find(a => a.id === pendingId);
-          if (pendingApp) {
-            if (pendingApp.auth === 'google' && hasGoogle) {
-              showBanner('success', `${pendingApp.name} connected successfully`);
-            } else if (pendingApp.auth === 'microsoft' && hasMicrosoft) {
-              showBanner('success', `${pendingApp.name} connected successfully`);
-            } else if (pendingApp.auth === 'oauth_registered') {
-              markConnected(pendingApp.id);
-              showBanner('success', `${pendingApp.name} connected successfully`);
-            }
-          }
-          localStorage.removeItem(LS_PENDING_KEY);
+        if (pendingGoogle) {
+          localStorage.removeItem('fi:pending-google');
+          if (hasGoogle && !oauthSuccessParam) showBanner('success', 'Google connected successfully');
+        }
+        if (pendingMicrosoft) {
+          localStorage.removeItem('fi:pending-microsoft');
+          if (hasMicrosoft && !oauthSuccessParam) showBanner('success', 'Microsoft connected successfully');
         }
       })
       .catch(() => {});
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Listens for the user returning to this tab after an OAuth popup
-  const attachOAuthFocusListener = useCallback((app: McpApp, verify?: () => Promise<boolean>) => {
-    const openTime = Date.now();
-    const handler = () => {
-      window.removeEventListener('focus', handler);
-      setConnecting(null);
-      const elapsed = Date.now() - openTime;
+  // Polls localStorage for the flag set by the /api/oauth/callback/[provider] success/error page —
+  // this is the only reliable signal since the OAuth tab runs in a separate browsing context
+  const startPollingForOAuth = useCallback((app: McpApp) => {
+    setPollingApp(app.id);
+    const startedAt = Date.now();
 
-      if (elapsed < 2000) {
-        localStorage.removeItem(LS_PENDING_KEY);
-        showBanner('cancelled', `Connection to ${app.name} was cancelled`);
-        return;
-      }
-
-      if (verify) {
-        void verify().then(ok => {
-          localStorage.removeItem(LS_PENDING_KEY);
-          if (ok) showBanner('success', `${app.name} connected successfully`);
-          else showBanner('cancelled', `Connection to ${app.name} was cancelled`);
-        });
-      } else {
-        localStorage.removeItem(LS_PENDING_KEY);
-        markConnected(app.id);
-        showBanner('success', `${app.name} connected successfully`);
-      }
-    };
-    setTimeout(() => window.addEventListener('focus', handler, { once: true }), 300);
-  }, [markConnected, showBanner]);
-
-  const startOAuthInNewTab = useCallback(async (app: McpApp) => {
-    setConnecting(app.id);
-    localStorage.setItem(LS_PENDING_KEY, app.id);
-
-    const popup = window.open('about:blank', '_blank', 'width=600,height=700');
-    if (!popup) {
-      setConnecting(null);
-      localStorage.removeItem(LS_PENDING_KEY);
-      showBanner('error', `Failed to connect ${app.name} — please allow popups and try again`);
-      return;
-    }
-
-    let oauthUrl: string | null;
-    let verify: (() => Promise<boolean>) | undefined;
-
-    if (app.auth === 'google' || app.auth === 'microsoft') {
+    const pollInterval = setInterval(() => {
       try {
-        const result = await signIn.social({
-          callbackURL: '/connect',
-          disableRedirect: true,
-           
-          provider: app.auth as any,
-        } as Parameters<typeof signIn.social>[0]);
-         
-        oauthUrl = (result as any)?.data?.url ?? null;
-      } catch {
-        oauthUrl = null;
-      }
-      verify = async () => {
-        try {
-          const res = await listAccounts();
-          const accounts = res.data ?? [];
-          const linked = accounts.some(a => a.providerId === app.auth);
-          if (linked) markConnectedBulk(app.auth === 'google' ? GOOGLE_APP_IDS : MICROSOFT_APP_IDS);
-          return linked;
-        } catch {
-          return false;
+        const successRaw = localStorage.getItem(LS_OAUTH_SUCCESS_KEY);
+        if (successRaw) {
+          const data = JSON.parse(successRaw);
+          if (data?.provider === app.id) {
+            clearInterval(pollInterval);
+            localStorage.removeItem(LS_OAUTH_SUCCESS_KEY);
+            setPollingApp(null);
+            markConnected(app.id);
+            showBanner('success', `${app.name} connected successfully`);
+            return;
+          }
         }
-      };
-    } else {
-      oauthUrl = OAUTH_URLS[app.id] ?? null;
-    }
 
-    if (!oauthUrl) {
-      popup.close();
-      setConnecting(null);
-      localStorage.removeItem(LS_PENDING_KEY);
-      showBanner('error', `Failed to connect ${app.name} — please try again`);
-      return;
-    }
+        const failedRaw = localStorage.getItem(LS_OAUTH_FAILED_KEY);
+        if (failedRaw) {
+          const data = JSON.parse(failedRaw);
+          if (data?.provider === app.id) {
+            clearInterval(pollInterval);
+            localStorage.removeItem(LS_OAUTH_FAILED_KEY);
+            setPollingApp(null);
+            showBanner('error', `Failed to connect ${app.name} — please try again`);
+            return;
+          }
+        }
+      } catch {}
 
-    popup.location.href = oauthUrl;
-    attachOAuthFocusListener(app, verify);
-  }, [attachOAuthFocusListener, markConnectedBulk, showBanner]);
+      if (Date.now() - startedAt > 300_000) {
+        clearInterval(pollInterval);
+        setPollingApp(null);
+      }
+    }, 500);
+  }, [markConnected, showBanner]);
 
   const handleConnect = useCallback((app: McpApp) => {
     if (app.auth === 'coming_soon') return;
@@ -545,9 +535,34 @@ const ConnectPage = memo(() => {
       return;
     }
 
-    // google, microsoft, oauth_registered — open OAuth in a new tab
-    void startOAuthInNewTab(app);
-  }, [infoModalApp, installCustomPlugin, markConnected, showBanner, startOAuthInNewTab]);
+    if (app.auth === 'google' || app.auth === 'microsoft') {
+      // Better Auth handles its own full-page redirect — a same-page navigation is correct here
+      try {
+        localStorage.setItem(`fi:pending-${app.auth}`, 'true');
+        await signIn.social({ callbackURL: '/connect', provider: app.auth });
+      } catch {
+        localStorage.removeItem(`fi:pending-${app.auth}`);
+        showBanner('error', `Failed to connect ${app.name} — please try again`);
+      }
+      return;
+    }
+
+    // oauth_registered — open the provider's consent screen in a new tab and poll for the
+    // success/failure flag written by our /api/oauth/callback/[provider] route
+    const oauthUrl = OAUTH_URLS[app.id];
+    if (!oauthUrl) {
+      showBanner('error', `Failed to connect ${app.name} — please try again`);
+      return;
+    }
+
+    const popup = window.open(oauthUrl, '_blank', 'width=600,height=700,left=200,top=100');
+    if (!popup) {
+      showBanner('error', `Failed to connect ${app.name} — please allow popups and try again`);
+      return;
+    }
+
+    startPollingForOAuth(app);
+  }, [infoModalApp, installCustomPlugin, markConnected, showBanner, startPollingForOAuth]);
 
   const handleSaveApiKey = useCallback(async () => {
     if (!apiKeyModal || !apiKeyValue.trim()) return;
@@ -595,7 +610,6 @@ const ConnectPage = memo(() => {
   const modalApp = MCP_APPS.find(a => a.id === apiKeyModal);
 
   const bannerColors: Record<BannerState['type'], { bg: string; fg: string }> = {
-    cancelled: { bg: isDark ? '#3f3f3e' : '#9ca3af', fg: '#ffffff' },
     error: { bg: '#dc2626', fg: '#ffffff' },
     success: { bg: '#16a34a', fg: '#ffffff' },
   };
@@ -680,24 +694,35 @@ const ConnectPage = memo(() => {
               </span>
             </div>
             <div style={{ display: 'grid', gap: 8, gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
-              {connectedApps.map(app => (
-                <div key={app.id} style={{ alignItems: 'center', background: cardBg, border: `0.5px solid ${isDark ? 'rgba(74,222,128,0.25)' : 'rgba(22,163,74,0.2)'}`, borderRadius: 12, display: 'flex', gap: 12, padding: '12px 14px' }}>
-                  <AppIcon app={app} />
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ alignItems: 'center', display: 'flex', gap: 6 }}>
-                      <span style={{ color: text, fontSize: 13, fontWeight: 500 }}>{app.name}</span>
-                      <span style={{ alignItems: 'center', background: isDark ? 'rgba(74,222,128,0.15)' : 'rgba(22,163,74,0.1)', borderRadius: 6, color: isDark ? '#4ade80' : '#16a34a', display: 'flex', fontSize: 10, fontWeight: 600, gap: 2, padding: '1px 6px' }}>
-                        <Check size={9} /> Connected
-                      </span>
+              {connectedApps.map(app => {
+                const isDcr = app.auth === 'oauth_dcr';
+                return (
+                  <div key={app.id} style={{ alignItems: 'center', background: cardBg, border: `0.5px solid ${isDcr ? (isDark ? 'rgba(96,165,250,0.25)' : 'rgba(37,99,235,0.2)') : (isDark ? 'rgba(74,222,128,0.25)' : 'rgba(22,163,74,0.2)')}`, borderRadius: 12, display: 'flex', gap: 12, padding: '12px 14px' }}>
+                    <AppIcon app={app} />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ alignItems: 'center', display: 'flex', gap: 6 }}>
+                        <span style={{ color: text, fontSize: 13, fontWeight: 500 }}>{app.name}</span>
+                        {isDcr ? (
+                          <span style={{ alignItems: 'center', background: isDark ? 'rgba(96,165,250,0.15)' : 'rgba(37,99,235,0.1)', borderRadius: 6, color: isDark ? '#60a5fa' : '#2563eb', display: 'flex', fontSize: 10, fontWeight: 600, gap: 2, padding: '1px 6px' }}>
+                            <Check size={9} /> Added
+                          </span>
+                        ) : (
+                          <span style={{ alignItems: 'center', background: isDark ? 'rgba(74,222,128,0.15)' : 'rgba(22,163,74,0.1)', borderRadius: 6, color: isDark ? '#4ade80' : '#16a34a', display: 'flex', fontSize: 10, fontWeight: 600, gap: 2, padding: '1px 6px' }}>
+                            <Check size={9} /> Connected
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ color: textSub, fontSize: 11, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {isDcr ? 'Authenticate on first use' : app.desc}
+                      </div>
                     </div>
-                    <div style={{ color: textSub, fontSize: 11, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{app.desc}</div>
+                    <button style={{ background: 'transparent', border: `0.5px solid ${border}`, borderRadius: 8, color: textSub, cursor: 'pointer', fontSize: 11, flexShrink: 0, padding: '4px 10px', whiteSpace: 'nowrap' }}
+                      onClick={() => handleDisconnect(app.id)}>
+                      Disconnect
+                    </button>
                   </div>
-                  <button style={{ background: 'transparent', border: `0.5px solid ${border}`, borderRadius: 8, color: textSub, cursor: 'pointer', fontSize: 11, flexShrink: 0, padding: '4px 10px', whiteSpace: 'nowrap' }}
-                    onClick={() => handleDisconnect(app.id)}>
-                    Disconnect
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -711,12 +736,14 @@ const ConnectPage = memo(() => {
             <div style={{ display: 'grid', gap: 8, gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
               {apps.map(app => {
                 const isConnecting = connecting === app.id;
+                const isPolling = pollingApp === app.id;
+                const isBusy = isConnecting || isPolling;
                 const isComingSoon = app.auth === 'coming_soon';
                 return (
                   <div key={app.id}
-                    style={{ alignItems: 'center', background: cardBg, border: `0.5px solid ${border}`, borderRadius: 12, cursor: isComingSoon ? 'default' : isConnecting ? 'wait' : 'pointer', display: 'flex', gap: 12, opacity: isComingSoon ? 0.65 : 1, padding: '12px 14px', transition: 'border-color 0.1s' }}
-                    onClick={() => { if (!isConnecting && !isComingSoon) handleConnect(app); }}
-                    onMouseEnter={e => { if (!isConnecting && !isComingSoon) e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'; }}
+                    style={{ alignItems: 'center', background: cardBg, border: `0.5px solid ${border}`, borderRadius: 12, cursor: isComingSoon ? 'default' : isBusy ? 'wait' : 'pointer', display: 'flex', gap: 12, opacity: isComingSoon ? 0.65 : 1, padding: '12px 14px', transition: 'border-color 0.1s' }}
+                    onClick={() => { if (!isBusy && !isComingSoon) handleConnect(app); }}
+                    onMouseEnter={e => { if (!isBusy && !isComingSoon) e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = border; }}>
                     <AppIcon app={app} />
                     <div style={{ flex: 1, minWidth: 0 }}>
@@ -729,7 +756,7 @@ const ConnectPage = memo(() => {
                         )}
                       </div>
                       <div style={{ color: textSub, fontSize: 11, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {isConnecting ? 'Connecting...' : app.desc}
+                        {isPolling ? 'Waiting for authorization...' : isConnecting ? 'Connecting...' : app.desc}
                       </div>
                     </div>
                     {isComingSoon ? (
@@ -738,10 +765,10 @@ const ConnectPage = memo(() => {
                       </span>
                     ) : (
                       <button
-                        disabled={isConnecting}
-                        style={{ background: text, border: 'none', borderRadius: 8, color: bg, cursor: isConnecting ? 'wait' : 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 500, opacity: isConnecting ? 0.5 : 1, padding: '5px 14px', whiteSpace: 'nowrap' }}
-                        onClick={e => { e.stopPropagation(); if (!isConnecting) handleConnect(app); }}>
-                        {isConnecting ? '...' : 'Connect'}
+                        disabled={isBusy}
+                        style={{ background: text, border: 'none', borderRadius: 8, color: bg, cursor: isBusy ? 'wait' : 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 500, opacity: isBusy ? 0.5 : 1, padding: '5px 14px', whiteSpace: 'nowrap' }}
+                        onClick={e => { e.stopPropagation(); if (!isBusy) handleConnect(app); }}>
+                        {isPolling ? 'Waiting...' : isConnecting ? '...' : 'Connect'}
                       </button>
                     )}
                   </div>

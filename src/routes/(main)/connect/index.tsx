@@ -131,7 +131,7 @@ const COMPOSIO_APP_MAP: Record<string, string> = {
   box: 'box',
   brevo: 'brevo',
   calendly: 'calendly',
-  canva: 'canvas',
+  canva: 'canva',
   clickup: 'clickup',
   cloudflare: 'cloudflare',
   coinbase: 'coinbase',

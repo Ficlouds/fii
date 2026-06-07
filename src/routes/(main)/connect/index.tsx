@@ -641,7 +641,7 @@ const ConnectPage = memo(() => {
 
       // Also check Composio API directly - handles case where Composio shows their own success page
       const composioSlug = COMPOSIO_APP_MAP[app.id] || app.id;
-      const res = await fetch(`/api/composio/check-connection?app=${composioSlug}&since=${pollingStartedAt.current}`);
+      const res = await fetch(`/api/composio/check-connection?app=${composioSlug}`);
       if (res.ok) {
         const data = await res.json();
         if (data.connected && pendingOAuthApp.current === app.id) {

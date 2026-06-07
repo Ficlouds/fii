@@ -475,6 +475,7 @@ const ConnectPage = memo(() => {
   // Tracks which app the currently-open OAuth tab belongs to, so a stale poll/focus
   // event for a previous app can't mark the wrong app as connected
   const pendingOAuthApp = useRef<string | null>(null);
+  const pollingStartedAt = useRef<number>(0);
   const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const installCustomPlugin = useToolStore((s) => s.installCustomPlugin);
@@ -640,7 +641,7 @@ const ConnectPage = memo(() => {
 
       // Also check Composio API directly - handles case where Composio shows their own success page
       const composioSlug = COMPOSIO_APP_MAP[app.id] || app.id;
-      const res = await fetch(`/api/composio/check-connection?app=${composioSlug}&since=${startedAt}`);
+      const res = await fetch(`/api/composio/check-connection?app=${composioSlug}&since=${pollingStartedAt.current}`);
       if (res.ok) {
         const data = await res.json();
         if (data.connected && pendingOAuthApp.current === app.id) {
@@ -663,8 +664,9 @@ const ConnectPage = memo(() => {
       pollIntervalRef.current = null;
     }
     pendingOAuthApp.current = app.id;
+    pollingStartedAt.current = Date.now();
     setPollingApp(app.id);
-    const startedAt = Date.now();
+    const startedAt = pollingStartedAt.current;
 
     // Wait 5 seconds before first check to avoid detecting pre-existing connections
     const firstCheckDelay = setTimeout(() => {

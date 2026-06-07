@@ -506,10 +506,10 @@ const ConnectPage = memo(() => {
 
     if (oauthSuccessParam) {
       if (oauthSuccessParam === 'google') {
-        markConnectedBulk(GOOGLE_APP_IDS);
+        markConnected('gmail');
         showBanner('success', 'Google connected successfully');
       } else if (oauthSuccessParam === 'microsoft') {
-        markConnectedBulk(MICROSOFT_APP_IDS);
+        markConnected('outlook');
         showBanner('success', 'Microsoft connected successfully');
       } else {
         const app = MCP_APPS.find(a => a.id === oauthSuccessParam);
@@ -533,20 +533,20 @@ const ConnectPage = memo(() => {
         const hasMicrosoft = accounts.some(
           a => a.providerId === 'microsoft' || a.providerId === 'microsoft-entra-id',
         );
-        if (hasGoogle && pendingGoogle) {
-          markConnectedBulk(GOOGLE_APP_IDS);
+        if (pendingGoogle) {
           localStorage.removeItem('fi:pending-google');
-          if (!oauthSuccessParam) showBanner('success', 'Google connected successfully');
-        } else if (pendingGoogle) {
-          localStorage.removeItem('fi:pending-google');
+          if (hasGoogle && !oauthSuccessParam) {
+            markConnected('gmail');
+            showBanner('success', 'Google connected successfully');
+          }
         }
 
-        if (hasMicrosoft && pendingMicrosoft) {
-          markConnectedBulk(MICROSOFT_APP_IDS);
+        if (pendingMicrosoft) {
           localStorage.removeItem('fi:pending-microsoft');
-          if (!oauthSuccessParam) showBanner('success', 'Microsoft connected successfully');
-        } else if (pendingMicrosoft) {
-          localStorage.removeItem('fi:pending-microsoft');
+          if (hasMicrosoft && !oauthSuccessParam) {
+            markConnected('outlook');
+            showBanner('success', 'Microsoft connected successfully');
+          }
         }
       })
       .catch(() => {});

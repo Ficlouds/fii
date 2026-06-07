@@ -4,7 +4,7 @@ const composio = new Composio({ apiKey: process.env.COMPOSIO_API_KEY });
 
 export const getComposioAuthUrl = async (appName: string, userId: string, redirectUrl: string) => {
   try {
-    const connectionRequest = await composio.connectedAccounts.initiate({
+    const connectionRequest = await composio.connectedAccounts.link({
       appName,
       entityId: userId,
       redirectUri: redirectUrl,

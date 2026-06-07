@@ -372,10 +372,41 @@ const getInitialConnected = (): string[] => {
 
 const CATEGORIES = ['All', 'Creative', 'Communication', 'Productivity', 'CRM', 'Developer', 'Finance', 'Analytics', 'Google', 'Microsoft', 'Social', 'E-commerce', 'AI'];
 
+// Competitor AI slugs to hide from the "Browse all integrations" search results
+const COMPETITOR_SLUGS = ['openai', 'anthropic', 'perplexityai', 'deepseek', 'grok', 'gemini', 'mistral', 'cohere', 'claude'];
+
+interface ComposioToolkit {
+  categories?: Array<{ name?: string } | string>;
+  description?: string;
+  logo?: string;
+  meta?: { categories?: Array<{ name?: string } | string>; description?: string; logo?: string };
+  name?: string;
+  slug: string;
+}
+
+const toolkitDesc = (t: ComposioToolkit) => t.meta?.description || t.description || 'Composio integration';
+const toolkitLogo = (t: ComposioToolkit) => t.meta?.logo || t.logo || fav(`${t.slug}.com`);
+const toolkitCategory = (t: ComposioToolkit) => {
+  const cats = t.meta?.categories || t.categories || [];
+  const first = cats[0];
+  if (!first) return 'Other';
+  return typeof first === 'string' ? first : (first.name || 'Other');
+};
+const toolkitToApp = (t: ComposioToolkit): McpApp => ({
+  auth: 'composio',
+  category: toolkitCategory(t),
+  desc: toolkitDesc(t),
+  id: t.slug,
+  logo: toolkitLogo(t),
+  mcpUrl: '',
+  name: t.name || t.slug,
+});
+
 const PRIVACY_BULLETS_FIRST_PARTY = [
   'Fi reads your data in real time — nothing is stored on Fi servers',
   'We never train on your personal data',
   'You can disconnect at any time from this page',
+  'You may receive a security notification from Google/Microsoft — this is normal when connecting a new app',
 ];
 const PRIVACY_BULLETS_THIRD_PARTY = [
   'Third-party connector — not built or maintained by Fi',
@@ -446,6 +477,10 @@ const ConnectPage = memo(() => {
   const [apiKeyValue, setApiKeyValue] = useState('');
   const [savingKey, setSavingKey] = useState(false);
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(() => new Set());
+  const [browseOpen, setBrowseOpen] = useState(false);
+  const [browseQuery, setBrowseQuery] = useState('');
+  const [browseResults, setBrowseResults] = useState<ComposioToolkit[]>([]);
+  const [browseLoading, setBrowseLoading] = useState(false);
 
   const installCustomPlugin = useToolStore((s) => s.installCustomPlugin);
 
@@ -568,6 +603,31 @@ const ConnectPage = memo(() => {
       })
       .catch(() => {});
   }, [markConnected]);
+
+  // Debounced search across Composio's full integration catalog for the "Browse all" modal
+  useEffect(() => {
+    if (!browseOpen) return;
+    const query = browseQuery.trim();
+    if (query.length < 2) {
+      setBrowseResults([]);
+      setBrowseLoading(false);
+      return;
+    }
+    setBrowseLoading(true);
+    const timer = setTimeout(() => {
+      fetch(`/api/composio/search?q=${encodeURIComponent(query)}`)
+        .then(r => r.json())
+        .then(({ items }: { items?: ComposioToolkit[] }) => {
+          const filtered = (items || []).filter(
+            item => !COMPETITOR_SLUGS.includes(item.slug?.toLowerCase()),
+          );
+          setBrowseResults(filtered);
+        })
+        .catch(() => setBrowseResults([]))
+        .finally(() => setBrowseLoading(false));
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [browseQuery, browseOpen]);
 
   // Polls localStorage for the flag set by the /api/oauth/callback/[provider] success/error page —
   // this is the only reliable signal since the OAuth tab runs in a separate browsing context
@@ -745,6 +805,13 @@ const ConnectPage = memo(() => {
   filteredUnconnected.forEach(app => {
     if (!groupedByCategory[app.category]) groupedByCategory[app.category] = [];
     groupedByCategory[app.category].push(app);
+  });
+
+  const browseGrouped: Record<string, McpApp[]> = {};
+  browseResults.forEach(toolkit => {
+    const app = toolkitToApp(toolkit);
+    if (!browseGrouped[app.category]) browseGrouped[app.category] = [];
+    browseGrouped[app.category].push(app);
   });
 
   const modalApp = MCP_APPS.find(a => a.id === apiKeyModal);
@@ -935,7 +1002,84 @@ const ConnectPage = memo(() => {
             No connectors found for &ldquo;{search}&rdquo;
           </div>
         )}
+
+        <button
+          style={{ background: 'transparent', border: `0.5px solid ${border}`, borderRadius: 12, color: textSub, cursor: 'pointer', fontSize: 13, fontWeight: 500, marginTop: 16, padding: '14px', width: '100%' }}
+          onClick={() => setBrowseOpen(true)}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = border; }}>
+          Browse 1,000+ integrations →
+        </button>
       </div>
+
+      {/* Browse all integrations — full-screen search across Composio's catalog */}
+      {browseOpen && (
+        <div style={{ background: bg, bottom: 0, display: 'flex', flexDirection: 'column', left: 0, position: 'absolute', right: 0, top: 0, zIndex: 200 }}>
+          <div style={{ alignItems: 'center', borderBottom: `0.5px solid ${border}`, display: 'flex', justifyContent: 'space-between', padding: '20px 24px' }}>
+            <div style={{ color: text, fontSize: 18, fontWeight: 500 }}>All Integrations</div>
+            <button
+              style={{ background: 'none', border: 'none', borderRadius: 8, color: textSub, cursor: 'pointer', padding: 6 }}
+              onClick={() => { setBrowseOpen(false); setBrowseQuery(''); setBrowseResults([]); }}>
+              <X size={20} />
+            </button>
+          </div>
+
+          <div style={{ borderBottom: `0.5px solid ${border}`, padding: '16px 24px' }}>
+            <div style={{ maxWidth: 480, position: 'relative' }}>
+              <Search size={14} style={{ color: textTertiary, left: 12, position: 'absolute', top: '50%', transform: 'translateY(-50%)' }} />
+              <input
+                autoFocus
+                placeholder="Search 1,000+ integrations..."
+                style={{ background: cardBg, border: `0.5px solid ${border}`, borderRadius: 8, color: text, fontSize: 13, outline: 'none', padding: '10px 12px 10px 34px', width: '100%' }}
+                value={browseQuery}
+                onChange={e => setBrowseQuery(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
+            {browseQuery.trim().length < 2 ? (
+              <div style={{ color: textSub, fontSize: 13, padding: '60px 0', textAlign: 'center' }}>
+                Type at least 2 characters to search across 1,000+ integrations
+              </div>
+            ) : browseLoading ? (
+              <div style={{ color: textSub, fontSize: 13, padding: '60px 0', textAlign: 'center' }}>
+                Searching...
+              </div>
+            ) : browseResults.length === 0 ? (
+              <div style={{ color: textSub, fontSize: 13, padding: '60px 0', textAlign: 'center' }}>
+                No integrations found for &ldquo;{browseQuery}&rdquo;
+              </div>
+            ) : (
+              Object.entries(browseGrouped).map(([category, apps]) => (
+                <div key={category} style={{ marginBottom: 24 }}>
+                  <div style={{ color: textTertiary, fontSize: 11, fontWeight: 500, letterSpacing: '0.06em', marginBottom: 10, textTransform: 'uppercase' }}>
+                    {category}
+                  </div>
+                  <div style={{ display: 'grid', gap: 8, gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+                    {apps.map(app => (
+                      <div key={app.id} style={{ alignItems: 'center', background: cardBg, border: `0.5px solid ${border}`, borderRadius: 12, display: 'flex', gap: 12, padding: '12px 14px' }}>
+                        <AppIcon app={app} />
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ color: text, fontSize: 13, fontWeight: 500 }}>{app.name}</div>
+                          <div style={{ color: textSub, fontSize: 11, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {app.desc}
+                          </div>
+                        </div>
+                        <button
+                          style={{ background: text, border: 'none', borderRadius: 8, color: bg, cursor: 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 500, padding: '5px 14px', whiteSpace: 'nowrap' }}
+                          onClick={() => { setBrowseOpen(false); handleConnect(app); }}>
+                          Connect
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Info modal — shown for all OAuth-style apps before connecting */}
       {infoModalApp && (

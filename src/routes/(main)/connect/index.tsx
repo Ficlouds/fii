@@ -668,21 +668,75 @@ const ConnectPage = memo(() => {
     pendingOAuthApp.current = app.id;
     pollingStartedAt.current = Date.now();
     setPollingApp(app.id);
-    const startedAt = pollingStartedAt.current;
 
-    // Wait 5 seconds before first check to avoid detecting pre-existing connections
-    const firstCheckDelay = setTimeout(() => {
+    // Only poll AFTER window focus returns (user closed/completed OAuth tab)
+    // This prevents detecting pre-existing connections
+    const onFocus = async () => {
+      window.removeEventListener('focus', onFocus);
       if (!pendingOAuthApp.current) return;
-      pollIntervalRef.current = setInterval(() => {
-        checkOAuthResult();
-        if (Date.now() - startedAt > 300_000) {
-          pendingOAuthApp.current = null;
-          stopPollingForOAuth();
+      
+      // Wait 2 seconds after focus for Composio to process the connection
+      await new Promise(r => setTimeout(r, 2000));
+      
+      if (!pendingOAuthApp.current) return;
+
+      const composioSlug = COMPOSIO_APP_MAP[app.id] || app.id;
+      const prevId = preConnectionIds.current.get(app.id);
+
+      try {
+        const res = await fetch(`/api/composio/check-connection?app=${composioSlug}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.connected && data.connectionId && data.connectionId !== prevId && pendingOAuthApp.current === app.id) {
+            pendingOAuthApp.current = null;
+            stopPollingForOAuth();
+            markConnected(app.id);
+            showBanner('success', `${app.name} connected successfully`);
+            return;
+          }
         }
+      } catch {}
+
+      // If not connected after focus, poll a few more times
+      let attempts = 0;
+      pollIntervalRef.current = setInterval(async () => {
+        attempts++;
+        if (attempts > 10 || !pendingOAuthApp.current) {
+          clearInterval(pollIntervalRef.current!);
+          pollIntervalRef.current = null;
+          if (pendingOAuthApp.current) {
+            pendingOAuthApp.current = null;
+            stopPollingForOAuth();
+          }
+          return;
+        }
+        try {
+          const res = await fetch(`/api/composio/check-connection?app=${composioSlug}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.connected && data.connectionId && data.connectionId !== prevId && pendingOAuthApp.current === app.id) {
+              clearInterval(pollIntervalRef.current!);
+              pollIntervalRef.current = null;
+              pendingOAuthApp.current = null;
+              stopPollingForOAuth();
+              markConnected(app.id);
+              showBanner('success', `${app.name} connected successfully`);
+            }
+          }
+        } catch {}
       }, 2000);
-    }, 5000);
-    // Store delay ref for cleanup
-    (pollIntervalRef as any)._delayRef = firstCheckDelay;
+    };
+
+    window.addEventListener('focus', onFocus);
+
+    // Timeout after 5 minutes
+    setTimeout(() => {
+      window.removeEventListener('focus', onFocus);
+      if (pendingOAuthApp.current === app.id) {
+        pendingOAuthApp.current = null;
+        stopPollingForOAuth();
+      }
+    }, 300_000);
   }, [checkOAuthResult, stopPollingForOAuth]);
 
   // Window focus is a backup trigger - when the OAuth tab closes/redirects and the user

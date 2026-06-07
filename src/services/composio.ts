@@ -2,7 +2,11 @@ const COMPOSIO_API_KEY = process.env.COMPOSIO_API_KEY || 'ak_TFs2fwpnx2uG1MbkmUk
 const COMPOSIO_BASE = 'https://backend.composio.dev';
 
 // Step 1: Create or get auth config for an app
-export const getOrCreateAuthConfig = async (slug: string): Promise<string> => {
+export const getOrCreateAuthConfig = async (slug: string, appId?: string): Promise<string> => {
+  // Use custom BYOC auth config if available (shows "Fi wants access" instead of "Composio")
+  if (appId && CUSTOM_AUTH_CONFIGS[appId]) return CUSTOM_AUTH_CONFIGS[appId];
+  if (CUSTOM_AUTH_CONFIGS[slug]) return CUSTOM_AUTH_CONFIGS[slug];
+
   // First check if auth config already exists for this specific toolkit
   const listRes = await fetch(`${COMPOSIO_BASE}/api/v3/auth_configs?toolkit=${slug}`, {
     headers: { 'x-api-key': COMPOSIO_API_KEY },
@@ -72,4 +76,25 @@ export const getComposioToken = async (userId: string, appSlug: string) => {
   const data = await res.json();
   if (!data.items || data.items.length === 0) throw new Error(`No active connection for ${appSlug}`);
   return data.items[0];
+};
+
+// Custom BYOC auth config IDs — these use Fi's own OAuth credentials
+// so users see "Fi wants access" instead of "Composio wants access"
+export const CUSTOM_AUTH_CONFIGS: Record<string, string> = {
+  gmail: 'ac_UKj2pDZl2MyR',
+  gdrive: 'ac_UKj2pDZl2MyR',
+  gcalendar: 'ac_UKj2pDZl2MyR',
+  gsheets: 'ac_UKj2pDZl2MyR',
+  gdocs: 'ac_UKj2pDZl2MyR',
+  gslides: 'ac_UKj2pDZl2MyR',
+  gforms: 'ac_UKj2pDZl2MyR',
+  gmeet: 'ac_UKj2pDZl2MyR',
+  gchat: 'ac_UKj2pDZl2MyR',
+  gtasks: 'ac_UKj2pDZl2MyR',
+  youtube: 'ac_UKj2pDZl2MyR',
+  youtubeanalytics: 'ac_UKj2pDZl2MyR',
+  googleanalytics: 'ac_UKj2pDZl2MyR',
+  googleads: 'ac_UKj2pDZl2MyR',
+  googlebigquery: 'ac_UKj2pDZl2MyR',
+  looker: 'ac_UKj2pDZl2MyR',
 };

@@ -600,7 +600,7 @@ const ConnectPage = memo(() => {
   // Checks localStorage for the flag set by the connect-success page once the OAuth tab
   // redirects back - only acts if the stored provider matches the app we're waiting on,
   // which prevents a stale signal from a previous attempt marking the wrong app connected
-  const checkOAuthResult = useCallback(() => {
+  const checkOAuthResult = useCallback(async () => {
     const pendingId = pendingOAuthApp.current;
     if (!pendingId) return;
     const app = MCP_APPS.find(a => a.id === pendingId);
@@ -628,6 +628,20 @@ const ConnectPage = memo(() => {
           pendingOAuthApp.current = null;
           stopPollingForOAuth();
           showBanner('error', `Failed to connect ${app.name} - please try again`);
+          return;
+        }
+      }
+
+      // Also check Composio API directly - handles case where Composio shows their own success page
+      const composioSlug = COMPOSIO_APP_MAP[app.id] || app.id;
+      const res = await fetch(`/api/composio/check-connection?app=${composioSlug}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.connected && pendingOAuthApp.current === app.id) {
+          pendingOAuthApp.current = null;
+          stopPollingForOAuth();
+          markConnected(app.id);
+          showBanner('success', `${app.name} connected successfully`);
         }
       }
     } catch {}

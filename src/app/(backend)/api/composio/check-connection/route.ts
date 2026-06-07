@@ -11,18 +11,26 @@ export const GET = async (req: NextRequest) => {
   const app = req.nextUrl.searchParams.get('app');
   if (!app) return NextResponse.json({ connected: false }, { status: 400 });
 
+  // Only detect connections created after this timestamp (prevents false positives from pre-existing connections)
+  const since = req.nextUrl.searchParams.get('since');
+  const sinceDate = since ? new Date(parseInt(since)) : null;
+
   try {
     const res = await fetch(
       `${COMPOSIO_BASE}/api/v3/connected_accounts?user_id=${session.user.id}&toolkit=${app}&status=ACTIVE&limit=10`,
       { headers: { 'x-api-key': COMPOSIO_API_KEY } }
     );
     const data = await res.json();
-    // Filter by exact toolkit slug to prevent cross-app false positives
+    // Filter by exact toolkit slug
     const matching = (data.items || []).filter((item: any) => item.toolkit?.slug === app);
-    const connected = matching.length > 0;
+    // If since param provided, only count connections created after that time
+    const newConnections = sinceDate
+      ? matching.filter((item: any) => new Date(item.created_at) > sinceDate)
+      : matching;
+    const connected = newConnections.length > 0;
     return NextResponse.json({
       connected,
-      connectionId: connected ? matching[0].id : null
+      connectionId: connected ? newConnections[0].id : null
     });
   } catch {
     return NextResponse.json({ connected: false });

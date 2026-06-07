@@ -547,6 +547,9 @@ const ConnectPage = memo(() => {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Track which apps were already connected before this session
+  const preExistingConnections = useRef<Set<string>>(new Set());
+
   // On mount: load existing Composio connections and mark the matching apps as connected
   useEffect(() => {
     fetch('/api/composio/connections')
@@ -557,7 +560,10 @@ const ConnectPage = memo(() => {
             const appId = Object.keys(COMPOSIO_APP_MAP).find(
               key => COMPOSIO_APP_MAP[key] === conn.appName?.toLowerCase(),
             );
-            if (appId) markConnected(appId);
+            if (appId) {
+              preExistingConnections.current.add(appId);
+              markConnected(appId);
+            }
           });
         }
       })
@@ -660,13 +666,19 @@ const ConnectPage = memo(() => {
     setPollingApp(app.id);
     const startedAt = Date.now();
 
-    pollIntervalRef.current = setInterval(() => {
-      checkOAuthResult();
-      if (Date.now() - startedAt > 300_000) {
-        pendingOAuthApp.current = null;
-        stopPollingForOAuth();
-      }
-    }, 500);
+    // Wait 5 seconds before first check to avoid detecting pre-existing connections
+    const firstCheckDelay = setTimeout(() => {
+      if (!pendingOAuthApp.current) return;
+      pollIntervalRef.current = setInterval(() => {
+        checkOAuthResult();
+        if (Date.now() - startedAt > 300_000) {
+          pendingOAuthApp.current = null;
+          stopPollingForOAuth();
+        }
+      }, 2000);
+    }, 5000);
+    // Store delay ref for cleanup
+    (pollIntervalRef as any)._delayRef = firstCheckDelay;
   }, [checkOAuthResult, stopPollingForOAuth]);
 
   // Window focus is a backup trigger - when the OAuth tab closes/redirects and the user

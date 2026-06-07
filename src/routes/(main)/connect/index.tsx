@@ -580,15 +580,12 @@ const ConnectPage = memo(() => {
       .catch(() => {});
   }, [markConnected]);
 
-  // Debounced search across Composio's full integration catalog for the "Browse all" modal
+  // Search across Composio's full integration catalog for the "Browse all" modal.
+  // An empty query returns Composio's curated list of popular apps, so the modal
+  // shows results immediately on open rather than waiting for the user to type.
   useEffect(() => {
     if (!browseOpen) return;
     const query = browseQuery.trim();
-    if (query.length < 2) {
-      setBrowseResults([]);
-      setBrowseLoading(false);
-      return;
-    }
     setBrowseLoading(true);
     const timer = setTimeout(() => {
       fetch(`/api/composio/search?q=${encodeURIComponent(query)}`)
@@ -961,12 +958,12 @@ const ConnectPage = memo(() => {
         <div style={{ alignItems: 'flex-end', display: 'flex', justifyContent: 'space-between' }}>
           <div>
             <h1 style={{ color: text, fontSize: 20, fontWeight: 500, margin: 0 }}>Connect</h1>
-            <p style={{ color: textSub, fontSize: 13, margin: '4px 0 0' }}>
+            <p style={{ color: isDark ? 'rgba(255,255,255,0.65)' : 'rgba(0,0,0,0.65)', fontSize: 13, margin: '4px 0 0' }}>
               Connect Fi to your apps. OAuth apps connect with a single login - no API keys needed.
             </p>
           </div>
           <div style={{ alignItems: 'center', display: 'flex', gap: 16 }}>
-            <div style={{ color: textTertiary, fontSize: 12 }}>{MCP_APPS.length}+ integrations</div>
+            <div style={{ color: textSub, fontSize: 12 }}>{MCP_APPS.length}+ integrations</div>
             <div style={{ alignItems: 'center', display: 'flex', gap: 6 }}>
               <svg fill="none" height="14" style={{ flexShrink: 0 }} viewBox="0 0 14 14" width="14">
                 <path d="M7 1L2 3.5V7C2 9.8 4.2 12.4 7 13C9.8 12.4 12 9.8 12 7V3.5L7 1Z"
@@ -976,7 +973,7 @@ const ConnectPage = memo(() => {
                   stroke={isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'}
                   strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" />
               </svg>
-              <span style={{ color: textTertiary, fontSize: 11 }}>Fi x Composio</span>
+              <span style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)', fontSize: 11 }}>Fi x Composio</span>
             </div>
           </div>
         </div>
@@ -997,7 +994,7 @@ const ConnectPage = memo(() => {
           </div>
           <div style={{ display: 'flex', flex: 1, gap: 6, overflowX: 'auto' }}>
             {CATEGORIES.map(cat => (
-              <button key={cat} style={{ background: activeCategory === cat ? text : 'transparent', border: `0.5px solid ${activeCategory === cat ? 'transparent' : border}`, borderRadius: 20, color: activeCategory === cat ? bg : textSub, cursor: 'pointer', flexShrink: 0, fontSize: 12, fontWeight: 500, padding: '5px 14px', transition: 'all 0.15s' }}
+              <button key={cat} style={{ background: activeCategory === cat ? text : 'transparent', border: `0.5px solid ${activeCategory === cat ? 'transparent' : border}`, borderRadius: 20, color: activeCategory === cat ? bg : (isDark ? 'rgba(255,255,255,0.65)' : 'rgba(0,0,0,0.65)'), cursor: 'pointer', flexShrink: 0, fontSize: 12, fontWeight: 500, padding: '5px 14px', transition: 'all 0.15s' }}
                 onClick={() => setActiveCategory(cat)}>
                 {cat}
               </button>
@@ -1108,7 +1105,7 @@ const ConnectPage = memo(() => {
                           </span>
                         )}
                       </div>
-                      <div style={{ color: textSub, fontSize: 11, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <div style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)', fontSize: 11, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {isPolling ? 'Waiting for authorization...' : isConnecting ? 'Connecting...' : app.desc}
                       </div>
                     </div>
@@ -1145,13 +1142,15 @@ const ConnectPage = memo(() => {
           </div>
         )}
 
-        <button
-          style={{ background: 'transparent', border: `0.5px solid ${border}`, borderRadius: 12, color: textSub, cursor: 'pointer', fontSize: 13, fontWeight: 500, marginTop: 16, padding: '14px', width: '100%' }}
-          onClick={() => setBrowseOpen(true)}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = border; }}>
-          Browse 1,000+ integrations →
-        </button>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 16 }}>
+          <button
+            style={{ background: 'transparent', border: `0.5px solid ${border}`, borderRadius: 10, color: textSub, cursor: 'pointer', fontSize: 13, fontWeight: 500, padding: '10px 20px' }}
+            onClick={() => setBrowseOpen(true)}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = border; }}>
+            Browse all apps →
+          </button>
+        </div>
 
         <div style={{
           alignItems: 'center',
@@ -1178,12 +1177,13 @@ const ConnectPage = memo(() => {
       {browseOpen && (
         <div style={{ background: bg, bottom: 0, display: 'flex', flexDirection: 'column', left: 0, position: 'absolute', right: 0, top: 0, zIndex: 200 }}>
           <div style={{ alignItems: 'center', borderBottom: `0.5px solid ${border}`, display: 'flex', justifyContent: 'space-between', padding: '20px 24px' }}>
-            <div style={{ color: text, fontSize: 18, fontWeight: 500 }}>All Integrations</div>
             <button
-              style={{ background: 'none', border: 'none', borderRadius: 8, color: textSub, cursor: 'pointer', padding: 6 }}
+              style={{ alignItems: 'center', background: 'none', border: 'none', color: textSub, cursor: 'pointer', display: 'flex', fontSize: 13, gap: 6, padding: 6 }}
               onClick={() => { setBrowseOpen(false); setBrowseQuery(''); setBrowseResults([]); }}>
-              <X size={20} />
+              ← Back to Connect
             </button>
+            <div style={{ color: text, fontSize: 18, fontWeight: 500 }}>All Apps</div>
+            <div style={{ width: 96 }} />
           </div>
 
           <div style={{ borderBottom: `0.5px solid ${border}`, padding: '16px 24px' }}>
@@ -1197,14 +1197,11 @@ const ConnectPage = memo(() => {
                 onChange={e => setBrowseQuery(e.target.value)}
               />
             </div>
+            <div style={{ color: textTertiary, fontSize: 11, marginTop: 8 }}>1,000+ integrations available</div>
           </div>
 
           <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
-            {browseQuery.trim().length < 2 ? (
-              <div style={{ color: textSub, fontSize: 13, padding: '60px 0', textAlign: 'center' }}>
-                Type at least 2 characters to search across 1,000+ integrations
-              </div>
-            ) : browseLoading ? (
+            {browseLoading ? (
               <div style={{ color: textSub, fontSize: 13, padding: '60px 0', textAlign: 'center' }}>
                 Searching...
               </div>
@@ -1229,7 +1226,7 @@ const ConnectPage = memo(() => {
                           </div>
                         </div>
                         <button
-                          style={{ background: 'transparent', border: `1.5px solid ${isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}`, borderRadius: 8, color: text, cursor: 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 500, padding: '5px 14px', whiteSpace: 'nowrap' }}
+                          style={{ background: 'transparent', border: `1.5px solid ${isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}`, borderRadius: 8, color: text, cursor: 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 700, padding: '5px 14px', whiteSpace: 'nowrap' }}
                           onClick={() => { setBrowseOpen(false); handleConnect(app); }}>
                           Connect
                         </button>
@@ -1262,14 +1259,14 @@ const ConnectPage = memo(() => {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 16 }}>
               {PRIVACY_BULLETS_THIRD_PARTY.map(bullet => (
-                <div key={bullet} style={{ alignItems: 'flex-start', color: textSub, display: 'flex', fontSize: 12, gap: 8, lineHeight: 1.5 }}>
+                <div key={bullet} style={{ alignItems: 'flex-start', color: isDark ? 'rgba(255,255,255,0.75)' : 'rgba(0,0,0,0.75)', display: 'flex', fontSize: 12, gap: 8, lineHeight: 1.5 }}>
                   <span style={{ color: textTertiary, flexShrink: 0 }}>•</span>
                   <span>{bullet}</span>
                 </div>
               ))}
             </div>
 
-            <p style={{ color: textTertiary, fontSize: 11, lineHeight: 1.5, margin: '0 0 20px' }}>
+            <p style={{ color: isDark ? 'rgba(255,255,255,0.75)' : 'rgba(0,0,0,0.75)', fontSize: 11, lineHeight: 1.5, margin: '0 0 20px' }}>
               Third-party connectors are not built or maintained by Fi. Use caution when granting access to external services.
             </p>
 

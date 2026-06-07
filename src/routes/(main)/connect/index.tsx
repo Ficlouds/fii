@@ -1119,7 +1119,7 @@ const ConnectPage = memo(() => {
                     ) : (
                       <button
                         disabled={isBusy}
-                        style={{ background: 'transparent', border: `0.5px solid ${isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)'}`, borderRadius: 8, color: text, cursor: isBusy ? 'wait' : 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 500, opacity: isBusy ? 0.5 : 1, padding: '5px 14px', whiteSpace: 'nowrap' }}
+                        style={{ background: 'transparent', border: `1px solid ${isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)'}`, borderRadius: 8, color: text, cursor: isBusy ? 'wait' : 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 600, opacity: isBusy ? 0.5 : 1, padding: '5px 14px', whiteSpace: 'nowrap' }}
                         onClick={e => { e.stopPropagation(); if (!isBusy) handleConnect(app); }}>
                         {isPolling ? 'Waiting...' : isConnecting ? '...' : 'Connect'}
                       </button>
@@ -1229,7 +1229,7 @@ const ConnectPage = memo(() => {
                           </div>
                         </div>
                         <button
-                          style={{ background: 'transparent', border: `0.5px solid ${isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)'}`, borderRadius: 8, color: text, cursor: 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 500, padding: '5px 14px', whiteSpace: 'nowrap' }}
+                          style={{ background: 'transparent', border: `1px solid ${isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)'}`, borderRadius: 8, color: text, cursor: 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 500, padding: '5px 14px', whiteSpace: 'nowrap' }}
                           onClick={() => { setBrowseOpen(false); handleConnect(app); }}>
                           Connect
                         </button>

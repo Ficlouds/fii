@@ -557,11 +557,19 @@ const ConnectPage = memo(() => {
     fetch('/api/composio/connections')
       .then(r => r.json())
       .then(({ connections }) => {
+        // eslint-disable-next-line no-console
+        console.log('[OAuth Debug] mount: connections loaded', connections);
         if (connections && Array.isArray(connections)) {
-          connections.forEach((conn: { appName?: string }) => {
+          connections.forEach((conn: { appName?: string; status?: string }) => {
             const appId = Object.keys(COMPOSIO_APP_MAP).find(
               key => COMPOSIO_APP_MAP[key] === conn.appName?.toLowerCase(),
             );
+            // eslint-disable-next-line no-console
+            console.log('[OAuth Debug] mount: mapped connection', {
+              appId,
+              appName: conn.appName,
+              status: conn.status,
+            });
             if (appId) {
               preExistingConnections.current.add(appId);
               markConnected(appId);
@@ -646,6 +654,17 @@ const ConnectPage = memo(() => {
       if (res.ok) {
         const data = await res.json();
         const prevId = preConnectionIds.current.get(app.id);
+        // eslint-disable-next-line no-console
+        console.log('[OAuth Debug] checkOAuthResult', {
+          appId: app.id,
+          composioSlug,
+          connected: data.connected,
+          connectionId: data.connectionId,
+          status: data.status,
+          prevId,
+          willMarkConnected:
+            data.connected && data.connectionId && pendingOAuthApp.current === app.id && data.connectionId !== prevId,
+        });
         if (data.connected && data.connectionId && pendingOAuthApp.current === app.id && data.connectionId !== prevId) {
           pendingOAuthApp.current = null;
           stopPollingForOAuth();
@@ -687,6 +706,17 @@ const ConnectPage = memo(() => {
         const res = await fetch(`/api/composio/check-connection?app=${composioSlug}`);
         if (res.ok) {
           const data = await res.json();
+          // eslint-disable-next-line no-console
+          console.log('[OAuth Debug] onFocus check', {
+            appId: app.id,
+            composioSlug,
+            connected: data.connected,
+            connectionId: data.connectionId,
+            status: data.status,
+            prevId,
+            willMarkConnected:
+              data.connected && data.connectionId && data.connectionId !== prevId && pendingOAuthApp.current === app.id,
+          });
           if (data.connected && data.connectionId && data.connectionId !== prevId && pendingOAuthApp.current === app.id) {
             pendingOAuthApp.current = null;
             stopPollingForOAuth();
@@ -714,6 +744,18 @@ const ConnectPage = memo(() => {
           const res = await fetch(`/api/composio/check-connection?app=${composioSlug}`);
           if (res.ok) {
             const data = await res.json();
+            // eslint-disable-next-line no-console
+            console.log('[OAuth Debug] poll interval check', {
+              appId: app.id,
+              attempts,
+              composioSlug,
+              connected: data.connected,
+              connectionId: data.connectionId,
+              status: data.status,
+              prevId,
+              willMarkConnected:
+                data.connected && data.connectionId && data.connectionId !== prevId && pendingOAuthApp.current === app.id,
+            });
             if (data.connected && data.connectionId && data.connectionId !== prevId && pendingOAuthApp.current === app.id) {
               clearInterval(pollIntervalRef.current!);
               pollIntervalRef.current = null;
@@ -785,6 +827,14 @@ const ConnectPage = memo(() => {
         const preCheck = await fetch(`/api/composio/check-connection?app=${composioAppName}`);
         if (preCheck.ok) {
           const preData = await preCheck.json();
+          // eslint-disable-next-line no-console
+          console.log('[OAuth Debug] preCheck (before auth-url)', {
+            appId: app.id,
+            composioAppName,
+            connected: preData.connected,
+            connectionId: preData.connectionId,
+            status: preData.status,
+          });
           if (preData.connectionId) {
             preConnectionIds.current.set(app.id, preData.connectionId);
           } else {
@@ -802,6 +852,15 @@ const ConnectPage = memo(() => {
           const postCheck = await fetch(`/api/composio/check-connection?app=${composioAppName}&includeInitializing=true`);
           if (postCheck.ok) {
             const postData = await postCheck.json();
+            // eslint-disable-next-line no-console
+            console.log('[OAuth Debug] postCheck (after auth-url, before popup)', {
+              appId: app.id,
+              composioAppName,
+              connected: postData.connected,
+              connectionId: postData.connectionId,
+              status: postData.status,
+              prevIdBeforeOverwrite: preConnectionIds.current.get(app.id),
+            });
             if (postData.connectionId) {
               preConnectionIds.current.set(app.id, postData.connectionId);
             }

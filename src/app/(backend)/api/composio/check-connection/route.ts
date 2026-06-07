@@ -31,7 +31,9 @@ export const GET = async (req: NextRequest) => {
     const connected = newConnections.length > 0;
     return NextResponse.json({
       connected,
-      connectionId: connected ? newConnections[0].id : null
+      connectionId: connected ? newConnections[0].id : null,
+      // Diagnostic field only - lets the client log what status Composio actually reports
+      status: connected ? newConnections[0].status : null,
     });
   } catch {
     return NextResponse.json({ connected: false });

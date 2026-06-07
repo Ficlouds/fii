@@ -9,6 +9,7 @@ export const GET = async (req: NextRequest) => {
   if (!session?.user) return NextResponse.json({ connected: false }, { status: 401 });
 
   const app = req.nextUrl.searchParams.get('app');
+  const includeInitializing = req.nextUrl.searchParams.get('includeInitializing') === 'true';
   if (!app) return NextResponse.json({ connected: false }, { status: 400 });
 
   // Only detect connections created after this timestamp (prevents false positives from pre-existing connections)

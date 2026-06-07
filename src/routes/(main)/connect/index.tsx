@@ -796,6 +796,17 @@ const ConnectPage = memo(() => {
       const response = await fetch(`/api/composio/auth-url?app=${composioAppName}`);
       const data = await response.json();
       if (data.url) {
+        // After auth-url creates an INITIALIZING connection, store its ID so polling ignores it
+        try {
+          await new Promise(r => setTimeout(r, 500));
+          const postCheck = await fetch(`/api/composio/check-connection?app=${composioAppName}&includeInitializing=true`);
+          if (postCheck.ok) {
+            const postData = await postCheck.json();
+            if (postData.connectionId) {
+              preConnectionIds.current.set(app.id, postData.connectionId);
+            }
+          }
+        } catch {}
         pendingOAuthApp.current = app.id;
         const popup = window.open(data.url, '_blank', 'width=600,height=700,left=200,top=100');
         if (!popup) {

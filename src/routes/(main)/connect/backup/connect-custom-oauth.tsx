@@ -136,93 +136,7 @@ const OAUTH_URLS: Record<string, string> = {
   paypal: 'https://www.sandbox.paypal.com/signin/authorize?client_id=AWgCuTemLtUiU1FFt27zA8yPqbU6D-rb3Wcucw9EVPNl_kPDaFMAfTjnFD5cJbxENvsZORvISEUMjvgz&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fpaypal&response_type=code&scope=openid%20profile%20email',
 };
 
-// Maps Fi's internal app ids to Composio's app slugs — used to request the auth URL
-// and to resolve connections returned by Composio back to our app entries
-const COMPOSIO_APP_MAP: Record<string, string> = {
-  airtable: 'airtable',
-  amazon: 'amazonseller',
-  asana: 'asana',
-  atlassian: 'jira',
-  aws: 'aws',
-  box: 'box',
-  canva: 'canva',
-  clay: 'clay',
-  clickup: 'clickup',
-  cloudflare: 'cloudflare',
-  datadog: 'datadog',
-  discord: 'discord',
-  dropbox: 'dropbox',
-  elevenlabs: 'elevenlabs',
-  evernote: 'evernote',
-  excel: 'microsoftexcel',
-  facebook: 'facebook',
-  figma: 'figma',
-  firebase: 'firebase',
-  freshdesk: 'freshdesk',
-  gcalendar: 'googlecalendar',
-  gchat: 'googlechat',
-  gdocs: 'googledocs',
-  gdrive: 'googledrive',
-  github: 'github',
-  gitlab: 'gitlab',
-  gmail: 'gmail',
-  gmeet: 'googlemeet',
-  googleads: 'googleads',
-  googleanalytics: 'googleanalytics',
-  gforms: 'googleforms',
-  gsheets: 'googlesheets',
-  gslides: 'googleslides',
-  gtasks: 'googletasks',
-  hex: 'hex',
-  hubspot: 'hubspot',
-  huggingface: 'huggingface',
-  instagram: 'instagram',
-  intercom: 'intercom',
-  klaviyo: 'klaviyo',
-  linear: 'linear',
-  linkedin: 'linkedin',
-  mongodb: 'mongodb',
-  monday: 'mondaydotcom',
-  neon: 'neon',
-  notion: 'notion',
-  onedrive: 'onedrive',
-  onenote: 'onenote',
-  outlook: 'outlook',
-  paypal: 'paypal',
-  pipedrive: 'pipedrive',
-  pinterest: 'pinterest',
-  quickbooks: 'quickbooks',
-  razorpay: 'razorpay',
-  reddit: 'reddit',
-  replicate: 'replicate',
-  salesforce: 'salesforce',
-  segment: 'segment',
-  sentry: 'sentry',
-  shopify: 'shopify',
-  slack: 'slack',
-  sharepoint: 'sharepoint',
-  stripe: 'stripe',
-  supabase: 'supabase',
-  teams: 'microsoftteams',
-  telegram: 'telegram',
-  tiktok: 'tiktok',
-  trello: 'trello',
-  todoist: 'todoist',
-  twilio: 'twilio',
-  twitter: 'twitter',
-  vercel: 'vercel',
-  whatsapp: 'whatsapp',
-  woocommerce: 'woocommerce',
-  word: 'microsoftword',
-  wordpress: 'wordpress',
-  xero: 'xero',
-  youtube: 'youtube',
-  youtubeanalytics: 'youtube',
-  zendesk: 'zendesk',
-  zoom: 'zoom',
-};
-
-type AppAuth = 'google' | 'microsoft' | 'oauth_registered' | 'oauth_dcr' | 'apikey' | 'coming_soon' | 'composio';
+type AppAuth = 'google' | 'microsoft' | 'oauth_registered' | 'oauth_dcr' | 'apikey' | 'coming_soon';
 
 interface McpApp {
   auth: AppAuth;
@@ -237,64 +151,64 @@ interface McpApp {
 const MCP_APPS: McpApp[] = [
   // Creative
   { id: 'higgsfield', name: 'Higgsfield', desc: 'AI video generation — Sora, Veo3, Kling, 30+ models', category: 'Creative', mcpUrl: 'https://mcp.higgsfield.ai/mcp', logo: fav('higgsfield.ai'), auth: 'apikey' },
-  { id: 'canva', name: 'Canva', desc: 'Create designs, presentations and visual content', category: 'Creative', mcpUrl: 'https://mcp.canva.com/mcp', logo: fav('canva.com'), auth: 'composio' },
-  { id: 'figma', name: 'Figma', desc: 'Design files, components and prototypes', category: 'Creative', mcpUrl: 'https://mcp.figma.com/mcp', logo: fav('figma.com'), auth: 'composio' },
-  { id: 'elevenlabs', name: 'ElevenLabs', desc: 'AI voice generation and text to speech', category: 'Creative', mcpUrl: 'https://api.elevenlabs.io', logo: fav('elevenlabs.io'), auth: 'composio' },
+  { id: 'canva', name: 'Canva', desc: 'Create designs, presentations and visual content', category: 'Creative', mcpUrl: 'https://mcp.canva.com/mcp', logo: fav('canva.com'), auth: 'oauth_registered' },
+  { id: 'figma', name: 'Figma', desc: 'Design files, components and prototypes', category: 'Creative', mcpUrl: 'https://mcp.figma.com/mcp', logo: fav('figma.com'), auth: 'oauth_registered' },
+  { id: 'elevenlabs', name: 'ElevenLabs', desc: 'AI voice generation and text to speech', category: 'Creative', mcpUrl: 'https://api.elevenlabs.io', logo: fav('elevenlabs.io'), auth: 'apikey' },
   { id: 'runway', name: 'Runway', desc: 'AI video and image generation tools', category: 'Creative', mcpUrl: 'https://api.dev.runwayml.com', logo: fav('runwayml.com'), auth: 'apikey' },
   { id: 'adobe', name: 'Adobe Creative Cloud', desc: 'Photoshop, Illustrator, Premiere and more', category: 'Creative', mcpUrl: 'https://adobeioruntime.net', logo: fav('adobe.com'), auth: 'apikey' },
   // Communication
-  { id: 'slack', name: 'Slack', desc: 'Send messages, search conversations, manage channels', category: 'Communication', mcpUrl: 'https://mcp.slack.com/mcp', logo: fav('slack.com'), auth: 'composio' },
-  { id: 'discord', name: 'Discord', desc: 'Messaging, servers and community management', category: 'Communication', mcpUrl: 'https://discord.com/api', logo: fav('discord.com'), auth: 'composio' },
-  { id: 'telegram', name: 'Telegram', desc: 'Messaging and bot automation', category: 'Communication', mcpUrl: 'https://api.telegram.org', logo: fav('telegram.org'), auth: 'composio' },
-  { id: 'whatsapp', name: 'WhatsApp Business', desc: 'Business messaging and customer engagement', category: 'Communication', mcpUrl: 'https://graph.facebook.com', logo: fav('business.whatsapp.com'), auth: 'composio' },
-  { id: 'zoom', name: 'Zoom', desc: 'Video meetings, webinars and recordings', category: 'Communication', mcpUrl: 'https://api.zoom.us/v2', logo: fav('zoom.us'), auth: 'composio' },
-  { id: 'twilio', name: 'Twilio', desc: 'SMS, voice calls and messaging APIs', category: 'Communication', mcpUrl: 'https://api.twilio.com', logo: fav('twilio.com'), auth: 'composio' },
+  { id: 'slack', name: 'Slack', desc: 'Send messages, search conversations, manage channels', category: 'Communication', mcpUrl: 'https://mcp.slack.com/mcp', logo: fav('slack.com'), auth: 'oauth_registered' },
+  { id: 'discord', name: 'Discord', desc: 'Messaging, servers and community management', category: 'Communication', mcpUrl: 'https://discord.com/api', logo: fav('discord.com'), auth: 'apikey' },
+  { id: 'telegram', name: 'Telegram', desc: 'Messaging and bot automation', category: 'Communication', mcpUrl: 'https://api.telegram.org', logo: fav('telegram.org'), auth: 'apikey' },
+  { id: 'whatsapp', name: 'WhatsApp Business', desc: 'Business messaging and customer engagement', category: 'Communication', mcpUrl: 'https://graph.facebook.com', logo: fav('business.whatsapp.com'), auth: 'apikey' },
+  { id: 'zoom', name: 'Zoom', desc: 'Video meetings, webinars and recordings', category: 'Communication', mcpUrl: 'https://api.zoom.us/v2', logo: fav('zoom.us'), auth: 'apikey' },
+  { id: 'twilio', name: 'Twilio', desc: 'SMS, voice calls and messaging APIs', category: 'Communication', mcpUrl: 'https://api.twilio.com', logo: fav('twilio.com'), auth: 'apikey' },
   // Productivity
-  { id: 'notion', name: 'Notion', desc: 'Read and write pages, databases and workspaces', category: 'Productivity', mcpUrl: 'https://mcp.notion.com/mcp', logo: fav('notion.so'), auth: 'composio' },
-  { id: 'asana', name: 'Asana', desc: 'Projects, tasks and team workflow management', category: 'Productivity', mcpUrl: 'https://mcp.asana.com/mcp', logo: fav('asana.com'), auth: 'composio' },
-  { id: 'linear', name: 'Linear', desc: 'Issues, projects, cycles and team management', category: 'Productivity', mcpUrl: 'https://mcp.linear.app/mcp', logo: fav('linear.app'), auth: 'composio' },
-  { id: 'monday', name: 'Monday.com', desc: 'Boards, items and project tracking', category: 'Productivity', mcpUrl: 'https://api.monday.com', logo: fav('monday.com'), auth: 'composio' },
+  { id: 'notion', name: 'Notion', desc: 'Read and write pages, databases and workspaces', category: 'Productivity', mcpUrl: 'https://mcp.notion.com/mcp', logo: fav('notion.so'), auth: 'oauth_registered' },
+  { id: 'asana', name: 'Asana', desc: 'Projects, tasks and team workflow management', category: 'Productivity', mcpUrl: 'https://mcp.asana.com/mcp', logo: fav('asana.com'), auth: 'oauth_registered' },
+  { id: 'linear', name: 'Linear', desc: 'Issues, projects, cycles and team management', category: 'Productivity', mcpUrl: 'https://mcp.linear.app/mcp', logo: fav('linear.app'), auth: 'oauth_registered' },
+  { id: 'monday', name: 'Monday.com', desc: 'Boards, items and project tracking', category: 'Productivity', mcpUrl: 'https://api.monday.com', logo: fav('monday.com'), auth: 'apikey' },
   { id: 'clickup', name: 'ClickUp', desc: 'Tasks, docs and project collaboration', category: 'Productivity', mcpUrl: 'https://api.clickup.com', logo: fav('clickup.com'), auth: 'coming_soon' },
-  { id: 'box', name: 'Box', desc: 'Enterprise file storage, metadata and sharing', category: 'Productivity', mcpUrl: 'https://mcp.box.com/mcp', logo: fav('box.com'), auth: 'composio' },
-  { id: 'dropbox', name: 'Dropbox', desc: 'Cloud file storage and collaboration', category: 'Productivity', mcpUrl: 'https://api.dropbox.com', logo: fav('dropbox.com'), auth: 'composio' },
-  { id: 'airtable', name: 'Airtable', desc: 'Database, spreadsheet and workflow platform', category: 'Productivity', mcpUrl: 'https://mcp.airtable.com/mcp', logo: fav('airtable.com'), auth: 'composio' },
-  { id: 'todoist', name: 'Todoist', desc: 'Task management and to-do lists', category: 'Productivity', mcpUrl: 'https://api.todoist.com', logo: fav('todoist.com'), auth: 'composio' },
-  { id: 'trello', name: 'Trello', desc: 'Visual boards and card-based task tracking', category: 'Productivity', mcpUrl: 'https://api.trello.com', logo: fav('trello.com'), auth: 'composio' },
+  { id: 'box', name: 'Box', desc: 'Enterprise file storage, metadata and sharing', category: 'Productivity', mcpUrl: 'https://mcp.box.com/mcp', logo: fav('box.com'), auth: 'oauth_registered' },
+  { id: 'dropbox', name: 'Dropbox', desc: 'Cloud file storage and collaboration', category: 'Productivity', mcpUrl: 'https://api.dropbox.com', logo: fav('dropbox.com'), auth: 'oauth_registered' },
+  { id: 'airtable', name: 'Airtable', desc: 'Database, spreadsheet and workflow platform', category: 'Productivity', mcpUrl: 'https://mcp.airtable.com/mcp', logo: fav('airtable.com'), auth: 'oauth_dcr' },
+  { id: 'todoist', name: 'Todoist', desc: 'Task management and to-do lists', category: 'Productivity', mcpUrl: 'https://api.todoist.com', logo: fav('todoist.com'), auth: 'apikey' },
+  { id: 'trello', name: 'Trello', desc: 'Visual boards and card-based task tracking', category: 'Productivity', mcpUrl: 'https://api.trello.com', logo: fav('trello.com'), auth: 'apikey' },
   // CRM
-  { id: 'hubspot', name: 'HubSpot', desc: 'CRM contacts, deals and marketing pipelines', category: 'CRM', mcpUrl: 'https://mcp.hubspot.com', logo: fav('hubspot.com'), auth: 'composio' },
+  { id: 'hubspot', name: 'HubSpot', desc: 'CRM contacts, deals and marketing pipelines', category: 'CRM', mcpUrl: 'https://mcp.hubspot.com', logo: fav('hubspot.com'), auth: 'oauth_registered' },
   { id: 'salesforce', name: 'Salesforce', desc: 'CRM leads, opportunities and contacts', category: 'CRM', mcpUrl: 'https://mcp.salesforce.com/mcp', logo: fav('salesforce.com'), auth: 'coming_soon' },
-  { id: 'clay', name: 'Clay', desc: 'Data enrichment, lead lists and CRM sync', category: 'CRM', mcpUrl: 'https://api.clay.com', logo: fav('clay.com'), auth: 'composio' },
-  { id: 'zendesk', name: 'Zendesk', desc: 'Customer support tickets and interactions', category: 'CRM', mcpUrl: 'https://api.zendesk.com', logo: fav('zendesk.com'), auth: 'composio' },
-  { id: 'intercom', name: 'Intercom', desc: 'Customer messaging and support platform', category: 'CRM', mcpUrl: 'https://mcp.intercom.com', logo: fav('intercom.com'), auth: 'composio' },
-  { id: 'pipedrive', name: 'Pipedrive', desc: 'Sales pipeline and deal management', category: 'CRM', mcpUrl: 'https://api.pipedrive.com', logo: fav('pipedrive.com'), auth: 'composio' },
+  { id: 'clay', name: 'Clay', desc: 'Data enrichment, lead lists and CRM sync', category: 'CRM', mcpUrl: 'https://api.clay.com', logo: fav('clay.com'), auth: 'apikey' },
+  { id: 'zendesk', name: 'Zendesk', desc: 'Customer support tickets and interactions', category: 'CRM', mcpUrl: 'https://api.zendesk.com', logo: fav('zendesk.com'), auth: 'apikey' },
+  { id: 'intercom', name: 'Intercom', desc: 'Customer messaging and support platform', category: 'CRM', mcpUrl: 'https://mcp.intercom.com', logo: fav('intercom.com'), auth: 'oauth_dcr' },
+  { id: 'pipedrive', name: 'Pipedrive', desc: 'Sales pipeline and deal management', category: 'CRM', mcpUrl: 'https://api.pipedrive.com', logo: fav('pipedrive.com'), auth: 'apikey' },
   // Developer
-  { id: 'github', name: 'GitHub', desc: 'Repositories, issues, PRs and workflows', category: 'Developer', mcpUrl: 'https://api.githubcopilot.com/mcp/', logo: fav('github.com'), auth: 'composio' },
-  { id: 'gitlab', name: 'GitLab', desc: 'Repository, CI/CD and DevOps platform', category: 'Developer', mcpUrl: 'https://gitlab.com', logo: fav('gitlab.com'), auth: 'composio' },
+  { id: 'github', name: 'GitHub', desc: 'Repositories, issues, PRs and workflows', category: 'Developer', mcpUrl: 'https://api.githubcopilot.com/mcp/', logo: fav('github.com'), auth: 'oauth_registered' },
+  { id: 'gitlab', name: 'GitLab', desc: 'Repository, CI/CD and DevOps platform', category: 'Developer', mcpUrl: 'https://gitlab.com', logo: fav('gitlab.com'), auth: 'apikey' },
   { id: 'vercel', name: 'Vercel', desc: 'Deployments, logs and project environments', category: 'Developer', mcpUrl: 'https://mcp.vercel.com', logo: fav('vercel.com'), auth: 'coming_soon' },
-  { id: 'sentry', name: 'Sentry', desc: 'Error tracking, issues and performance', category: 'Developer', mcpUrl: 'https://mcp.sentry.dev/mcp', logo: fav('sentry.io'), auth: 'composio' },
-  { id: 'supabase', name: 'Supabase', desc: 'Database, auth, storage and realtime', category: 'Developer', mcpUrl: 'https://mcp.supabase.com/mcp', logo: fav('supabase.com'), auth: 'composio' },
-  { id: 'cloudflare', name: 'Cloudflare', desc: 'Workers, KV storage and DNS management', category: 'Developer', mcpUrl: 'https://mcp.cloudflare.com/mcp', logo: fav('cloudflare.com'), auth: 'composio' },
-  { id: 'neon', name: 'Neon', desc: 'Serverless Postgres with branching', category: 'Developer', mcpUrl: 'https://mcp.neon.tech/mcp', logo: fav('neon.tech'), auth: 'composio' },
-  { id: 'atlassian', name: 'Jira & Confluence', desc: 'Issues, tickets and team documentation', category: 'Developer', mcpUrl: 'https://mcp.atlassian.com/v1/mcp', logo: fav('atlassian.com'), auth: 'composio' },
-  { id: 'firebase', name: 'Firebase', desc: 'App backend, Firestore, Auth and hosting', category: 'Developer', mcpUrl: 'https://firebase.google.com', logo: fav('firebase.google.com'), auth: 'composio' },
+  { id: 'sentry', name: 'Sentry', desc: 'Error tracking, issues and performance', category: 'Developer', mcpUrl: 'https://mcp.sentry.dev/mcp', logo: fav('sentry.io'), auth: 'oauth_dcr' },
+  { id: 'supabase', name: 'Supabase', desc: 'Database, auth, storage and realtime', category: 'Developer', mcpUrl: 'https://mcp.supabase.com/mcp', logo: fav('supabase.com'), auth: 'oauth_dcr' },
+  { id: 'cloudflare', name: 'Cloudflare', desc: 'Workers, KV storage and DNS management', category: 'Developer', mcpUrl: 'https://mcp.cloudflare.com/mcp', logo: fav('cloudflare.com'), auth: 'oauth_dcr' },
+  { id: 'neon', name: 'Neon', desc: 'Serverless Postgres with branching', category: 'Developer', mcpUrl: 'https://mcp.neon.tech/mcp', logo: fav('neon.tech'), auth: 'oauth_dcr' },
+  { id: 'atlassian', name: 'Jira & Confluence', desc: 'Issues, tickets and team documentation', category: 'Developer', mcpUrl: 'https://mcp.atlassian.com/v1/mcp', logo: fav('atlassian.com'), auth: 'oauth_registered' },
+  { id: 'firebase', name: 'Firebase', desc: 'App backend, Firestore, Auth and hosting', category: 'Developer', mcpUrl: 'https://firebase.google.com', logo: fav('firebase.google.com'), auth: 'apikey' },
   { id: 'postman', name: 'Postman', desc: 'API development and testing platform', category: 'Developer', mcpUrl: 'https://api.getpostman.com', logo: fav('postman.com'), auth: 'apikey' },
-  { id: 'aws', name: 'AWS', desc: 'Cloud infrastructure and services', category: 'Developer', mcpUrl: 'https://aws.amazon.com', logo: fav('aws.amazon.com'), auth: 'composio' },
-  { id: 'datadog', name: 'Datadog', desc: 'Monitoring, metrics and observability', category: 'Developer', mcpUrl: 'https://api.datadoghq.com', logo: fav('datadoghq.com'), auth: 'composio' },
+  { id: 'aws', name: 'AWS', desc: 'Cloud infrastructure and services', category: 'Developer', mcpUrl: 'https://aws.amazon.com', logo: fav('aws.amazon.com'), auth: 'apikey' },
+  { id: 'datadog', name: 'Datadog', desc: 'Monitoring, metrics and observability', category: 'Developer', mcpUrl: 'https://api.datadoghq.com', logo: fav('datadoghq.com'), auth: 'apikey' },
   { id: 'pagerduty', name: 'PagerDuty', desc: 'Incident management and on-call alerting', category: 'Developer', mcpUrl: 'https://api.pagerduty.com', logo: fav('pagerduty.com'), auth: 'apikey' },
   // Finance
-  { id: 'stripe', name: 'Stripe', desc: 'Payments, subscriptions and invoices', category: 'Finance', mcpUrl: 'https://mcp.stripe.com', logo: fav('stripe.com'), auth: 'composio' },
-  { id: 'paypal', name: 'PayPal', desc: 'Payments, invoices and transactions', category: 'Finance', mcpUrl: 'https://mcp.paypal.com/http', logo: fav('paypal.com'), auth: 'composio' },
+  { id: 'stripe', name: 'Stripe', desc: 'Payments, subscriptions and invoices', category: 'Finance', mcpUrl: 'https://mcp.stripe.com', logo: fav('stripe.com'), auth: 'oauth_dcr' },
+  { id: 'paypal', name: 'PayPal', desc: 'Payments, invoices and transactions', category: 'Finance', mcpUrl: 'https://mcp.paypal.com/http', logo: fav('paypal.com'), auth: 'oauth_registered' },
   { id: 'cashfree', name: 'Cashfree', desc: 'Payment gateway and payouts (India)', category: 'Finance', mcpUrl: 'https://api.cashfree.com', logo: fav('cashfree.com'), auth: 'apikey' },
-  { id: 'razorpay', name: 'Razorpay', desc: 'Payment gateway for India', category: 'Finance', mcpUrl: 'https://api.razorpay.com', logo: fav('razorpay.com'), auth: 'composio' },
-  { id: 'quickbooks', name: 'QuickBooks', desc: 'Accounting and financial management', category: 'Finance', mcpUrl: 'https://quickbooks.intuit.com', logo: fav('quickbooks.intuit.com'), auth: 'composio' },
-  { id: 'xero', name: 'Xero', desc: 'Cloud accounting and bookkeeping', category: 'Finance', mcpUrl: 'https://api.xero.com', logo: fav('xero.com'), auth: 'composio' },
+  { id: 'razorpay', name: 'Razorpay', desc: 'Payment gateway for India', category: 'Finance', mcpUrl: 'https://api.razorpay.com', logo: fav('razorpay.com'), auth: 'apikey' },
+  { id: 'quickbooks', name: 'QuickBooks', desc: 'Accounting and financial management', category: 'Finance', mcpUrl: 'https://quickbooks.intuit.com', logo: fav('quickbooks.intuit.com'), auth: 'apikey' },
+  { id: 'xero', name: 'Xero', desc: 'Cloud accounting and bookkeeping', category: 'Finance', mcpUrl: 'https://api.xero.com', logo: fav('xero.com'), auth: 'apikey' },
   { id: 'plaid', name: 'Plaid', desc: 'Bank account connections and financial data', category: 'Finance', mcpUrl: 'https://api.plaid.com', logo: fav('plaid.com'), auth: 'coming_soon' },
   { id: 'brex', name: 'Brex', desc: 'Business banking and spend management', category: 'Finance', mcpUrl: 'https://platform.brexapis.com', logo: fav('brex.com'), auth: 'apikey' },
   // Analytics
-  { id: 'amplitude', name: 'Amplitude', desc: 'Product analytics, user journeys and A/B testing', category: 'Analytics', mcpUrl: 'https://mcp.amplitude.com/mcp', logo: fav('amplitude.com'), auth: 'composio' },
-  { id: 'hex', name: 'Hex', desc: 'Data notebooks, analytics and interactive charts', category: 'Analytics', mcpUrl: 'https://mcp.hex.tech/mcp', logo: fav('hex.tech'), auth: 'composio' },
-  { id: 'mixpanel', name: 'Mixpanel', desc: 'Product analytics and user behaviour', category: 'Analytics', mcpUrl: 'https://mixpanel.com', logo: fav('mixpanel.com'), auth: 'composio' },
-  { id: 'segment', name: 'Segment', desc: 'Customer data platform and event tracking', category: 'Analytics', mcpUrl: 'https://segment.com', logo: fav('segment.com'), auth: 'composio' },
+  { id: 'amplitude', name: 'Amplitude', desc: 'Product analytics, user journeys and A/B testing', category: 'Analytics', mcpUrl: 'https://mcp.amplitude.com/mcp', logo: fav('amplitude.com'), auth: 'apikey' },
+  { id: 'hex', name: 'Hex', desc: 'Data notebooks, analytics and interactive charts', category: 'Analytics', mcpUrl: 'https://mcp.hex.tech/mcp', logo: fav('hex.tech'), auth: 'apikey' },
+  { id: 'mixpanel', name: 'Mixpanel', desc: 'Product analytics and user behaviour', category: 'Analytics', mcpUrl: 'https://mixpanel.com', logo: fav('mixpanel.com'), auth: 'apikey' },
+  { id: 'segment', name: 'Segment', desc: 'Customer data platform and event tracking', category: 'Analytics', mcpUrl: 'https://segment.com', logo: fav('segment.com'), auth: 'apikey' },
   { id: 'lookerbi', name: 'Looker', desc: 'Business intelligence and data exploration', category: 'Analytics', mcpUrl: 'https://looker.com', logo: fav('looker.com'), auth: 'apikey' },
   // Google Workspace
   { id: 'gmail', name: 'Gmail', desc: 'Read, compose and manage your emails', category: 'Google', mcpUrl: 'https://gmailmcp.googleapis.com/mcp/v1', logo: fav('gmail.com'), auth: 'google' },
@@ -325,24 +239,27 @@ const MCP_APPS: McpApp[] = [
   { id: 'mstodo', name: 'Microsoft To Do', desc: 'Tasks, lists and daily planning', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('todo.microsoft.com'), auth: 'microsoft' },
   { id: 'msplanner', name: 'Microsoft Planner', desc: 'Team task boards and project tracking', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('tasks.office.com'), auth: 'microsoft' },
   // Social
-  { id: 'twitter', name: 'X (Twitter)', desc: 'Post, search and manage tweets', category: 'Social', mcpUrl: 'https://api.twitter.com', logo: fav('x.com'), auth: 'composio' },
-  { id: 'linkedin', name: 'LinkedIn', desc: 'Professional network and content', category: 'Social', mcpUrl: 'https://api.linkedin.com', logo: fav('linkedin.com'), auth: 'composio' },
-  { id: 'wordpress', name: 'WordPress', desc: 'CMS and blog management', category: 'Social', mcpUrl: 'https://wordpress.com', logo: fav('wordpress.com'), auth: 'composio' },
-  { id: 'instagram', name: 'Instagram', desc: 'Post management and content publishing', category: 'Social', mcpUrl: 'https://graph.facebook.com', logo: fav('instagram.com'), auth: 'composio' },
-  { id: 'pinterest', name: 'Pinterest', desc: 'Visual content and pin management', category: 'Social', mcpUrl: 'https://api.pinterest.com', logo: fav('pinterest.com'), auth: 'composio' },
-  { id: 'tiktok', name: 'TikTok', desc: 'Short video creation and analytics', category: 'Social', mcpUrl: 'https://business-api.tiktok.com', logo: fav('tiktok.com'), auth: 'composio' },
+  { id: 'twitter', name: 'X (Twitter)', desc: 'Post, search and manage tweets', category: 'Social', mcpUrl: 'https://api.twitter.com', logo: fav('x.com'), auth: 'apikey' },
+  { id: 'linkedin', name: 'LinkedIn', desc: 'Professional network and content', category: 'Social', mcpUrl: 'https://api.linkedin.com', logo: fav('linkedin.com'), auth: 'apikey' },
+  { id: 'wordpress', name: 'WordPress', desc: 'CMS and blog management', category: 'Social', mcpUrl: 'https://wordpress.com', logo: fav('wordpress.com'), auth: 'apikey' },
+  { id: 'instagram', name: 'Instagram', desc: 'Post management and content publishing', category: 'Social', mcpUrl: 'https://graph.facebook.com', logo: fav('instagram.com'), auth: 'apikey' },
+  { id: 'pinterest', name: 'Pinterest', desc: 'Visual content and pin management', category: 'Social', mcpUrl: 'https://api.pinterest.com', logo: fav('pinterest.com'), auth: 'apikey' },
+  { id: 'tiktok', name: 'TikTok', desc: 'Short video creation and analytics', category: 'Social', mcpUrl: 'https://business-api.tiktok.com', logo: fav('tiktok.com'), auth: 'apikey' },
   { id: 'medium', name: 'Medium', desc: 'Publishing articles and blog posts', category: 'Social', mcpUrl: 'https://api.medium.com', logo: fav('medium.com'), auth: 'apikey' },
   // E-commerce
-  { id: 'shopify', name: 'Shopify', desc: 'Products, orders and store management', category: 'E-commerce', mcpUrl: 'https://mcp.shopify.com/mcp', logo: fav('shopify.com'), auth: 'composio' },
-  { id: 'woocommerce', name: 'WooCommerce', desc: 'WordPress-based online store management', category: 'E-commerce', mcpUrl: 'https://woocommerce.com', logo: fav('woocommerce.com'), auth: 'composio' },
+  { id: 'shopify', name: 'Shopify', desc: 'Products, orders and store management', category: 'E-commerce', mcpUrl: 'https://mcp.shopify.com/mcp', logo: fav('shopify.com'), auth: 'oauth_registered' },
+  { id: 'woocommerce', name: 'WooCommerce', desc: 'WordPress-based online store management', category: 'E-commerce', mcpUrl: 'https://woocommerce.com', logo: fav('woocommerce.com'), auth: 'apikey' },
   { id: 'bigcommerce', name: 'BigCommerce', desc: 'Enterprise ecommerce platform', category: 'E-commerce', mcpUrl: 'https://bigcommerce.com', logo: fav('bigcommerce.com'), auth: 'apikey' },
   { id: 'etsy', name: 'Etsy', desc: 'Marketplace listings, orders and shop analytics', category: 'E-commerce', mcpUrl: 'https://openapi.etsy.com', logo: fav('etsy.com'), auth: 'apikey' },
-  { id: 'amazon', name: 'Amazon Seller', desc: 'Product listings, orders and FBA management', category: 'E-commerce', mcpUrl: 'https://sellercentral.amazon.com', logo: fav('amazon.com'), auth: 'composio' },
+  { id: 'amazon', name: 'Amazon Seller', desc: 'Product listings, orders and FBA management', category: 'E-commerce', mcpUrl: 'https://sellercentral.amazon.com', logo: fav('amazon.com'), auth: 'apikey' },
   { id: 'flipkart', name: 'Flipkart Seller', desc: 'Product listings and seller account management', category: 'E-commerce', mcpUrl: 'https://seller.flipkart.com', logo: fav('flipkart.com'), auth: 'apikey' },
-  { id: 'klaviyo', name: 'Klaviyo', desc: 'Email and SMS marketing for ecommerce', category: 'E-commerce', mcpUrl: 'https://a.klaviyo.com', logo: fav('klaviyo.com'), auth: 'composio' },
+  { id: 'klaviyo', name: 'Klaviyo', desc: 'Email and SMS marketing for ecommerce', category: 'E-commerce', mcpUrl: 'https://a.klaviyo.com', logo: fav('klaviyo.com'), auth: 'apikey' },
   // AI
-  { id: 'replicate', name: 'Replicate', desc: 'Run AI models in the cloud', category: 'AI', mcpUrl: 'https://mcp.replicate.com/mcp', logo: fav('replicate.com'), auth: 'composio' },
-  { id: 'huggingface', name: 'Hugging Face', desc: 'Open source AI models and datasets', category: 'AI', mcpUrl: 'https://mcp.huggingface.co/mcp', logo: fav('huggingface.co'), auth: 'composio' },
+  { id: 'openai', name: 'OpenAI', desc: 'GPT models, DALL-E and Whisper', category: 'AI', mcpUrl: 'https://api.openai.com', logo: fav('openai.com'), auth: 'apikey' },
+  { id: 'anthropic', name: 'Anthropic', desc: 'Claude AI models and APIs', category: 'AI', mcpUrl: 'https://api.anthropic.com', logo: fav('anthropic.com'), auth: 'apikey' },
+  { id: 'replicate', name: 'Replicate', desc: 'Run AI models in the cloud', category: 'AI', mcpUrl: 'https://mcp.replicate.com/mcp', logo: fav('replicate.com'), auth: 'oauth_dcr' },
+  { id: 'huggingface', name: 'Hugging Face', desc: 'Open source AI models and datasets', category: 'AI', mcpUrl: 'https://mcp.huggingface.co/mcp', logo: fav('huggingface.co'), auth: 'oauth_dcr' },
+  { id: 'perplexity', name: 'Perplexity', desc: 'AI-powered search and research', category: 'AI', mcpUrl: 'https://api.perplexity.ai', logo: fav('perplexity.ai'), auth: 'apikey' },
 ];
 
 const LS_KEY = 'fi:connected-apps';
@@ -445,18 +362,8 @@ const ConnectPage = memo(() => {
   const [apiKeyModal, setApiKeyModal] = useState<string | null>(null);
   const [apiKeyValue, setApiKeyValue] = useState('');
   const [savingKey, setSavingKey] = useState(false);
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(() => new Set());
 
   const installCustomPlugin = useToolStore((s) => s.installCustomPlugin);
-
-  const toggleCategory = useCallback((category: string) => {
-    setExpandedCategories(prev => {
-      const next = new Set(prev);
-      if (next.has(category)) next.delete(category);
-      else next.add(category);
-      return next;
-    });
-  }, []);
 
   const bg = isDark ? '#1f1f1e' : '#f9f8f7';
   const cardBg = isDark ? '#2c2c2b' : '#ffffff';
@@ -552,23 +459,6 @@ const ConnectPage = memo(() => {
       .catch(() => {});
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // On mount: load existing Composio connections and mark the matching apps as connected
-  useEffect(() => {
-    fetch('/api/composio/connections')
-      .then(r => r.json())
-      .then(({ connections }) => {
-        if (connections && Array.isArray(connections)) {
-          connections.forEach((conn: { appName?: string }) => {
-            const appId = Object.keys(COMPOSIO_APP_MAP).find(
-              key => COMPOSIO_APP_MAP[key] === conn.appName?.toLowerCase(),
-            );
-            if (appId) markConnected(appId);
-          });
-        }
-      })
-      .catch(() => {});
-  }, [markConnected]);
-
   // Polls localStorage for the flag set by the /api/oauth/callback/[provider] success/error page —
   // this is the only reliable signal since the OAuth tab runs in a separate browsing context
   const startPollingForOAuth = useCallback((app: McpApp) => {
@@ -657,32 +547,6 @@ const ConnectPage = memo(() => {
       } catch {
         localStorage.removeItem(`fi:pending-${app.auth}`);
         showBanner('error', `Failed to connect ${app.name} — please try again`);
-      }
-      return;
-    }
-
-    if (app.auth === 'composio') {
-      // Composio handles OAuth for all third-party apps — fetch the provider's auth URL,
-      // open it in a new tab, and poll for the success/failure flag like other OAuth flows
-      setConnecting(app.id);
-      try {
-        const composioAppName = COMPOSIO_APP_MAP[app.id] || app.id;
-        const response = await fetch(`/api/composio/auth-url?app=${composioAppName}`);
-        const data = await response.json();
-        if (data.url) {
-          const popup = window.open(data.url, '_blank', 'width=600,height=700,left=200,top=100');
-          if (!popup) {
-            showBanner('error', `Failed to connect ${app.name} — please allow popups and try again`);
-          } else {
-            startPollingForOAuth(app);
-          }
-        } else {
-          showBanner('error', `Failed to connect ${app.name} — please try again`);
-        }
-      } catch {
-        showBanner('error', `Failed to connect ${app.name} — please try again`);
-      } finally {
-        setConnecting(null);
       }
       return;
     }
@@ -868,17 +732,13 @@ const ConnectPage = memo(() => {
         )}
 
         {/* Available apps grouped by category */}
-        {Object.entries(groupedByCategory).map(([category, apps]) => {
-          const isExpanded = expandedCategories.has(category);
-          const visibleApps = isExpanded ? apps : apps.slice(0, 8);
-          const hiddenCount = apps.length - 8;
-          return (
+        {Object.entries(groupedByCategory).map(([category, apps]) => (
           <div key={category} style={{ marginBottom: 24 }}>
             <div style={{ color: textTertiary, fontSize: 11, fontWeight: 500, letterSpacing: '0.06em', marginBottom: 10, textTransform: 'uppercase' }}>
               {category}
             </div>
             <div style={{ display: 'grid', gap: 8, gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
-              {visibleApps.map(app => {
+              {apps.map(app => {
                 const isConnecting = connecting === app.id;
                 const isPolling = pollingApp === app.id;
                 const isBusy = isConnecting || isPolling;
@@ -919,16 +779,8 @@ const ConnectPage = memo(() => {
                 );
               })}
             </div>
-            {hiddenCount > 0 && (
-              <button
-                style={{ background: 'none', border: 'none', color: textSub, cursor: 'pointer', fontSize: 12, fontWeight: 500, marginTop: 10, padding: '4px 0' }}
-                onClick={() => toggleCategory(category)}>
-                {isExpanded ? 'Show less' : `Show ${hiddenCount} more`}
-              </button>
-            )}
           </div>
-          );
-        })}
+        ))}
 
         {filteredUnconnected.length === 0 && connectedApps.length === 0 && (
           <div style={{ color: textSub, fontSize: 13, padding: '60px 0', textAlign: 'center' }}>

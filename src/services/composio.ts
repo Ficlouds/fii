@@ -56,7 +56,7 @@ export const getComposioConnections = async (userId: string) => {
     headers: { 'x-api-key': COMPOSIO_API_KEY },
   });
   const data = await res.json();
-  return data.items || [];
+  return (data.items || []).filter((item: any) => item.status === 'ACTIVE');
 };
 
 // Step 4: Disconnect an app

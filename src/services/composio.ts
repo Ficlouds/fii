@@ -3,13 +3,15 @@ const COMPOSIO_BASE = 'https://backend.composio.dev';
 
 // Step 1: Create or get auth config for an app
 export const getOrCreateAuthConfig = async (slug: string): Promise<string> => {
-  // First check if auth config already exists
+  // First check if auth config already exists for this specific toolkit
   const listRes = await fetch(`${COMPOSIO_BASE}/api/v3/auth_configs?toolkit=${slug}`, {
     headers: { 'x-api-key': COMPOSIO_API_KEY },
   });
   const listData = await listRes.json();
-  if (listData.items && listData.items.length > 0) {
-    return listData.items[0].id;
+  // Filter to only return config that matches this exact toolkit slug
+  const matching = (listData.items || []).filter((item: any) => item.toolkit?.slug === slug);
+  if (matching.length > 0) {
+    return matching[0].id;
   }
   // Create new auth config
   const createRes = await fetch(`${COMPOSIO_BASE}/api/v3/auth_configs`, {

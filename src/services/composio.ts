@@ -41,15 +41,7 @@ export const getComposioAuthUrl = async (appSlug: string, userId: string): Promi
   const authConfigId = await getOrCreateAuthConfig(appSlug);
   const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://127.0.0.1:3010'}/connect-success?oauth_success=${appSlug}`;
   const res = await fetch(`${COMPOSIO_BASE}/api/v3/connected_accounts/link`, {
-    body: JSON.stringify({ 
-      auth_config_id: authConfigId, 
-      redirect_url: redirectUrl, 
-      user_id: userId,
-      config: {
-        auth_scheme: 'OAUTH2',
-        val: { long_redirect_url: true }
-      }
-    }),
+    body: JSON.stringify({ auth_config_id: authConfigId, redirect_url: redirectUrl, user_id: userId }),
     headers: { 'x-api-key': COMPOSIO_API_KEY, 'Content-Type': 'application/json' },
     method: 'POST',
   });

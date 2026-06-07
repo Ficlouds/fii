@@ -52,7 +52,7 @@ export const getComposioAuthUrl = async (appSlug: string, userId: string): Promi
 
 // Step 3: Get all connected apps for a user
 export const getComposioConnections = async (userId: string) => {
-  const res = await fetch(`${COMPOSIO_BASE}/api/v3/connected_accounts?user_id=${userId}&limit=100`, {
+  const res = await fetch(`${COMPOSIO_BASE}/api/v3/connected_accounts?user_id=${userId}&status=ACTIVE&limit=100`, {
     headers: { 'x-api-key': COMPOSIO_API_KEY },
   });
   const data = await res.json();

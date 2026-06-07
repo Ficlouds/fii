@@ -33,7 +33,7 @@ export const getOrCreateAuthConfig = async (slug: string): Promise<string> => {
 // Step 2: Get OAuth URL for user to connect
 export const getComposioAuthUrl = async (appSlug: string, userId: string): Promise<string> => {
   const authConfigId = await getOrCreateAuthConfig(appSlug);
-  const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://127.0.0.1:3010'}/connect?oauth_success=${appSlug}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://127.0.0.1:3010'}/connect-success?oauth_success=${appSlug}`;
   const res = await fetch(`${COMPOSIO_BASE}/api/v3/connected_accounts/link`, {
     body: JSON.stringify({ auth_config_id: authConfigId, redirect_url: redirectUrl, user_id: userId }),
     headers: { 'x-api-key': COMPOSIO_API_KEY, 'Content-Type': 'application/json' },
@@ -70,13 +70,4 @@ export const getComposioToken = async (userId: string, appSlug: string) => {
   const data = await res.json();
   if (!data.items || data.items.length === 0) throw new Error(`No active connection for ${appSlug}`);
   return data.items[0];
-};
-
-// Step 6: Search Composio toolkits
-export const searchComposioToolkits = async (query: string, limit = 10) => {
-  const res = await fetch(`${COMPOSIO_BASE}/api/v3/toolkits?search=${encodeURIComponent(query)}&limit=${limit}`, {
-    headers: { 'x-api-key': COMPOSIO_API_KEY },
-  });
-  const data = await res.json();
-  return data.items || [];
 };

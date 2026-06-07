@@ -8,6 +8,7 @@ export const nextjsOnlyRoutes = [
   '/verify-email',
   '/oauth',
   '/market-auth-callback',
+  '/connect-success',
   '/discover',
   '/welcome',
   '/verify-im',

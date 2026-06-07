@@ -1,179 +1,170 @@
 'use client';
 
 import { Check, Key, Search, X } from 'lucide-react';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useIsDark } from '@/hooks/useIsDark';
-import { listAccounts, signIn } from '@/libs/better-auth/auth-client';
 import { useToolStore } from '@/store/tool';
 
 const fav = (domain: string) => `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 
 const LOGO_MAP: Record<string, string> = {
-  gmail: 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico',
-  gdrive: 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png',
-  gcalendar: 'https://calendar.google.com/googlecalendar/images/favicon_v2018_256.png',
-  gsheets: 'https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico',
-  gdocs: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico',
-  gslides: 'https://ssl.gstatic.com/docs/presentations/images/favicon5.ico',
-  gforms: 'https://ssl.gstatic.com/docs/spreadsheets/forms/favicon_qp2.png',
-  gmeet: 'https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v1/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png',
-  gchat: 'https://ssl.gstatic.com/chat/favicon/favicon_96dp.png',
-  gtasks: 'https://ssl.gstatic.com/images/branding/product/2x/tasks_2020q4_48dp.png',
-  youtube: 'https://www.youtube.com/favicon.ico',
-  youtubeanalytics: 'https://www.youtube.com/favicon.ico',
-  googleanalytics: 'https://ssl.gstatic.com/analytics/20230726/favicon_analytics_v2_192px.png',
-  googleads: 'https://www.gstatic.com/images/branding/product/2x/google_ads_48dp.png',
-  googlebigquery: 'https://ssl.gstatic.com/pantheon/images/bigquery/favicon.ico',
-  looker: 'https://www.gstatic.com/images/branding/product/2x/looker_48dp.png',
-  outlook: 'https://res.cdn.office.net/assets/mail/pwa/v1/logos/img_logo.png',
-  onedrive: 'https://res.cdn.office.net/assets/onedrive/webapp/6c.0.0/images/favicon.ico',
-  teams: 'https://res.cdn.office.net/assets/team/windows/2020/microsoft-teams-icon.ico',
-  excel: 'https://res.cdn.office.net/assets/excel/pwa/images/microsoft_excel_icon_128.png',
-  word: 'https://res.cdn.office.net/assets/word/pwa/images/microsoft_word_icon_128.png',
-  powerpoint: 'https://res.cdn.office.net/assets/powerpoint/pwa/images/microsoft_powerpoint_icon_128.png',
-  sharepoint: 'https://res.cdn.office.net/assets/sharepoint/pwa/images/microsoft_sharepoint_icon_128.png',
-  onenote: 'https://res.cdn.office.net/assets/onenote/pwa/images/microsoft_onenote_icon_128.png',
-  mstodo: 'https://to-do.microsoft.com/favicon.ico',
-  msplanner: 'https://res.cdn.office.net/assets/planner/planner-favicon.ico',
-  slack: 'https://a.slack-edge.com/80588/marketing/img/meta/favicon-32.png',
-  notion: 'https://www.notion.so/images/favicon.ico',
-  github: 'https://github.com/favicon.ico',
-  figma: 'https://static.figma.com/app/icon/1/favicon.ico',
-  linear: 'https://linear.app/favicon.ico',
-  hubspot: 'https://www.hubspot.com/favicon.ico',
-  canva: 'https://www.canva.com/favicon.ico',
+  airtable: 'https://airtable.com/favicon.ico',
+  amazon: 'https://www.amazon.com/favicon.ico',
+  amplitude: 'https://amplitude.com/favicon.ico',
+  apollo: 'https://www.apollo.io/favicon.ico',
   asana: 'https://asana.com/favicon.ico',
   atlassian: 'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/favicon.png',
-  box: 'https://www.box.com/favicon.ico',
-  dropbox: 'https://cfl.dropboxstatic.com/static/images/favicon-vfl8lUR9B.ico',
-  stripe: 'https://stripe.com/favicon.ico',
-  shopify: 'https://cdn.shopify.com/static/shopify-favicon.png',
-  paypal: 'https://www.paypal.com/favicon.ico',
-  supabase: 'https://supabase.com/favicon/favicon-32x32.png',
-  sentry: 'https://sentry.io/favicon.ico',
-  cloudflare: 'https://www.cloudflare.com/favicon.ico',
-  neon: 'https://neon.tech/favicon.ico',
-  vercel: 'https://vercel.com/favicon.ico',
-  intercom: 'https://www.intercom.com/favicon.ico',
-  airtable: 'https://airtable.com/favicon.ico',
-  replicate: 'https://replicate.com/favicon.ico',
-  huggingface: 'https://huggingface.co/favicon.ico',
-  elevenlabs: 'https://elevenlabs.io/favicon.ico',
-  runway: 'https://runwayml.com/favicon.ico',
-  stability: 'https://stability.ai/favicon.ico',
-  midjourney: 'https://www.midjourney.com/favicon.ico',
-  adobe: 'https://www.adobe.com/favicon.ico',
-  discord: 'https://discord.com/assets/favicon.ico',
-  telegram: 'https://telegram.org/favicon.ico',
-  whatsapp: 'https://www.whatsapp.com/favicon.ico',
-  zoom: 'https://zoom.us/favicon.ico',
-  twilio: 'https://www.twilio.com/favicon.ico',
-  clickup: 'https://clickup.com/favicon.ico',
-  monday: 'https://monday.com/favicon.ico',
-  trello: 'https://trello.com/favicon.ico',
-  todoist: 'https://todoist.com/favicon.ico',
-  evernote: 'https://evernote.com/favicon.ico',
-  salesforce: 'https://www.salesforce.com/favicon.ico',
-  clay: 'https://clay.com/favicon.ico',
-  zendesk: 'https://www.zendesk.com/favicon.ico',
-  pipedrive: 'https://www.pipedrive.com/favicon.ico',
-  freshdesk: 'https://freshdesk.com/favicon.ico',
-  gitlab: 'https://gitlab.com/favicon.ico',
-  postman: 'https://www.postman.com/favicon.ico',
+  attio: 'https://attio.com/favicon.ico',
   aws: 'https://aws.amazon.com/favicon.ico',
-  firebase: 'https://firebase.google.com/favicon.ico',
-  mongodb: 'https://www.mongodb.com/favicon.ico',
-  render: 'https://render.com/favicon.ico',
-  netlify: 'https://www.netlify.com/favicon.ico',
-  datadog: 'https://www.datadoghq.com/favicon.ico',
-  pagerduty: 'https://www.pagerduty.com/favicon.ico',
-  razorpay: 'https://razorpay.com/favicon.ico',
-  quickbooks: 'https://quickbooks.intuit.com/favicon.ico',
-  xero: 'https://www.xero.com/favicon.ico',
+  bamboohr: 'https://www.bamboohr.com/favicon.ico',
+  box: 'https://www.box.com/favicon.ico',
+  brevo: 'https://www.brevo.com/favicon.ico',
   brex: 'https://www.brex.com/favicon.ico',
-  plaid: 'https://plaid.com/favicon.ico',
-  mixpanel: 'https://mixpanel.com/favicon.ico',
-  amplitude: 'https://amplitude.com/favicon.ico',
-  segment: 'https://segment.com/favicon.ico',
-  hotjar: 'https://www.hotjar.com/favicon.ico',
-  twitter: 'https://abs.twimg.com/favicons/twitter.3.ico',
-  linkedin: 'https://www.linkedin.com/favicon.ico',
-  wordpress: 'https://s.w.org/favicon.ico',
-  instagram: 'https://www.instagram.com/favicon.ico',
-  facebook: 'https://www.facebook.com/favicon.ico',
-  tiktok: 'https://www.tiktok.com/favicon.ico',
-  pinterest: 'https://www.pinterest.com/favicon.ico',
-  reddit: 'https://www.reddit.com/favicon.ico',
-  woocommerce: 'https://woocommerce.com/favicon.ico',
-  amazon: 'https://www.amazon.com/favicon.ico',
-  flipkart: 'https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-icons/app-icons/favicon-32x32.png',
-  klaviyo: 'https://www.klaviyo.com/favicon.ico',
-  openai: 'https://openai.com/favicon.ico',
-  anthropic: 'https://www.anthropic.com/favicon.ico',
-  perplexity: 'https://www.perplexity.ai/favicon.ico',
-  higgsfield: 'https://higgsfield.ai/favicon.ico',
-  hex: 'https://hex.tech/favicon.ico',
+  calendly: 'https://calendly.com/favicon.ico',
+  canva: 'https://www.canva.com/favicon.ico',
   cashfree: 'https://www.cashfree.com/favicon.ico',
+  clay: 'https://clay.com/favicon.ico',
+  clickup: 'https://clickup.com/favicon.ico',
+  cloudflare: 'https://www.cloudflare.com/favicon.ico',
+  coinbase: 'https://www.coinbase.com/favicon.ico',
+  datadog: 'https://www.datadoghq.com/favicon.ico',
+  discord: 'https://discord.com/assets/favicon.ico',
+  docusign: 'https://www.docusign.com/favicon.ico',
+  dropbox: 'https://cfl.dropboxstatic.com/static/images/favicon-vfl8lUR9B.ico',
+  dynamics365: 'https://www.microsoft.com/favicon.ico',
+  elevenlabs: 'https://elevenlabs.io/favicon.ico',
+  evernote: 'https://evernote.com/favicon.ico',
+  excel: 'https://res.cdn.office.net/assets/excel/pwa/images/microsoft_excel_icon_128.png',
+  figma: 'https://static.figma.com/app/icon/1/favicon.ico',
+  fireflies: 'https://fireflies.ai/favicon.ico',
+  flipkart: 'https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-icons/app-icons/favicon-32x32.png',
+  freshdesk: 'https://freshdesk.com/favicon.ico',
+  gcalendar: 'https://calendar.google.com/googlecalendar/images/favicon_v2018_256.png',
+  gchat: 'https://ssl.gstatic.com/chat/favicon/favicon_96dp.png',
+  gdocs: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico',
+  gdrive: 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png',
+  gforms: 'https://ssl.gstatic.com/docs/spreadsheets/forms/favicon_qp2.png',
+  github: 'https://github.com/favicon.ico',
+  gitlab: 'https://gitlab.com/favicon.ico',
+  gmail: 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico',
+  gmeet: 'https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v1/web-512dp/logo_meet_2020q4_color_2x_web_512dp.png',
+  googleads: 'https://www.gstatic.com/images/branding/product/2x/google_ads_48dp.png',
+  googleanalytics: 'https://ssl.gstatic.com/analytics/20230726/favicon_analytics_v2_192px.png',
+  googlebigquery: 'https://ssl.gstatic.com/pantheon/images/bigquery/favicon.ico',
+  gsheets: 'https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico',
+  gslides: 'https://ssl.gstatic.com/docs/presentations/images/favicon5.ico',
+  gtasks: 'https://ssl.gstatic.com/images/branding/product/2x/tasks_2020q4_48dp.png',
+  heygen: 'https://www.heygen.com/favicon.ico',
+  hex: 'https://hex.tech/favicon.ico',
+  higgsfield: 'https://higgsfield.ai/favicon.ico',
+  hubspot: 'https://www.hubspot.com/favicon.ico',
+  instagram: 'https://www.instagram.com/favicon.ico',
+  intercom: 'https://www.intercom.com/favicon.ico',
+  klaviyo: 'https://www.klaviyo.com/favicon.ico',
+  linear: 'https://linear.app/favicon.ico',
+  linkedin: 'https://www.linkedin.com/favicon.ico',
+  looker: 'https://www.gstatic.com/images/branding/product/2x/looker_48dp.png',
+  mailchimp: 'https://mailchimp.com/favicon.ico',
+  midjourney: 'https://www.midjourney.com/favicon.ico',
+  mixpanel: 'https://mixpanel.com/favicon.ico',
+  monday: 'https://monday.com/favicon.ico',
+  mstodo: 'https://to-do.microsoft.com/favicon.ico',
+  msplanner: 'https://res.cdn.office.net/assets/planner/planner-favicon.ico',
+  notion: 'https://www.notion.so/images/favicon.ico',
+  onedrive: 'https://res.cdn.office.net/assets/onedrive/webapp/6c.0.0/images/favicon.ico',
+  onenote: 'https://res.cdn.office.net/assets/onenote/pwa/images/microsoft_onenote_icon_128.png',
+  outlook: 'https://res.cdn.office.net/assets/mail/pwa/v1/logos/img_logo.png',
+  pagerduty: 'https://www.pagerduty.com/favicon.ico',
+  paypal: 'https://www.paypal.com/favicon.ico',
+  pinterest: 'https://www.pinterest.com/favicon.ico',
+  pipedrive: 'https://www.pipedrive.com/favicon.ico',
+  plaid: 'https://plaid.com/favicon.ico',
+  posthog: 'https://posthog.com/favicon.ico',
+  postman: 'https://www.postman.com/favicon.ico',
+  powerpoint: 'https://res.cdn.office.net/assets/powerpoint/pwa/images/microsoft_powerpoint_icon_128.png',
+  quickbooks: 'https://quickbooks.intuit.com/favicon.ico',
+  razorpay: 'https://razorpay.com/favicon.ico',
+  reddit: 'https://www.reddit.com/favicon.ico',
+  replicate: 'https://replicate.com/favicon.ico',
+  runway: 'https://runwayml.com/favicon.ico',
+  salesforce: 'https://www.salesforce.com/favicon.ico',
+  segment: 'https://segment.com/favicon.ico',
+  semrush: 'https://www.semrush.com/favicon.ico',
+  sendgrid: 'https://sendgrid.com/favicon.ico',
+  sentry: 'https://sentry.io/favicon.ico',
+  sharepoint: 'https://res.cdn.office.net/assets/sharepoint/pwa/images/microsoft_sharepoint_icon_128.png',
+  shopify: 'https://cdn.shopify.com/static/shopify-favicon.png',
+  slack: 'https://a.slack-edge.com/80588/marketing/img/meta/favicon-32.png',
+  stripe: 'https://stripe.com/favicon.ico',
+  supabase: 'https://supabase.com/favicon/favicon-32x32.png',
+  teams: 'https://res.cdn.office.net/assets/team/windows/2020/microsoft-teams-icon.ico',
+  telegram: 'https://telegram.org/favicon.ico',
+  tiktok: 'https://www.tiktok.com/favicon.ico',
+  todoist: 'https://todoist.com/favicon.ico',
+  trello: 'https://trello.com/favicon.ico',
+  twilio: 'https://www.twilio.com/favicon.ico',
+  twitter: 'https://abs.twimg.com/favicons/twitter.3.ico',
+  whatsapp: 'https://www.whatsapp.com/favicon.ico',
+  woocommerce: 'https://woocommerce.com/favicon.ico',
+  word: 'https://res.cdn.office.net/assets/word/pwa/images/microsoft_word_icon_128.png',
+  wordpress: 'https://s.w.org/favicon.ico',
+  xero: 'https://www.xero.com/favicon.ico',
+  youtube: 'https://www.youtube.com/favicon.ico',
+  youtubeanalytics: 'https://www.youtube.com/favicon.ico',
+  zendesk: 'https://www.zendesk.com/favicon.ico',
+  zoho: 'https://www.zoho.com/favicon.ico',
+  zoom: 'https://zoom.us/favicon.ico',
 };
 
-const GOOGLE_APP_IDS = ['gmail','gdrive','gcalendar','gsheets','gdocs','gslides','gforms','gmeet','gchat','gtasks','youtube','youtubeanalytics','googleanalytics','googleads','googlebigquery','looker'];
-const MICROSOFT_APP_IDS = ['outlook','onedrive','teams','excel','word','powerpoint','sharepoint','onenote','mstodo','msplanner'];
-
-const OAUTH_URLS: Record<string, string> = {
-  slack: 'https://slack.com/oauth/v2/authorize?client_id=11283223980215.11300538241825&scope=channels:read,channels:history,chat:write,users:read,search:read,files:read,groups:read,im:read,mpim:read&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fslack',
-  hubspot: 'https://app.hubspot.com/oauth/authorize?client_id=f030ab61-bfaf-4a80-8c27-2a4d2784016b&scope=crm.objects.contacts.read%20crm.objects.deals.read%20crm.objects.companies.read&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fhubspot',
-  notion: 'https://api.notion.com/v1/oauth/authorize?client_id=377d872b-594c-81fc-9c4f-00374782bd6e&response_type=code&owner=user&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fnotion',
-  github: 'https://github.com/login/oauth/authorize?client_id=Ov23lijVWI91JZFThB12&scope=repo%2Cuser%2Cread%3Aorg&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fgithub',
-  figma: 'https://www.figma.com/oauth?client_id=jAAgh1HbOPtzxprXTIx6UE&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Ffigma&scope=file_read&response_type=code',
-  linear: 'https://linear.app/oauth/authorize?client_id=4a55ee60d83c5cb6dfbd1e8f23a87b13&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Flinear&response_type=code&scope=read%2Cwrite',
-  asana: 'https://app.asana.com/-/oauth_authorize?client_id=1215470227190828&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fasana&response_type=code',
-  atlassian: 'https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=JGpbzD66rrV2TRfAleKCthJ6NgJh2GyA&scope=read%3Ajira-work%20write%3Ajira-work%20read%3Aconfluence-content.all&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fatlassian&response_type=code&prompt=consent',
-  box: 'https://account.box.com/api/oauth2/authorize?client_id=kkhdqrucdyucer9ebvsb8xtpd9siugxl&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fbox&response_type=code',
-  dropbox: 'https://www.dropbox.com/oauth2/authorize?client_id=vgnmbsj727pkesr&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fdropbox&response_type=code&token_access_type=offline',
-  canva: 'https://www.canva.com/api/oauth/authorize?client_id=OC-AZ6en9YG18wS&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fcanva&response_type=code&scope=asset%3Aread%20asset%3Awrite%20design%3Acontent%3Aread%20design%3Acontent%3Awrite%20design%3Ameta%3Aread%20profile%3Aread',
-  shopify: 'https://accounts.shopify.com/oauth/authorize?client_id=f24744b60760fff8f77947d688f78849&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fshopify&response_type=code',
-  paypal: 'https://www.sandbox.paypal.com/signin/authorize?client_id=AWgCuTemLtUiU1FFt27zA8yPqbU6D-rb3Wcucw9EVPNl_kPDaFMAfTjnFD5cJbxENvsZORvISEUMjvgz&redirect_uri=http%3A%2F%2F127.0.0.1%3A3010%2Fapi%2Foauth%2Fcallback%2Fpaypal&response_type=code&scope=openid%20profile%20email',
-};
-
-// Maps Fi's internal app ids to Composio's app slugs — used to request the auth URL
+// Maps Fi's internal app ids to Composio's app slugs - used to request the auth URL
 // and to resolve connections returned by Composio back to our app entries
 const COMPOSIO_APP_MAP: Record<string, string> = {
   airtable: 'airtable',
-  amazon: 'amazonseller',
+  amazon: 'junglescout',
+  amplitude: 'amplitude',
+  apollo: 'apollo',
   asana: 'asana',
   atlassian: 'jira',
-  aws: 'aws',
+  attio: 'attio',
+  bamboohr: 'bamboohr',
   box: 'box',
-  canva: 'canva',
-  clay: 'clay',
+  brevo: 'brevo',
+  calendly: 'calendly',
+  canva: 'canvas',
   clickup: 'clickup',
   cloudflare: 'cloudflare',
+  coinbase: 'coinbase',
   datadog: 'datadog',
   discord: 'discord',
+  docusign: 'docusign',
   dropbox: 'dropbox',
+  dynamics365: 'dynamics365',
   elevenlabs: 'elevenlabs',
   evernote: 'evernote',
-  excel: 'microsoftexcel',
-  facebook: 'facebook',
+  excel: 'microsoft_teams',
+  facebook: 'metaads',
   figma: 'figma',
-  firebase: 'firebase',
+  fireflies: 'fireflies',
   freshdesk: 'freshdesk',
   gcalendar: 'googlecalendar',
   gchat: 'googlechat',
   gdocs: 'googledocs',
   gdrive: 'googledrive',
+  gforms: 'googleforms',
   github: 'github',
-  gitlab: 'gitlab',
+  gitlab: 'bitbucket',
   gmail: 'gmail',
   gmeet: 'googlemeet',
   googleads: 'googleads',
   googleanalytics: 'googleanalytics',
-  gforms: 'googleforms',
+  googlebigquery: 'googlebigquery',
+  googlemaps: 'google_maps',
+  googlephotos: 'googlephotos',
   gsheets: 'googlesheets',
   gslides: 'googleslides',
   gtasks: 'googletasks',
-  hex: 'hex',
+  heygen: 'heygen',
   hubspot: 'hubspot',
   huggingface: 'huggingface',
   instagram: 'instagram',
@@ -181,48 +172,53 @@ const COMPOSIO_APP_MAP: Record<string, string> = {
   klaviyo: 'klaviyo',
   linear: 'linear',
   linkedin: 'linkedin',
-  mongodb: 'mongodb',
-  monday: 'mondaydotcom',
-  neon: 'neon',
+  looker: 'looker',
+  mailchimp: 'mailchimp',
+  mixpanel: 'mixpanel',
+  monday: 'monday',
+  msplanner: 'microsoft_teams',
+  mstodo: 'microsoft_teams',
   notion: 'notion',
-  onedrive: 'onedrive',
-  onenote: 'onenote',
+  onedrive: 'one_drive',
+  onenote: 'microsoft_teams',
   outlook: 'outlook',
   paypal: 'paypal',
-  pipedrive: 'pipedrive',
   pinterest: 'pinterest',
+  pipedrive: 'pipedrive',
+  posthog: 'posthog',
+  powerpoint: 'microsoft_teams',
   quickbooks: 'quickbooks',
   razorpay: 'razorpay',
   reddit: 'reddit',
   replicate: 'replicate',
   salesforce: 'salesforce',
   segment: 'segment',
+  semrush: 'semrush',
+  sendgrid: 'sendgrid',
   sentry: 'sentry',
+  sharepoint: 'microsoft_teams',
   shopify: 'shopify',
   slack: 'slack',
-  sharepoint: 'sharepoint',
   stripe: 'stripe',
   supabase: 'supabase',
-  teams: 'microsoftteams',
-  telegram: 'telegram',
+  teams: 'microsoft_teams',
   tiktok: 'tiktok',
-  trello: 'trello',
   todoist: 'todoist',
+  trello: 'trello',
   twilio: 'twilio',
   twitter: 'twitter',
-  vercel: 'vercel',
   whatsapp: 'whatsapp',
   woocommerce: 'woocommerce',
-  word: 'microsoftword',
+  word: 'microsoft_teams',
   wordpress: 'wordpress',
   xero: 'xero',
   youtube: 'youtube',
   youtubeanalytics: 'youtube',
   zendesk: 'zendesk',
-  zoom: 'zoom',
+  zoho: 'zoho',
 };
 
-type AppAuth = 'google' | 'microsoft' | 'oauth_registered' | 'oauth_dcr' | 'apikey' | 'coming_soon' | 'composio';
+type AppAuth = 'apikey' | 'coming_soon' | 'composio';
 
 interface McpApp {
   auth: AppAuth;
@@ -236,7 +232,7 @@ interface McpApp {
 
 const MCP_APPS: McpApp[] = [
   // Creative
-  { id: 'higgsfield', name: 'Higgsfield', desc: 'AI video generation — Sora, Veo3, Kling, 30+ models', category: 'Creative', mcpUrl: 'https://mcp.higgsfield.ai/mcp', logo: fav('higgsfield.ai'), auth: 'apikey' },
+  { id: 'higgsfield', name: 'Higgsfield', desc: 'AI video generation - Sora, Veo3, Kling, 30+ models', category: 'Creative', mcpUrl: 'https://mcp.higgsfield.ai/mcp', logo: fav('higgsfield.ai'), auth: 'apikey' },
   { id: 'canva', name: 'Canva', desc: 'Create designs, presentations and visual content', category: 'Creative', mcpUrl: 'https://mcp.canva.com/mcp', logo: fav('canva.com'), auth: 'composio' },
   { id: 'figma', name: 'Figma', desc: 'Design files, components and prototypes', category: 'Creative', mcpUrl: 'https://mcp.figma.com/mcp', logo: fav('figma.com'), auth: 'composio' },
   { id: 'elevenlabs', name: 'ElevenLabs', desc: 'AI voice generation and text to speech', category: 'Creative', mcpUrl: 'https://api.elevenlabs.io', logo: fav('elevenlabs.io'), auth: 'composio' },
@@ -297,33 +293,33 @@ const MCP_APPS: McpApp[] = [
   { id: 'segment', name: 'Segment', desc: 'Customer data platform and event tracking', category: 'Analytics', mcpUrl: 'https://segment.com', logo: fav('segment.com'), auth: 'composio' },
   { id: 'lookerbi', name: 'Looker', desc: 'Business intelligence and data exploration', category: 'Analytics', mcpUrl: 'https://looker.com', logo: fav('looker.com'), auth: 'apikey' },
   // Google Workspace
-  { id: 'gmail', name: 'Gmail', desc: 'Read, compose and manage your emails', category: 'Google', mcpUrl: 'https://gmailmcp.googleapis.com/mcp/v1', logo: fav('gmail.com'), auth: 'google' },
-  { id: 'gdrive', name: 'Google Drive', desc: 'Search, read and upload files', category: 'Google', mcpUrl: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('drive.google.com'), auth: 'google' },
-  { id: 'gcalendar', name: 'Google Calendar', desc: 'Manage events and schedule meetings', category: 'Google', mcpUrl: 'https://calendarmcp.googleapis.com/mcp/v1', logo: fav('calendar.google.com'), auth: 'google' },
-  { id: 'gsheets', name: 'Google Sheets', desc: 'Spreadsheets and data analysis', category: 'Google', mcpUrl: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('sheets.google.com'), auth: 'google' },
-  { id: 'gdocs', name: 'Google Docs', desc: 'Documents and collaborative writing', category: 'Google', mcpUrl: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('docs.google.com'), auth: 'google' },
-  { id: 'gslides', name: 'Google Slides', desc: 'Presentations and slide decks', category: 'Google', mcpUrl: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('slides.google.com'), auth: 'google' },
-  { id: 'gforms', name: 'Google Forms', desc: 'Surveys, quizzes and form responses', category: 'Google', mcpUrl: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('forms.google.com'), auth: 'google' },
-  { id: 'gmeet', name: 'Google Meet', desc: 'Video meetings and conferencing', category: 'Google', mcpUrl: 'https://meet.google.com', logo: fav('meet.google.com'), auth: 'google' },
-  { id: 'gchat', name: 'Google Chat', desc: 'Team messaging and spaces', category: 'Google', mcpUrl: 'https://chat.google.com', logo: fav('chat.google.com'), auth: 'google' },
-  { id: 'gtasks', name: 'Google Tasks', desc: 'Task lists and to-dos', category: 'Google', mcpUrl: 'https://tasks.google.com', logo: fav('tasks.google.com'), auth: 'google' },
-  { id: 'youtube', name: 'YouTube', desc: 'Video search, transcripts and channel management', category: 'Google', mcpUrl: 'https://youtube.com', logo: fav('youtube.com'), auth: 'google' },
-  { id: 'youtubeanalytics', name: 'YouTube Analytics', desc: 'Channel and video performance data', category: 'Google', mcpUrl: 'https://studio.youtube.com', logo: fav('studio.youtube.com'), auth: 'google' },
-  { id: 'googleanalytics', name: 'Google Analytics', desc: 'Web analytics and reporting', category: 'Google', mcpUrl: 'https://analytics.google.com', logo: fav('analytics.google.com'), auth: 'google' },
-  { id: 'googleads', name: 'Google Ads', desc: 'Ad campaigns, keywords and performance', category: 'Google', mcpUrl: 'https://ads.google.com', logo: fav('ads.google.com'), auth: 'google' },
-  { id: 'googlebigquery', name: 'BigQuery', desc: 'Serverless data warehouse and SQL analytics', category: 'Google', mcpUrl: 'https://cloud.google.com', logo: fav('cloud.google.com'), auth: 'google' },
-  { id: 'looker', name: 'Looker Studio', desc: 'Dashboards and data visualisation', category: 'Google', mcpUrl: 'https://lookerstudio.google.com', logo: fav('lookerstudio.google.com'), auth: 'google' },
+  { id: 'gmail', name: 'Gmail', desc: 'Read, compose and manage your emails', category: 'Google', mcpUrl: 'https://gmailmcp.googleapis.com/mcp/v1', logo: fav('gmail.com'), auth: 'composio' },
+  { id: 'gdrive', name: 'Google Drive', desc: 'Search, read and upload files', category: 'Google', mcpUrl: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('drive.google.com'), auth: 'composio' },
+  { id: 'gcalendar', name: 'Google Calendar', desc: 'Manage events and schedule meetings', category: 'Google', mcpUrl: 'https://calendarmcp.googleapis.com/mcp/v1', logo: fav('calendar.google.com'), auth: 'composio' },
+  { id: 'gsheets', name: 'Google Sheets', desc: 'Spreadsheets and data analysis', category: 'Google', mcpUrl: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('sheets.google.com'), auth: 'composio' },
+  { id: 'gdocs', name: 'Google Docs', desc: 'Documents and collaborative writing', category: 'Google', mcpUrl: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('docs.google.com'), auth: 'composio' },
+  { id: 'gslides', name: 'Google Slides', desc: 'Presentations and slide decks', category: 'Google', mcpUrl: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('slides.google.com'), auth: 'composio' },
+  { id: 'gforms', name: 'Google Forms', desc: 'Surveys, quizzes and form responses', category: 'Google', mcpUrl: 'https://drivemcp.googleapis.com/mcp/v1', logo: fav('forms.google.com'), auth: 'composio' },
+  { id: 'gmeet', name: 'Google Meet', desc: 'Video meetings and conferencing', category: 'Google', mcpUrl: 'https://meet.google.com', logo: fav('meet.google.com'), auth: 'composio' },
+  { id: 'gchat', name: 'Google Chat', desc: 'Team messaging and spaces', category: 'Google', mcpUrl: 'https://chat.google.com', logo: fav('chat.google.com'), auth: 'composio' },
+  { id: 'gtasks', name: 'Google Tasks', desc: 'Task lists and to-dos', category: 'Google', mcpUrl: 'https://tasks.google.com', logo: fav('tasks.google.com'), auth: 'composio' },
+  { id: 'youtube', name: 'YouTube', desc: 'Video search, transcripts and channel management', category: 'Google', mcpUrl: 'https://youtube.com', logo: fav('youtube.com'), auth: 'composio' },
+  { id: 'youtubeanalytics', name: 'YouTube Analytics', desc: 'Channel and video performance data', category: 'Google', mcpUrl: 'https://studio.youtube.com', logo: fav('studio.youtube.com'), auth: 'composio' },
+  { id: 'googleanalytics', name: 'Google Analytics', desc: 'Web analytics and reporting', category: 'Google', mcpUrl: 'https://analytics.google.com', logo: fav('analytics.google.com'), auth: 'composio' },
+  { id: 'googleads', name: 'Google Ads', desc: 'Ad campaigns, keywords and performance', category: 'Google', mcpUrl: 'https://ads.google.com', logo: fav('ads.google.com'), auth: 'composio' },
+  { id: 'googlebigquery', name: 'BigQuery', desc: 'Serverless data warehouse and SQL analytics', category: 'Google', mcpUrl: 'https://cloud.google.com', logo: fav('cloud.google.com'), auth: 'composio' },
+  { id: 'looker', name: 'Looker Studio', desc: 'Dashboards and data visualisation', category: 'Google', mcpUrl: 'https://lookerstudio.google.com', logo: fav('lookerstudio.google.com'), auth: 'composio' },
   // Microsoft 365
-  { id: 'outlook', name: 'Outlook', desc: 'Email, calendar and contacts', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('outlook.com'), auth: 'microsoft' },
-  { id: 'onedrive', name: 'OneDrive', desc: 'Cloud file storage and sharing', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('onedrive.com'), auth: 'microsoft' },
-  { id: 'teams', name: 'Microsoft Teams', desc: 'Team messaging and video meetings', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('teams.microsoft.com'), auth: 'microsoft' },
-  { id: 'excel', name: 'Microsoft Excel', desc: 'Spreadsheets and data analysis', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('excel.office.com'), auth: 'microsoft' },
-  { id: 'word', name: 'Microsoft Word', desc: 'Documents and collaborative writing', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('word.office.com'), auth: 'microsoft' },
-  { id: 'powerpoint', name: 'PowerPoint', desc: 'Presentations and slide decks', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('powerpoint.office.com'), auth: 'microsoft' },
-  { id: 'sharepoint', name: 'SharePoint', desc: 'Intranet, document management and collaboration', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('sharepoint.com'), auth: 'microsoft' },
-  { id: 'onenote', name: 'OneNote', desc: 'Notes, notebooks and knowledge capture', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('onenote.com'), auth: 'microsoft' },
-  { id: 'mstodo', name: 'Microsoft To Do', desc: 'Tasks, lists and daily planning', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('todo.microsoft.com'), auth: 'microsoft' },
-  { id: 'msplanner', name: 'Microsoft Planner', desc: 'Team task boards and project tracking', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('tasks.office.com'), auth: 'microsoft' },
+  { id: 'outlook', name: 'Outlook', desc: 'Email, calendar and contacts', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('outlook.com'), auth: 'composio' },
+  { id: 'onedrive', name: 'OneDrive', desc: 'Cloud file storage and sharing', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('onedrive.com'), auth: 'composio' },
+  { id: 'teams', name: 'Microsoft Teams', desc: 'Team messaging and video meetings', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('teams.microsoft.com'), auth: 'composio' },
+  { id: 'excel', name: 'Microsoft Excel', desc: 'Spreadsheets and data analysis', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('excel.office.com'), auth: 'composio' },
+  { id: 'word', name: 'Microsoft Word', desc: 'Documents and collaborative writing', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('word.office.com'), auth: 'composio' },
+  { id: 'powerpoint', name: 'PowerPoint', desc: 'Presentations and slide decks', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('powerpoint.office.com'), auth: 'composio' },
+  { id: 'sharepoint', name: 'SharePoint', desc: 'Intranet, document management and collaboration', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('sharepoint.com'), auth: 'composio' },
+  { id: 'onenote', name: 'OneNote', desc: 'Notes, notebooks and knowledge capture', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('onenote.com'), auth: 'composio' },
+  { id: 'mstodo', name: 'Microsoft To Do', desc: 'Tasks, lists and daily planning', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('todo.microsoft.com'), auth: 'composio' },
+  { id: 'msplanner', name: 'Microsoft Planner', desc: 'Team task boards and project tracking', category: 'Microsoft', mcpUrl: 'https://agent365.svc.cloud.microsoft', logo: fav('tasks.office.com'), auth: 'composio' },
   // Social
   { id: 'twitter', name: 'X (Twitter)', desc: 'Post, search and manage tweets', category: 'Social', mcpUrl: 'https://api.twitter.com', logo: fav('x.com'), auth: 'composio' },
   { id: 'linkedin', name: 'LinkedIn', desc: 'Professional network and content', category: 'Social', mcpUrl: 'https://api.linkedin.com', logo: fav('linkedin.com'), auth: 'composio' },
@@ -358,7 +354,7 @@ const writeLS = (key: string, val: string[]) => {
   try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
 };
 
-// The old elapsed-time heuristic produced false "connected" states — wipe them once on upgrade
+// The old elapsed-time heuristic produced false "connected" states - wipe them once on upgrade
 const getInitialConnected = (): string[] => {
   try {
     if (localStorage.getItem(LS_VERSION_KEY) !== LS_VERSION) {
@@ -402,14 +398,8 @@ const toolkitToApp = (t: ComposioToolkit): McpApp => ({
   name: t.name || t.slug,
 });
 
-const PRIVACY_BULLETS_FIRST_PARTY = [
-  'Fi reads your data in real time — nothing is stored on Fi servers',
-  'We never train on your personal data',
-  'You can disconnect at any time from this page',
-  'You may receive a security notification from Google/Microsoft — this is normal when connecting a new app',
-];
 const PRIVACY_BULLETS_THIRD_PARTY = [
-  'Third-party connector — not built or maintained by Fi',
+  'Third-party connector - not built or maintained by Fi',
   'Fi accesses only what you approve during login',
   'You can disconnect at any time from this page',
 ];
@@ -482,6 +472,11 @@ const ConnectPage = memo(() => {
   const [browseResults, setBrowseResults] = useState<ComposioToolkit[]>([]);
   const [browseLoading, setBrowseLoading] = useState(false);
 
+  // Tracks which app the currently-open OAuth tab belongs to, so a stale poll/focus
+  // event for a previous app can't mark the wrong app as connected
+  const pendingOAuthApp = useRef<string | null>(null);
+  const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
   const installCustomPlugin = useToolStore((s) => s.installCustomPlugin);
 
   const toggleCategory = useCallback((category: string) => {
@@ -534,57 +529,22 @@ const ConnectPage = memo(() => {
     });
   }, []);
 
-  // On mount: restore connected state from the URL, the session, and pending first-party flags
+  // On mount: restore connected state from the oauth_success URL param (set by the
+  // connect-success page after a Composio OAuth flow completes)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const oauthSuccessParam = params.get('oauth_success');
 
     if (oauthSuccessParam) {
-      if (oauthSuccessParam === 'google') {
-        markConnected('gmail');
-        showBanner('success', 'Google connected successfully');
-      } else if (oauthSuccessParam === 'microsoft') {
-        markConnected('outlook');
-        showBanner('success', 'Microsoft connected successfully');
-      } else {
-        const app = MCP_APPS.find(a => a.id === oauthSuccessParam);
-        if (app) {
-          markConnected(app.id);
-          showBanner('success', `${app.name} connected successfully`);
-        }
+      const app = MCP_APPS.find(a => a.id === oauthSuccessParam);
+      if (app) {
+        markConnected(app.id);
+        showBanner('success', `${app.name} connected successfully`);
       }
       params.delete('oauth_success');
       const rest = params.toString();
       window.history.replaceState({}, '', `${window.location.pathname}${rest ? `?${rest}` : ''}`);
     }
-
-    const pendingGoogle = localStorage.getItem('fi:pending-google');
-    const pendingMicrosoft = localStorage.getItem('fi:pending-microsoft');
-
-    listAccounts()
-      .then(result => {
-        const accounts = result.data ?? [];
-        const hasGoogle = accounts.some(a => a.providerId === 'google');
-        const hasMicrosoft = accounts.some(
-          a => a.providerId === 'microsoft' || a.providerId === 'microsoft-entra-id',
-        );
-        if (pendingGoogle) {
-          localStorage.removeItem('fi:pending-google');
-          if (hasGoogle && !oauthSuccessParam) {
-            markConnected('gmail');
-            showBanner('success', 'Google connected successfully');
-          }
-        }
-
-        if (pendingMicrosoft) {
-          localStorage.removeItem('fi:pending-microsoft');
-          if (hasMicrosoft && !oauthSuccessParam) {
-            markConnected('outlook');
-            showBanner('success', 'Microsoft connected successfully');
-          }
-        }
-      })
-      .catch(() => {});
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // On mount: load existing Composio connections and mark the matching apps as connected
@@ -629,46 +589,90 @@ const ConnectPage = memo(() => {
     return () => clearTimeout(timer);
   }, [browseQuery, browseOpen]);
 
-  // Polls localStorage for the flag set by the /api/oauth/callback/[provider] success/error page —
-  // this is the only reliable signal since the OAuth tab runs in a separate browsing context
+  const stopPollingForOAuth = useCallback(() => {
+    if (pollIntervalRef.current) {
+      clearInterval(pollIntervalRef.current);
+      pollIntervalRef.current = null;
+    }
+    setPollingApp(null);
+  }, []);
+
+  // Checks localStorage for the flag set by the connect-success page once the OAuth tab
+  // redirects back - only acts if the stored provider matches the app we're waiting on,
+  // which prevents a stale signal from a previous attempt marking the wrong app connected
+  const checkOAuthResult = useCallback(() => {
+    const pendingId = pendingOAuthApp.current;
+    if (!pendingId) return;
+    const app = MCP_APPS.find(a => a.id === pendingId);
+    if (!app) return;
+
+    try {
+      const successRaw = localStorage.getItem(LS_OAUTH_SUCCESS_KEY);
+      if (successRaw) {
+        const data = JSON.parse(successRaw);
+        if (data?.provider === app.id && pendingOAuthApp.current === app.id) {
+          localStorage.removeItem(LS_OAUTH_SUCCESS_KEY);
+          pendingOAuthApp.current = null;
+          stopPollingForOAuth();
+          markConnected(app.id);
+          showBanner('success', `${app.name} connected successfully`);
+          return;
+        }
+      }
+
+      const failedRaw = localStorage.getItem(LS_OAUTH_FAILED_KEY);
+      if (failedRaw) {
+        const data = JSON.parse(failedRaw);
+        if (data?.provider === app.id && pendingOAuthApp.current === app.id) {
+          localStorage.removeItem(LS_OAUTH_FAILED_KEY);
+          pendingOAuthApp.current = null;
+          stopPollingForOAuth();
+          showBanner('error', `Failed to connect ${app.name} - please try again`);
+        }
+      }
+    } catch {}
+  }, [markConnected, showBanner, stopPollingForOAuth]);
+
+  // Polls localStorage for the success/failure flag written by the connect-success page -
+  // this is the only reliable signal since the OAuth tab runs in a separate browsing context.
+  // Replaces any polling already running for a different app first, so a leftover interval
+  // can't mark the wrong app connected (e.g. clicking Slack then Canva mid-flow)
   const startPollingForOAuth = useCallback((app: McpApp) => {
+    if (pollIntervalRef.current) {
+      clearInterval(pollIntervalRef.current);
+      pollIntervalRef.current = null;
+    }
+    pendingOAuthApp.current = app.id;
     setPollingApp(app.id);
     const startedAt = Date.now();
 
-    const pollInterval = setInterval(() => {
-      try {
-        const successRaw = localStorage.getItem(LS_OAUTH_SUCCESS_KEY);
-        if (successRaw) {
-          const data = JSON.parse(successRaw);
-          if (data?.provider === app.id) {
-            clearInterval(pollInterval);
-            localStorage.removeItem(LS_OAUTH_SUCCESS_KEY);
-            setPollingApp(null);
-            markConnected(app.id);
-            showBanner('success', `${app.name} connected successfully`);
-            return;
-          }
-        }
-
-        const failedRaw = localStorage.getItem(LS_OAUTH_FAILED_KEY);
-        if (failedRaw) {
-          const data = JSON.parse(failedRaw);
-          if (data?.provider === app.id) {
-            clearInterval(pollInterval);
-            localStorage.removeItem(LS_OAUTH_FAILED_KEY);
-            setPollingApp(null);
-            showBanner('error', `Failed to connect ${app.name} — please try again`);
-            return;
-          }
-        }
-      } catch {}
-
+    pollIntervalRef.current = setInterval(() => {
+      checkOAuthResult();
       if (Date.now() - startedAt > 300_000) {
-        clearInterval(pollInterval);
-        setPollingApp(null);
+        pendingOAuthApp.current = null;
+        stopPollingForOAuth();
       }
     }, 500);
-  }, [markConnected, showBanner]);
+  }, [checkOAuthResult, stopPollingForOAuth]);
+
+  // Window focus is a backup trigger - when the OAuth tab closes/redirects and the user
+  // comes back to this tab, check localStorage immediately instead of waiting for the next tick
+  useEffect(() => {
+    const onFocus = () => checkOAuthResult();
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
+  }, [checkOAuthResult]);
+
+  // When the info modal is dismissed or switches to a different app, cancel any polling
+  // interval left running from a previous, abandoned attempt
+  useEffect(() => {
+    return () => {
+      if (pollIntervalRef.current) {
+        clearInterval(pollIntervalRef.current);
+        pollIntervalRef.current = null;
+      }
+    };
+  }, [infoModalApp]);
 
   const handleConnect = useCallback((app: McpApp) => {
     if (app.auth === 'coming_soon') return;
@@ -679,7 +683,7 @@ const ConnectPage = memo(() => {
       return;
     }
 
-    // google, microsoft, oauth_registered, oauth_dcr — show info modal first
+    // composio - show info modal first, then kick off the OAuth flow on confirm
     setInfoModalApp(app);
   }, []);
 
@@ -688,81 +692,32 @@ const ConnectPage = memo(() => {
     const app = infoModalApp;
     setInfoModalApp(null);
 
-    if (app.auth === 'oauth_dcr') {
-      setConnecting(app.id);
-      try {
-        await installCustomPlugin({
-          customParams: {
-            description: app.desc,
-            mcp: { auth: { type: 'none' }, type: 'http', url: app.mcpUrl },
-          },
-          identifier: app.id,
-          type: 'customPlugin',
-        });
-        markConnected(app.id);
-        showBanner('success', `${app.name} connected successfully`);
-      } catch {
-        showBanner('error', `Failed to connect ${app.name} — please try again`);
-      } finally {
-        setConnecting(null);
-      }
-      return;
-    }
-
-    if (app.auth === 'google' || app.auth === 'microsoft') {
-      // Better Auth handles its own full-page redirect — a same-page navigation is correct here
-      try {
-        localStorage.setItem(`fi:pending-${app.auth}`, 'true');
-        await signIn.social({ callbackURL: '/connect', provider: app.auth });
-      } catch {
-        localStorage.removeItem(`fi:pending-${app.auth}`);
-        showBanner('error', `Failed to connect ${app.name} — please try again`);
-      }
-      return;
-    }
-
-    if (app.auth === 'composio') {
-      // Composio handles OAuth for all third-party apps — fetch the provider's auth URL,
-      // open it in a new tab, and poll for the success/failure flag like other OAuth flows
-      setConnecting(app.id);
-      try {
-        const composioAppName = COMPOSIO_APP_MAP[app.id] || app.id;
-        const response = await fetch(`/api/composio/auth-url?app=${composioAppName}`);
-        const data = await response.json();
-        if (data.url) {
-          const popup = window.open(data.url, '_blank', 'width=600,height=700,left=200,top=100');
-          if (!popup) {
-            showBanner('error', `Failed to connect ${app.name} — please allow popups and try again`);
-          } else {
-            startPollingForOAuth(app);
-          }
+    // Composio handles OAuth for every connector now - fetch the provider's auth URL,
+    // open it in a new tab, and poll (plus listen for window focus) for the success/failure
+    // flag written by the connect-success page once the OAuth tab redirects back
+    setConnecting(app.id);
+    try {
+      const composioAppName = COMPOSIO_APP_MAP[app.id] || app.id;
+      const response = await fetch(`/api/composio/auth-url?app=${composioAppName}`);
+      const data = await response.json();
+      if (data.url) {
+        pendingOAuthApp.current = app.id;
+        const popup = window.open(data.url, '_blank', 'width=600,height=700,left=200,top=100');
+        if (!popup) {
+          pendingOAuthApp.current = null;
+          showBanner('error', `Failed to connect ${app.name} - please allow popups and try again`);
         } else {
-          showBanner('error', `Failed to connect ${app.name} — please try again`);
+          startPollingForOAuth(app);
         }
-      } catch {
-        showBanner('error', `Failed to connect ${app.name} — please try again`);
-      } finally {
-        setConnecting(null);
+      } else {
+        showBanner('error', `Failed to connect ${app.name} - please try again`);
       }
-      return;
+    } catch {
+      showBanner('error', `Failed to connect ${app.name} - please try again`);
+    } finally {
+      setConnecting(null);
     }
-
-    // oauth_registered — open the provider's consent screen in a new tab and poll for the
-    // success/failure flag written by our /api/oauth/callback/[provider] route
-    const oauthUrl = OAUTH_URLS[app.id];
-    if (!oauthUrl) {
-      showBanner('error', `Failed to connect ${app.name} — please try again`);
-      return;
-    }
-
-    const popup = window.open(oauthUrl, '_blank', 'width=600,height=700,left=200,top=100');
-    if (!popup) {
-      showBanner('error', `Failed to connect ${app.name} — please allow popups and try again`);
-      return;
-    }
-
-    startPollingForOAuth(app);
-  }, [infoModalApp, installCustomPlugin, markConnected, showBanner, startPollingForOAuth]);
+  }, [infoModalApp, showBanner, startPollingForOAuth]);
 
   const handleSaveApiKey = useCallback(async () => {
     if (!apiKeyModal || !apiKeyValue.trim()) return;
@@ -783,7 +738,7 @@ const ConnectPage = memo(() => {
       setApiKeyModal(null);
       setApiKeyValue('');
     } catch {
-      showBanner('error', `Failed to connect ${app.name} — please try again`);
+      showBanner('error', `Failed to connect ${app.name} - please try again`);
     } finally {
       setSavingKey(false);
     }
@@ -821,16 +776,6 @@ const ConnectPage = memo(() => {
     success: { bg: '#16a34a', fg: '#ffffff' },
   };
 
-  const showInfoModalPrivacyBullets = infoModalApp
-    ? (infoModalApp.auth === 'google' || infoModalApp.auth === 'microsoft')
-      ? PRIVACY_BULLETS_FIRST_PARTY
-      : PRIVACY_BULLETS_THIRD_PARTY
-    : [];
-
-  const showInfoModalServerUrl = infoModalApp
-    ? infoModalApp.auth === 'oauth_registered' || infoModalApp.auth === 'oauth_dcr'
-    : false;
-
   return (
     <div style={{ background: bg, display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
 
@@ -840,7 +785,7 @@ const ConnectPage = memo(() => {
           <div>
             <h1 style={{ color: text, fontSize: 20, fontWeight: 500, margin: 0 }}>Connect</h1>
             <p style={{ color: textSub, fontSize: 13, margin: '4px 0 0' }}>
-              Connect Fi to your apps. OAuth apps connect with a single login — no API keys needed.
+              Connect Fi to your apps. OAuth apps connect with a single login - no API keys needed.
             </p>
           </div>
           <div style={{ color: textTertiary, fontSize: 12 }}>{MCP_APPS.length}+ integrations</div>
@@ -902,25 +847,18 @@ const ConnectPage = memo(() => {
             </div>
             <div style={{ display: 'grid', gap: 8, gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
               {connectedApps.map(app => {
-                const isDcr = app.auth === 'oauth_dcr';
                 return (
-                  <div key={app.id} style={{ alignItems: 'center', background: cardBg, border: `0.5px solid ${isDcr ? (isDark ? 'rgba(96,165,250,0.25)' : 'rgba(37,99,235,0.2)') : (isDark ? 'rgba(74,222,128,0.25)' : 'rgba(22,163,74,0.2)')}`, borderRadius: 12, display: 'flex', gap: 12, padding: '12px 14px' }}>
+                  <div key={app.id} style={{ alignItems: 'center', background: cardBg, border: `0.5px solid ${isDark ? 'rgba(74,222,128,0.25)' : 'rgba(22,163,74,0.2)'}`, borderRadius: 12, display: 'flex', gap: 12, padding: '12px 14px' }}>
                     <AppIcon app={app} />
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ alignItems: 'center', display: 'flex', gap: 6 }}>
                         <span style={{ color: text, fontSize: 13, fontWeight: 500 }}>{app.name}</span>
-                        {isDcr ? (
-                          <span style={{ alignItems: 'center', background: isDark ? 'rgba(96,165,250,0.15)' : 'rgba(37,99,235,0.1)', borderRadius: 6, color: isDark ? '#60a5fa' : '#2563eb', display: 'flex', fontSize: 10, fontWeight: 600, gap: 2, padding: '1px 6px' }}>
-                            <Check size={9} /> Added
-                          </span>
-                        ) : (
-                          <span style={{ alignItems: 'center', background: isDark ? 'rgba(74,222,128,0.15)' : 'rgba(22,163,74,0.1)', borderRadius: 6, color: isDark ? '#4ade80' : '#16a34a', display: 'flex', fontSize: 10, fontWeight: 600, gap: 2, padding: '1px 6px' }}>
-                            <Check size={9} /> Connected
-                          </span>
-                        )}
+                        <span style={{ alignItems: 'center', background: isDark ? 'rgba(74,222,128,0.15)' : 'rgba(22,163,74,0.1)', borderRadius: 6, color: isDark ? '#4ade80' : '#16a34a', display: 'flex', fontSize: 10, fontWeight: 600, gap: 2, padding: '1px 6px' }}>
+                          <Check size={9} /> Connected
+                        </span>
                       </div>
                       <div style={{ color: textSub, fontSize: 11, marginTop: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {isDcr ? 'Authenticate on first use' : app.desc}
+                        {app.desc}
                       </div>
                     </div>
                     <button style={{ background: 'transparent', border: `0.5px solid ${border}`, borderRadius: 8, color: textSub, cursor: 'pointer', fontSize: 11, flexShrink: 0, padding: '4px 10px', whiteSpace: 'nowrap' }}
@@ -1012,7 +950,7 @@ const ConnectPage = memo(() => {
         </button>
       </div>
 
-      {/* Browse all integrations — full-screen search across Composio's catalog */}
+      {/* Browse all integrations - full-screen search across Composio's catalog */}
       {browseOpen && (
         <div style={{ background: bg, bottom: 0, display: 'flex', flexDirection: 'column', left: 0, position: 'absolute', right: 0, top: 0, zIndex: 200 }}>
           <div style={{ alignItems: 'center', borderBottom: `0.5px solid ${border}`, display: 'flex', justifyContent: 'space-between', padding: '20px 24px' }}>
@@ -1081,7 +1019,7 @@ const ConnectPage = memo(() => {
         </div>
       )}
 
-      {/* Info modal — shown for all OAuth-style apps before connecting */}
+      {/* Info modal - shown for all OAuth-style apps before connecting */}
       {infoModalApp && (
         <div
           style={{ alignItems: 'center', background: 'rgba(0,0,0,0.5)', bottom: 0, display: 'flex', justifyContent: 'center', left: 0, position: 'absolute', right: 0, top: 0, zIndex: 100 }}
@@ -1099,22 +1037,13 @@ const ConnectPage = memo(() => {
             <p style={{ color: textSub, fontSize: 13, lineHeight: 1.55, margin: '0 0 14px', textAlign: 'center' }}>{infoModalApp.desc}</p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 16 }}>
-              {showInfoModalPrivacyBullets.map(bullet => (
+              {PRIVACY_BULLETS_THIRD_PARTY.map(bullet => (
                 <div key={bullet} style={{ alignItems: 'flex-start', color: textSub, display: 'flex', fontSize: 12, gap: 8, lineHeight: 1.5 }}>
                   <span style={{ color: textTertiary, flexShrink: 0 }}>•</span>
                   <span>{bullet}</span>
                 </div>
               ))}
             </div>
-
-            {showInfoModalServerUrl && (
-              <div style={{ marginBottom: 16 }}>
-                <div style={{ color: textTertiary, fontSize: 11, fontWeight: 500, letterSpacing: '0.05em', marginBottom: 5, textTransform: 'uppercase' }}>Server URL</div>
-                <div style={{ background: isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.04)', border: `0.5px solid ${border}`, borderRadius: 8, color: textSub, fontFamily: 'monospace', fontSize: 12, overflowX: 'auto', padding: '8px 12px', whiteSpace: 'nowrap' }}>
-                  {infoModalApp.mcpUrl}
-                </div>
-              </div>
-            )}
 
             <p style={{ color: textTertiary, fontSize: 11, lineHeight: 1.5, margin: '0 0 20px' }}>
               Third-party connectors are not built or maintained by Fi. Use caution when granting access to external services.

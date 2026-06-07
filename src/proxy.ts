@@ -20,6 +20,10 @@ export const config = {
     // be matched here — otherwise Next.js's default fallback redirects it to '/'
     '/connect',
     '/connect(.*)',
+    // Composio redirects the OAuth tab here on success - a real Next.js page (not SPA),
+    // so it needs both the matcher entry and the nextjsOnlyRoutes registration
+    '/connect-success',
+    '/connect-success(.*)',
     '/group',
     '/group(.*)',
     '/changelog(.*)',

@@ -13,14 +13,16 @@ export const GET = async (req: NextRequest) => {
 
   try {
     const res = await fetch(
-      `${COMPOSIO_BASE}/api/v3/connected_accounts?user_id=${session.user.id}&toolkit=${app}&status=ACTIVE&limit=1`,
+      `${COMPOSIO_BASE}/api/v3/connected_accounts?user_id=${session.user.id}&toolkit=${app}&status=ACTIVE&limit=10`,
       { headers: { 'x-api-key': COMPOSIO_API_KEY } }
     );
     const data = await res.json();
-    const connected = data.items && data.items.length > 0;
-    return NextResponse.json({ 
-      connected, 
-      connectionId: connected ? data.items[0].id : null 
+    // Filter by exact toolkit slug to prevent cross-app false positives
+    const matching = (data.items || []).filter((item: any) => item.toolkit?.slug === app);
+    const connected = matching.length > 0;
+    return NextResponse.json({
+      connected,
+      connectionId: connected ? matching[0].id : null
     });
   } catch {
     return NextResponse.json({ connected: false });

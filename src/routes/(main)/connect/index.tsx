@@ -501,12 +501,12 @@ const ConnectPage = memo(() => {
     setBanner({ message, type });
   }, []);
 
-  // Auto-dismiss banner with fade-out
+  // Auto-dismiss toast with fade-out after ~3 seconds
   useEffect(() => {
     if (!banner) return;
     setBannerVisible(true);
-    const fadeTimer = setTimeout(() => setBannerVisible(false), 3700);
-    const removeTimer = setTimeout(() => setBanner(null), 4000);
+    const fadeTimer = setTimeout(() => setBannerVisible(false), 2700);
+    const removeTimer = setTimeout(() => setBanner(null), 3000);
     return () => { clearTimeout(fadeTimer); clearTimeout(removeTimer); };
   }, [banner]);
 
@@ -953,11 +953,6 @@ const ConnectPage = memo(() => {
 
   const modalApp = MCP_APPS.find(a => a.id === apiKeyModal);
 
-  const bannerColors: Record<BannerState['type'], { bg: string; fg: string }> = {
-    error: { bg: '#dc2626', fg: '#ffffff' },
-    success: { bg: '#16a34a', fg: '#ffffff' },
-  };
-
   return (
     <div style={{ background: bg, display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', position: 'relative' }}>
 
@@ -970,7 +965,20 @@ const ConnectPage = memo(() => {
               Connect Fi to your apps. OAuth apps connect with a single login - no API keys needed.
             </p>
           </div>
-          <div style={{ color: textTertiary, fontSize: 12 }}>{MCP_APPS.length}+ integrations</div>
+          <div style={{ alignItems: 'center', display: 'flex', gap: 16 }}>
+            <div style={{ color: textTertiary, fontSize: 12 }}>{MCP_APPS.length}+ integrations</div>
+            <div style={{ alignItems: 'center', display: 'flex', gap: 6 }}>
+              <svg fill="none" height="14" style={{ flexShrink: 0 }} viewBox="0 0 14 14" width="14">
+                <path d="M7 1L2 3.5V7C2 9.8 4.2 12.4 7 13C9.8 12.4 12 9.8 12 7V3.5L7 1Z"
+                  fill={isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'}
+                  stroke={isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'} strokeWidth="1" />
+                <path d="M5 7L6.5 8.5L9.5 5.5"
+                  stroke={isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'}
+                  strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" />
+              </svg>
+              <span style={{ color: textTertiary, fontSize: 11 }}>Fi x Composio</span>
+            </div>
+          </div>
         </div>
         <div style={{ alignItems: 'center', display: 'flex', gap: 12, marginTop: 16 }}>
           <div style={{ alignItems: 'center', background: cardBg, border: `0.5px solid ${border}`, borderRadius: 10, display: 'flex', flexShrink: 0, gap: 8, padding: '7px 12px', width: 260 }}>
@@ -998,20 +1006,34 @@ const ConnectPage = memo(() => {
         </div>
       </div>
 
-      {/* Banner */}
+      {/* Toast - minimal floating pill, bottom-center, auto-dismisses with a fade */}
       {banner && (
         <div style={{
-          background: bannerColors[banner.type].bg,
-          color: bannerColors[banner.type].fg,
-          flexShrink: 0,
-          fontSize: 13,
-          fontWeight: 500,
+          alignItems: 'center',
+          background: isDark ? '#2c2c2b' : '#ffffff',
+          border: `0.5px solid ${border}`,
+          borderRadius: 100,
+          bottom: 24,
+          boxShadow: 'none',
+          display: 'flex',
+          fontSize: 12,
+          gap: 8,
+          left: '50%',
           opacity: bannerVisible ? 1 : 0,
-          padding: '10px 32px',
+          padding: '8px 16px',
+          position: 'fixed',
+          transform: 'translateX(-50%)',
           transition: 'opacity 0.3s ease',
+          zIndex: 1000,
         }}>
-          {banner.type === 'success' && '✓ '}
-          {banner.message}
+          <span style={{
+            background: banner.type === 'success' ? '#22c55e' : '#dc2626',
+            borderRadius: '50%',
+            flexShrink: 0,
+            height: 6,
+            width: 6,
+          }} />
+          <span style={{ color: text }}>{banner.message}</span>
         </div>
       )}
 
@@ -1097,7 +1119,7 @@ const ConnectPage = memo(() => {
                     ) : (
                       <button
                         disabled={isBusy}
-                        style={{ background: text, border: 'none', borderRadius: 8, color: bg, cursor: isBusy ? 'wait' : 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 500, opacity: isBusy ? 0.5 : 1, padding: '5px 14px', whiteSpace: 'nowrap' }}
+                        style={{ background: 'transparent', border: `0.5px solid ${isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)'}`, borderRadius: 8, color: text, cursor: isBusy ? 'wait' : 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 500, opacity: isBusy ? 0.5 : 1, padding: '5px 14px', whiteSpace: 'nowrap' }}
                         onClick={e => { e.stopPropagation(); if (!isBusy) handleConnect(app); }}>
                         {isPolling ? 'Waiting...' : isConnecting ? '...' : 'Connect'}
                       </button>
@@ -1130,6 +1152,26 @@ const ConnectPage = memo(() => {
           onMouseLeave={e => { e.currentTarget.style.borderColor = border; }}>
           Browse 1,000+ integrations →
         </button>
+
+        <div style={{
+          alignItems: 'center',
+          borderTop: `0.5px solid ${border}`,
+          color: textTertiary,
+          display: 'flex',
+          fontSize: 11,
+          gap: 6,
+          justifyContent: 'center',
+          marginTop: 24,
+          paddingTop: 16,
+        }}>
+          <svg fill="none" height="12" viewBox="0 0 14 14" width="12">
+            <path d="M7 1L2 3.5V7C2 9.8 4.2 12.4 7 13C9.8 12.4 12 9.8 12 7V3.5L7 1Z"
+              fill="none" stroke="currentColor" strokeWidth="1" />
+            <path d="M5 7L6.5 8.5L9.5 5.5"
+              stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" />
+          </svg>
+          Connections powered by Fi x Composio - encrypted, SOC 2 compliant
+        </div>
       </div>
 
       {/* Browse all integrations - full-screen search across Composio's catalog */}
@@ -1187,7 +1229,7 @@ const ConnectPage = memo(() => {
                           </div>
                         </div>
                         <button
-                          style={{ background: text, border: 'none', borderRadius: 8, color: bg, cursor: 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 500, padding: '5px 14px', whiteSpace: 'nowrap' }}
+                          style={{ background: 'transparent', border: `0.5px solid ${isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)'}`, borderRadius: 8, color: text, cursor: 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 500, padding: '5px 14px', whiteSpace: 'nowrap' }}
                           onClick={() => { setBrowseOpen(false); handleConnect(app); }}>
                           Connect
                         </button>

@@ -18,12 +18,14 @@ export const GET = async (req: NextRequest) => {
 
   try {
     const res = await fetch(
-      `${COMPOSIO_BASE}/api/v3/connected_accounts?user_id=${session.user.id}&toolkit=${app}&status=ACTIVE&limit=10`,
+      `${COMPOSIO_BASE}/api/v3/connected_accounts?user_id=${session.user.id}&toolkit=${app}&limit=20`,
       { headers: { 'x-api-key': COMPOSIO_API_KEY } }
     );
     const data = await res.json();
-    // Filter by exact toolkit slug
-    const matching = (data.items || []).filter((item: any) => item.toolkit?.slug === app);
+    // Filter by exact toolkit slug AND only ACTIVE status (Composio's status filter is unreliable)
+    const matching = (data.items || []).filter((item: any) => 
+      item.toolkit?.slug === app && item.status === 'ACTIVE'
+    );
     // If since param provided, only count connections created after that time
     const newConnections = sinceDate
       ? matching.filter((item: any) => new Date(item.created_at) > sinceDate)

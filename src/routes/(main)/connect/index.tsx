@@ -862,7 +862,8 @@ const ConnectPage = memo(() => {
               prevIdBeforeOverwrite: preConnectionIds.current.get(app.id),
             });
             if (postData.connectionId) {
-              preConnectionIds.current.set(app.id, postData.connectionId);
+              // Do NOT overwrite prevId with INITIALIZING connection - keep original preCheck ID
+          // preConnectionIds.current.set(app.id, postData.connectionId);
             }
           }
         } catch {}

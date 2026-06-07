@@ -179,6 +179,9 @@ export function defineConfig() {
     // version
     '/api/version',
     '/api/desktop/(.*)',
+    // OAuth callback routes exchange the provider code for a token and must be reachable
+    // before the user has a Fi session (the OAuth tab is a separate browsing context)
+    '/api/oauth/callback(.*)',
     // better auth
     '/signin',
     '/signup',

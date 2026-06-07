@@ -440,16 +440,20 @@ const ConnectPage = memo(() => {
         const hasMicrosoft = accounts.some(
           a => a.providerId === 'microsoft' || a.providerId === 'microsoft-entra-id',
         );
-        if (hasGoogle) markConnectedBulk(GOOGLE_APP_IDS);
-        if (hasMicrosoft) markConnectedBulk(MICROSOFT_APP_IDS);
-
-        if (pendingGoogle) {
+        if (hasGoogle && pendingGoogle) {
+          markConnectedBulk(GOOGLE_APP_IDS);
           localStorage.removeItem('fi:pending-google');
-          if (hasGoogle && !oauthSuccessParam) showBanner('success', 'Google connected successfully');
+          if (!oauthSuccessParam) showBanner('success', 'Google connected successfully');
+        } else if (pendingGoogle) {
+          localStorage.removeItem('fi:pending-google');
         }
-        if (pendingMicrosoft) {
+
+        if (hasMicrosoft && pendingMicrosoft) {
+          markConnectedBulk(MICROSOFT_APP_IDS);
           localStorage.removeItem('fi:pending-microsoft');
-          if (hasMicrosoft && !oauthSuccessParam) showBanner('success', 'Microsoft connected successfully');
+          if (!oauthSuccessParam) showBanner('success', 'Microsoft connected successfully');
+        } else if (pendingMicrosoft) {
+          localStorage.removeItem('fi:pending-microsoft');
         }
       })
       .catch(() => {});

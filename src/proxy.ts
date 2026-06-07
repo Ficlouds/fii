@@ -16,6 +16,10 @@ export const config = {
     '/eval(.*)',
     '/agent',
     '/agent(.*)',
+    // Connect page is reached via full-page redirects from OAuth providers, so it must
+    // be matched here — otherwise Next.js's default fallback redirects it to '/'
+    '/connect',
+    '/connect(.*)',
     '/group',
     '/group(.*)',
     '/changelog(.*)',

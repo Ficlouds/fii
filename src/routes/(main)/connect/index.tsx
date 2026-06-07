@@ -741,11 +741,7 @@ const ConnectPage = memo(() => {
 
   // Window focus is a backup trigger - when the OAuth tab closes/redirects and the user
   // comes back to this tab, check localStorage immediately instead of waiting for the next tick
-  useEffect(() => {
-    const onFocus = () => checkOAuthResult();
-    window.addEventListener('focus', onFocus);
-    return () => window.removeEventListener('focus', onFocus);
-  }, [checkOAuthResult]);
+  // Focus listener removed - polling only happens after popup closes
 
   // When the info modal is dismissed or switches to a different app, cancel any polling
   // interval left running from a previous, abandoned attempt

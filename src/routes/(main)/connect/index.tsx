@@ -476,6 +476,8 @@ const ConnectPage = memo(() => {
   // event for a previous app can't mark the wrong app as connected
   const pendingOAuthApp = useRef<string | null>(null);
   const pollingStartedAt = useRef<number>(0);
+  const preConnectionIds = useRef<Map<string, string>>(new Map());
+  const preConnectionIds = useRef<Map<string, string>>(new Map());
   const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const installCustomPlugin = useToolStore((s) => s.installCustomPlugin);
@@ -644,11 +646,15 @@ const ConnectPage = memo(() => {
       const res = await fetch(`/api/composio/check-connection?app=${composioSlug}`);
       if (res.ok) {
         const data = await res.json();
-        if (data.connected && pendingOAuthApp.current === app.id) {
-          pendingOAuthApp.current = null;
-          stopPollingForOAuth();
-          markConnected(app.id);
-          showBanner('success', `${app.name} connected successfully`);
+        // Only mark connected if this is a NEW connection (different ID from what existed before)
+        if (data.connected && data.connectionId && pendingOAuthApp.current === app.id) {
+          const prevId = preConnectionIds.current.get(app.id);
+          if (!prevId || prevId !== data.connectionId) {
+            pendingOAuthApp.current = null;
+            stopPollingForOAuth();
+            markConnected(app.id);
+            showBanner('success', `${app.name} connected successfully`);
+          }
         }
       }
     } catch {}
@@ -726,6 +732,18 @@ const ConnectPage = memo(() => {
     setConnecting(app.id);
     try {
       const composioAppName = COMPOSIO_APP_MAP[app.id] || app.id;
+      // Store existing connection ID before opening popup so we can detect NEW connections
+      try {
+        const preCheck = await fetch(`/api/composio/check-connection?app=${composioAppName}`);
+        if (preCheck.ok) {
+          const preData = await preCheck.json();
+          if (preData.connectionId) {
+            preConnectionIds.current.set(app.id, preData.connectionId);
+          } else {
+            preConnectionIds.current.delete(app.id);
+          }
+        }
+      } catch {}
       const response = await fetch(`/api/composio/auth-url?app=${composioAppName}`);
       const data = await response.json();
       if (data.url) {

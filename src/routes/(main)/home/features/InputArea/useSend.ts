@@ -33,6 +33,37 @@ const ensureAgentConfigLoaded = async (agentId: string): Promise<void> => {
   if (config) agentState.internal_dispatchAgentMap(agentId, config);
 };
 
+
+// Fi Automation Intent Detection
+const AUTOMATION_KEYWORDS = [
+  'automate', 'automation', 'every day', 'every morning', 'every night',
+  'every hour', 'daily', 'weekly', 'schedule', 'automatically', 'when i get',
+  'whenever', 'remind me', 'send me', 'notify me', 'alert me', 'monitor',
+  'trigger', 'workflow', 'auto ', 'each day', 'every week', 'routine',
+];
+
+const isAutomationIntent = (message: string): boolean => {
+  const lower = message.toLowerCase();
+  return AUTOMATION_KEYWORDS.some((keyword) => lower.includes(keyword));
+};
+
+const createAutomation = async (prompt: string): Promise<string> => {
+  try {
+    const res = await fetch('/api/dev/automate-test', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, connectedApps: [] }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      return `✓ Automation created: **${data.workflowName}**\n\nYour automation is now live and running. You can manage it in [Fi Automaté](http://localhost:5679).`;
+    }
+    return `I understood you want to automate something, but encountered an error: ${data.error}. Please try again.`;
+  } catch {
+    return 'Failed to create automation. Please check your connection and try again.';
+  }
+};
+
 export const useSend = () => {
   const sendMessage = useChatStore((s) => s.sendMessage);
   const clearChatUploadFileList = useFileStore((s) => s.clearChatUploadFileList);
@@ -88,6 +119,26 @@ export const useSend = () => {
       if (!message && fileList.length === 0 && contextList.length === 0) return;
 
       try {
+        // Fi: Check for automation intent first
+        if (isAutomationIntent(message)) {
+          const automationResult = await createAutomation(message);
+          sendMessage({
+            context: { agentId: activeAgentId!, isolatedTopic: true },
+            message,
+            onTopicCreated: (topicId) => {
+              useActiveConversationStore.getState().setConversation({ agentId: activeAgentId!, topicId });
+            },
+          });
+          // Also inject the automation result as assistant message after a brief delay
+          setTimeout(() => {
+            useChatStore.getState().sendMessage({
+              context: { agentId: activeAgentId! },
+              message: automationResult,
+            });
+          }, 500);
+          return;
+        }
+
         switch (inputActiveMode) {
           case 'agent': {
             await sendAsAgent({ editorData, message });

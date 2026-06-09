@@ -1,4 +1,6 @@
 import { useCallback } from 'react';
+import { toast } from '@lobehub/ui';
+import { useNavigate } from 'react-router-dom';
 
 import type { SendButtonHandler } from '@/features/ChatInput/store/initialState';
 import { useHomeDailyBrief } from '@/hooks/useHomeDailyBrief';
@@ -48,23 +50,18 @@ const isAutomationIntent = (message: string): boolean => {
 };
 
 const createAutomation = async (prompt: string): Promise<string> => {
-  try {
-    const res = await fetch('/api/dev/automate-test', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, connectedApps: [] }),
-    });
-    const data = await res.json();
-    if (data.success) {
-      return `✓ Automation created: **${data.workflowName}**\n\nYour automation is now live and running. You can manage it in [Fi Automaté](http://localhost:5679).`;
-    }
-    return `I understood you want to automate something, but encountered an error: ${data.error}. Please try again.`;
-  } catch {
-    return 'Failed to create automation. Please check your connection and try again.';
-  }
+  const res = await fetch('/api/dev/automate-test', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt, connectedApps: [] }),
+  });
+  const data = await res.json();
+  if (data.success) return data.workflowName;
+  throw new Error(data.error || 'Failed to create automation');
 };
 
 export const useSend = () => {
+  const navigate = useNavigate();
   const sendMessage = useChatStore((s) => s.sendMessage);
   const clearChatUploadFileList = useFileStore((s) => s.clearChatUploadFileList);
   const clearChatContextSelections = useFileStore((s) => s.clearChatContextSelections);
@@ -120,22 +117,13 @@ export const useSend = () => {
 
       try {
         // Fi: Check for automation intent first
-        if (isAutomationIntent(message)) {
-          const automationResult = await createAutomation(message);
-          sendMessage({
-            context: { agentId: activeAgentId!, isolatedTopic: true },
-            message,
-            onTopicCreated: (topicId) => {
-              useActiveConversationStore.getState().setConversation({ agentId: activeAgentId!, topicId });
-            },
+        if (isAutomationIntent(message) && activeAgentId) {
+          toast.loading('Creating your automation...', { id: 'automation' });
+          createAutomation(message).then((result) => {
+            toast.success(`✓ Automation live: ${result.split('**')[1] || 'Done'}`, { id: 'automation', duration: 5000 });
+          }).catch(() => {
+            toast.error('Failed to create automation. Please try again.', { id: 'automation' });
           });
-          // Also inject the automation result as assistant message after a brief delay
-          setTimeout(() => {
-            useChatStore.getState().sendMessage({
-              context: { agentId: activeAgentId! },
-              message: automationResult,
-            });
-          }, 500);
           return;
         }
 
@@ -181,6 +169,7 @@ export const useSend = () => {
               message,
               onTopicCreated: (topicId) => {
                 useActiveConversationStore.getState().setConversation({ agentId: activeAgentId, topicId });
+              navigate(`/agent/${activeAgentId}/${topicId}`);
               },
             });
           }

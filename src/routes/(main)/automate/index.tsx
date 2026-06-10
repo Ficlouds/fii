@@ -9,14 +9,9 @@ import {
   Settings,
   Zap,
 } from 'lucide-react';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  type ChatInputEditor,
-  ChatInputProvider,
-  DesktopChatInput,
-} from '@/features/ChatInput';
 import { useIsDark } from '@/hooks/useIsDark';
 import { useGlobalStore } from '@/store/global';
 
@@ -99,16 +94,98 @@ const SidebarItem = memo<SidebarItemProps>(({ icon: Icon, label, isDark, active,
 
 SidebarItem.displayName = 'SidebarItem';
 
+const AutomateInput = memo(() => {
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const isDark = useIsDark();
+
+  const handleSend = async () => {
+    if (!input.trim() || loading) return;
+    const message = input.trim();
+    setInput('');
+    setLoading(true);
+    try {
+      const res = await fetch('/api/dev/automate-test', {
+        body: JSON.stringify({ connectedApps: [], prompt: message }),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success(`✓ Automation live: ${data.workflowName}`, { duration: 5000 });
+      } else {
+        toast.error('Failed to create automation');
+      }
+    } catch {
+      toast.error('Failed to create automation');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{ padding: '10px 10px 14px' }}>
+      <div
+        style={{
+          alignItems: 'center',
+          background: isDark ? '#1a1a1a' : '#f5f5f5',
+          border: `0.5px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+          borderRadius: 32,
+          display: 'flex',
+          gap: 8,
+          padding: '8px 8px 8px 16px',
+        }}
+      >
+        <input
+          disabled={loading}
+          placeholder="What would you like to automate?"
+          value={input}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: isDark ? '#ececec' : '#111',
+            flex: 1,
+            fontFamily: '-apple-system, sans-serif',
+            fontSize: 13,
+            outline: 'none',
+          }}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+        />
+        <button
+          disabled={loading || !input.trim()}
+          style={{
+            alignItems: 'center',
+            background: input.trim() && !loading ? '#000' : 'rgba(0,0,0,0.1)',
+            border: 'none',
+            borderRadius: '50%',
+            cursor: input.trim() && !loading ? 'pointer' : 'default',
+            display: 'flex',
+            flexShrink: 0,
+            height: 28,
+            justifyContent: 'center',
+            transition: 'background 0.15s',
+            width: 28,
+          }}
+          onClick={handleSend}
+        >
+          <svg fill="none" height="12" viewBox="0 0 12 12" width="12">
+            <path d="M6 10V2M2 6l4-4 4 4" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+});
+
+AutomateInput.displayName = 'AutomateInput';
+
 const AutomatePage = memo(() => {
   const isDark = useIsDark();
   const navigate = useNavigate();
 
   const [launchOpen, setLaunchOpen] = useState(false);
   const [canvasUrl, setCanvasUrl] = useState(N8N_PROJECT_URL);
-  const [sending, setSending] = useState(false);
-
-  const editorRef = useRef<ChatInputEditor | null>(null);
-  const contentRef = useRef('');
 
   const bg = isDark ? '#0d0d0d' : '#ffffff';
   const border = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
@@ -124,37 +201,6 @@ const AutomatePage = memo(() => {
       useGlobalStore.getState().toggleLeftPanel(previous);
     };
   }, []);
-
-  const handleSend = useCallback(async () => {
-    const prompt = contentRef.current.trim();
-    if (!prompt || sending) return;
-
-    setSending(true);
-    try {
-      const res = await fetch('/api/dev/automate-test', {
-        body: JSON.stringify({ connectedApps: [], prompt }),
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-      });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.error || 'Failed to create automation');
-
-      toast.success(`✓ Automation live: ${data.workflowName}`);
-      editorRef.current?.clearContent();
-      contentRef.current = '';
-    } catch {
-      toast.error('Failed to create automation');
-    } finally {
-      setSending(false);
-    }
-  }, [sending]);
-
-  const sendButtonProps = {
-    disabled: sending,
-    generating: sending,
-    onStop: () => {},
-    shape: 'round' as const,
-  };
 
   return (
     <div style={{ background: bg, bottom: 0, display: 'flex', height: '100%', left: 0, overflow: 'hidden', position: 'absolute', right: 0, top: 0, width: '100%' }}>
@@ -244,24 +290,7 @@ const AutomatePage = memo(() => {
             </div>
           </div>
 
-          <div style={{ padding: '10px 10px 14px' }}>
-            <ChatInputProvider
-              allowExpand={false}
-              sendButtonProps={sendButtonProps}
-              chatInputEditorRef={(instance) => {
-                editorRef.current = instance;
-              }}
-              onSend={() => void handleSend()}
-              onMarkdownContentChange={(content) => {
-                contentRef.current = content;
-              }}
-            >
-              <DesktopChatInput
-                placeholder="Describe an automation..."
-                showRuntimeConfig={false}
-              />
-            </ChatInputProvider>
-          </div>
+          <AutomateInput />
         </div>
       </div>
 

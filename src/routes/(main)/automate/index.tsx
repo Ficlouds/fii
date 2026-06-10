@@ -1,21 +1,40 @@
-import { toast } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import {
   Activity,
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
   Home,
   Library,
   Plug,
   Plus,
   Settings,
+  X,
   Zap,
 } from 'lucide-react';
 import { memo, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { useIsDark } from '@/hooks/useIsDark';
 import { useGlobalStore } from '@/store/global';
 
-const N8N_PROJECT_URL = 'http://localhost:5679/projects/IWCl1gRTE8Zji5i7/workflows';
+const N8N_BASE_URL = 'http://localhost:5679';
+const N8N_PROJECT_URL = `${N8N_BASE_URL}/projects/IWCl1gRTE8Zji5i7/workflows`;
+const NEW_FLOW_URL = `${N8N_BASE_URL}/workflow/new`;
+const EXECUTIONS_URL = `${N8N_BASE_URL}/home/executions`;
+const SETTINGS_URL = `${N8N_BASE_URL}/settings`;
+const TEMPLATES_URL = `${N8N_BASE_URL}/templates`;
+const CONNECT_URL = '/connect';
+
+const SIDEBAR_EXPANDED_WIDTH = 260;
+const SIDEBAR_COLLAPSED_WIDTH = 48;
+const LAUNCH_MIN_WIDTH = SIDEBAR_EXPANDED_WIDTH;
+const LAUNCH_MAX_WIDTH = 480;
+
+const SESSION_KEY = 'fi-automate-session';
+const RECENTS_KEY = 'fi-automate-recents';
+const SESSION_TTL_MS = 180_000;
+const RECENTS_VISIBLE = 5;
+const RECENTS_MAX = 50;
 
 const SUGGESTIONS = [
   'Send me a Gmail every morning at 8am',
@@ -26,7 +45,75 @@ const SUGGESTIONS = [
   'Send me a Telegram message with my daily tasks',
   'Weekly report every Sunday night to my email',
   'Alert me when I get a message from a VIP contact',
+  'Create a flow that backs up my Drive files weekly',
+  'Remind me on WhatsApp every day at 7am',
 ];
+
+interface ChatMessage {
+  content: string;
+  role: 'assistant' | 'user';
+}
+
+interface AutomateSession {
+  flowId: string;
+  flowName: string;
+  lastActivity: number;
+  messages: ChatMessage[];
+}
+
+interface RecentConversation {
+  flowId: string;
+  flowName: string;
+  id: string;
+  lastMessage: string;
+  messages: ChatMessage[];
+  timestamp: number;
+}
+
+const loadSession = (): AutomateSession | null => {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
+
+const saveSession = (session: AutomateSession): void => {
+  try {
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  } catch {
+    // ignore quota / serialization errors
+  }
+};
+
+const loadRecents = (): RecentConversation[] => {
+  try {
+    const raw = localStorage.getItem(RECENTS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveRecents = (recents: RecentConversation[]): void => {
+  try {
+    localStorage.setItem(RECENTS_KEY, JSON.stringify(recents.slice(0, RECENTS_MAX)));
+  } catch {
+    // ignore quota / serialization errors
+  }
+};
+
+const timeAgo = (timestamp: number): string => {
+  const diff = Math.max(0, Date.now() - timestamp);
+  const sec = Math.floor(diff / 1000);
+  if (sec < 60) return `${sec}s ago`;
+  const min = Math.floor(sec / 60);
+  if (min < 60) return `${min}m ago`;
+  const hr = Math.floor(min / 60);
+  if (hr < 24) return `${hr}h ago`;
+  return `${Math.floor(hr / 24)}d ago`;
+};
 
 const styles = createStaticStyles(({ css, cssVar }) => ({
   pill: css`
@@ -36,11 +123,11 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
     color: ${cssVar.colorTextTertiary};
     font-size: 11px;
     line-height: 1.4;
-    padding: 7px 14px;
+    padding: 8px 16px;
     text-align: center;
   `,
   scrollTrack: css`
-    animation: automate-scroll-suggestions 18s linear infinite;
+    animation: automate-scroll-suggestions 20s linear infinite;
 
     @keyframes automate-scroll-suggestions {
       0% {
@@ -56,27 +143,30 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
 
 interface SidebarItemProps {
   active?: boolean;
+  collapsed?: boolean;
   icon: any;
   isDark: boolean;
   label: string;
   onClick?: () => void;
 }
 
-const SidebarItem = memo<SidebarItemProps>(({ icon: Icon, label, isDark, active, onClick }) => {
+const SidebarItem = memo<SidebarItemProps>(({ icon: Icon, label, isDark, active, collapsed, onClick }) => {
   const text = isDark ? '#ffffff' : '#111111';
   const textSub = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)';
 
   return (
     <div
+      title={collapsed ? label : undefined}
       style={{
         alignItems: 'center',
         background: active ? (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)') : 'transparent',
         borderRadius: 8,
         cursor: 'pointer',
         display: 'flex',
-        gap: 8,
+        gap: collapsed ? 0 : 8,
         height: 36,
-        paddingInline: 10,
+        justifyContent: collapsed ? 'center' : 'flex-start',
+        paddingInline: collapsed ? 0 : 10,
       }}
       onClick={onClick}
       onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'; }}
@@ -85,81 +175,200 @@ const SidebarItem = memo<SidebarItemProps>(({ icon: Icon, label, isDark, active,
       <div style={{ alignItems: 'center', display: 'flex', flexShrink: 0, height: 28, justifyContent: 'center', width: 28 }}>
         <Icon color={active ? text : textSub} size={18} />
       </div>
-      <span style={{ color: active ? text : textSub, fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-        {label}
-      </span>
+      {!collapsed && (
+        <span style={{ color: active ? text : textSub, fontSize: 14, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {label}
+        </span>
+      )}
     </div>
   );
 });
 
 SidebarItem.displayName = 'SidebarItem';
 
-const AutomateInput = memo(() => {
-  const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const isDark = useIsDark();
+interface RecentItemProps {
+  isDark: boolean;
+  onClick: () => void;
+  recent: RecentConversation;
+}
 
-  const handleSend = async () => {
-    if (!input.trim() || loading) return;
-    const message = input.trim();
-    setInput('');
-    setLoading(true);
-    try {
-      const res = await fetch('/api/dev/automate-test', {
-        body: JSON.stringify({ connectedApps: [], prompt: message }),
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast.success(`✓ Automation live: ${data.workflowName}`, { duration: 5000 });
-      } else {
-        toast.error('Failed to create automation');
-      }
-    } catch {
-      toast.error('Failed to create automation');
-    } finally {
-      setLoading(false);
-    }
-  };
+const RecentItem = memo<RecentItemProps>(({ recent, isDark, onClick }) => {
+  const text = isDark ? '#ffffff' : '#111111';
+  const textSub = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)';
+  const textTertiary = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
+  const isLive = Date.now() - recent.timestamp < SESSION_TTL_MS;
 
   return (
-    <div style={{ padding: '10px 10px 14px' }}>
+    <div
+      style={{ borderRadius: 8, cursor: 'pointer', padding: '6px 10px' }}
+      onClick={onClick}
+      onMouseEnter={(e) => { e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+    >
+      <div style={{ alignItems: 'center', display: 'flex', gap: 6 }}>
+        <span
+          style={{
+            background: isLive ? '#22c55e' : (isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)'),
+            borderRadius: '50%',
+            flexShrink: 0,
+            height: 6,
+            width: 6,
+          }}
+        />
+        <span style={{ color: text, flex: 1, fontSize: 11, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {recent.flowName || 'Untitled automation'}
+        </span>
+        <span style={{ color: textTertiary, flexShrink: 0, fontSize: 10 }}>{timeAgo(recent.timestamp)}</span>
+      </div>
+      {recent.lastMessage && (
+        <div style={{ color: textSub, fontSize: 11, marginLeft: 12, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {recent.lastMessage}
+        </div>
+      )}
+    </div>
+  );
+});
+
+RecentItem.displayName = 'RecentItem';
+
+interface IframeModalProps {
+  onClose: () => void;
+  src: string;
+  title: string;
+}
+
+const IframeModal = memo<IframeModalProps>(({ src, onClose, title }) => {
+  return (
+    <div
+      style={{
+        alignItems: 'center',
+        background: 'rgba(0,0,0,0.4)',
+        backdropFilter: 'blur(8px)',
+        bottom: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        left: 0,
+        position: 'fixed',
+        right: 0,
+        top: 0,
+        zIndex: 1000,
+      }}
+      onClick={onClose}
+    >
       <div
         style={{
-          alignItems: 'center',
+          background: '#fff',
+          borderRadius: 12,
+          boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+          height: '92%',
+          overflow: 'hidden',
+          position: 'relative',
+          width: '92%',
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          style={{
+            alignItems: 'center',
+            background: 'rgba(0,0,0,0.06)',
+            border: 'none',
+            borderRadius: '50%',
+            cursor: 'pointer',
+            display: 'flex',
+            height: 32,
+            justifyContent: 'center',
+            position: 'absolute',
+            right: 12,
+            top: 12,
+            width: 32,
+            zIndex: 1,
+          }}
+          onClick={onClose}
+        >
+          <X color="#111" size={16} />
+        </button>
+        <iframe src={src} style={{ border: 'none', height: '100%', width: '100%' }} title={title} />
+      </div>
+    </div>
+  );
+});
+
+IframeModal.displayName = 'IframeModal';
+
+interface ChatBarProps {
+  isDark: boolean;
+  loading: boolean;
+  minHeight?: string;
+  multiline?: boolean;
+  onSend: (text: string) => void;
+}
+
+const ChatBar = memo<ChatBarProps>(({ isDark, loading, onSend, multiline, minHeight }) => {
+  const [value, setValue] = useState('');
+
+  const handleSend = () => {
+    if (!value.trim() || loading) return;
+    onSend(value.trim());
+    setValue('');
+  };
+
+  const fieldStyle = {
+    background: 'transparent',
+    border: 'none',
+    color: isDark ? '#ececec' : '#111',
+    flex: 1,
+    fontFamily: '-apple-system, sans-serif',
+    fontSize: 13,
+    outline: 'none',
+  } as const;
+
+  return (
+    <div style={{ minHeight, padding: '10px 10px 14px' }}>
+      <div
+        style={{
+          alignItems: multiline ? 'flex-end' : 'center',
           background: isDark ? '#1a1a1a' : '#f5f5f5',
           border: `0.5px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
-          borderRadius: 32,
+          borderRadius: 12,
           display: 'flex',
           gap: 8,
+          height: minHeight ? '100%' : undefined,
           padding: '8px 8px 8px 16px',
         }}
       >
-        <input
-          disabled={loading}
-          placeholder="What would you like to automate?"
-          value={input}
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: isDark ? '#ececec' : '#111',
-            flex: 1,
-            fontFamily: '-apple-system, sans-serif',
-            fontSize: 13,
-            outline: 'none',
-          }}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-        />
+        {multiline ? (
+          <textarea
+            disabled={loading}
+            placeholder="What would you like to automate?"
+            rows={3}
+            style={{ ...fieldStyle, resize: 'none' }}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+          />
+        ) : (
+          <input
+            disabled={loading}
+            placeholder="What would you like to automate?"
+            style={fieldStyle}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+          />
+        )}
         <button
-          disabled={loading || !input.trim()}
+          disabled={loading || !value.trim()}
           style={{
             alignItems: 'center',
-            background: input.trim() && !loading ? '#000' : 'rgba(0,0,0,0.1)',
+            background: value.trim() && !loading ? '#000' : 'rgba(0,0,0,0.1)',
             border: 'none',
             borderRadius: '50%',
-            cursor: input.trim() && !loading ? 'pointer' : 'default',
+            cursor: value.trim() && !loading ? 'pointer' : 'default',
             display: 'flex',
             flexShrink: 0,
             height: 28,
@@ -178,14 +387,28 @@ const AutomateInput = memo(() => {
   );
 });
 
-AutomateInput.displayName = 'AutomateInput';
+ChatBar.displayName = 'ChatBar';
 
 const AutomatePage = memo(() => {
   const isDark = useIsDark();
-  const navigate = useNavigate();
+
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [canvasUrl, setCanvasUrl] = useState(N8N_PROJECT_URL);
 
   const [launchOpen, setLaunchOpen] = useState(false);
-  const [canvasUrl, setCanvasUrl] = useState(N8N_PROJECT_URL);
+  const [launchWidth, setLaunchWidth] = useState(LAUNCH_MIN_WIDTH);
+  const [resizing, setResizing] = useState(false);
+
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [flowId, setFlowId] = useState('');
+  const [flowName, setFlowName] = useState('');
+  const [sending, setSending] = useState(false);
+
+  const [recents, setRecents] = useState<RecentConversation[]>([]);
+  const [recentsExpanded, setRecentsExpanded] = useState(false);
+
+  const [connectionsOpen, setConnectionsOpen] = useState(false);
+  const [libraryOpen, setLibraryOpen] = useState(false);
 
   const bg = isDark ? '#0d0d0d' : '#ffffff';
   const border = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
@@ -202,63 +425,235 @@ const AutomatePage = memo(() => {
     };
   }, []);
 
+  useEffect(() => {
+    setRecents(loadRecents());
+  }, []);
+
+  useEffect(() => {
+    if (!resizing) return;
+    const sidebarWidthPx = sidebarCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH;
+
+    const onMouseMove = (e: MouseEvent) => {
+      const next = Math.min(LAUNCH_MAX_WIDTH, Math.max(LAUNCH_MIN_WIDTH, e.clientX - sidebarWidthPx));
+      setLaunchWidth(next);
+    };
+    const onMouseUp = () => setResizing(false);
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    return () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [resizing, sidebarCollapsed]);
+
+  const openLaunchPanel = () => {
+    const session = loadSession();
+    if (session && Date.now() - session.lastActivity < SESSION_TTL_MS) {
+      setMessages(session.messages);
+      setFlowId(session.flowId);
+      setFlowName(session.flowName);
+    } else {
+      setMessages([]);
+      setFlowId('');
+      setFlowName('');
+    }
+    setLaunchOpen(true);
+  };
+
+  const closeLaunchPanel = () => {
+    if (messages.length > 0) {
+      saveSession({ flowId, flowName, lastActivity: Date.now(), messages });
+
+      const recent: RecentConversation = {
+        flowId,
+        flowName: flowName || 'Untitled automation',
+        id: flowId || `local-${Date.now()}`,
+        lastMessage: messages.at(-1)?.content ?? '',
+        messages,
+        timestamp: Date.now(),
+      };
+      const updated = [recent, ...recents.filter((r) => r.id !== recent.id)].slice(0, RECENTS_MAX);
+      setRecents(updated);
+      saveRecents(updated);
+    }
+    setLaunchOpen(false);
+  };
+
+  const openRecent = (recent: RecentConversation) => {
+    setMessages(recent.messages);
+    setFlowId(recent.flowId);
+    setFlowName(recent.flowName);
+    if (recent.flowId) setCanvasUrl(`${N8N_BASE_URL}/workflow/${recent.flowId}`);
+    setLaunchOpen(true);
+  };
+
+  const handleSend = async (prompt: string) => {
+    const nextMessages: ChatMessage[] = [...messages, { content: prompt, role: 'user' }];
+    setMessages(nextMessages);
+    setSending(true);
+
+    let nextFlowId = flowId;
+    let nextFlowName = flowName;
+    let assistantMessage: ChatMessage;
+
+    try {
+      const res = await fetch('/api/dev/automate-test', {
+        body: JSON.stringify({ connectedApps: [], prompt }),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        nextFlowId = data.workflowId;
+        nextFlowName = data.workflowName;
+        setFlowId(nextFlowId);
+        setFlowName(nextFlowName);
+        setCanvasUrl(`${N8N_BASE_URL}/workflow/${nextFlowId}`);
+        assistantMessage = { content: data.message || `Automation "${nextFlowName}" is live.`, role: 'assistant' };
+      } else {
+        assistantMessage = { content: 'Failed to create automation. Please try again.', role: 'assistant' };
+      }
+    } catch {
+      assistantMessage = { content: 'Failed to create automation. Please try again.', role: 'assistant' };
+    }
+
+    const finalMessages = [...nextMessages, assistantMessage];
+    setMessages(finalMessages);
+    saveSession({ flowId: nextFlowId, flowName: nextFlowName, lastActivity: Date.now(), messages: finalMessages });
+    setSending(false);
+  };
+
+  const sidebarWidth = sidebarCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH;
+  const displayedRecents = recentsExpanded ? recents : recents.slice(0, RECENTS_VISIBLE);
+
   return (
     <div style={{ background: bg, bottom: 0, display: 'flex', height: '100%', left: 0, overflow: 'hidden', position: 'absolute', right: 0, top: 0, width: '100%' }}>
       {/* Automate sidebar */}
-      <div style={{ background: bg, borderRight: `0.5px solid ${border}`, display: 'flex', flexDirection: 'column', flexShrink: 0, width: 220 }}>
-        <div style={{ padding: '8px 10px' }}>
-          <span style={{ color: text, fontSize: 14, fontWeight: 500, letterSpacing: '-0.01em' }}>Automate</span>
+      <div style={{ background: bg, borderRight: `0.5px solid ${border}`, display: 'flex', flexDirection: 'column', flexShrink: 0, transition: 'width 0.15s ease', width: sidebarWidth }}>
+        <div style={{ alignItems: 'center', display: 'flex', justifyContent: sidebarCollapsed ? 'center' : 'space-between', padding: '8px 10px' }}>
+          {!sidebarCollapsed && (
+            <span style={{ color: text, fontSize: 14, fontWeight: 500, letterSpacing: '-0.01em', lineHeight: '22px', marginBlock: 12 }}>
+              Automate
+            </span>
+          )}
+          <div
+            style={{ alignItems: 'center', borderRadius: 6, cursor: 'pointer', display: 'flex', flexShrink: 0, height: 22, justifyContent: 'center', width: 22 }}
+            onClick={() => setSidebarCollapsed((c) => !c)}
+            onMouseEnter={(e) => { e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+          >
+            {sidebarCollapsed ? <ChevronRight color={textSub} size={14} /> : <ChevronLeft color={textSub} size={14} />}
+          </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 1, paddingInline: 8 }}>
-          <SidebarItem icon={Home} isDark={isDark} label="Home" onClick={() => navigate('/')} />
-          <SidebarItem icon={Plus} isDark={isDark} label="New Flow" onClick={() => setLaunchOpen(true)} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 1, paddingInline: 4 }}>
+          <SidebarItem
+            active={canvasUrl === N8N_BASE_URL}
+            collapsed={sidebarCollapsed}
+            icon={Home}
+            isDark={isDark}
+            label="Home"
+            onClick={() => setCanvasUrl(N8N_BASE_URL)}
+          />
+          <SidebarItem
+            active={canvasUrl === NEW_FLOW_URL}
+            collapsed={sidebarCollapsed}
+            icon={Plus}
+            isDark={isDark}
+            label="New Flow"
+            onClick={() => setCanvasUrl(NEW_FLOW_URL)}
+          />
           <SidebarItem
             active={canvasUrl === N8N_PROJECT_URL}
+            collapsed={sidebarCollapsed}
             icon={Zap}
             isDark={isDark}
             label="My Flows"
             onClick={() => setCanvasUrl(N8N_PROJECT_URL)}
           />
           <SidebarItem
+            active={canvasUrl === EXECUTIONS_URL}
+            collapsed={sidebarCollapsed}
             icon={Activity}
             isDark={isDark}
             label="Activity"
-            onClick={() => setCanvasUrl('http://localhost:5679/projects/IWCl1gRTE8Zji5i7/executions')}
+            onClick={() => setCanvasUrl(EXECUTIONS_URL)}
           />
-        </div>
-
-        <div style={{ marginTop: 16, paddingInline: 8 }}>
-          <div
-            style={{ borderRadius: 8, cursor: 'pointer', padding: '8px 10px' }}
-            onClick={() => setLaunchOpen(true)}
-            onMouseEnter={(e) => { e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
-          >
-            <div style={{ color: text, fontSize: 13, fontWeight: 700 }}>Launch</div>
-            <div style={{ color: textTertiary, fontSize: 10, marginTop: 2 }}>Think It. Build It.</div>
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 1, marginTop: 16, paddingInline: 8 }}>
           <SidebarItem
+            active={connectionsOpen}
+            collapsed={sidebarCollapsed}
             icon={Plug}
             isDark={isDark}
             label="Connections"
-            onClick={() => navigate('/connect')}
+            onClick={() => setConnectionsOpen(true)}
           />
         </div>
 
+        <div style={{ marginTop: 16, paddingInline: 4 }}>
+          <div
+            style={{
+              background: launchOpen ? (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)') : 'transparent',
+              borderRadius: 8,
+              cursor: 'pointer',
+              display: sidebarCollapsed ? 'flex' : 'block',
+              justifyContent: sidebarCollapsed ? 'center' : undefined,
+              padding: sidebarCollapsed ? '8px 0' : '8px 10px',
+            }}
+            onClick={openLaunchPanel}
+            onMouseEnter={(e) => { if (!launchOpen) e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'; }}
+            onMouseLeave={(e) => { if (!launchOpen) e.currentTarget.style.background = 'transparent'; }}
+          >
+            {sidebarCollapsed ? (
+              <Zap color={text} size={18} />
+            ) : (
+              <>
+                <div style={{ color: text, fontSize: 14, fontWeight: 700 }}>Launch</div>
+                <div style={{ color: textTertiary, fontSize: 10, marginTop: 2 }}>Think It. Build It.</div>
+              </>
+            )}
+          </div>
+        </div>
+
+        {!sidebarCollapsed && (
+          <div style={{ marginTop: 8, paddingInline: 4 }}>
+            <div style={{ color: textTertiary, fontSize: 10, fontWeight: 600, letterSpacing: '0.04em', padding: '4px 10px', textTransform: 'uppercase' }}>
+              Recent
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', maxHeight: recentsExpanded ? 240 : undefined, overflowY: recentsExpanded ? 'auto' : undefined }}>
+              {displayedRecents.map((recent) => (
+                <RecentItem isDark={isDark} key={recent.id} recent={recent} onClick={() => openRecent(recent)} />
+              ))}
+            </div>
+            {recents.length > RECENTS_VISIBLE && (
+              <div
+                style={{ color: textSub, cursor: 'pointer', fontSize: 11, padding: '4px 10px' }}
+                onClick={() => setRecentsExpanded((v) => !v)}
+              >
+                {recentsExpanded ? 'Show less' : 'Show all'}
+              </div>
+            )}
+          </div>
+        )}
+
         <div style={{ flex: 1 }} />
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 1, paddingBlock: 8, paddingInline: 8 }}>
-          <SidebarItem icon={Library} isDark={isDark} label="Library" />
-          <SidebarItem icon={Settings} isDark={isDark} label="Settings" onClick={() => navigate('/settings')} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 1, paddingBlock: 8, paddingInline: 4 }}>
+          <SidebarItem collapsed={sidebarCollapsed} icon={Library} isDark={isDark} label="Library" onClick={() => setLibraryOpen(true)} />
+          <SidebarItem
+            active={canvasUrl === SETTINGS_URL}
+            collapsed={sidebarCollapsed}
+            icon={Settings}
+            isDark={isDark}
+            label="Settings"
+            onClick={() => setCanvasUrl(SETTINGS_URL)}
+          />
         </div>
       </div>
 
       {/* Launch panel — slides in between the Automate sidebar and the canvas */}
-      <div style={{ flexShrink: 0, overflow: 'hidden', transition: 'width 0.2s ease', width: launchOpen ? 240 : 0 }}>
+      <div style={{ flexShrink: 0, overflow: 'hidden', transition: resizing ? 'none' : 'width 0.2s ease', width: launchOpen ? launchWidth : 0 }}>
         <div
           style={{
             background: bg,
@@ -266,31 +661,83 @@ const AutomatePage = memo(() => {
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
+            position: 'relative',
             transform: launchOpen ? 'translateX(0)' : 'translateX(-100%)',
-            transition: 'transform 0.2s ease',
-            width: 240,
+            transition: resizing ? 'none' : 'transform 0.2s ease',
+            width: launchWidth,
           }}
         >
-          <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', padding: '0 20px' }}>
-            <div style={{ color: text, fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em', lineHeight: 1.3, textAlign: 'center' }}>
-              Think It. Build It.
+          <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between', padding: '8px 10px' }}>
+            <div
+              style={{ alignItems: 'center', borderRadius: 6, cursor: 'pointer', display: 'flex', height: 22, justifyContent: 'center', width: 22 }}
+              onClick={closeLaunchPanel}
+              onMouseEnter={(e) => { e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+            >
+              <ArrowLeft color={textSub} size={16} />
             </div>
-            <div style={{ color: textSub, fontSize: 11, marginTop: 6, textAlign: 'center' }}>
-              Describe your automation. Athena will build it.
-            </div>
-
-            <div style={{ height: 220, marginTop: 16, overflow: 'hidden', width: '100%' }}>
-              <div className={styles.scrollTrack} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {[...SUGGESTIONS, ...SUGGESTIONS].map((suggestion, i) => (
-                  <div className={styles.pill} key={i}>
-                    {suggestion}
-                  </div>
-                ))}
-              </div>
-            </div>
+            <span style={{ color: textTertiary, fontSize: 13, fontWeight: 700, letterSpacing: '-0.02em' }}>Fi</span>
           </div>
 
-          <AutomateInput />
+          {messages.length === 0 ? (
+            <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', padding: '0 20px' }}>
+              <div style={{ color: text, fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em', lineHeight: 1.3, textAlign: 'center' }}>
+                Think It. Build It.
+              </div>
+              <div style={{ color: textSub, fontSize: 11, marginTop: 6, textAlign: 'center' }}>
+                Describe your automation. Athena will build it.
+              </div>
+
+              <div style={{ height: 220, marginTop: 20, overflow: 'hidden', width: '100%' }}>
+                <div className={styles.scrollTrack} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {[...SUGGESTIONS, ...SUGGESTIONS].map((suggestion, i) => (
+                    <div className={styles.pill} key={i}>
+                      {suggestion}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flex: 1, flexDirection: 'column', gap: 8, overflowY: 'auto', padding: 12 }}>
+              {messages.map((message, i) => (
+                <div
+                  key={i}
+                  style={{
+                    alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start',
+                    background: message.role === 'user' ? '#000' : (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
+                    borderRadius: 10,
+                    color: message.role === 'user' ? '#fff' : text,
+                    fontSize: 12,
+                    lineHeight: 1.5,
+                    maxWidth: '85%',
+                    padding: '8px 12px',
+                    whiteSpace: 'pre-wrap',
+                  }}
+                >
+                  {message.content}
+                </div>
+              ))}
+              {sending && (
+                <div style={{ alignSelf: 'flex-start', color: textSub, fontSize: 12, fontStyle: 'italic' }}>
+                  Building your automation...
+                </div>
+              )}
+            </div>
+          )}
+
+          <ChatBar
+            isDark={isDark}
+            loading={sending}
+            minHeight={messages.length > 0 ? '25%' : undefined}
+            multiline={messages.length > 0}
+            onSend={handleSend}
+          />
+
+          <div
+            style={{ bottom: 0, cursor: 'col-resize', position: 'absolute', right: -3, top: 0, width: 6, zIndex: 10 }}
+            onMouseDown={(e) => { e.preventDefault(); setResizing(true); }}
+          />
         </div>
       </div>
 
@@ -302,6 +749,13 @@ const AutomatePage = memo(() => {
           title="Fi Automate"
         />
       </div>
+
+      {connectionsOpen && (
+        <IframeModal src={CONNECT_URL} title="Connections" onClose={() => setConnectionsOpen(false)} />
+      )}
+      {libraryOpen && (
+        <IframeModal src={TEMPLATES_URL} title="Library" onClose={() => setLibraryOpen(false)} />
+      )}
     </div>
   );
 });

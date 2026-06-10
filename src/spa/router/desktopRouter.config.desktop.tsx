@@ -34,6 +34,7 @@ import { agentRouteMeta } from '@/routes/(main)/agent/features/routeMeta';
 import AgentProfilePage from '@/routes/(main)/agent/profile';
 import AgentTaskDetailRoute from '@/routes/(main)/agent/task/[taskId]';
 import AgentTopicsPage from '@/routes/(main)/agent/topics';
+import AutomatePage from '@/routes/(main)/automate';
 import CommunityLayout from '@/routes/(main)/community/_layout';
 import CommunityDetailLayout from '@/routes/(main)/community/(detail)/_layout';
 import CommunityDetailAgentPage from '@/routes/(main)/community/(detail)/agent';
@@ -569,6 +570,12 @@ export const desktopRoutes: RouteObject[] = [
       {
         element: <ConnectPage />,
         path: 'connect',
+      },
+
+      // Automate page
+      {
+        element: <AutomatePage />,
+        path: 'automate',
       },
 
       // Default route - home page (handled by persistent layout)

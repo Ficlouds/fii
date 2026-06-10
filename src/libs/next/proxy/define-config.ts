@@ -217,6 +217,13 @@ export function defineConfig() {
     // Skip session lookup for public routes to reduce latency
     if (!isProtected) return response;
 
+    // Allow bypassing the session check entirely in local development via a mock user,
+    // mirroring the same flag used by the tRPC/openapi backend auth (checkAuth).
+    if (process.env.NODE_ENV === 'development' && process.env.ENABLE_MOCK_DEV_USER === '1') {
+      logBetterAuth('ENABLE_MOCK_DEV_USER is set, bypassing session check for: %s', req.url);
+      return response;
+    }
+
     // Get full session with user data (Next.js 15.2.0+ feature)
     const session = await auth.api.getSession({
       headers: req.headers,

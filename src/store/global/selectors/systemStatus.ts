@@ -59,6 +59,7 @@ export const DEFAULT_SIDEBAR_ITEMS: string[] = [
   'connect',
   'projects',
   'artifacts',
+  'automate',
   'recents',
   SIDEBAR_SPACER_ID,
 ];

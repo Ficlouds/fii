@@ -1,4 +1,4 @@
-import { BoxIcon, FolderIcon, PlusIcon, SearchIcon, ZapIcon } from 'lucide-react';
+import { BoxIcon, BotIcon, FolderIcon, PlusIcon, SearchIcon, ZapIcon } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -68,6 +68,13 @@ export const useNavLayout = (): NavLayout => {
         key: 'artifacts',
         url: '/artifact',
         title: 'Artifacts',
+      },
+      {
+        icon: BotIcon,
+        key: 'automate',
+        onClick: () => navigate('/automate'),
+        url: '/automate',
+        title: 'Automate',
       },
     ] as NavItem[],
     [t, toggleCommandMenu, handleNewChat],

@@ -46,7 +46,7 @@ const CloudBanner = dynamic(() => import('@/features/AlertBanner/CloudBanner'));
 const Layout: FC = () => {
   const { isPWA } = usePlatform();
   const location = useLocation();
-  const isStandalonePage = ['/connect'].includes(location.pathname);
+  const isStandalonePage = ['/connect', '/automate'].includes(location.pathname);
   const { showCloudPromotion } = useServerConfigStore(featureFlagsSelectors);
   const {
     initialValues: feedbackInitialValues,

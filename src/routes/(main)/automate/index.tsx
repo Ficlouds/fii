@@ -12,8 +12,13 @@ import {
   X,
   Zap,
 } from 'lucide-react';
-import { memo, useEffect, useState } from 'react';
+import { memo, type MouseEvent, useEffect, useRef, useState } from 'react';
 
+import {
+  COLLAPSED_WIDTH as SIDEBAR_COLLAPSED_WIDTH,
+  EXPANDED_WIDTH as SIDEBAR_EXPANDED_WIDTH,
+  SIDEBAR_BG,
+} from '@/features/NavPanel/components/NavPanelDraggable';
 import { useIsDark } from '@/hooks/useIsDark';
 import { useGlobalStore } from '@/store/global';
 
@@ -21,14 +26,16 @@ const N8N_BASE_URL = 'http://localhost:5679';
 const N8N_PROJECT_URL = `${N8N_BASE_URL}/projects/IWCl1gRTE8Zji5i7/workflows`;
 const NEW_FLOW_URL = `${N8N_BASE_URL}/workflow/new`;
 const EXECUTIONS_URL = `${N8N_BASE_URL}/home/executions`;
-const SETTINGS_URL = `${N8N_BASE_URL}/settings`;
+const SETTINGS_URL = `${N8N_BASE_URL}/settings/personal`;
 const TEMPLATES_URL = `${N8N_BASE_URL}/templates`;
 const CONNECT_URL = '/connect';
 
-const SIDEBAR_EXPANDED_WIDTH = 260;
-const SIDEBAR_COLLAPSED_WIDTH = 48;
 const LAUNCH_MIN_WIDTH = SIDEBAR_EXPANDED_WIDTH;
 const LAUNCH_MAX_WIDTH = 480;
+
+// Header height matches the vertical offset of the first icon in Fi's
+// collapsed sidebar (12px top padding + 4px logo margin + 20px logo + 12px margin)
+const HEADER_HEIGHT = 48;
 
 const SESSION_KEY = 'fi-automate-session';
 const RECENTS_KEY = 'fi-automate-recents';
@@ -87,6 +94,14 @@ const saveSession = (session: AutomateSession): void => {
   }
 };
 
+const clearSession = (): void => {
+  try {
+    localStorage.removeItem(SESSION_KEY);
+  } catch {
+    // ignore
+  }
+};
+
 const loadRecents = (): RecentConversation[] => {
   try {
     const raw = localStorage.getItem(RECENTS_KEY);
@@ -116,16 +131,6 @@ const timeAgo = (timestamp: number): string => {
 };
 
 const styles = createStaticStyles(({ css, cssVar }) => ({
-  pill: css`
-    background: ${cssVar.colorFillTertiary};
-    border: 0.5px solid ${cssVar.colorBorder};
-    border-radius: 20px;
-    color: ${cssVar.colorTextTertiary};
-    font-size: 11px;
-    line-height: 1.4;
-    padding: 8px 16px;
-    text-align: center;
-  `,
   scrollTrack: css`
     animation: automate-scroll-suggestions 20s linear infinite;
 
@@ -137,6 +142,19 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
       100% {
         transform: translateY(-50%);
       }
+    }
+  `,
+  suggestionRow: css`
+    color: ${cssVar.colorTextPlaceholder};
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 3px 0;
+    text-align: center;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: ${cssVar.colorText};
     }
   `,
 }));
@@ -258,12 +276,13 @@ const IframeModal = memo<IframeModalProps>(({ src, onClose, title }) => {
       <div
         style={{
           background: '#fff',
-          borderRadius: 12,
+          borderRadius: 16,
           boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-          height: '92%',
+          height: '85vh',
+          maxWidth: 1100,
           overflow: 'hidden',
           position: 'relative',
-          width: '92%',
+          width: '80vw',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -300,16 +319,16 @@ interface ChatBarProps {
   loading: boolean;
   minHeight?: string;
   multiline?: boolean;
+  onChange: (value: string) => void;
   onSend: (text: string) => void;
+  value: string;
 }
 
-const ChatBar = memo<ChatBarProps>(({ isDark, loading, onSend, multiline, minHeight }) => {
-  const [value, setValue] = useState('');
-
+const ChatBar = memo<ChatBarProps>(({ isDark, loading, onSend, onChange, value, multiline, minHeight }) => {
   const handleSend = () => {
     if (!value.trim() || loading) return;
     onSend(value.trim());
-    setValue('');
+    onChange('');
   };
 
   const fieldStyle = {
@@ -326,7 +345,7 @@ const ChatBar = memo<ChatBarProps>(({ isDark, loading, onSend, multiline, minHei
     <div style={{ minHeight, padding: '10px 10px 14px' }}>
       <div
         style={{
-          alignItems: multiline ? 'flex-end' : 'center',
+          alignItems: multiline ? 'flex-start' : 'center',
           background: isDark ? '#1a1a1a' : '#f5f5f5',
           border: `0.5px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
           borderRadius: 12,
@@ -341,9 +360,9 @@ const ChatBar = memo<ChatBarProps>(({ isDark, loading, onSend, multiline, minHei
             disabled={loading}
             placeholder="What would you like to automate?"
             rows={3}
-            style={{ ...fieldStyle, resize: 'none' }}
+            style={{ ...fieldStyle, paddingTop: 10, resize: 'none', verticalAlign: 'top' }}
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => onChange(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
@@ -357,7 +376,7 @@ const ChatBar = memo<ChatBarProps>(({ isDark, loading, onSend, multiline, minHei
             placeholder="What would you like to automate?"
             style={fieldStyle}
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => onChange(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           />
         )}
@@ -398,11 +417,13 @@ const AutomatePage = memo(() => {
   const [launchOpen, setLaunchOpen] = useState(false);
   const [launchWidth, setLaunchWidth] = useState(LAUNCH_MIN_WIDTH);
   const [resizing, setResizing] = useState(false);
+  const resizeRef = useRef<{ startWidth: number; startX: number } | null>(null);
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [flowId, setFlowId] = useState('');
   const [flowName, setFlowName] = useState('');
   const [sending, setSending] = useState(false);
+  const [draft, setDraft] = useState('');
 
   const [recents, setRecents] = useState<RecentConversation[]>([]);
   const [recentsExpanded, setRecentsExpanded] = useState(false);
@@ -410,8 +431,7 @@ const AutomatePage = memo(() => {
   const [connectionsOpen, setConnectionsOpen] = useState(false);
   const [libraryOpen, setLibraryOpen] = useState(false);
 
-  const bg = isDark ? '#0d0d0d' : '#ffffff';
-  const border = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
+  const border = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
   const text = isDark ? '#ffffff' : '#111111';
   const textSub = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)';
   const textTertiary = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
@@ -429,23 +449,48 @@ const AutomatePage = memo(() => {
     setRecents(loadRecents());
   }, []);
 
-  useEffect(() => {
-    if (!resizing) return;
-    const sidebarWidthPx = sidebarCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH;
+  const handleResizeStart = (e: MouseEvent) => {
+    e.preventDefault();
+    resizeRef.current = { startWidth: launchWidth, startX: e.clientX };
+    setResizing(true);
+    document.body.style.userSelect = 'none';
 
-    const onMouseMove = (e: MouseEvent) => {
-      const next = Math.min(LAUNCH_MAX_WIDTH, Math.max(LAUNCH_MIN_WIDTH, e.clientX - sidebarWidthPx));
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      if (!resizeRef.current) return;
+      const { startX, startWidth } = resizeRef.current;
+      const next = Math.min(
+        LAUNCH_MAX_WIDTH,
+        Math.max(LAUNCH_MIN_WIDTH, startWidth + (moveEvent.clientX - startX)),
+      );
       setLaunchWidth(next);
     };
-    const onMouseUp = () => setResizing(false);
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-    return () => {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+    const onMouseUp = () => {
+      resizeRef.current = null;
+      setResizing(false);
+      document.body.style.userSelect = '';
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
     };
-  }, [resizing, sidebarCollapsed]);
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+  };
+
+  const pushToRecents = (msgs: ChatMessage[], fId: string, fName: string) => {
+    if (msgs.length === 0) return;
+    const recent: RecentConversation = {
+      flowId: fId,
+      flowName: fName || 'Untitled automation',
+      id: fId || `local-${Date.now()}`,
+      lastMessage: msgs.at(-1)?.content ?? '',
+      messages: msgs,
+      timestamp: Date.now(),
+    };
+    const updated = [recent, ...recents.filter((r) => r.id !== recent.id)].slice(0, RECENTS_MAX);
+    setRecents(updated);
+    saveRecents(updated);
+  };
 
   const openLaunchPanel = () => {
     const session = loadSession();
@@ -464,20 +509,18 @@ const AutomatePage = memo(() => {
   const closeLaunchPanel = () => {
     if (messages.length > 0) {
       saveSession({ flowId, flowName, lastActivity: Date.now(), messages });
-
-      const recent: RecentConversation = {
-        flowId,
-        flowName: flowName || 'Untitled automation',
-        id: flowId || `local-${Date.now()}`,
-        lastMessage: messages.at(-1)?.content ?? '',
-        messages,
-        timestamp: Date.now(),
-      };
-      const updated = [recent, ...recents.filter((r) => r.id !== recent.id)].slice(0, RECENTS_MAX);
-      setRecents(updated);
-      saveRecents(updated);
+      pushToRecents(messages, flowId, flowName);
     }
     setLaunchOpen(false);
+  };
+
+  const handleNewConversation = () => {
+    pushToRecents(messages, flowId, flowName);
+    clearSession();
+    setMessages([]);
+    setFlowId('');
+    setFlowName('');
+    setDraft('');
   };
 
   const openRecent = (recent: RecentConversation) => {
@@ -529,12 +572,12 @@ const AutomatePage = memo(() => {
   const displayedRecents = recentsExpanded ? recents : recents.slice(0, RECENTS_VISIBLE);
 
   return (
-    <div style={{ background: bg, bottom: 0, display: 'flex', height: '100%', left: 0, overflow: 'hidden', position: 'absolute', right: 0, top: 0, width: '100%' }}>
+    <div style={{ background: SIDEBAR_BG, bottom: 0, display: 'flex', height: '100%', left: 0, overflow: 'hidden', position: 'absolute', right: 0, top: 0, width: '100%' }}>
       {/* Automate sidebar */}
-      <div style={{ background: bg, borderRight: `0.5px solid ${border}`, display: 'flex', flexDirection: 'column', flexShrink: 0, transition: 'width 0.15s ease', width: sidebarWidth }}>
-        <div style={{ alignItems: 'center', display: 'flex', justifyContent: sidebarCollapsed ? 'center' : 'space-between', padding: '8px 10px' }}>
+      <div style={{ background: SIDEBAR_BG, borderRight: `0.5px solid ${border}`, display: 'flex', flexDirection: 'column', flexShrink: 0, transition: 'width 0.15s ease', width: sidebarWidth }}>
+        <div style={{ alignItems: 'center', display: 'flex', flexShrink: 0, height: HEADER_HEIGHT, justifyContent: sidebarCollapsed ? 'center' : 'space-between', paddingInline: 10 }}>
           {!sidebarCollapsed && (
-            <span style={{ color: text, fontSize: 14, fontWeight: 500, letterSpacing: '-0.01em', lineHeight: '22px', marginBlock: 12 }}>
+            <span style={{ color: text, fontSize: 14, fontWeight: 500, letterSpacing: '-0.01em' }}>
               Automate
             </span>
           )}
@@ -656,7 +699,7 @@ const AutomatePage = memo(() => {
       <div style={{ flexShrink: 0, overflow: 'hidden', transition: resizing ? 'none' : 'width 0.2s ease', width: launchOpen ? launchWidth : 0 }}>
         <div
           style={{
-            background: bg,
+            background: SIDEBAR_BG,
             borderRight: `0.5px solid ${border}`,
             display: 'flex',
             flexDirection: 'column',
@@ -667,7 +710,7 @@ const AutomatePage = memo(() => {
             width: launchWidth,
           }}
         >
-          <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'space-between', padding: '8px 10px' }}>
+          <div style={{ alignItems: 'center', display: 'flex', flexShrink: 0, height: HEADER_HEIGHT, justifyContent: 'space-between', paddingInline: 10 }}>
             <div
               style={{ alignItems: 'center', borderRadius: 6, cursor: 'pointer', display: 'flex', height: 22, justifyContent: 'center', width: 22 }}
               onClick={closeLaunchPanel}
@@ -676,11 +719,22 @@ const AutomatePage = memo(() => {
             >
               <ArrowLeft color={textSub} size={16} />
             </div>
-            <span style={{ color: textTertiary, fontSize: 13, fontWeight: 700, letterSpacing: '-0.02em' }}>Fi</span>
+            <div style={{ alignItems: 'center', display: 'flex', gap: 6 }}>
+              <div
+                style={{ alignItems: 'center', borderRadius: 6, cursor: 'pointer', display: 'flex', height: 22, justifyContent: 'center', width: 22 }}
+                title="New conversation"
+                onClick={handleNewConversation}
+                onMouseEnter={(e) => { e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+              >
+                <Plus color={textSub} size={16} />
+              </div>
+              <span style={{ color: textTertiary, fontSize: 13, fontWeight: 700, letterSpacing: '-0.02em' }}>Fi</span>
+            </div>
           </div>
 
           {messages.length === 0 ? (
-            <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', padding: '0 20px' }}>
+            <div style={{ display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', overflow: 'hidden', padding: '0 20px' }}>
               <div style={{ color: text, fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em', lineHeight: 1.3, textAlign: 'center' }}>
                 Think It. Build It.
               </div>
@@ -688,55 +742,69 @@ const AutomatePage = memo(() => {
                 Describe your automation. Athena will build it.
               </div>
 
-              <div style={{ height: 220, marginTop: 20, overflow: 'hidden', width: '100%' }}>
-                <div className={styles.scrollTrack} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={{ height: 180, marginTop: 20, overflow: 'hidden', width: '100%' }}>
+                <div className={styles.scrollTrack} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                   {[...SUGGESTIONS, ...SUGGESTIONS].map((suggestion, i) => (
-                    <div className={styles.pill} key={i}>
+                    <div className={styles.suggestionRow} key={i} onClick={() => setDraft(suggestion)}>
                       {suggestion}
                     </div>
                   ))}
                 </div>
               </div>
+
+              <div style={{ marginTop: 20 }}>
+                <ChatBar
+                  isDark={isDark}
+                  loading={sending}
+                  value={draft}
+                  onChange={setDraft}
+                  onSend={handleSend}
+                />
+              </div>
             </div>
           ) : (
-            <div style={{ display: 'flex', flex: 1, flexDirection: 'column', gap: 8, overflowY: 'auto', padding: 12 }}>
-              {messages.map((message, i) => (
-                <div
-                  key={i}
-                  style={{
-                    alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start',
-                    background: message.role === 'user' ? '#000' : (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
-                    borderRadius: 10,
-                    color: message.role === 'user' ? '#fff' : text,
-                    fontSize: 12,
-                    lineHeight: 1.5,
-                    maxWidth: '85%',
-                    padding: '8px 12px',
-                    whiteSpace: 'pre-wrap',
-                  }}
-                >
-                  {message.content}
-                </div>
-              ))}
-              {sending && (
-                <div style={{ alignSelf: 'flex-start', color: textSub, fontSize: 12, fontStyle: 'italic' }}>
-                  Building your automation...
-                </div>
-              )}
-            </div>
-          )}
+            <>
+              <div style={{ display: 'flex', flex: 1, flexDirection: 'column', gap: 8, overflowY: 'auto', padding: 12 }}>
+                {messages.map((message, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start',
+                      background: message.role === 'user' ? '#000' : (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
+                      borderRadius: 10,
+                      color: message.role === 'user' ? '#fff' : text,
+                      fontSize: 12,
+                      lineHeight: 1.5,
+                      maxWidth: '85%',
+                      padding: '8px 12px',
+                      whiteSpace: 'pre-wrap',
+                    }}
+                  >
+                    {message.content}
+                  </div>
+                ))}
+                {sending && (
+                  <div style={{ alignSelf: 'flex-start', color: textSub, fontSize: 12, fontStyle: 'italic' }}>
+                    Building your automation...
+                  </div>
+                )}
+              </div>
 
-          <ChatBar
-            isDark={isDark}
-            loading={sending}
-            minHeight={messages.length > 0 ? '25%' : undefined}
-            multiline={messages.length > 0}
-            onSend={handleSend}
-          />
+              <ChatBar
+                multiline
+                isDark={isDark}
+                loading={sending}
+                minHeight="25%"
+                value={draft}
+                onChange={setDraft}
+                onSend={handleSend}
+              />
+            </>
+          )}
 
           <div
             style={{ bottom: 0, cursor: 'col-resize', position: 'absolute', right: -3, top: 0, width: 6, zIndex: 10 }}
-            onMouseDown={(e) => { e.preventDefault(); setResizing(true); }}
+            onMouseDown={handleResizeStart}
           />
         </div>
       </div>

@@ -13,8 +13,9 @@ import { useIsDark } from '@/hooks/useIsDark';
 import { useGlobalStore } from '@/store/global';
 import { systemStatusSelectors } from '@/store/global/selectors';
 
-const EXPANDED_WIDTH = 260;
-const COLLAPSED_WIDTH = 48;
+export const EXPANDED_WIDTH = 260;
+export const COLLAPSED_WIDTH = 48;
+export const SIDEBAR_BG = '#fcfcfc';
 
 const KEY_ICON_MAP: Record<string, any> = {
   search: SearchIcon,
@@ -45,7 +46,7 @@ const styles = createStaticStyles(({ css }) => ({
   wrapper: css`
     flex-shrink: 0;
     height: 100%;
-    background: #fcfcfc;
+    background: ${SIDEBAR_BG};
     border-right: 1px solid rgba(0,0,0,0.06);
     transition: width 0.25s ease;
     overflow: hidden;

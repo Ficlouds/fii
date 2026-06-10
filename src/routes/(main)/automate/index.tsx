@@ -1,85 +1,135 @@
-'use client';
+import { toast } from '@lobehub/ui';
+import { createStaticStyles } from 'antd-style';
+import {
+  Activity,
+  Home,
+  Library,
+  Plug,
+  Plus,
+  Settings,
+  Zap,
+} from 'lucide-react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { ArrowLeft, Bot, Folder, Link2, List, Send, Zap } from 'lucide-react';
-import { memo, useCallback, useEffect, useState } from 'react';
-
+import {
+  type ChatInputEditor,
+  ChatInputProvider,
+  DesktopChatInput,
+} from '@/features/ChatInput';
 import { useIsDark } from '@/hooks/useIsDark';
+import { useGlobalStore } from '@/store/global';
 
-const N8N_BASE_URL = 'http://localhost:5679';
+const N8N_PROJECT_URL = 'http://localhost:5679/projects/IWCl1gRTE8Zji5i7/workflows';
 
-interface Flow {
-  active?: boolean;
-  id: string;
-  name: string;
-  updatedAt?: string;
-}
-
-interface ChatMessage {
-  content: string;
-  role: 'assistant' | 'user';
-}
-
-type SidebarTab = 'activity' | 'connections' | 'flows' | 'library';
-
-const SIDEBAR_TABS: { icon: any; key: SidebarTab; label: string }[] = [
-  { icon: List, key: 'flows', label: 'My Flows' },
-  { icon: Zap, key: 'activity', label: 'Activity' },
-  { icon: Link2, key: 'connections', label: 'Connections' },
-  { icon: Folder, key: 'library', label: 'Library' },
+const SUGGESTIONS = [
+  'Send me a Gmail every morning at 8am',
+  'Notify me on Slack when I get an email from my boss',
+  'Schedule a weekly summary every Friday evening',
+  'Monitor my inbox and alert me on Telegram',
+  'Post my calendar events to Slack every morning',
+  'Send me a Telegram message with my daily tasks',
+  'Weekly report every Sunday night to my email',
+  'Alert me when I get a message from a VIP contact',
 ];
+
+const styles = createStaticStyles(({ css, cssVar }) => ({
+  pill: css`
+    background: ${cssVar.colorFillTertiary};
+    border: 0.5px solid ${cssVar.colorBorder};
+    border-radius: 20px;
+    color: ${cssVar.colorTextTertiary};
+    font-size: 11px;
+    line-height: 1.4;
+    padding: 7px 14px;
+    text-align: center;
+  `,
+  scrollTrack: css`
+    animation: automate-scroll-suggestions 18s linear infinite;
+
+    @keyframes automate-scroll-suggestions {
+      0% {
+        transform: translateY(0);
+      }
+
+      100% {
+        transform: translateY(-50%);
+      }
+    }
+  `,
+}));
+
+interface SidebarItemProps {
+  active?: boolean;
+  icon: any;
+  isDark: boolean;
+  label: string;
+  onClick?: () => void;
+}
+
+const SidebarItem = memo<SidebarItemProps>(({ icon: Icon, label, isDark, active, onClick }) => {
+  const text = isDark ? '#ffffff' : '#111111';
+  const textSub = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)';
+
+  return (
+    <div
+      style={{
+        alignItems: 'center',
+        background: active ? (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)') : 'transparent',
+        borderRadius: 8,
+        cursor: 'pointer',
+        display: 'flex',
+        gap: 8,
+        height: 36,
+        paddingInline: 10,
+      }}
+      onClick={onClick}
+      onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'; }}
+      onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = 'transparent'; }}
+    >
+      <div style={{ alignItems: 'center', display: 'flex', flexShrink: 0, height: 28, justifyContent: 'center', width: 28 }}>
+        <Icon color={active ? text : textSub} size={18} />
+      </div>
+      <span style={{ color: active ? text : textSub, fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        {label}
+      </span>
+    </div>
+  );
+});
+
+SidebarItem.displayName = 'SidebarItem';
 
 const AutomatePage = memo(() => {
   const isDark = useIsDark();
+  const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState<SidebarTab>('flows');
-  const [flows, setFlows] = useState<Flow[]>([]);
-  const [loadingFlows, setLoadingFlows] = useState(true);
-  const [canvasUrl, setCanvasUrl] = useState(N8N_BASE_URL);
-
-  const [chatMode, setChatMode] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [chatInput, setChatInput] = useState('');
+  const [launchOpen, setLaunchOpen] = useState(false);
+  const [canvasUrl, setCanvasUrl] = useState(N8N_PROJECT_URL);
   const [sending, setSending] = useState(false);
 
-  const bg = isDark ? '#1f1f1e' : '#f9f8f7';
-  const cardBg = isDark ? '#2c2c2b' : '#ffffff';
-  const border = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
-  const text = isDark ? '#ffffff' : '#111111';
-  const textSub = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.45)';
-  const textTertiary = isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)';
+  const editorRef = useRef<ChatInputEditor | null>(null);
+  const contentRef = useRef('');
 
+  const bg = isDark ? '#0d0d0d' : '#ffffff';
+  const border = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
+  const text = isDark ? '#ffffff' : '#111111';
+  const textSub = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)';
+  const textTertiary = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
+
+  // Collapse Fi's main sidebar to icons-only while on this page; restore on unmount
   useEffect(() => {
-    let cancelled = false;
-    setLoadingFlows(true);
-    fetch('/api/dev/automate-flows')
-      .then((res) => res.json())
-      .then((data) => {
-        if (cancelled) return;
-        setFlows(data.flows || []);
-      })
-      .catch(() => {
-        if (!cancelled) setFlows([]);
-      })
-      .finally(() => {
-        if (!cancelled) setLoadingFlows(false);
-      });
+    const previous = useGlobalStore.getState().status.showLeftPanel;
+    useGlobalStore.getState().toggleLeftPanel(false);
     return () => {
-      cancelled = true;
+      useGlobalStore.getState().toggleLeftPanel(previous);
     };
   }, []);
 
-  const openFlow = useCallback((flow: Flow) => {
-    setCanvasUrl(`${N8N_BASE_URL}/workflow/${flow.id}`);
-  }, []);
-
-  const sendToAthena = useCallback(async () => {
-    const prompt = chatInput.trim();
+  const handleSend = useCallback(async () => {
+    const prompt = contentRef.current.trim();
     if (!prompt || sending) return;
 
-    setMessages((prev) => [...prev, { content: prompt, role: 'user' }]);
-    setChatInput('');
     setSending(true);
-
     try {
       const res = await fetch('/api/dev/automate-test', {
         body: JSON.stringify({ connectedApps: [], prompt }),
@@ -87,169 +137,139 @@ const AutomatePage = memo(() => {
         method: 'POST',
       });
       const data = await res.json();
-      const reply = data.error
-        ? `Error: ${data.error}`
-        : data.message || 'Automation created.';
-      setMessages((prev) => [...prev, { content: reply, role: 'assistant' }]);
+      if (!data.success) throw new Error(data.error || 'Failed to create automation');
 
-      if (data.success) {
-        fetch('/api/dev/automate-flows')
-          .then((r) => r.json())
-          .then((d) => setFlows(d.flows || []))
-          .catch(() => {});
-      }
-    } catch (error: any) {
-      setMessages((prev) => [
-        ...prev,
-        { content: `Error: ${error.message}`, role: 'assistant' },
-      ]);
+      toast.success(`✓ Automation live: ${data.workflowName}`);
+      editorRef.current?.clearContent();
+      contentRef.current = '';
+    } catch {
+      toast.error('Failed to create automation');
     } finally {
       setSending(false);
     }
-  }, [chatInput, sending]);
+  }, [sending]);
+
+  const sendButtonProps = {
+    disabled: sending,
+    generating: sending,
+    onStop: () => {},
+    shape: 'round' as const,
+  };
 
   return (
-    <div style={{ background: bg, display: 'flex', height: '100%', overflow: 'hidden', position: 'relative' }}>
+    <div style={{ background: bg, bottom: 0, display: 'flex', height: '100%', left: 0, overflow: 'hidden', position: 'absolute', right: 0, top: 0, width: '100%' }}>
       {/* Automate sidebar */}
-      <div style={{ borderRight: `0.5px solid ${border}`, display: 'flex', flexDirection: 'column', width: 240 }}>
-        <div style={{ borderBottom: `0.5px solid ${border}`, padding: '16px 16px 12px' }}>
-          <div style={{ color: text, fontSize: 15, fontWeight: 600 }}>Automate</div>
+      <div style={{ background: bg, borderRight: `0.5px solid ${border}`, display: 'flex', flexDirection: 'column', flexShrink: 0, width: 220 }}>
+        <div style={{ padding: '8px 10px' }}>
+          <span style={{ color: text, fontSize: 14, fontWeight: 500, letterSpacing: '-0.01em' }}>Automate</span>
         </div>
 
-        {chatMode ? (
-          <>
-            <div style={{ alignItems: 'center', borderBottom: `0.5px solid ${border}`, display: 'flex', gap: 8, padding: '10px 12px' }}>
-              <button
-                style={{ alignItems: 'center', background: 'none', border: 'none', color: textSub, cursor: 'pointer', display: 'flex', fontSize: 13, gap: 6, padding: 4 }}
-                onClick={() => setChatMode(false)}
-              >
-                <ArrowLeft size={14} /> Back
-              </button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 1, paddingInline: 8 }}>
+          <SidebarItem icon={Home} isDark={isDark} label="Home" onClick={() => navigate('/')} />
+          <SidebarItem icon={Plus} isDark={isDark} label="New Flow" onClick={() => setLaunchOpen(true)} />
+          <SidebarItem
+            active={canvasUrl === N8N_PROJECT_URL}
+            icon={Zap}
+            isDark={isDark}
+            label="My Flows"
+            onClick={() => setCanvasUrl(N8N_PROJECT_URL)}
+          />
+          <SidebarItem
+            icon={Activity}
+            isDark={isDark}
+            label="Activity"
+            onClick={() => setCanvasUrl('http://localhost:5679/projects/IWCl1gRTE8Zji5i7/executions')}
+          />
+        </div>
+
+        <div style={{ marginTop: 16, paddingInline: 8 }}>
+          <div
+            style={{ borderRadius: 8, cursor: 'pointer', padding: '8px 10px' }}
+            onClick={() => setLaunchOpen(true)}
+            onMouseEnter={(e) => { e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+          >
+            <div style={{ color: text, fontSize: 13, fontWeight: 700 }}>Launch</div>
+            <div style={{ color: textTertiary, fontSize: 10, marginTop: 2 }}>Think It. Build It.</div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 1, marginTop: 16, paddingInline: 8 }}>
+          <SidebarItem
+            icon={Plug}
+            isDark={isDark}
+            label="Connections"
+            onClick={() => navigate('/connect')}
+          />
+        </div>
+
+        <div style={{ flex: 1 }} />
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 1, paddingBlock: 8, paddingInline: 8 }}>
+          <SidebarItem icon={Library} isDark={isDark} label="Library" />
+          <SidebarItem icon={Settings} isDark={isDark} label="Settings" onClick={() => navigate('/settings')} />
+        </div>
+      </div>
+
+      {/* Launch panel — slides in between the Automate sidebar and the canvas */}
+      <div style={{ flexShrink: 0, overflow: 'hidden', transition: 'width 0.2s ease', width: launchOpen ? 240 : 0 }}>
+        <div
+          style={{
+            background: bg,
+            borderRight: `0.5px solid ${border}`,
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            transform: launchOpen ? 'translateX(0)' : 'translateX(-100%)',
+            transition: 'transform 0.2s ease',
+            width: 240,
+          }}
+        >
+          <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', padding: '0 20px' }}>
+            <div style={{ color: text, fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em', lineHeight: 1.3, textAlign: 'center' }}>
+              Think It. Build It.
             </div>
-            <div style={{ display: 'flex', flex: 1, flexDirection: 'column', minHeight: 0 }}>
-              <div style={{ display: 'flex', flex: 1, flexDirection: 'column', gap: 10, overflowY: 'auto', padding: '12px' }}>
-                {messages.length === 0 && (
-                  <div style={{ color: textSub, fontSize: 12, lineHeight: 1.5 }}>
-                    Ask Athena to build an automation, e.g. &ldquo;Send me a Slack message every morning with my calendar agenda&rdquo;.
-                  </div>
-                )}
-                {messages.map((msg, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                      background: msg.role === 'user' ? text : cardBg,
-                      border: msg.role === 'user' ? 'none' : `0.5px solid ${border}`,
-                      borderRadius: 10,
-                      color: msg.role === 'user' ? bg : text,
-                      fontSize: 12,
-                      lineHeight: 1.5,
-                      maxWidth: '92%',
-                      padding: '8px 10px',
-                    }}
-                  >
-                    {msg.content}
+            <div style={{ color: textSub, fontSize: 11, marginTop: 6, textAlign: 'center' }}>
+              Describe your automation. Athena will build it.
+            </div>
+
+            <div style={{ height: 220, marginTop: 16, overflow: 'hidden', width: '100%' }}>
+              <div className={styles.scrollTrack} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {[...SUGGESTIONS, ...SUGGESTIONS].map((suggestion, i) => (
+                  <div className={styles.pill} key={i}>
+                    {suggestion}
                   </div>
                 ))}
-                {sending && (
-                  <div style={{ color: textSub, fontSize: 12 }}>Athena is thinking...</div>
-                )}
-              </div>
-              <div style={{ borderTop: `0.5px solid ${border}`, display: 'flex', gap: 6, padding: '10px' }}>
-                <input
-                  placeholder="Describe an automation..."
-                  style={{ background: cardBg, border: `0.5px solid ${border}`, borderRadius: 8, color: text, flex: 1, fontSize: 12, outline: 'none', padding: '8px 10px' }}
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') void sendToAthena();
-                  }}
-                />
-                <button
-                  disabled={sending || !chatInput.trim()}
-                  style={{ alignItems: 'center', background: text, border: 'none', borderRadius: 8, color: bg, cursor: sending ? 'wait' : 'pointer', display: 'flex', justifyContent: 'center', opacity: !chatInput.trim() || sending ? 0.5 : 1, padding: '8px 10px' }}
-                  onClick={() => void sendToAthena()}
-                >
-                  <Send size={14} />
-                </button>
               </div>
             </div>
-          </>
-        ) : (
-          <>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '8px' }}>
-              {SIDEBAR_TABS.map((tab) => {
-                const Icon = tab.icon;
-                const isActive = activeTab === tab.key;
-                return (
-                  <button
-                    key={tab.key}
-                    style={{
-                      alignItems: 'center',
-                      background: isActive ? (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)') : 'transparent',
-                      border: 'none',
-                      borderRadius: 8,
-                      color: isActive ? text : textSub,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      fontSize: 13,
-                      fontWeight: isActive ? 600 : 400,
-                      gap: 8,
-                      padding: '8px 10px',
-                      textAlign: 'left',
-                    }}
-                    onClick={() => setActiveTab(tab.key)}
-                  >
-                    <Icon size={14} /> {tab.label}
-                  </button>
-                );
-              })}
-            </div>
+          </div>
 
-            <div style={{ flex: 1, overflowY: 'auto', padding: '4px 8px' }}>
-              {activeTab === 'flows' && (
-                <>
-                  {loadingFlows ? (
-                    <div style={{ color: textSub, fontSize: 12, padding: '12px 8px' }}>Loading flows...</div>
-                  ) : flows.length === 0 ? (
-                    <div style={{ color: textSub, fontSize: 12, padding: '12px 8px' }}>No flows yet.</div>
-                  ) : (
-                    flows.map((flow) => (
-                      <button
-                        key={flow.id}
-                        style={{ background: 'transparent', border: 'none', borderRadius: 8, color: text, cursor: 'pointer', display: 'block', fontSize: 13, marginBottom: 2, overflow: 'hidden', padding: '8px 10px', textAlign: 'left', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}
-                        onClick={() => openFlow(flow)}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
-                      >
-                        {flow.name}
-                      </button>
-                    ))
-                  )}
-                </>
-              )}
-              {activeTab !== 'flows' && (
-                <div style={{ color: textTertiary, fontSize: 12, padding: '12px 8px' }}>Coming soon.</div>
-              )}
-            </div>
-
-            <div style={{ borderTop: `0.5px solid ${border}`, padding: '12px' }}>
-              <button
-                style={{ alignItems: 'center', background: text, border: 'none', borderRadius: 8, color: bg, cursor: 'pointer', display: 'flex', fontSize: 13, fontWeight: 500, gap: 8, justifyContent: 'center', padding: '10px', width: '100%' }}
-                onClick={() => setChatMode(true)}
-              >
-                <Bot size={14} /> Ask Athena
-              </button>
-            </div>
-          </>
-        )}
+          <div style={{ padding: '10px 10px 14px' }}>
+            <ChatInputProvider
+              allowExpand={false}
+              sendButtonProps={sendButtonProps}
+              chatInputEditorRef={(instance) => {
+                editorRef.current = instance;
+              }}
+              onSend={() => void handleSend()}
+              onMarkdownContentChange={(content) => {
+                contentRef.current = content;
+              }}
+            >
+              <DesktopChatInput
+                placeholder="Describe an automation..."
+                showRuntimeConfig={false}
+              />
+            </ChatInputProvider>
+          </div>
+        </div>
       </div>
 
       {/* Canvas */}
       <div style={{ flex: 1, position: 'relative' }}>
         <iframe
           src={canvasUrl}
-          style={{ background: cardBg, border: 'none', height: '100%', width: '100%' }}
+          style={{ border: 'none', height: '100%', width: '100%' }}
           title="Fi Automate"
         />
       </div>

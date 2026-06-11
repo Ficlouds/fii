@@ -20,15 +20,13 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
   const { loading, send, agentId } = useSend();
   const isDark = useIsDark();
   useInitAgentConfig(agentId);
-  const isAgentConfigLoading = useAgentStore((s) =>
-    agentByIdSelectors.isAgentConfigLoadingById(agentId ?? '')(s),
-  );
   const resolvedAgentId = agentId ?? '';
   const model = useAgentStore((s) => agentByIdSelectors.getAgentModelById(resolvedAgentId)(s));
   const provider = useAgentStore((s) =>
     agentByIdSelectors.getAgentModelProviderById(resolvedAgentId)(s),
   );
   const { handleUploadFiles } = useUploadFiles({ model, provider });
+  const inputMessage = useChatStore((s) => s.inputMessage);
 
   const inputContainerProps = useMemo(
     () => ({
@@ -62,7 +60,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
             useChatStore.setState({ mainInputEditor: instance });
           }}
           sendButtonProps={{
-            disabled: loading || isAgentConfigLoading,
+            disabled: loading || !inputMessage?.trim(),
             generating: loading,
             onStop: () => {},
             shape: 'round',

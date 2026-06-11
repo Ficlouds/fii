@@ -148,6 +148,7 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
     color: ${cssVar.colorTextPlaceholder};
     cursor: pointer;
     font-size: 12px;
+    font-weight: 400;
     line-height: 1.5;
     padding: 3px 0;
     text-align: center;
@@ -194,7 +195,7 @@ const SidebarItem = memo<SidebarItemProps>(({ icon: Icon, label, isDark, active,
         <Icon color={active ? text : textSub} size={18} />
       </div>
       {!collapsed && (
-        <span style={{ color: active ? text : textSub, fontSize: 14, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <span style={{ color: active ? text : textSub, fontSize: 13, fontWeight: 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {label}
         </span>
       )}
@@ -218,7 +219,7 @@ const RecentItem = memo<RecentItemProps>(({ recent, isDark, onClick }) => {
 
   return (
     <div
-      style={{ borderRadius: 8, cursor: 'pointer', padding: '6px 10px' }}
+      style={{ borderRadius: 8, cursor: 'pointer', padding: '6px 14px' }}
       onClick={onClick}
       onMouseEnter={(e) => { e.currentTarget.style.background = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'; }}
       onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
@@ -233,13 +234,13 @@ const RecentItem = memo<RecentItemProps>(({ recent, isDark, onClick }) => {
             width: 6,
           }}
         />
-        <span style={{ color: text, flex: 1, fontSize: 11, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <span style={{ color: text, flex: 1, fontSize: 12, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {recent.flowName || 'Untitled automation'}
         </span>
-        <span style={{ color: textTertiary, flexShrink: 0, fontSize: 10 }}>{timeAgo(recent.timestamp)}</span>
+        <span style={{ color: textTertiary, flexShrink: 0, fontSize: 11 }}>{timeAgo(recent.timestamp)}</span>
       </div>
       {recent.lastMessage && (
-        <div style={{ color: textSub, fontSize: 11, marginLeft: 12, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <div style={{ color: textSub, fontSize: 11, fontWeight: 400, marginLeft: 12, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {recent.lastMessage}
         </div>
       )}
@@ -345,14 +346,14 @@ const ChatBar = memo<ChatBarProps>(({ isDark, loading, onSend, onChange, value, 
     <div style={{ minHeight, padding: '10px 10px 14px' }}>
       <div
         style={{
-          alignItems: multiline ? 'flex-start' : 'center',
+          alignItems: 'flex-end',
           background: isDark ? '#1a1a1a' : '#f5f5f5',
           border: `0.5px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
           borderRadius: 12,
           display: 'flex',
           gap: 8,
           height: minHeight ? '100%' : undefined,
-          padding: '8px 8px 8px 16px',
+          padding: '10px 12px 14px',
         }}
       >
         {multiline ? (
@@ -384,16 +385,18 @@ const ChatBar = memo<ChatBarProps>(({ isDark, loading, onSend, onChange, value, 
           disabled={loading || !value.trim()}
           style={{
             alignItems: 'center',
-            background: value.trim() && !loading ? '#000' : 'rgba(0,0,0,0.1)',
+            alignSelf: 'flex-end',
+            background: '#000',
             border: 'none',
-            borderRadius: '50%',
+            borderRadius: 8,
             cursor: value.trim() && !loading ? 'pointer' : 'default',
             display: 'flex',
             flexShrink: 0,
-            height: 28,
+            height: 32,
             justifyContent: 'center',
-            transition: 'background 0.15s',
-            width: 28,
+            opacity: value.trim() && !loading ? 1 : 0.3,
+            transition: 'opacity 0.15s',
+            width: 32,
           }}
           onClick={handleSend}
         >
@@ -417,7 +420,10 @@ const AutomatePage = memo(() => {
   const [launchOpen, setLaunchOpen] = useState(false);
   const [launchWidth, setLaunchWidth] = useState(LAUNCH_MIN_WIDTH);
   const [resizing, setResizing] = useState(false);
-  const resizeRef = useRef<{ startWidth: number; startX: number } | null>(null);
+  const launchPanelRef = useRef<HTMLDivElement>(null);
+  const isResizingRef = useRef(false);
+  const startXRef = useRef(0);
+  const startWidthRef = useRef(0);
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [flowId, setFlowId] = useState('');
@@ -449,32 +455,33 @@ const AutomatePage = memo(() => {
     setRecents(loadRecents());
   }, []);
 
-  const handleResizeStart = (e: MouseEvent) => {
+  const onResizeStart = (e: MouseEvent) => {
     e.preventDefault();
-    resizeRef.current = { startWidth: launchWidth, startX: e.clientX };
+    isResizingRef.current = true;
+    startXRef.current = e.clientX;
+    startWidthRef.current = launchWidth;
     setResizing(true);
     document.body.style.userSelect = 'none';
+    document.body.style.cursor = 'col-resize';
 
-    const onMouseMove = (moveEvent: MouseEvent) => {
-      if (!resizeRef.current) return;
-      const { startX, startWidth } = resizeRef.current;
-      const next = Math.min(
-        LAUNCH_MAX_WIDTH,
-        Math.max(LAUNCH_MIN_WIDTH, startWidth + (moveEvent.clientX - startX)),
-      );
+    const onMove = (moveEvent: globalThis.MouseEvent) => {
+      if (!isResizingRef.current) return;
+      const delta = moveEvent.clientX - startXRef.current;
+      const next = Math.min(LAUNCH_MAX_WIDTH, Math.max(LAUNCH_MIN_WIDTH, startWidthRef.current + delta));
       setLaunchWidth(next);
     };
 
-    const onMouseUp = () => {
-      resizeRef.current = null;
+    const onUp = () => {
+      isResizingRef.current = false;
       setResizing(false);
       document.body.style.userSelect = '';
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
+      document.body.style.cursor = '';
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
     };
 
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
   };
 
   const pushToRecents = (msgs: ChatMessage[], fId: string, fName: string) => {
@@ -577,7 +584,7 @@ const AutomatePage = memo(() => {
       <div style={{ background: SIDEBAR_BG, borderRight: `0.5px solid ${border}`, display: 'flex', flexDirection: 'column', flexShrink: 0, transition: 'width 0.15s ease', width: sidebarWidth }}>
         <div style={{ alignItems: 'center', display: 'flex', flexShrink: 0, height: HEADER_HEIGHT, justifyContent: sidebarCollapsed ? 'center' : 'space-between', paddingInline: 10 }}>
           {!sidebarCollapsed && (
-            <span style={{ color: text, fontSize: 14, fontWeight: 500, letterSpacing: '-0.01em' }}>
+            <span style={{ color: text, fontSize: 13, fontWeight: 500, letterSpacing: '-0.01em' }}>
               Automate
             </span>
           )}
@@ -652,8 +659,8 @@ const AutomatePage = memo(() => {
               <Zap color={text} size={18} />
             ) : (
               <>
-                <div style={{ color: text, fontSize: 14, fontWeight: 700 }}>Launch</div>
-                <div style={{ color: textTertiary, fontSize: 10, marginTop: 2 }}>Think It. Build It.</div>
+                <div style={{ color: text, fontSize: 13, fontWeight: 700 }}>Launch</div>
+                <div style={{ color: textTertiary, fontSize: 11, fontWeight: 400, marginTop: 2 }}>Think It. Build It.</div>
               </>
             )}
           </div>
@@ -661,7 +668,7 @@ const AutomatePage = memo(() => {
 
         {!sidebarCollapsed && (
           <div style={{ marginTop: 8, paddingInline: 4 }}>
-            <div style={{ color: textTertiary, fontSize: 10, fontWeight: 600, letterSpacing: '0.04em', padding: '4px 10px', textTransform: 'uppercase' }}>
+            <div style={{ color: textTertiary, fontSize: 11, fontWeight: 500, letterSpacing: '0.04em', padding: '6px 14px', textTransform: 'uppercase' }}>
               Recent
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', maxHeight: recentsExpanded ? 240 : undefined, overflowY: recentsExpanded ? 'auto' : undefined }}>
@@ -698,6 +705,7 @@ const AutomatePage = memo(() => {
       {/* Launch panel — slides in between the Automate sidebar and the canvas */}
       <div style={{ flexShrink: 0, overflow: 'hidden', transition: resizing ? 'none' : 'width 0.2s ease', width: launchOpen ? launchWidth : 0 }}>
         <div
+          ref={launchPanelRef}
           style={{
             background: SIDEBAR_BG,
             borderRight: `0.5px solid ${border}`,
@@ -735,10 +743,10 @@ const AutomatePage = memo(() => {
 
           {messages.length === 0 ? (
             <div style={{ display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', overflow: 'hidden', padding: '0 20px' }}>
-              <div style={{ color: text, fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em', lineHeight: 1.3, textAlign: 'center' }}>
+              <div style={{ color: text, fontSize: 22, fontWeight: 600, letterSpacing: '-0.02em', lineHeight: 1.3, textAlign: 'center' }}>
                 Think It. Build It.
               </div>
-              <div style={{ color: textSub, fontSize: 11, marginTop: 6, textAlign: 'center' }}>
+              <div style={{ color: textSub, fontSize: 12, fontWeight: 400, marginTop: 6, textAlign: 'center' }}>
                 Describe your automation. Athena will build it.
               </div>
 
@@ -773,8 +781,8 @@ const AutomatePage = memo(() => {
                       background: message.role === 'user' ? '#000' : (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
                       borderRadius: 10,
                       color: message.role === 'user' ? '#fff' : text,
-                      fontSize: 12,
-                      lineHeight: 1.5,
+                      fontSize: 13,
+                      lineHeight: 1.6,
                       maxWidth: '85%',
                       padding: '8px 12px',
                       whiteSpace: 'pre-wrap',
@@ -803,8 +811,8 @@ const AutomatePage = memo(() => {
           )}
 
           <div
-            style={{ bottom: 0, cursor: 'col-resize', position: 'absolute', right: -3, top: 0, width: 6, zIndex: 10 }}
-            onMouseDown={handleResizeStart}
+            style={{ bottom: 0, cursor: 'col-resize', position: 'absolute', right: 0, top: 0, width: 4, zIndex: 10 }}
+            onMouseDown={onResizeStart}
           />
         </div>
       </div>

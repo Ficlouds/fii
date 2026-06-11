@@ -169,7 +169,6 @@ export const useSend = () => {
               message,
               onTopicCreated: (topicId) => {
                 useActiveConversationStore.getState().setConversation({ agentId: activeAgentId, topicId });
-              navigate(`/agent/${activeAgentId}/${topicId}`);
               },
             });
           }

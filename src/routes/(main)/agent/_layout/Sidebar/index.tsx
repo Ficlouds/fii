@@ -7,11 +7,7 @@ import Body from './Body';
 import Header from './Header';
 
 const Sidebar = memo(() => {
-  return (
-    <NavPanelPortal navKey="agent">
-      <SideBarLayout body={<Body />} header={<Header />} />
-    </NavPanelPortal>
-  );
+  return null; /* Fi: agent sidebar hidden */
 });
 
 Sidebar.displayName = 'ChatSidebar';

@@ -55,7 +55,7 @@ const Recents = memo<RecentsProps>(({ itemKey }) => {
 
   return (
     <div style={{ marginTop: 8, paddingLeft: 10 }}>
-      <div style={{ borderTop: '1px solid rgba(0,0,0,0.07)', marginBottom: 8, marginInline: 8 }} />
+      
     <AccordionItem
       itemKey={itemKey}
       paddingBlock={4}
@@ -63,7 +63,7 @@ const Recents = memo<RecentsProps>(({ itemKey }) => {
       
       title={
         <Flexbox horizontal align="center" gap={4}>
-          <Text ellipsis fontSize={12} type={'secondary'} weight={500}>
+          <Text ellipsis fontSize={12} type={'secondary'} weight={400}>
             {t('recents')}
           </Text>
           {isRevalidating && <NeuralNetworkLoading size={14} />}

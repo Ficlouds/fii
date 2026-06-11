@@ -24,7 +24,7 @@ const EmptyNavItem = memo<EmptyStatusProps>(({ title, onClick, className }) => {
       <Center flex={'none'} height={28} width={28}>
         <Icon icon={PlusIcon} size={'small'} />
       </Center>
-      <Text align={'center'} type={'secondary'}>
+      <Text align={'center'} type={'secondary'} weight={500}>
         {title}
       </Text>
     </Block>

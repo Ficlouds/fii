@@ -177,6 +177,8 @@ const AppTheme = memo<AppThemeProps>(
                 ? `${customFontFamily},${antdTheme.fontFamily}`
                 : "'Geist', -apple-system, BlinkMacSystemFont, sans-serif",
               fontFamilyCode: "'GeistMono', 'Fira Code', monospace",
+              fontSize: 14,
+              fontWeightStrong: 600,
               motion: animationMode !== 'disabled',
               motionUnit: animationMode === 'agile' ? 0.05 : 0.1,
             },

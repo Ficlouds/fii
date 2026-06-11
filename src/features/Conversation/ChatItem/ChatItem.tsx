@@ -71,6 +71,10 @@ const ChatItem = memo<ChatItemProps>(
         paddingBlock={8}
         style={{
           paddingInlineStart: isUser ? 36 : 0,
+          fontSize: 14,
+          fontWeight: isUser ? 450 : 400,
+          letterSpacing: '-0.01em',
+          lineHeight: 1.7,
           ...style,
         }}
         {...rest}

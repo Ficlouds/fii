@@ -6,6 +6,10 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
 
   html, body {
     font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-weight: 450 !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    letter-spacing: -0.01em !important;
   }
 
   input, textarea, button, select {
@@ -14,6 +18,10 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
 
   pre, code, kbd, samp {
     font-family: 'GeistMono', 'Fira Code', monospace !important;
+  }
+
+  h1, h2, h3 {
+    font-weight: 600 !important;
   }
 
   html[data-theme='light'] .ant-layout,

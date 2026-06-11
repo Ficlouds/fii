@@ -129,6 +129,7 @@ const NavItem = memo<NavItemProps>(
           <Text
             color={textColor}
             style={{ flex: 1 }}
+            weight={500}
             ellipsis={{
               tooltipWhenOverflow: true,
             }}

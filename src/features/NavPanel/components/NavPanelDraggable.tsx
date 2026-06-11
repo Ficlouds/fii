@@ -13,7 +13,7 @@ import { useIsDark } from '@/hooks/useIsDark';
 import { useGlobalStore } from '@/store/global';
 import { systemStatusSelectors } from '@/store/global/selectors';
 
-export const EXPANDED_WIDTH = 260;
+export const EXPANDED_WIDTH = 286;
 export const COLLAPSED_WIDTH = 48;
 export const SIDEBAR_BG = '#fcfcfc';
 

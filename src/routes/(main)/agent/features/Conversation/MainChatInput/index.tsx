@@ -47,7 +47,7 @@ const MainChatInput = memo(() => {
         border: isDark ? '1.5px solid rgba(255,255,255,0.08)' : '1.5px solid rgba(0,0,0,0.06)',
         borderRadius: 12,
         boxShadow: 'none',
-        minHeight: 69,
+        minHeight: 69, maxHeight: 200,
         transition: 'background 0.25s ease, color 0.25s ease',
         width: '100%',
       },

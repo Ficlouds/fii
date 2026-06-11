@@ -36,7 +36,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
         borderRadius: 12,
         boxShadow: 'none',
         color: isDark ? '#ececec' : '#111111',
-        minHeight: 69,
+        minHeight: 69, maxHeight: 200,
         transition: 'background 0.25s ease, color 0.25s ease',
         width: '100%',
       },
@@ -50,7 +50,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
       <DragUploadZone style={{ width: '100%' }} onUploadFiles={handleUploadFiles}>
         <ChatInputProvider
           agentId={agentId}
-          allowExpand={false}
+          allowExpand={true}
           leftActions={leftActions}
           rightActions={rightActions}
           slashPlacement="bottom"

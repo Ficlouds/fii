@@ -30,7 +30,7 @@ const SETTINGS_URL = `${N8N_BASE_URL}/settings/personal`;
 const TEMPLATES_URL = `${N8N_BASE_URL}/templates`;
 const CONNECT_URL = '/connect';
 
-const LAUNCH_MIN_WIDTH = SIDEBAR_EXPANDED_WIDTH;
+const LAUNCH_MIN_WIDTH = Math.round(SIDEBAR_EXPANDED_WIDTH * 1.1);
 const LAUNCH_MAX_WIDTH = 480;
 
 // Header height matches the vertical offset of the first icon in Fi's

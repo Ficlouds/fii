@@ -26,7 +26,6 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
     agentByIdSelectors.getAgentModelProviderById(resolvedAgentId)(s),
   );
   const { handleUploadFiles } = useUploadFiles({ model, provider });
-  const inputMessage = useChatStore((s) => s.inputMessage);
 
   const inputContainerProps = useMemo(
     () => ({
@@ -60,7 +59,7 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
             useChatStore.setState({ mainInputEditor: instance });
           }}
           sendButtonProps={{
-            disabled: loading || !inputMessage?.trim(),
+            disabled: loading,
             generating: loading,
             onStop: () => {},
             shape: 'round',

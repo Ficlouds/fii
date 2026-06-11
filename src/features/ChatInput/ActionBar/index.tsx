@@ -76,6 +76,7 @@ const ActionToolbar = memo<ActionToolbarProps>(
     return (
       <ActionBarContext value={contextValue}>
         <ChatInputActions
+          autoCollapse={false}
           collapseOffset={mobile ? 48 : 80}
           defaultGroupCollapse={true}
           groupCollapse={!expandInputActionbar}

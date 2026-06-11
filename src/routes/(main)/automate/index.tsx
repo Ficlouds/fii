@@ -30,7 +30,7 @@ const SETTINGS_URL = `${N8N_BASE_URL}/settings/personal`;
 const TEMPLATES_URL = `${N8N_BASE_URL}/templates`;
 const CONNECT_URL = '/connect';
 
-const LAUNCH_MIN_WIDTH = Math.round(SIDEBAR_EXPANDED_WIDTH * 1.1);
+const LAUNCH_MIN_WIDTH = Math.round(SIDEBAR_EXPANDED_WIDTH * 1.15);
 const LAUNCH_MAX_WIDTH = 480;
 
 // Header height matches the vertical offset of the first icon in Fi's
@@ -437,7 +437,7 @@ const AutomatePage = memo(() => {
   const [connectionsOpen, setConnectionsOpen] = useState(false);
   const [libraryOpen, setLibraryOpen] = useState(false);
 
-  const border = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+  const border = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)';
   const text = isDark ? '#ffffff' : '#111111';
   const textSub = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)';
   const textTertiary = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
@@ -581,7 +581,7 @@ const AutomatePage = memo(() => {
   return (
     <div style={{ background: SIDEBAR_BG, bottom: 0, display: 'flex', height: '100%', left: 0, overflow: 'hidden', position: 'absolute', right: 0, top: 0, width: '100%' }}>
       {/* Automate sidebar */}
-      <div style={{ background: SIDEBAR_BG, borderRight: `0.5px solid ${border}`, display: 'flex', flexDirection: 'column', flexShrink: 0, transition: 'width 0.15s ease', width: sidebarWidth }}>
+      <div style={{ background: SIDEBAR_BG, borderRight: `1px solid ${border}`, display: 'flex', flexDirection: 'column', flexShrink: 0, transition: 'width 0.15s ease', width: sidebarWidth }}>
         <div style={{ alignItems: 'center', display: 'flex', flexShrink: 0, height: HEADER_HEIGHT, justifyContent: sidebarCollapsed ? 'center' : 'space-between', paddingInline: 10 }}>
           {!sidebarCollapsed && (
             <span style={{ color: text, fontSize: 13, fontWeight: 500, letterSpacing: '-0.01em' }}>
@@ -708,7 +708,7 @@ const AutomatePage = memo(() => {
           ref={launchPanelRef}
           style={{
             background: SIDEBAR_BG,
-            borderRight: `0.5px solid ${border}`,
+            borderRight: `1px solid ${border}`,
             display: 'flex',
             flexDirection: 'column',
             height: '100%',

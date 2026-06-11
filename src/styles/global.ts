@@ -4,6 +4,18 @@ import { css } from 'antd-style';
 
 export default ({ token }: { prefixCls: string; token: Theme }) => css`
 
+  html, body {
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  }
+
+  input, textarea, button, select {
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  }
+
+  pre, code, kbd, samp {
+    font-family: 'GeistMono', 'Fira Code', monospace !important;
+  }
+
   html[data-theme='light'] .ant-layout,
   html[data-theme='light'] .ant-layout-content {
     background: #f9f8f7 !important;

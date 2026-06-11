@@ -6,6 +6,8 @@ export const styles = createStaticStyles(({ css, cssVar }) => {
       position: relative;
       max-width: 100%;
 
+      font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+
       time,
       div[role='menubar'] {
         pointer-events: none;

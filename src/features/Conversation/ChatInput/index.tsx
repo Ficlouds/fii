@@ -293,7 +293,13 @@ const ChatInput = memo<ChatInputProps>(
 
     const defaultContent = (
       <WideScreenContainer
-        style={{ position: 'relative', ...(skipScrollMarginWithList ? { marginTop: -12 } : null) }}
+        style={{
+          background: inputContainerProps?.style?.background,
+          border: inputContainerProps?.style?.border,
+          borderRadius: inputContainerProps?.style?.borderRadius,
+          position: 'relative',
+          ...(skipScrollMarginWithList ? { marginTop: -12 } : null),
+        }}
       >
         {hasPendingInterventions && <InterventionBar interventions={pendingInterventions} />}
         {/* Keep the chat input mounted while an intervention panel is showing —

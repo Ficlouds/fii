@@ -31,53 +31,58 @@ const TitleTags = memo(() => {
     );
   }
 
-  const fallbackTopicTitle = topicTitle || t('newTopic');
   const fallbackThreadTitle = threadTitle || t('thread.title', { ns: 'chat' });
 
   return (
     <Flexbox allowShrink horizontal align={'center'} gap={6} style={{ marginLeft: 8, minWidth: 0 }}>
       {activeThreadId ? (
         <>
-          <span
-            style={{
-              color: cssVar.colorTextSecondary,
-              flexShrink: 0,
-              fontSize: 14,
-              fontWeight: 500,
-              maxWidth: 200,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {fallbackTopicTitle}
-          </span>
-          <span
-            style={{
-              color: cssVar.colorTextQuaternary,
-              flexShrink: 0,
-              fontSize: 14,
-            }}
-          >
-            {'/'}
-          </span>
+          {topicTitle && (
+            <>
+              <span
+                style={{
+                  color: cssVar.colorTextSecondary,
+                  flexShrink: 0,
+                  fontSize: 14,
+                  fontWeight: 500,
+                  maxWidth: 200,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {topicTitle}
+              </span>
+              <span
+                style={{
+                  color: cssVar.colorTextQuaternary,
+                  flexShrink: 0,
+                  fontSize: 14,
+                }}
+              >
+                {'/'}
+              </span>
+            </>
+          )}
           <ThreadSwitcher title={fallbackThreadTitle} />
         </>
       ) : (
         <>
-          <span
-            style={{
-              color: cssVar.colorText,
-              fontSize: 14,
-              fontWeight: 600,
-              minWidth: 0,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {fallbackTopicTitle}
-          </span>
+          {topicTitle && (
+            <span
+              style={{
+                color: cssVar.colorText,
+                fontSize: 14,
+                fontWeight: 600,
+                minWidth: 0,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {topicTitle}
+            </span>
+          )}
           <FolderTag />
         </>
       )}

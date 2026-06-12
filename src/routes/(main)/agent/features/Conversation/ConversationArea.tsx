@@ -132,7 +132,15 @@ const Conversation = memo(() => {
           }
         />
       </Flexbox>
-      {!isSubagentThread && (isHeterogeneousAgent ? <HeterogeneousChatInput /> : <MainChatInput />)}
+      {!isSubagentThread && (
+        isHeterogeneousAgent ? (
+          <HeterogeneousChatInput />
+        ) : (
+          <div style={{ padding: '0 20px 16px' }}>
+            <MainChatInput />
+          </div>
+        )
+      )}
       <ThreadHydration />
       <ChatMiniMap />
       <Suspense>

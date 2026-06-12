@@ -56,7 +56,6 @@ const MainChatInput = memo(() => {
   );
 
   return (
-    <div style={{ padding: '0 16px 16px', background: 'transparent' }}>
     <ChatInput
       skipScrollMarginWithList
       inputContainerProps={inputContainerProps}
@@ -71,7 +70,6 @@ const MainChatInput = memo(() => {
         useChatStore.setState({ mainInputEditor: instance });
       }}
     />
-    </div>
   );
 });
 

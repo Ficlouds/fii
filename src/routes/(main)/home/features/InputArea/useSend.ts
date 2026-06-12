@@ -169,8 +169,8 @@ export const useSend = () => {
               files: fileList,
               message,
               onTopicCreated: (topicId) => {
-                console.log('[Fi] Topic created:', topicId, 'agentId:', activeAgentId);
                 useActiveConversationStore.getState().setConversation({ agentId: activeAgentId, topicId });
+                navigate(`/agent/${activeAgentId}/${topicId}`);
               },
             });
           }

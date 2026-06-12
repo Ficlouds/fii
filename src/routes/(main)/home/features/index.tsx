@@ -123,9 +123,8 @@ const Home = memo(() => {
   const chatContext = useActiveConversationStore((s) => s.conversation);
   const hasStarted = chatContext !== null;
 
-  // Messages + operation state for ConversationProvider
+  // Operation state for ConversationProvider
   const chatContextKey = chatContext ? messageMapKey(chatContext) : null;
-  const messages = useChatStore((s) => chatContextKey ? s.dbMessagesMap[chatContextKey] : undefined);
   const replaceMessages = useChatStore((s) => s.replaceMessages);
   const operationState = useOperationState(chatContext ?? { agentId: '' });
 
@@ -197,9 +196,8 @@ const Home = memo(() => {
         {incognitoBanner}
         <ConversationProvider
           context={chatContext}
-          hasInitMessages={!!messages}
-          messages={messages}
           operationState={operationState}
+          skipFetch={false}
           onMessagesChange={(msgs, ctx) => replaceMessages(msgs, { context: ctx })}
         >
           {/* Messages — scrollable, takes all available space */}

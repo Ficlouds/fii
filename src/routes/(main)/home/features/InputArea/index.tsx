@@ -17,7 +17,7 @@ interface InputAreaProps {
 }
 
 const InputArea = ({ incognito = false }: InputAreaProps) => {
-  const { loading, send, agentId } = useSend();
+  const { loading, send, agentId } = useSend(); console.log("[Fi] InputArea mounted, agentId:", agentId);
   const isDark = useIsDark();
   useInitAgentConfig(agentId);
   const resolvedAgentId = agentId ?? '';

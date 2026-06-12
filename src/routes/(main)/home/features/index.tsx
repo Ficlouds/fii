@@ -131,8 +131,19 @@ const Home = memo(() => {
 
   useEffect(() => {
     if (!chatContextKey || !chatContext) return;
+    console.log('[Fi] Loading messages for context:', chatContextKey, chatContext);
     useChatStore.getState().refreshMessages(chatContext);
   }, [chatContextKey]);
+
+  useEffect(() => {
+    if (!chatContext) return;
+    // Sync active agent and topic so ConversationProvider's internal fetch works
+    useChatStore.setState(
+      { activeAgentId: chatContext.agentId, activeTopicId: chatContext.topicId ?? null },
+      false,
+      'Home/syncActiveConversation',
+    );
+  }, [chatContext?.agentId, chatContext?.topicId]);
 
   useEffect(() => {
     if (localStorage.getItem(INCOGNITO_KEY) === 'true') setIncognito(true);

@@ -153,6 +153,7 @@ export const useSend = () => {
             // overridable via the home AgentSelect dropdown).
             if (!activeAgentId) return;
 
+            console.log("[Fi] Sending message:", message, "agentId:", activeAgentId);
             // First-time selections from AgentSelect have no entry in `agentMap`
             // yet — block on the fetch so sendMessage finds a real config below.
             await ensureAgentConfigLoaded(activeAgentId);
@@ -168,6 +169,7 @@ export const useSend = () => {
               files: fileList,
               message,
               onTopicCreated: (topicId) => {
+                console.log('[Fi] Topic created:', topicId, 'agentId:', activeAgentId);
                 useActiveConversationStore.getState().setConversation({ agentId: activeAgentId, topicId });
               },
             });

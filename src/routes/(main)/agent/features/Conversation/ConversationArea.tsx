@@ -136,7 +136,7 @@ const Conversation = memo(() => {
         isHeterogeneousAgent ? (
           <HeterogeneousChatInput />
         ) : (
-          <div style={{ margin: "0 20px 16px", background: "#ffffff", border: "1.5px solid rgba(0,0,0,0.06)", borderRadius: 12, overflow: "hidden" }}>
+          <div style={{ padding: '0 20px 16px' }}>
             <MainChatInput />
           </div>
         )

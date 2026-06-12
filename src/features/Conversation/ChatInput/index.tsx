@@ -293,12 +293,6 @@ const ChatInput = memo<ChatInputProps>(
 
     const defaultContent = (
       <WideScreenContainer
-        wrapperStyle={{
-          background: inputContainerProps?.style?.background,
-          border: inputContainerProps?.style?.border,
-          borderRadius: inputContainerProps?.style?.borderRadius,
-          overflow: 'hidden',
-        }}
         style={{
           position: 'relative',
           ...(skipScrollMarginWithList ? { marginTop: -12 } : null),

@@ -1,6 +1,8 @@
 import { Flexbox } from '@lobehub/ui';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { useIsDark } from '@/hooks/useIsDark';
+
 import DragUploadZone, { useUploadFiles } from '@/components/DragUploadZone';
 import { type ActionKeys } from '@/features/ChatInput';
 import { ChatInputProvider, DesktopChatInput } from '@/features/ChatInput';
@@ -15,7 +17,6 @@ import { systemStatusSelectors } from '@/store/global/selectors';
 import { serverConfigSelectors, useServerConfigStore } from '@/store/serverConfig';
 
 import BotIntegrationBanner, { BOT_INTEGRATION_BANNER_ID } from './BotIntegrationBanner';
-import { stripMarkdownLinks } from './hintFormat';
 import MessengerBanner, { MESSENGER_BANNER_ID } from './MessengerBanner';
 import SkillInstallBanner, { SKILL_INSTALL_BANNER_ID } from './SkillInstallBanner';
 import StarterList from './StarterList';
@@ -101,26 +102,46 @@ const InputArea = () => {
     agentByIdSelectors.getAgentModelProviderById(resolvedAgentId)(s),
   );
   const { handleUploadFiles } = useUploadFiles({ model, provider });
+  const isDark = useIsDark();
 
   // A slot to insert content above the chat input
   // Override some default behavior of the chat input
   const inputContainerProps = useMemo(
     () => ({
-      minHeight: 88,
       resize: false,
       style: {
-        borderRadius: 20,
-        boxShadow: '0 12px 32px rgba(0,0,0,.04)',
+        background: isDark ? '#2c2c2b' : '#ffffff',
+        border: isDark ? '1.5px solid rgba(255,255,255,0.08)' : '1.5px solid rgba(0,0,0,0.06)',
+        borderRadius: 32,
+        boxShadow: 'none',
+        color: isDark ? '#ececec' : '#111111',
+        maxHeight: 180,
+        minHeight: 60,
+        overflowY: 'auto' as const,
+        transition: 'background 0.25s ease, color 0.25s ease',
+        width: '100%',
       },
     }),
-    [],
+    [isDark],
   );
 
-  // Daily-generated input hint paired with the home WelcomeText. The hint
-  // tracks whichever pair the WelcomeText typewriter is currently showing,
-  // via the shared rotating index inside `useHomeDailyBrief`.
-  const { currentPair } = useHomeDailyBrief();
-  const dailyHint = currentPair?.hint ? stripMarkdownLinks(currentPair.hint) : undefined;
+  // Rotating placeholder suggestions
+  const PLACEHOLDERS = [
+    'Think out loud...',
+    'Ask Athena anything...',
+    'What do you want to know?',
+    'Start with a question...',
+    "What's on your mind?",
+    'Explore an idea...',
+    'Ask, analyze, create...',
+  ];
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderIndex((i) => (i + 1) % PLACEHOLDERS.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Flexbox gap={16} style={{ marginBottom: 16 }}>
@@ -159,7 +180,7 @@ const InputArea = () => {
             <DesktopChatInput
               dropdownPlacement="bottomLeft"
               inputContainerProps={inputContainerProps}
-              placeholder={dailyHint}
+              placeholder={PLACEHOLDERS[placeholderIndex]}
               showRuntimeConfig={false}
             />
           </ChatInputProvider>
@@ -172,3 +193,4 @@ const InputArea = () => {
 };
 
 export default InputArea;
+

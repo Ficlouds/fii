@@ -130,6 +130,11 @@ const Home = memo(() => {
   const operationState = useOperationState(chatContext ?? { agentId: '' });
 
   useEffect(() => {
+    if (!chatContextKey || !chatContext) return;
+    useChatStore.getState().refreshMessages(chatContext);
+  }, [chatContextKey]);
+
+  useEffect(() => {
     if (localStorage.getItem(INCOGNITO_KEY) === 'true') setIncognito(true);
   }, []);
 

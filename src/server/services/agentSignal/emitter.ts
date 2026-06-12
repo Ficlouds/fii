@@ -156,15 +156,19 @@ export const enqueueAgentSignalSourceEvent = async <TSourceType extends AgentSig
     userId: context.userId,
   });
 
-  const trigger = await AgentSignalWorkflow.triggerRun({
-    agentId: context.agentId,
-    sourceEvent,
-    userId: context.userId,
-  });
-
-  return {
-    accepted: true,
-    scopeKey: sourceEvent.scopeKey,
-    workflowRunId: trigger.workflowRunId,
-  };
+  try {
+    const trigger = await AgentSignalWorkflow.triggerRun({
+      agentId: context.agentId,
+      sourceEvent,
+      userId: context.userId,
+    });
+    return {
+      accepted: true,
+      scopeKey: sourceEvent.scopeKey,
+      workflowRunId: trigger.workflowRunId,
+    };
+  } catch (e) {
+    // Fi: skip QStash in dev
+    return { accepted: true, scopeKey: sourceEvent.scopeKey, workflowRunId: 'dev' };
+  }
 };

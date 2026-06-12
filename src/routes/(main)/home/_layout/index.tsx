@@ -19,7 +19,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const theme = useTheme();
   const { pathname } = useLocation();
   const isHomeRoute = pathname === '/';
-  const [hasActivated, setHasActivated] = useState(isHomeRoute);
+  const [hasActivated, setHasActivated] = useState(true);
   const content = children ?? <Outlet />;
 
   useEffect(() => {

@@ -327,6 +327,7 @@ const ChatInput = memo<ChatInputProps>(
             <TodoProgress topAttached={!disableQueue && hasQueuedMessages} />
           </Flexbox>
           <DesktopChatInput
+            showEditorInline
             actionBarStyle={actionBarStyle}
             borderRadius={32}
             extraActionItems={extraActionItems}

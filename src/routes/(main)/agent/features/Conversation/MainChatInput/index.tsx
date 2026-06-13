@@ -47,6 +47,7 @@ const MainChatInput = memo(() => {
   return (
     <ChatInput
       skipScrollMarginWithList
+      showEditorInline
       disableFollowUpVariant
       inputContainerProps={inputContainerProps}
       isConfigLoading={isAgentConfigLoading}

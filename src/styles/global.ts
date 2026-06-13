@@ -181,7 +181,16 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
 
   /* Kill the editor row height — force single row chat input */
   [data-testid="chat-input"] {
-    min-height: unset !important;
+    min-height: 60px !important;
+    max-width: 780px !important;
+    margin: 0 auto !important;
+    background: #ffffff !important;
+    border: 1.5px solid rgba(0,0,0,0.06) !important;
+    border-radius: 32px !important;
+    box-shadow: none !important;
+    height: auto !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
   }
   [data-testid="chat-input"] > div:first-child:not([class*="footer"]):not([class*="action"]) {
     height: 0 !important;

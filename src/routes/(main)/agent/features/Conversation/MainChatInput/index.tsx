@@ -3,48 +3,37 @@
 import { memo, useMemo } from 'react';
 
 import { type ActionKeys } from '@/features/ChatInput';
-import { ChatInput, useConversationStore } from '@/features/Conversation';
+import { ChatInputProvider, DesktopChatInput } from '@/features/ChatInput';
 import { useIsDark } from '@/hooks/useIsDark';
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
 import { useChatStore } from '@/store/chat';
+import { useConversationStore } from '@/features/Conversation';
 import { aiChatSelectors } from '@/store/chat/selectors';
-import { useUserStore } from '@/store/user';
-import { userGeneralSettingsSelectors } from '@/store/user/selectors';
 
-import { useSendMenuItems } from './useSendMenuItems';
+const leftActions: ActionKeys[] = ['plus'];
+const rightActions: ActionKeys[] = ['modelLabel', 'stt'];
 
-const []: ActionKeys[] = ['contextWindow'];
-const []: ActionKeys[] = ['promptTransform', 'contextWindow'];
-
-/**
- * MainChatInput
- *
- * Custom ChatInput implementation for main chat page.
- * Uses ChatInput from @/features/Conversation which handles all send logic
- * including error alerts display.
- * Only adds MessageFromUrl for desktop mode.
- */
 const MainChatInput = memo(() => {
-  const isDevMode = useUserStore((s) => userGeneralSettingsSelectors.config(s).isDevMode);
-  const sendMenuItems = useSendMenuItems();
   const isDark = useIsDark();
+  const isAgentConfigLoading = useAgentStore(agentSelectors.isAgentConfigLoading);
   const loading = useChatStore(aiChatSelectors.isCurrentSendMessageLoading);
   const stopGenerating = useConversationStore((s) => s.stopGenerating);
-
-  const isAgentConfigLoading = useAgentStore(agentSelectors.isAgentConfigLoading);
-
-  const leftActions: ActionKeys[] = useMemo(() => ['plus'], []);
-  const rightActions: ActionKeys[] = useMemo(() => ['modelLabel', 'stt'], []);
+  const sendMessage = useConversationStore((s) => s.sendMessage);
+  const agentId = useConversationStore((s) => s.context?.agentId);
 
   const inputContainerProps = useMemo(
     () => ({
+      resize: false,
       style: {
         background: isDark ? '#2c2c2b' : '#ffffff',
         border: isDark ? '1.5px solid rgba(255,255,255,0.08)' : '1.5px solid rgba(0,0,0,0.06)',
         borderRadius: 32,
         boxShadow: 'none',
-        minHeight: 69, maxHeight: 200,
+        color: isDark ? '#ececec' : '#111111',
+        maxHeight: 200,
+        minHeight: 60,
+        overflowY: 'auto' as const,
         transition: 'background 0.25s ease, color 0.25s ease',
         width: '100%',
       },
@@ -53,30 +42,40 @@ const MainChatInput = memo(() => {
   );
 
   return (
-    <ChatInput
-      skipScrollMarginWithList
-      inputContainerProps={inputContainerProps}
-      isConfigLoading={isAgentConfigLoading}
+    <ChatInputProvider
+      agentId={agentId}
+      allowExpand={false}
       leftActions={leftActions}
       rightActions={rightActions}
-      {...(isDevMode
-        ? { sendMenu: { items: sendMenuItems } }
-        : {
-            sendButtonProps: {
-              disabled: loading,
-              generating: loading,
-              onStop: stopGenerating,
-              shape: 'round',
-            },
-          })}
-      onEditorReady={(instance) => {
-        // Sync to global ChatStore for compatibility with other features
+      slashPlacement="bottom"
+      chatInputEditorRef={(instance) => {
+        if (!instance) return;
         useChatStore.setState({ mainInputEditor: instance });
       }}
-    />
+      sendButtonProps={{
+        disabled: loading || isAgentConfigLoading,
+        generating: loading,
+        onStop: stopGenerating,
+        shape: 'round',
+      }}
+      onSend={async ({ getMarkdownContent, getEditorData }) => {
+        const message = getMarkdownContent?.() ?? '';
+        if (!message.trim()) return;
+        await sendMessage({ message });
+      }}
+      onMarkdownContentChange={(content) => {
+        useChatStore.setState({ inputMessage: content });
+      }}
+    >
+      <DesktopChatInput
+        dropdownPlacement="topLeft"
+        inputContainerProps={inputContainerProps}
+        placeholderVariant="default"
+        showRuntimeConfig={false}
+      />
+    </ChatInputProvider>
   );
 });
 
 MainChatInput.displayName = 'MainChatInput';
-
 export default MainChatInput;

@@ -21,6 +21,6 @@ export const styles = createStaticStyles(({ css, cssVar }) => ({
   // Content area - light mode
   contentLight: css`
     overflow: hidden;
-    background: #efefed;
+    background: #f9f8f7;
   `,
 }));

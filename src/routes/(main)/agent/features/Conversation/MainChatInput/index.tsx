@@ -32,7 +32,7 @@ const MainChatInput = memo(() => {
         background: isDark ? '#2c2c2b' : '#ffffff',
         border: isDark ? '1.5px solid rgba(255,255,255,0.08)' : '1.5px solid rgba(0,0,0,0.06)',
         borderRadius: 32,
-        boxShadow: '0 0 0 1.5px rgba(0,0,0,0.15), 0 8px 30px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.15)',
+        boxShadow: '0 0 0 1px rgba(0,0,0,0.10), 0 4px 24px rgba(0,0,0,0.35), 0 1px 4px rgba(0,0,0,0.20)',
         color: isDark ? '#ececec' : '#111111',
         maxHeight: 200,
         minHeight: 69,

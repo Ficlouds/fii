@@ -3,24 +3,27 @@
 import { memo, useMemo } from 'react';
 
 import { type ActionKeys } from '@/features/ChatInput';
-import { ChatInputProvider, DesktopChatInput } from '@/features/ChatInput';
+import { ChatInput, useConversationStore } from '@/features/Conversation';
 import { useIsDark } from '@/hooks/useIsDark';
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
 import { useChatStore } from '@/store/chat';
-import { useConversationStore } from '@/features/Conversation';
 import { aiChatSelectors } from '@/store/chat/selectors';
+import { useUserStore } from '@/store/user';
+import { userGeneralSettingsSelectors } from '@/store/user/selectors';
+
+import { useSendMenuItems } from './useSendMenuItems';
 
 const leftActions: ActionKeys[] = ['plus'];
 const rightActions: ActionKeys[] = ['modelLabel', 'stt'];
 
 const MainChatInput = memo(() => {
+  const isDevMode = useUserStore((s) => userGeneralSettingsSelectors.config(s).isDevMode);
+  const sendMenuItems = useSendMenuItems();
   const isDark = useIsDark();
-  const isAgentConfigLoading = useAgentStore(agentSelectors.isAgentConfigLoading);
   const loading = useChatStore(aiChatSelectors.isCurrentSendMessageLoading);
   const stopGenerating = useConversationStore((s) => s.stopGenerating);
-  const sendMessage = useConversationStore((s) => s.sendMessage);
-  const agentId = useConversationStore((s) => s.context?.agentId);
+  const isAgentConfigLoading = useAgentStore(agentSelectors.isAgentConfigLoading);
 
   const inputContainerProps = useMemo(
     () => ({
@@ -42,38 +45,28 @@ const MainChatInput = memo(() => {
   );
 
   return (
-    <ChatInputProvider
-      agentId={agentId}
-      allowExpand={false}
+    <ChatInput
+      skipScrollMarginWithList
+      disableFollowUpVariant
+      inputContainerProps={inputContainerProps}
+      isConfigLoading={isAgentConfigLoading}
       leftActions={leftActions}
       rightActions={rightActions}
-      slashPlacement="bottom"
-      chatInputEditorRef={(instance) => {
-        if (!instance) return;
+      showRuntimeConfig={false}
+      {...(isDevMode
+        ? { sendMenu: { items: sendMenuItems } }
+        : {
+            sendButtonProps: {
+              disabled: loading,
+              generating: loading,
+              onStop: stopGenerating,
+              shape: 'round',
+            },
+          })}
+      onEditorReady={(instance) => {
         useChatStore.setState({ mainInputEditor: instance });
       }}
-      sendButtonProps={{
-        disabled: loading || isAgentConfigLoading,
-        generating: loading,
-        onStop: stopGenerating,
-        shape: 'round',
-      }}
-      onSend={async ({ getMarkdownContent, getEditorData }) => {
-        const message = getMarkdownContent?.() ?? '';
-        if (!message.trim()) return;
-        await sendMessage({ message });
-      }}
-      onMarkdownContentChange={(content) => {
-        useChatStore.setState({ inputMessage: content });
-      }}
-    >
-      <DesktopChatInput
-        dropdownPlacement="topLeft"
-        inputContainerProps={inputContainerProps}
-        placeholderVariant="default"
-        showRuntimeConfig={false}
-      />
-    </ChatInputProvider>
+    />
   );
 });
 

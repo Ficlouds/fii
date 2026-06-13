@@ -35,7 +35,7 @@ const MainChatInput = memo(() => {
         boxShadow: 'none',
         color: isDark ? '#ececec' : '#111111',
         maxHeight: 200,
-        minHeight: 60,
+        minHeight: 69,
         overflowY: 'auto' as const,
         transition: 'background 0.25s ease, color 0.25s ease',
         width: '100%',
@@ -47,6 +47,7 @@ const MainChatInput = memo(() => {
   return (
     <ChatInput
       skipScrollMarginWithList
+      allowExpand={false}
       showEditorInline
       disableFollowUpVariant
       inputContainerProps={inputContainerProps}

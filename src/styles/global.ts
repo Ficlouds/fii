@@ -191,6 +191,8 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     height: auto !important;
     max-height: 200px !important;
     overflow-y: auto !important;
+    display: flex !important;
+    align-items: center !important;
   }
   [data-testid="chat-input"] > div:first-child:not([class*="footer"]):not([class*="action"]) {
     height: 0 !important;

@@ -71,10 +71,6 @@ export const useNavLayout = (): NavLayout => {
       },
       {
         icon: BotIcon,
-        key: 'automate',
-        onClick: () => navigate('/automate'),
-        url: '/automate',
-        title: 'Automate',
       },
     ] as NavItem[],
     [t, toggleCommandMenu, handleNewChat],

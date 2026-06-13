@@ -694,13 +694,9 @@ export const desktopRoutes: RouteObject[] = [
         path: 'connect',
       },
 
-      // Automate page (standalone, full screen)
       {
         element: dynamicElement(
-          () => import('@/routes/(main)/automate'),
-          'Desktop > Automate',
         ),
-        path: 'automate',
       },
       // Default route - home page (handled by persistent layout)
       {

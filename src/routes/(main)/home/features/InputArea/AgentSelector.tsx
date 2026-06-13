@@ -6,9 +6,9 @@ import { useIsDark } from '@/hooks/useIsDark';
 import { createPortal } from 'react-dom';
 
 const AGENTS = [
-  { id: 'athena', label: 'Athena', description: 'Smart & Creative' },
-  { id: 'zeus', label: 'Zeus', description: 'Powerful & Fast' },
-  { id: 'horus', label: 'Horus', description: 'Precise & Analytical' },
+  { id: 'athena', label: 'F2.7', description: 'Smart & Creative' },
+  { id: 'zeus', label: 'F3.6', description: 'Powerful & Fast' },
+  { id: 'horus', label: 'F1.8', description: 'Precise & Analytical' },
 ];
 
 interface AgentSelectorProps {

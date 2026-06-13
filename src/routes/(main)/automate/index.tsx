@@ -747,7 +747,7 @@ const AutomatePage = memo(() => {
                 Think It. Build It.
               </div>
               <div style={{ color: textSub, fontSize: 12, fontWeight: 400, marginTop: 6, textAlign: 'center' }}>
-                Describe your automation. Athena will build it.
+                Describe your automation. Fi will build it.
               </div>
 
               <div style={{ height: 180, marginTop: 20, overflow: 'hidden', width: '100%' }}>

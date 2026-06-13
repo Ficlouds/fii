@@ -273,7 +273,7 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     --ant-color-text-secondary: rgba(255,255,255,0.95);
   }
 
-  /* Athena/model selector button */
+  /* Fi/model selector button */
   html[data-theme='dark'] button[style*="border-radius: 20px"],
   html[data-theme='dark'] button[style*="border-radius: 16px"] {
     color: #ffffff !important;

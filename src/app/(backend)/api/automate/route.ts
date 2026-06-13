@@ -5,8 +5,8 @@ const N8N_BASE_URL = process.env.N8N_BASE_URL || 'http://localhost:5679';
 const N8N_API_KEY = process.env.N8N_API_KEY || '';
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || '';
 
-// System prompt for Zeus (V4 Pro) to build n8n workflows
-const AUTOMATION_SYSTEM_PROMPT = `You are Athena, an automation builder. Your job is to convert user requests into valid n8n workflow JSON.
+// System prompt for Fi F3.6 (V4 Pro) to build n8n workflows
+const AUTOMATION_SYSTEM_PROMPT = `You are Fi, an automation builder. Your job is to convert user requests into valid n8n workflow JSON.
 
 RULES:
 1. Return ONLY valid JSON — no explanation, no markdown, no code blocks
@@ -32,7 +32,7 @@ export const POST = checkAuth(async (req: NextRequest, { userId }) => {
       return NextResponse.json({ error: 'No prompt provided' }, { status: 400 });
     }
 
-    // Step 1: Use DeepSeek V4 Pro (Zeus) to generate workflow JSON
+    // Step 1: Use DeepSeek V4 Pro (F3.6) to generate workflow JSON
     const deepseekRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
       headers: {

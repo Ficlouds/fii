@@ -216,6 +216,21 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     align-items: center !important;
   }
 
+  /* Force editor min-height to match single line */
+  [data-testid="chat-input"] [draggable="false"] {
+    min-height: 24px !important;
+    max-height: 160px !important;
+    align-items: center !important;
+    display: flex !important;
+  }
+  
+  [data-testid="chat-input"] [contenteditable="true"] {
+    min-height: 24px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
   /* Darker sidebar nav text - broad selectors */
   html[data-theme='light'] aside span,
   html[data-theme='light'] aside a span,

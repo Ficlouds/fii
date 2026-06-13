@@ -204,6 +204,18 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     border: none !important;
   }
 
+  /* Fix inner editor alignment */
+  [data-testid="chat-input"] [class*="acss-1uegmkh"] {
+    min-height: 24px !important;
+    max-height: 160px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  [data-testid="chat-input"] [class*="lobe-flex"] {
+    align-items: center !important;
+  }
+
   /* Darker sidebar nav text - broad selectors */
   html[data-theme='light'] aside span,
   html[data-theme='light'] aside a span,

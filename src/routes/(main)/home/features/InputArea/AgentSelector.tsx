@@ -113,7 +113,7 @@ const AgentSelector = memo<AgentSelectorProps>(({ incognito = false }) => {
                     onMouseEnter={() => setHoveredId(agent.id)}
                     onMouseLeave={() => setHoveredId(null)}
                     style={{
-                      background: isHovered ? hoverBg : 'transparent',
+                      background: isSelected ? (isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)') : isHovered ? hoverBg : 'transparent',
                       cursor: 'pointer',
                       padding: '9px 14px',
                       transition: 'background 0.1s',

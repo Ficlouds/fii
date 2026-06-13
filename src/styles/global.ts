@@ -187,7 +187,7 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
     background: #ffffff !important;
     border: 1.5px solid rgba(0,0,0,0.06) !important;
     border-radius: 32px !important;
-    box-shadow: 0 0 0 1px rgba(0,0,0,0.10), 0 4px 24px rgba(0,0,0,0.35), 0 1px 4px rgba(0,0,0,0.20) !important;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06) !important;
     height: auto !important;
     max-height: 200px !important;
     overflow-y: auto !important;

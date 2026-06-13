@@ -37,6 +37,8 @@ const InputArea = ({ incognito = false }: InputAreaProps) => {
         boxShadow: 'none',
         color: isDark ? '#ececec' : '#111111',
         minHeight: 69, maxHeight: 200,
+        alignItems: 'center',
+        justifyContent: 'center',
         transition: 'background 0.25s ease, color 0.25s ease',
         width: '100%',
       },

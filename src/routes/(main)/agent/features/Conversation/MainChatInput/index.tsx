@@ -36,6 +36,8 @@ const MainChatInput = memo(() => {
         color: isDark ? '#ececec' : '#111111',
         maxHeight: 200,
         minHeight: 69,
+        alignItems: 'center',
+        justifyContent: 'center',
         overflowY: 'auto' as const,
         transition: 'background 0.25s ease, color 0.25s ease',
         width: '100%',

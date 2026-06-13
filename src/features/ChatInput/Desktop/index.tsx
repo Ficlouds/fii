@@ -175,12 +175,12 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           defaultHeight={0}
           fullscreen={expand}
           maxHeight={200}
-          minHeight={52}
+          minHeight={69}
           resize={false}
           slashMenuRef={slashMenuRef}
           footer={
             <ChatInputActionBar
-              style={actionBarStyle ?? { paddingInline: 12, paddingBlock: 8 }}
+              style={actionBarStyle ?? { paddingInline: 12, paddingBlock: 0 }}
               left={loadingLeft ?? leftContent ?? (
                 <Flexbox horizontal align="center" gap={8} style={{ cursor: 'text', flex: 1, minWidth: 0 }}>
                   <div className={styles.actionBarFix}>

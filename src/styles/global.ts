@@ -181,7 +181,7 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
 
   /* Kill the editor row height — force single row chat input */
   [data-testid="chat-input"] {
-    min-height: 52px !important;
+    min-height: 69px !important;
     max-width: 780px !important;
     margin: 0 auto !important;
     background: #ffffff !important;
@@ -197,6 +197,14 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   [data-testid="chat-input"] * {
     align-items: center !important;
     align-self: center !important;
+  }
+
+  /* Force the action bar row to be vertically centered */
+  [data-testid="chat-input"] [class*="ChatInputActionBar"],
+  [data-testid="chat-input"] [class*="chatInputActionBar"] {
+    padding-block: 0 !important;
+    align-items: center !important;
+    min-height: unset !important;
   }
 
   [data-testid="chat-input"] > div:first-child:not([class*="footer"]):not([class*="action"]) {

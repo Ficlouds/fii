@@ -172,7 +172,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
       >
         <ChatInput
           data-testid="chat-input"
-          defaultHeight={0}
+          defaultHeight={60}
           fullscreen={expand}
           maxHeight={200}
           minHeight={60}

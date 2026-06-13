@@ -328,7 +328,7 @@ const ChatInput = memo<ChatInputProps>(
           </Flexbox>
           <DesktopChatInput
             actionBarStyle={actionBarStyle}
-            borderRadius={12}
+            borderRadius={32}
             extraActionItems={extraActionItems}
             hidden={hasPendingInterventions}
             inputContainerProps={inputContainerProps}

@@ -46,7 +46,7 @@ const MainChatInput = memo(() => {
 
   return (
     <ChatInput
-      skipScrollMarginWithList
+      
       allowExpand={false}
       showEditorInline
       disableFollowUpVariant

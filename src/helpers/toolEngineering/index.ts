@@ -1,15 +1,15 @@
 /**
  * Tools Engineering - Unified tools processing using ToolsEngine
  */
-import { CloudSandboxManifest } from '@lobechat/builtin-tool-cloud-sandbox';
-import { KnowledgeBaseManifest } from '@lobechat/builtin-tool-knowledge-base';
-import { LocalSystemManifest } from '@lobechat/builtin-tool-local-system';
-import { MemoryManifest } from '@lobechat/builtin-tool-memory';
-import { WebBrowsingManifest } from '@lobechat/builtin-tool-web-browsing';
-import { alwaysOnToolIds, chatModeAllowedToolIds, defaultToolIds } from '@lobechat/builtin-tools';
-import { createEnableChecker, type PluginEnableChecker } from '@lobechat/context-engine';
-import { ToolsEngine } from '@lobechat/context-engine';
-import { type ChatCompletionTool, type ToolManifest, type WorkingModel } from '@lobechat/types';
+import { CloudSandboxManifest } from '@ficlouds/builtin-tool-cloud-sandbox';
+import { KnowledgeBaseManifest } from '@ficlouds/builtin-tool-knowledge-base';
+import { LocalSystemManifest } from '@ficlouds/builtin-tool-local-system';
+import { MemoryManifest } from '@ficlouds/builtin-tool-memory';
+import { WebBrowsingManifest } from '@ficlouds/builtin-tool-web-browsing';
+import { alwaysOnToolIds, chatModeAllowedToolIds, defaultToolIds } from '@ficlouds/builtin-tools';
+import { createEnableChecker, type PluginEnableChecker } from '@ficlouds/context-engine';
+import { ToolsEngine } from '@ficlouds/context-engine';
+import { type ChatCompletionTool, type ToolManifest, type WorkingModel } from '@ficlouds/types';
 
 import { isToolAvailableInCurrentEnv } from '@/helpers/toolAvailability';
 import { getAgentStoreState } from '@/store/agent';
@@ -17,7 +17,7 @@ import { agentChatConfigSelectors, agentSelectors } from '@/store/agent/selector
 import { getToolStoreState } from '@/store/tool';
 import {
   klavisStoreSelectors,
-  lobehubSkillStoreSelectors,
+  fiSkillStoreSelectors,
   pluginSelectors,
 } from '@/store/tool/selectors';
 import { useUserStore } from '@/store/user';
@@ -42,7 +42,7 @@ export interface ToolsEngineConfig {
  * A manifest is usable by ToolsEngine only if it has a non-empty `api` array.
  * ToolsEngine.convertManifestsToTools calls `manifest.api.map(...)` unconditionally,
  * so any entry with `api` missing / non-array will crash the whole tools build.
- * Sources that populate manifests (installed plugins, Klavis, LobeHub skills, MCP)
+ * Sources that populate manifests (installed plugins, Klavis, Fi skills, MCP)
  * have no shared schema validation, so we guard defensively at the merge point.
  */
 const isValidToolManifest = (m: ToolManifest | undefined): m is ToolManifest =>
@@ -93,9 +93,9 @@ export const createToolsEngine = (config: ToolsEngineConfig = {}): ToolsEngine =
   const klavisTools = klavisStoreSelectors.klavisAsLobeTools(toolStoreState);
   const klavisManifests = klavisTools.map((tool) => tool.manifest as ToolManifest).filter(Boolean);
 
-  // Get LobeHub Skill tool manifests
-  const lobehubSkillTools = lobehubSkillStoreSelectors.lobehubSkillAsLobeTools(toolStoreState);
-  const lobehubSkillManifests = lobehubSkillTools
+  // Get Fi Skill tool manifests
+  const fiSkillTools = fiSkillStoreSelectors.fiSkillAsLobeTools(toolStoreState);
+  const fiSkillManifests = fiSkillTools
     .map((tool) => tool.manifest as ToolManifest)
     .filter(Boolean);
 
@@ -105,7 +105,7 @@ export const createToolsEngine = (config: ToolsEngineConfig = {}): ToolsEngine =
     ...dropInvalidManifests(pluginManifests, 'installedPlugins'),
     ...dropInvalidManifests(builtinManifests, 'builtinTools'),
     ...dropInvalidManifests(klavisManifests, 'klavis'),
-    ...dropInvalidManifests(lobehubSkillManifests, 'lobehubSkills'),
+    ...dropInvalidManifests(fiSkillManifests, 'fiSkills'),
     ...dropInvalidManifests(additionalManifests, 'additionalManifests'),
   ];
 

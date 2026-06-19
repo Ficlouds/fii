@@ -1,4 +1,4 @@
-import type { AgentEvalRunListItem } from '@lobechat/types';
+import type { AgentEvalRunListItem } from '@ficlouds/types';
 import { Flexbox, Icon } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';
 import { App, Card, Dropdown, Progress } from 'antd';

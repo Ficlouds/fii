@@ -1,6 +1,6 @@
-import { DEFAULT_AGENT_CONFIG, INBOX_SESSION_ID } from '@lobechat/const';
-import { CreateAgentSchema, type KnowledgeItem } from '@lobechat/types';
-import { KnowledgeType } from '@lobechat/types';
+import { DEFAULT_AGENT_CONFIG, INBOX_SESSION_ID } from '@ficlouds/const';
+import { CreateAgentSchema, type KnowledgeItem } from '@ficlouds/types';
+import { KnowledgeType } from '@ficlouds/types';
 import { z } from 'zod';
 
 import { AgentModel } from '@/database/models/agent';

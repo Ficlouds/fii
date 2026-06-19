@@ -1,5 +1,5 @@
-import { ENABLE_BUSINESS_FEATURES } from '@lobechat/business-const';
-import { type LobeChatDatabase } from '@lobechat/database';
+import { ENABLE_BUSINESS_FEATURES } from '@ficlouds/business-const';
+import { type FiDatabase } from '@ficlouds/database';
 
 import { initNewUserForBusiness } from '@/business/server/user';
 import { UserModel } from '@/database/models/user';
@@ -18,9 +18,9 @@ type CreatedUser = {
 };
 
 export class UserService {
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase) {
+  constructor(db: FiDatabase) {
     this.db = db;
   }
 

@@ -1,4 +1,4 @@
-import { type OpenAIChatMessage } from '@lobechat/types';
+import { type OpenAIChatMessage } from '@ficlouds/types';
 import { type IEditor, type SlashOptions } from '@lobehub/editor';
 import { type ChatInputProps } from '@lobehub/editor/react';
 import { type MenuProps } from '@lobehub/ui';

@@ -1,5 +1,5 @@
-import { parse } from '@lobechat/conversation-flow';
-import { type ConversationContext, type UIChatMessage } from '@lobechat/types';
+import { parse } from '@ficlouds/conversation-flow';
+import { type ConversationContext, type UIChatMessage } from '@ficlouds/types';
 import isEqual from 'fast-deep-equal';
 import { type SWRResponse } from 'swr';
 

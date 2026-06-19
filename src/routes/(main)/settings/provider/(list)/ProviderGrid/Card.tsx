@@ -1,4 +1,4 @@
-import { BRANDING_PROVIDER } from '@lobechat/business-const';
+import { BRANDING_PROVIDER } from '@ficlouds/business-const';
 import { ProviderCombine, ProviderIcon } from '@lobehub/icons';
 import { Avatar, Flexbox, Skeleton, Tag, Text } from '@lobehub/ui';
 import { Divider } from 'antd';

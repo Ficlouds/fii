@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { LayersEnum, RelationshipEnum, UserMemoryContextObjectType } from '@lobechat/types';
+import { LayersEnum, RelationshipEnum, UserMemoryContextObjectType } from '@ficlouds/types';
 import { eq } from 'drizzle-orm';
 import { PgDialect } from 'drizzle-orm/pg-core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -13,14 +13,14 @@ import {
   userMemoriesPreferences,
   users,
 } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import { UserMemoryModel } from '../model';
 import type { LayerBaseMemorySignals } from '../query';
 import { buildBm25MatchCondition, scoreHybridCandidates } from '../query';
 
 const userId = 'memory-query-test-user';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 let memoryModel: UserMemoryModel;
 

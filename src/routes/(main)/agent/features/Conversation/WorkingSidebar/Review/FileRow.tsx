@@ -1,6 +1,6 @@
 'use client';
 
-import type { GitWorkingTreePatch } from '@lobechat/electron-client-ipc';
+import type { GitWorkingTreePatch } from '@ficlouds/electron-client-ipc';
 import { createStaticStyles } from 'antd-style';
 import { ChevronRightIcon } from 'lucide-react';
 import { AnimatePresence, m } from 'motion/react';

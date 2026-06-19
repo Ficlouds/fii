@@ -15,7 +15,7 @@ export type StepContextTodoStatus = 'todo' | 'processing' | 'completed';
 
 /**
  * Todo item structure
- * Duplicated here to avoid circular dependency with builtin-tool-lobe-agent
+ * Duplicated here to avoid circular dependency with builtin-tool-fi-agent
  */
 export interface StepContextTodoItem {
   status: StepContextTodoStatus;
@@ -192,7 +192,7 @@ export interface RuntimeMentionedAgent {
 
 /**
  * A slim tool manifest injected at runtime by callers (e.g. @mention → callAgent).
- * Structurally compatible with LobeToolManifest from @lobechat/context-engine
+ * Structurally compatible with FiToolManifest from @ficlouds/context-engine
  * without requiring a cross-package import.
  */
 export interface InjectedToolManifest {

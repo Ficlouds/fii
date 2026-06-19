@@ -6,7 +6,7 @@ import { mcpService } from '@/services/mcp';
 import { pluginService } from '@/services/plugin';
 import { pluginHelpers } from '@/store/tool/helpers';
 import { type StoreSetter } from '@/store/types';
-import { type LobeToolCustomPlugin, type PluginInstallError } from '@/types/tool/plugin';
+import { type FiToolCustomPlugin, type PluginInstallError } from '@/types/tool/plugin';
 import { setNamespace } from '@/utils/storeDebug';
 
 import { type ToolStore } from '../../store';
@@ -29,7 +29,7 @@ export class CustomPluginActionImpl {
     this.#get = get;
   }
 
-  installCustomPlugin = async (value: LobeToolCustomPlugin): Promise<void> => {
+  installCustomPlugin = async (value: FiToolCustomPlugin): Promise<void> => {
     await pluginService.createCustomPlugin(value);
 
     await this.#get().refreshPlugins();
@@ -82,7 +82,7 @@ export class CustomPluginActionImpl {
     await this.#get().refreshPlugins();
   };
 
-  updateCustomPlugin = async (id: string, value: LobeToolCustomPlugin): Promise<void> => {
+  updateCustomPlugin = async (id: string, value: FiToolCustomPlugin): Promise<void> => {
     const { reinstallCustomPlugin } = this.#get();
     // 1. Update list item information
     await pluginService.updatePlugin(id, value);
@@ -91,7 +91,7 @@ export class CustomPluginActionImpl {
     await reinstallCustomPlugin(id);
   };
 
-  updateNewCustomPlugin = (newCustomPlugin: Partial<LobeToolCustomPlugin>): void => {
+  updateNewCustomPlugin = (newCustomPlugin: Partial<FiToolCustomPlugin>): void => {
     this.#set(
       { newCustomPlugin: merge({}, this.#get().newCustomPlugin, newCustomPlugin) },
       false,

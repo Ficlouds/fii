@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/prompts",
+  "name": "@ficlouds/prompts",
   "version": "1.0.0",
   "private": true,
   "main": "./src/index.ts",
@@ -9,7 +9,7 @@
     "test:update": "vitest -u"
   },
   "devDependencies": {
-    "@lobechat/types": "workspace:*",
+    "@ficlouds/types": "workspace:*",
     "tsx": "^4.20.6"
   }
 }

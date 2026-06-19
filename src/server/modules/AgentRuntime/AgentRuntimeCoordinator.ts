@@ -1,5 +1,5 @@
-import { type AgentState } from '@lobechat/agent-runtime';
-import { type UIChatMessage } from '@lobechat/types';
+import { type AgentState } from '@ficlouds/agent-runtime';
+import { type UIChatMessage } from '@ficlouds/types';
 import debug from 'debug';
 
 import { type AgentOperationMetadata, type StepResult } from './AgentStateManager';

@@ -1,4 +1,4 @@
-import type { BuiltinStreaming } from '@lobechat/types';
+import type { BuiltinStreaming } from '@ficlouds/types';
 
 import { GroupAgentBuilderApiName } from '../../types';
 import { BatchCreateAgentsStreaming } from './BatchCreateAgents';

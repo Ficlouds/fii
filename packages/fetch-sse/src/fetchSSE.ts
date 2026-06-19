@@ -1,5 +1,5 @@
-import { LOBE_CHAT_OBSERVATION_ID, LOBE_CHAT_TRACE_ID, MESSAGE_CANCEL_FLAT } from '@lobechat/const';
-import { parseToolCalls } from '@lobechat/model-runtime';
+import { LOBE_CHAT_OBSERVATION_ID, LOBE_CHAT_TRACE_ID, MESSAGE_CANCEL_FLAT } from '@ficlouds/const';
+import { parseToolCalls } from '@ficlouds/model-runtime';
 import type {
   ChatImageChunk,
   ChatMessageError,
@@ -10,10 +10,10 @@ import type {
   ModelUsage,
   ResponseAnimation,
   ResponseAnimationStyle,
-} from '@lobechat/types';
-import { ChatErrorType } from '@lobechat/types';
-import { fetchEventSource } from '@lobechat/utils/client/fetchEventSource/index';
-import { nanoid } from '@lobechat/utils/uuid';
+} from '@ficlouds/types';
+import { ChatErrorType } from '@ficlouds/types';
+import { fetchEventSource } from '@ficlouds/utils/client/fetchEventSource/index';
+import { nanoid } from '@ficlouds/utils/uuid';
 
 import { getMessageError } from './parseError';
 

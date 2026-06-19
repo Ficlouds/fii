@@ -1,4 +1,4 @@
-import { type LobeChatGroupConfig } from '@lobechat/types';
+import { type FiGroupConfig } from '@ficlouds/types';
 
 import { DEFAULT_CHAT_GROUP_CHAT_CONFIG } from '@/const/settings';
 import { type ChatGroupItem } from '@/database/schemas/chatGroup';
@@ -87,7 +87,7 @@ export class ChatGroupCurdAction {
     await this.#get().refreshGroupDetail(id);
   };
 
-  updateGroupConfig = async (config: Partial<LobeChatGroupConfig>) => {
+  updateGroupConfig = async (config: Partial<FiGroupConfig>) => {
     const group = agentGroupSelectors.currentGroup(this.#get());
     if (!group) return;
 

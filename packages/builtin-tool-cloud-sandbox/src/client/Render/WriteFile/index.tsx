@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { Block, Highlighter } from '@lobehub/ui';
 import { memo } from 'react';
 

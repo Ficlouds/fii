@@ -8,8 +8,8 @@ import type {
   AgentImageSource,
   AgentPromptInput,
   AgentStreamEvent,
-} from '@lobechat/heterogeneous-agents/spawn';
-import { spawnAgent } from '@lobechat/heterogeneous-agents/spawn';
+} from '@ficlouds/heterogeneous-agents/spawn';
+import { spawnAgent } from '@ficlouds/heterogeneous-agents/spawn';
 import type { Command } from 'commander';
 
 import { getTrpcClient } from '../api/client';

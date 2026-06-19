@@ -1,4 +1,4 @@
-import { type AvailableToolItem, availableToolsPrompts } from '@lobechat/prompts';
+import { type AvailableToolItem, availableToolsPrompts } from '@ficlouds/prompts';
 import debug from 'debug';
 
 import { BaseFirstUserContentProvider } from '../base/BaseFirstUserContentProvider';

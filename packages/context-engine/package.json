@@ -1,8 +1,8 @@
 {
-  "name": "@lobechat/context-engine",
+  "name": "@ficlouds/context-engine",
   "version": "0.1.0",
   "private": true,
-  "description": "Context Pipeline Engine for LobeChat - A flexible and configurable context processing system",
+  "description": "Context Pipeline Engine for Fi - A flexible and configurable context processing system",
   "keywords": [
     "context",
     "pipeline",
@@ -18,9 +18,9 @@
     "test:update": "vitest -u"
   },
   "dependencies": {
-    "@lobechat/database": "workspace:*",
-    "@lobechat/prompts": "workspace:*",
-    "@lobechat/utils": "workspace:*",
+    "@ficlouds/database": "workspace:*",
+    "@ficlouds/prompts": "workspace:*",
+    "@ficlouds/utils": "workspace:*",
     "debug": "^4.4.3",
     "es-toolkit": "^1.43.0",
     "immer": "^10.2.0",
@@ -31,7 +31,7 @@
     "xastscript": "^4.0.0"
   },
   "devDependencies": {
-    "@lobechat/types": "workspace:*",
+    "@ficlouds/types": "workspace:*",
     "@types/debug": "^4.1.12"
   }
 }

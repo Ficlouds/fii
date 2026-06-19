@@ -1,5 +1,5 @@
-import { INBOX_SESSION_ID } from '@lobechat/const';
-import type { UserGuide, UserPreference } from '@lobechat/types';
+import { INBOX_SESSION_ID } from '@ficlouds/const';
+import type { UserGuide, UserPreference } from '@ficlouds/types';
 import { TRPCError } from '@trpc/server';
 import dayjs from 'dayjs';
 import { count, eq } from 'drizzle-orm';

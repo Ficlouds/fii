@@ -22,7 +22,7 @@ vi.mock('@/envs/gateway', () => ({
   gatewayEnv: mockEnv,
 }));
 
-vi.mock('@lobechat/device-gateway-client', () => ({
+vi.mock('@ficlouds/device-gateway-client', () => ({
   GatewayHttpClient: MockGatewayHttpClient,
 }));
 

@@ -2,7 +2,7 @@ import type {
   ImessageBridgeConfig,
   ImessageBridgeSaveResult,
   ImessageBridgeStatus,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 
 import ImessageBridgeService from '@/services/imessageBridgeSrv';
 import { createLogger } from '@/utils/logger';

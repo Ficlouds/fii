@@ -9,23 +9,23 @@
  * - Gets model capabilities from provided function
  * - No dependency on frontend stores (useToolStore, useAgentStore, etc.)
  */
-import { AgentDocumentsManifest } from '@lobechat/builtin-tool-agent-documents';
-import { CloudSandboxManifest } from '@lobechat/builtin-tool-cloud-sandbox';
-import { KnowledgeBaseManifest } from '@lobechat/builtin-tool-knowledge-base';
-import { LocalSystemManifest } from '@lobechat/builtin-tool-local-system';
-import { MemoryManifest } from '@lobechat/builtin-tool-memory';
-import { MessageManifest } from '@lobechat/builtin-tool-message';
-import { RemoteDeviceManifest } from '@lobechat/builtin-tool-remote-device';
-import { WebBrowsingManifest } from '@lobechat/builtin-tool-web-browsing';
+import { AgentDocumentsManifest } from '@ficlouds/builtin-tool-agent-documents';
+import { CloudSandboxManifest } from '@ficlouds/builtin-tool-cloud-sandbox';
+import { KnowledgeBaseManifest } from '@ficlouds/builtin-tool-knowledge-base';
+import { LocalSystemManifest } from '@ficlouds/builtin-tool-local-system';
+import { MemoryManifest } from '@ficlouds/builtin-tool-memory';
+import { MessageManifest } from '@ficlouds/builtin-tool-message';
+import { RemoteDeviceManifest } from '@ficlouds/builtin-tool-remote-device';
+import { WebBrowsingManifest } from '@ficlouds/builtin-tool-web-browsing';
 import {
   alwaysOnToolIds,
   builtinTools,
   chatModeAllowedToolIds,
   defaultToolIds,
-} from '@lobechat/builtin-tools';
-import { createEnableChecker, type LobeToolManifest } from '@lobechat/context-engine';
-import { ToolsEngine } from '@lobechat/context-engine';
-import { type RuntimeEnvMode, type RuntimePlatform } from '@lobechat/types';
+} from '@ficlouds/builtin-tools';
+import { createEnableChecker, type FiToolManifest } from '@ficlouds/context-engine';
+import { ToolsEngine } from '@ficlouds/context-engine';
+import { type RuntimeEnvMode, type RuntimePlatform } from '@ficlouds/types';
 import debug from 'debug';
 
 import {
@@ -71,7 +71,7 @@ export const createServerToolsEngine = (
 
   // Get plugin manifests from installed plugins (from database)
   const pluginManifests = context.installedPlugins
-    .map((plugin) => plugin.manifest as LobeToolManifest)
+    .map((plugin) => plugin.manifest as FiToolManifest)
     .filter(Boolean);
 
   // Get builtin tool manifests from the (possibly pre-filtered) list. The
@@ -80,7 +80,7 @@ export const createServerToolsEngine = (
   // and . The enableChecker rules below are defense-in-depth
   // because `allowExplicitActivation` lets activator-driven activation
   // bypass them.
-  const builtinManifests = builtinToolsOverride.map((tool) => tool.manifest as LobeToolManifest);
+  const builtinManifests = builtinToolsOverride.map((tool) => tool.manifest as FiToolManifest);
 
   // Combine all manifests, then drop anything whose identifier the caller
   // has explicitly forbidden for this turn. The post-merge filter closes
@@ -220,7 +220,7 @@ export const createServerAgentToolsEngine = (
   };
 
   return createServerToolsEngine(context, {
-    // Pass additional manifests (e.g., LobeHub Skills)
+    // Pass additional manifests (e.g., Fi Skills)
     additionalManifests,
     // Physically drop device-tool manifests for turns whose access policy
     // denies them. Without this filter, `lobe-activator`'s explicit

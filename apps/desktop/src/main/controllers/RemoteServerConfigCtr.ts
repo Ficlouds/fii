@@ -1,7 +1,7 @@
 import querystring from 'node:querystring';
 import { URL } from 'node:url';
 
-import type { DataSyncConfig } from '@lobechat/electron-client-ipc';
+import type { DataSyncConfig } from '@ficlouds/electron-client-ipc';
 import { safeStorage, session as electronSession } from 'electron';
 
 import { OFFICIAL_CLOUD_SERVER } from '@/const/env';
@@ -39,7 +39,7 @@ const logger = createLogger('controllers:RemoteServerConfigCtr');
 
 /**
  * Remote Server Configuration Controller
- * Used to manage custom remote LobeChat server configuration
+ * Used to manage custom remote Fi server configuration
  */
 export default class RemoteServerConfigCtr extends ControllerModule {
   static override readonly groupName = 'remoteServer';
@@ -537,7 +537,7 @@ export default class RemoteServerConfigCtr extends ControllerModule {
     const session = electronSession.fromPartition(partition);
 
     session.webRequest.onBeforeSendHeaders(
-      { urls: [`https://*.lobehub.com/*`] },
+      { urls: [`https://*.ficlouds.com/*`] },
       async (details, callback) => {
         const requestHeaders = { ...details.requestHeaders };
 

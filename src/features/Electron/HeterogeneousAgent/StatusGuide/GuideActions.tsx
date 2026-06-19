@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { Button, Flexbox } from '@lobehub/ui';
 import { ExternalLink, RotateCcw, Settings2 } from 'lucide-react';
 

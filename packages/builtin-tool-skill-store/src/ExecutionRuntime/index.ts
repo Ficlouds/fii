@@ -1,4 +1,4 @@
-import type { BuiltinServerRuntimeOutput } from '@lobechat/types';
+import type { BuiltinServerRuntimeOutput } from '@ficlouds/types';
 
 import type {
   ImportFromMarketParams,

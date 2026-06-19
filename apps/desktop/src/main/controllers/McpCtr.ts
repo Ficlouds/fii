@@ -16,7 +16,7 @@ const execPromise = promisify(exec);
 const logger = createLogger('controllers:McpCtr');
 
 /**
- * Desktop-only copy of `@lobechat/types`'s `CheckMcpInstallResult`.
+ * Desktop-only copy of `@ficlouds/types`'s `CheckMcpInstallResult`.
  *
  * We intentionally keep it local to avoid pulling the web app's path-alias
  * expectations (e.g. `@/config/*`) into the desktop `tsgo` typecheck.

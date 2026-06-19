@@ -1,7 +1,7 @@
-import { type LobeChatDatabase } from '@lobechat/database';
-import { type DocumentItem } from '@lobechat/database/schemas';
-import { documents, files } from '@lobechat/database/schemas';
-import { loadFile, UnsupportedFileTypeError } from '@lobechat/file-loaders';
+import { type FiDatabase } from '@ficlouds/database';
+import { type DocumentItem } from '@ficlouds/database/schemas';
+import { documents, files } from '@ficlouds/database/schemas';
+import { loadFile, UnsupportedFileTypeError } from '@ficlouds/file-loaders';
 import { TRPCError } from '@trpc/server';
 import debug from 'debug';
 import { and, eq } from 'drizzle-orm';
@@ -48,9 +48,9 @@ export class DocumentService {
   private documentModel: DocumentModel;
   private documentHistoryServiceInstance?: DocumentHistoryService;
   private fileServiceInstance?: FileService;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
     this.fileModel = new FileModel(db, userId);
@@ -315,7 +315,7 @@ export class DocumentService {
    */
   async updateDocument(id: string, params: UpdateDocumentParams): Promise<UpdateDocumentResult> {
     return this.db.transaction(async (tx) => {
-      const transactionDb = tx as unknown as LobeChatDatabase;
+      const transactionDb = tx as unknown as FiDatabase;
       const documentModel = new DocumentModel(transactionDb, this.userId);
       const fileModel = new FileModel(transactionDb, this.userId);
       const documentHistoryService = new DocumentHistoryService(transactionDb, this.userId);

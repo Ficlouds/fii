@@ -1,4 +1,4 @@
-import { DEFAULT_AGENT_CONFIG } from '@lobechat/const';
+import { DEFAULT_AGENT_CONFIG } from '@ficlouds/const';
 import { and, eq, inArray } from 'drizzle-orm';
 import type { LLMParams } from 'model-bank';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -14,11 +14,11 @@ import {
   topics,
   users,
 } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { idGenerator } from '../../utils/idGenerator';
 import { SessionModel } from '../session';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'session-user';
 const sessionModel = new SessionModel(serverDB, userId);

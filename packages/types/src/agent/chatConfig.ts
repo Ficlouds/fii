@@ -24,7 +24,7 @@ export interface AgentSelfIterationChatConfig {
   };
 }
 
-export interface LobeAgentChatConfig extends AgentMemoryChatConfig, AgentSelfIterationChatConfig {
+export interface FiAgentChatConfig extends AgentMemoryChatConfig, AgentSelfIterationChatConfig {
   codexMaxReasoningEffort?: 'low' | 'medium' | 'high' | 'xhigh';
   /**
    * Model ID to use for generating compression summaries
@@ -133,7 +133,7 @@ export interface LobeAgentChatConfig extends AgentMemoryChatConfig, AgentSelfIte
 
   /**
    * Skill activate mode:
-   * - 'auto': Default tools (LobeTools, Skills, SkillStore, etc.) are always active,
+   * - 'auto': Default tools (FiTools, Skills, SkillStore, etc.) are always active,
    *   allowing AI to autonomously activate tools, run skills, and install new skills.
    * - 'manual': Only user-selected tools/skills are active, giving precise control.
    */

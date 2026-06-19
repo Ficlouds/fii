@@ -1,4 +1,4 @@
-import { REMOTE_HETEROGENEOUS_AGENT_CONFIGS } from '@lobechat/heterogeneous-agents';
+import { REMOTE_HETEROGENEOUS_AGENT_CONFIGS } from '@ficlouds/heterogeneous-agents';
 import { z } from 'zod';
 
 import { DeviceModel } from '@/database/models/device';

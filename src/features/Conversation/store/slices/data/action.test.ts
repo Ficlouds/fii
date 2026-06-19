@@ -1,4 +1,4 @@
-import type { UIChatMessage } from '@lobechat/types';
+import type { UIChatMessage } from '@ficlouds/types';
 import { act, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -9,7 +9,7 @@ import { createStore } from '../../index';
 import { dataSelectors } from './selectors';
 
 // Mock conversation-flow parse function
-vi.mock('@lobechat/conversation-flow', () => ({
+vi.mock('@ficlouds/conversation-flow', () => ({
   parse: (messages: UIChatMessage[]) => {
     const messageMap: Record<string, UIChatMessage> = {};
     for (const msg of messages) {

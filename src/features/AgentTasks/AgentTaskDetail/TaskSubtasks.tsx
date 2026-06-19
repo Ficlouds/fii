@@ -1,4 +1,4 @@
-import type { TaskDetailSubtask } from '@lobechat/types';
+import type { TaskDetailSubtask } from '@ficlouds/types';
 import { ActionIcon, Block, Flexbox, Icon, showContextMenu, Text } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';
 import { App, ConfigProvider, Tree } from 'antd';

@@ -1,6 +1,6 @@
 'use client';
 
-import { BRANDING_NAME } from '@lobechat/business-const';
+import { BRANDING_NAME } from '@ficlouds/business-const';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useMatches } from 'react-router-dom';

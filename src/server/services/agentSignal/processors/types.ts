@@ -1,4 +1,4 @@
-import type { RuntimeProcessorResult } from '@lobechat/agent-signal';
+import type { RuntimeProcessorResult } from '@ficlouds/agent-signal';
 
 /**
  * Represents a continue decision without a local value.

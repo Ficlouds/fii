@@ -3,14 +3,14 @@ import { describe, expect, it } from 'vitest';
 import { ToolResolver } from '../ToolResolver';
 import type {
   ActivatedStepTool,
-  LobeToolManifest,
+  FiToolManifest,
   OperationToolSet,
   StepToolDelta,
 } from '../types';
 
 // --- Mock manifests ---
 
-const mockSearchManifest: LobeToolManifest = {
+const mockSearchManifest: FiToolManifest = {
   api: [
     {
       description: 'Search the web',
@@ -23,7 +23,7 @@ const mockSearchManifest: LobeToolManifest = {
   type: 'builtin',
 };
 
-const mockCalcManifest: LobeToolManifest = {
+const mockCalcManifest: FiToolManifest = {
   api: [
     {
       description: 'Calculate expression',
@@ -36,7 +36,7 @@ const mockCalcManifest: LobeToolManifest = {
   type: 'default',
 };
 
-const mockLocalSystemManifest: LobeToolManifest = {
+const mockLocalSystemManifest: FiToolManifest = {
   api: [
     {
       description: 'Run local command',
@@ -56,8 +56,8 @@ const mockLocalSystemManifest: LobeToolManifest = {
 
 // --- Helpers ---
 
-function makeOperationToolSet(manifests: LobeToolManifest[]): OperationToolSet {
-  const manifestMap: Record<string, LobeToolManifest> = {};
+function makeOperationToolSet(manifests: FiToolManifest[]): OperationToolSet {
+  const manifestMap: Record<string, FiToolManifest> = {};
   const sourceMap: Record<string, any> = {};
   const enabledToolIds: string[] = [];
   const tools: any[] = [];
@@ -244,7 +244,7 @@ describe('ToolResolver', () => {
       const opSet = makeOperationToolSet([mockSearchManifest]);
 
       // Manually add a manifest that is NOT in enabledToolIds (simulating the bug)
-      const webBrowsingManifest: LobeToolManifest = {
+      const webBrowsingManifest: FiToolManifest = {
         api: [
           {
             description: 'Search the web',

@@ -1,7 +1,7 @@
 import { and, asc, eq } from 'drizzle-orm';
 
 import { messages } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 
 /**
  * Maximum character length for the query string used in memory search
@@ -13,9 +13,9 @@ const MAX_QUERY_LENGTH = 7000;
  */
 export class UserMemoryTopicRepository {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

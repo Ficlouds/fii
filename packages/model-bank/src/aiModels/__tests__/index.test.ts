@@ -19,7 +19,7 @@ describe('loadModels', () => {
 
     const models = await loadModels({
       providerLoaders: {
-        [ModelProvider.LobeHub]: loader,
+        [ModelProvider.Fi]: loader,
       },
     });
 
@@ -29,7 +29,7 @@ describe('loadModels', () => {
         expect.objectContaining({
           enabled: true,
           id: 'injected-lobehub-model',
-          providerId: ModelProvider.LobeHub,
+          providerId: ModelProvider.Fi,
           source: 'builtin',
           type: 'chat',
         }),
@@ -41,7 +41,7 @@ describe('loadModels', () => {
     await expect(
       loadModels({
         providerLoaders: {
-          [ModelProvider.LobeHub]: undefined,
+          [ModelProvider.Fi]: undefined,
         },
       }),
     ).resolves.toBe(LOBE_DEFAULT_MODEL_LIST);
@@ -53,7 +53,7 @@ describe('loadModels', () => {
     await expect(
       loadModels({
         providerLoaders: {
-          [ModelProvider.LobeHub]: loader,
+          [ModelProvider.Fi]: loader,
         },
       }),
     ).rejects.toThrow('model config missing');

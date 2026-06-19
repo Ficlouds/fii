@@ -1,4 +1,4 @@
-import { type UIChatMessage } from '@lobechat/types';
+import { type UIChatMessage } from '@ficlouds/types';
 import { describe, expect, it } from 'vitest';
 
 import { selectCurrentTurnTodosFromMessages, selectTodosFromMessages } from './dbMessage';
@@ -266,7 +266,7 @@ describe('selectTodosFromMessages', () => {
 });
 
 describe('selectCurrentTurnTodosFromMessages', () => {
-  const lobeAgentMessage = (
+  const fiAgentMessage = (
     text: string,
     status: 'todo' | 'processing' | 'completed',
   ): UIChatMessage =>
@@ -286,9 +286,9 @@ describe('selectCurrentTurnTodosFromMessages', () => {
   it('returns todos from the current turn only', () => {
     const messages: UIChatMessage[] = [
       userMessage('u1'),
-      lobeAgentMessage('turn 1 task', 'completed'),
+      fiAgentMessage('turn 1 task', 'completed'),
       userMessage('u2'),
-      lobeAgentMessage('turn 2 task', 'processing'),
+      fiAgentMessage('turn 2 task', 'processing'),
     ];
 
     const result = selectCurrentTurnTodosFromMessages(messages);
@@ -300,7 +300,7 @@ describe('selectCurrentTurnTodosFromMessages', () => {
   it('returns undefined once a new user turn starts without its own todos', () => {
     const messages: UIChatMessage[] = [
       userMessage('u1'),
-      lobeAgentMessage('previous turn task', 'completed'),
+      fiAgentMessage('previous turn task', 'completed'),
       userMessage('u2'),
     ];
 
@@ -310,7 +310,7 @@ describe('selectCurrentTurnTodosFromMessages', () => {
   });
 
   it('falls back to full history when no user message exists', () => {
-    const messages: UIChatMessage[] = [lobeAgentMessage('greeting task', 'todo')];
+    const messages: UIChatMessage[] = [fiAgentMessage('greeting task', 'todo')];
 
     const result = selectCurrentTurnTodosFromMessages(messages);
 

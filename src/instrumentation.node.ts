@@ -1,4 +1,4 @@
-import { register } from '@lobechat/observability-otel/node';
+import { register } from '@ficlouds/observability-otel/node';
 
 import { version } from '../package.json';
 

@@ -1,4 +1,4 @@
-import { EdgeConfig } from '@lobechat/edge-config';
+import { EdgeConfig } from '@ficlouds/edge-config';
 import debug from 'debug';
 
 import { businessConfigEndpoints } from '@/business/server/lambda-routers/config';

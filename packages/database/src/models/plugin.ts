@@ -1,15 +1,15 @@
-import type { LobeTool } from '@lobechat/types';
+import type { FiTool } from '@ficlouds/types';
 import { and, desc, eq } from 'drizzle-orm';
 
 import type { InstalledPluginItem, NewInstalledPlugin } from '../schemas';
 import { userInstalledPlugins } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export class PluginModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }
@@ -60,7 +60,7 @@ export class PluginModel {
       .where(eq(userInstalledPlugins.userId, this.userId))
       .orderBy(desc(userInstalledPlugins.createdAt));
 
-    return data.map<LobeTool>((item) => ({
+    return data.map<FiTool>((item) => ({
       ...item,
       runtimeType: item.manifest?.type || 'default',
     }));

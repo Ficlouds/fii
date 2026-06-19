@@ -4,22 +4,22 @@ import {
   type AgentState,
   type Cost,
   type Usage,
-} from '@lobechat/agent-runtime';
-import { AgentRuntime, computeStepContext, GeneralChatAgent } from '@lobechat/agent-runtime';
-import { LobeAgentManifest } from '@lobechat/builtin-tool-lobe-agent';
-import { createPathScopeAudit } from '@lobechat/builtin-tool-local-system';
-import { PageAgentIdentifier } from '@lobechat/builtin-tool-page-agent';
-import { manualModeExcludeToolIds } from '@lobechat/builtin-tools';
-import { isDesktop } from '@lobechat/const';
-import { type ToolsEngine } from '@lobechat/context-engine';
-import { buildTaskDetailPrompt, buildTaskListPrompt } from '@lobechat/prompts';
+} from '@ficlouds/agent-runtime';
+import { AgentRuntime, computeStepContext, GeneralChatAgent } from '@ficlouds/agent-runtime';
+import { FiAgentManifest } from '@ficlouds/builtin-tool-fi-agent';
+import { createPathScopeAudit } from '@ficlouds/builtin-tool-local-system';
+import { PageAgentIdentifier } from '@ficlouds/builtin-tool-page-agent';
+import { manualModeExcludeToolIds } from '@ficlouds/builtin-tools';
+import { isDesktop } from '@ficlouds/const';
+import { type ToolsEngine } from '@ficlouds/context-engine';
+import { buildTaskDetailPrompt, buildTaskListPrompt } from '@ficlouds/prompts';
 import {
   type ConversationContext,
   type MessageMetadata,
   type RunSubAgentResult,
   type RuntimeInitialContext,
   type UIChatMessage,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import debug from 'debug';
 import { t } from 'i18next';
 
@@ -251,7 +251,7 @@ export class StreamingExecutorActionImpl {
       ...new Set([
         ...(pluginIds || []),
         ...(hasTopicReference ? ['lobe-topic-reference'] : []),
-        ...(shouldEnableVisualUnderstanding ? [LobeAgentManifest.identifier] : []),
+        ...(shouldEnableVisualUnderstanding ? [FiAgentManifest.identifier] : []),
       ]),
     ];
     const effectivePluginIds = runtimePluginIds.length > 0 ? runtimePluginIds : undefined;

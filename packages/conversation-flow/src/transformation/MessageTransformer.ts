@@ -1,4 +1,4 @@
-import type { AssistantContentBlock, ModelPerformance, ModelUsage } from '@lobechat/types';
+import type { AssistantContentBlock, ModelPerformance, ModelUsage } from '@ficlouds/types';
 
 import type { Message } from '../types';
 

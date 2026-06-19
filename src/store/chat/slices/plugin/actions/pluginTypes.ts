@@ -2,7 +2,7 @@ import {
   type ChatToolPayload,
   type RuntimeStepContext,
   type SubAgentCallbacks,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import debug from 'debug';
 
 import { type MCPToolCallResult } from '@/libs/mcp';
@@ -18,7 +18,7 @@ import { safeParseJSON } from '@/utils/safeParseJSON';
 
 import { dbMessageSelectors } from '../../message/selectors';
 import { type RemoteToolExecutor } from './exector';
-import { klavisExecutor, lobehubSkillExecutor } from './exector';
+import { klavisExecutor, fiSkillExecutor } from './exector';
 
 const log = debug('lobe-store:plugin-types');
 
@@ -50,9 +50,9 @@ export class PluginTypesActionImpl {
       return await this.#get().invokeKlavisTypePlugin(id, payload);
     }
 
-    // Check if this is a LobeHub Skill tool by source field
-    if (payload.source === 'lobehubSkill') {
-      return await this.#get().invokeLobehubSkillTypePlugin(id, payload);
+    // Check if this is a Fi Skill tool by source field
+    if (payload.source === 'fiSkill') {
+      return await this.#get().invokeFiSkillTypePlugin(id, payload);
     }
 
     const params = safeParseJSON(payload.arguments);
@@ -265,15 +265,15 @@ export class PluginTypesActionImpl {
     );
   };
 
-  invokeLobehubSkillTypePlugin = async (
+  invokeFiSkillTypePlugin = async (
     id: string,
     payload: ChatToolPayload,
   ): Promise<string | undefined> => {
     return this.#get().internal_invokeRemoteToolPlugin(
       id,
       payload,
-      lobehubSkillExecutor,
-      'invokeLobehubSkillTypePlugin',
+      fiSkillExecutor,
+      'invokeFiSkillTypePlugin',
     );
   };
 

@@ -2,8 +2,8 @@ import {
   DEFAULT_AGENT_CHAT_CONFIG,
   DEFAULT_AGENT_SEARCH_FC_MODEL,
   isDesktop,
-} from '@lobechat/const';
-import { type LobeAgentChatConfig, type RuntimeEnvMode } from '@lobechat/types';
+} from '@ficlouds/const';
+import { type FiAgentChatConfig, type RuntimeEnvMode } from '@ficlouds/types';
 
 import { type AgentStoreState } from '@/store/agent/initialState';
 
@@ -16,7 +16,7 @@ import { agentSelectors } from './selectors';
 
 const getChatConfigById =
   (agentId: string) =>
-  (s: AgentStoreState): LobeAgentChatConfig =>
+  (s: AgentStoreState): FiAgentChatConfig =>
     agentSelectors.getAgentConfigById(agentId)(s)?.chatConfig || {};
 
 // Return raw chatConfig value without business logic overrides

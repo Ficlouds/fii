@@ -10,7 +10,7 @@ const loadModelsMock = vi.hoisted(() =>
   ]),
 );
 
-vi.mock('@lobechat/business-model-bank/model-config', () => ({
+vi.mock('@ficlouds/business-model-bank/model-config', () => ({
   loadModels: loadModelsMock,
 }));
 

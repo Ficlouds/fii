@@ -1,6 +1,6 @@
 'use client';
 
-import { LOADING_FLAT } from '@lobechat/const';
+import { LOADING_FLAT } from '@ficlouds/const';
 import { Tag } from '@lobehub/ui';
 import isEqual from 'fast-deep-equal';
 import { memo, useCallback } from 'react';

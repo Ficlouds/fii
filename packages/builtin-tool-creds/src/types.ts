@@ -1,4 +1,4 @@
-import type { CredType } from '@lobechat/types';
+import type { CredType } from '@ficlouds/types';
 
 export const CredsApiName = {
   /**
@@ -38,7 +38,7 @@ export const LOBEHUB_OAUTH_PROVIDER_IDS = [
 
 export const LOBEHUB_OAUTH_PROVIDER_LIST = LOBEHUB_OAUTH_PROVIDER_IDS.join(', ');
 
-export type LobehubOAuthProviderId = (typeof LOBEHUB_OAUTH_PROVIDER_IDS)[number];
+export type FiOAuthProviderId = (typeof LOBEHUB_OAUTH_PROVIDER_IDS)[number];
 
 // ==================== Tool Parameter Types ====================
 
@@ -46,7 +46,7 @@ export interface InitiateOAuthConnectParams {
   /**
    * The OAuth provider ID (e.g., 'linear', 'microsoft', 'notion', 'twitter')
    */
-  provider: LobehubOAuthProviderId;
+  provider: FiOAuthProviderId;
 }
 
 export interface InitiateOAuthConnectState {

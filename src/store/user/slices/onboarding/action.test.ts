@@ -1,5 +1,5 @@
-import { CURRENT_ONBOARDING_VERSION } from '@lobechat/const';
-import { MAX_ONBOARDING_STEPS } from '@lobechat/types';
+import { CURRENT_ONBOARDING_VERSION } from '@ficlouds/const';
+import { MAX_ONBOARDING_STEPS } from '@ficlouds/types';
 import { act, renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 

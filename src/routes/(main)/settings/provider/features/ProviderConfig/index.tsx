@@ -1,7 +1,7 @@
 'use client';
 
-import { BRANDING_PROVIDER } from '@lobechat/business-const';
-import { AES_GCM_URL, BASE_PROVIDER_DOC_URL, FORM_STYLE } from '@lobechat/const';
+import { BRANDING_PROVIDER } from '@ficlouds/business-const';
+import { AES_GCM_URL, BASE_PROVIDER_DOC_URL, FORM_STYLE } from '@ficlouds/const';
 import { ProviderCombine } from '@lobehub/icons';
 import { type FormGroupItemType, type FormItemProps } from '@lobehub/ui';
 import {

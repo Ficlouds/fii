@@ -1,4 +1,4 @@
-import { type SkillItem, type SkillSource, skillsPrompts } from '@lobechat/prompts';
+import { type SkillItem, type SkillSource, skillsPrompts } from '@ficlouds/prompts';
 import debug from 'debug';
 
 import { BaseSystemRoleProvider } from '../base/BaseSystemRoleProvider';
@@ -17,7 +17,7 @@ const log = debug('context-engine:provider:SkillContextProvider');
 
 /**
  * Lightweight skill metadata for context injection
- * Compatible with the SkillMeta that will be added in @lobechat/types (Phase 3.2)
+ * Compatible with the SkillMeta that will be added in @ficlouds/types (Phase 3.2)
  */
 export interface SkillMeta {
   /**

@@ -1,4 +1,4 @@
-import { type LobeToolManifest } from '@lobechat/context-engine';
+import { type FiToolManifest } from '@ficlouds/context-engine';
 
 /**
  * Global fallback when neither the LLM nor the tool manifest specifies a
@@ -36,7 +36,7 @@ export interface ResolveToolTimeoutInput {
    */
   args?: Record<string, unknown> | null;
   /** Manifest for the tool being dispatched, looked up by identifier. */
-  manifest?: LobeToolManifest;
+  manifest?: FiToolManifest;
 }
 
 /**

@@ -1,8 +1,8 @@
 import {
-  type LobeAgentChatConfig,
+  type FiAgentChatConfig,
   type OpenAIChatMessage,
   type UIChatMessage,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import * as tokenizerObj from '@/utils/tokenizer';
@@ -75,13 +75,13 @@ describe('chatHelpers', () => {
     ] as UIChatMessage[];
 
     it('returns all messages if history is disabled', () => {
-      const config = { enableHistoryCount: false, historyCount: undefined } as LobeAgentChatConfig;
+      const config = { enableHistoryCount: false, historyCount: undefined } as FiAgentChatConfig;
       const slicedMessages = chatHelpers.getSlicedMessages(messages, config);
       expect(slicedMessages).toEqual(messages);
     });
 
     it('returns last N messages based on historyCount', () => {
-      const config = { enableHistoryCount: true, historyCount: 2 } as LobeAgentChatConfig;
+      const config = { enableHistoryCount: true, historyCount: 2 } as FiAgentChatConfig;
       const slicedMessages = chatHelpers.getSlicedMessages(messages, config);
       expect(slicedMessages).toEqual([
         { id: '2', content: 'Second' },
@@ -90,25 +90,25 @@ describe('chatHelpers', () => {
     });
 
     it('returns empty array when historyCount is negative', () => {
-      const config = { enableHistoryCount: true, historyCount: -1 } as LobeAgentChatConfig;
+      const config = { enableHistoryCount: true, historyCount: -1 } as FiAgentChatConfig;
       const slicedMessages = chatHelpers.getSlicedMessages(messages, config);
       expect(slicedMessages).toEqual([]);
     });
 
     it('returns all messages if historyCount exceeds the array length', () => {
-      const config = { enableHistoryCount: true, historyCount: 5 } as LobeAgentChatConfig;
+      const config = { enableHistoryCount: true, historyCount: 5 } as FiAgentChatConfig;
       const slicedMessages = chatHelpers.getSlicedMessages(messages, config);
       expect(slicedMessages).toEqual(messages);
     });
 
     it('returns an empty array for an empty message array', () => {
-      const config = { enableHistoryCount: true, historyCount: 2 } as LobeAgentChatConfig;
+      const config = { enableHistoryCount: true, historyCount: 2 } as FiAgentChatConfig;
       const slicedMessages = chatHelpers.getSlicedMessages([], config);
       expect(slicedMessages).toEqual([]);
     });
 
     it('returns an empty array when historyCount is zero', () => {
-      const config = { enableHistoryCount: true, historyCount: 0 } as LobeAgentChatConfig;
+      const config = { enableHistoryCount: true, historyCount: 0 } as FiAgentChatConfig;
       const slicedMessages = chatHelpers.getSlicedMessages(messages, config);
       expect(slicedMessages).toEqual([]);
     });

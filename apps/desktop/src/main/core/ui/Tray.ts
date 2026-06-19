@@ -1,6 +1,6 @@
 import path from 'node:path';
 
-import type { MainBroadcastEventKey, MainBroadcastParams } from '@lobechat/electron-client-ipc';
+import type { MainBroadcastEventKey, MainBroadcastParams } from '@ficlouds/electron-client-ipc';
 import type {
   DisplayBalloonOptions,
   Menu as ElectronMenu,

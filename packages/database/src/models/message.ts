@@ -1,5 +1,5 @@
-import { INBOX_SESSION_ID } from '@lobechat/const';
-import { parse } from '@lobechat/conversation-flow';
+import { INBOX_SESSION_ID } from '@ficlouds/const';
+import { parse } from '@ficlouds/conversation-flow';
 import type {
   ChatFileItem,
   ChatImageItem,
@@ -19,14 +19,14 @@ import type {
   UIChatMessage,
   UpdateMessageParams,
   UpdateMessageRAGParams,
-} from '@lobechat/types';
-import { MessageGroupType, ThreadType } from '@lobechat/types';
-import type { TimingSink } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { MessageGroupType, ThreadType } from '@ficlouds/types';
+import type { TimingSink } from '@ficlouds/utils';
 import {
   getDurationMs,
   logTimingSink as logTiming,
   runTimedSinkStage as runTimedStage,
-} from '@lobechat/utils';
+} from '@ficlouds/utils';
 import type { HeatmapsProps } from '@lobehub/charts';
 import dayjs from 'dayjs';
 import type { SQL } from 'drizzle-orm';
@@ -69,7 +69,7 @@ import {
   threads,
   topics,
 } from '../schemas';
-import type { LobeChatDatabase, Transaction } from '../type';
+import type { FiDatabase, Transaction } from '../type';
 import { sanitizeBm25Query } from '../utils/bm25';
 import { genEndDateWhere, genRangeWhere, genStartDateWhere, genWhere } from '../utils/genWhere';
 import { idGenerator } from '../utils/idGenerator';
@@ -189,9 +189,9 @@ interface SplitCreateMessageParams {
 
 export class MessageModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }
@@ -2462,7 +2462,7 @@ export class MessageModel {
    * Check which user IDs from the given list have at least one message.
    */
   static checkUsersHaveMessages = async (
-    db: LobeChatDatabase,
+    db: FiDatabase,
     userIds: string[],
   ): Promise<Set<string>> => {
     if (userIds.length === 0) return new Set();

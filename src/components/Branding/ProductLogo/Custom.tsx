@@ -1,10 +1,9 @@
-import { BRANDING_LOGO_URL, BRANDING_NAME } from '@lobechat/business-const';
+import { BRANDING_LOGO_URL, BRANDING_NAME } from '@ficlouds/business-const';
 import { type IconType } from '@lobehub/icons';
 import { type FlexboxProps } from '@lobehub/ui';
 import { Flexbox } from '@lobehub/ui';
-import { type LobeChatProps } from '@lobehub/ui/brand';
 import { createStaticStyles, cssVar } from 'antd-style';
-import { type ReactNode } from 'react';
+import { type CSSProperties, type ReactNode } from 'react';
 import { memo } from 'react';
 
 import { type ImageProps } from '@/libs/next/Image';
@@ -69,7 +68,16 @@ const Divider: IconType = (({ ref, size = '1em', style, ...rest }) => (
   </svg>
 )) as IconType;
 
-const CustomLogo = memo<LobeChatProps>(({ extra, size = 32, className, style, type, ...rest }) => {
+interface FiProps {
+  className?: string;
+  extra?: string;
+  size?: number;
+  style?: CSSProperties;
+  type?: 'combine' | '3d' | 'flat' | 'mono' | 'text';
+  [key: string]: unknown;
+}
+
+const CustomLogo = memo<FiProps>(({ extra, size = 32, className, style, type, ...rest }) => {
   let logoComponent: ReactNode;
 
   switch (type) {

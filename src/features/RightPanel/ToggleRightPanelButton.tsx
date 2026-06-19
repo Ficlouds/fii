@@ -1,6 +1,6 @@
 'use client';
 
-import { HotkeyEnum } from '@lobechat/const/hotkeys';
+import { HotkeyEnum } from '@ficlouds/const/hotkeys';
 import { type ActionIconProps } from '@lobehub/ui';
 import { ActionIcon } from '@lobehub/ui';
 import { PanelRightClose, PanelRightOpen } from 'lucide-react';

@@ -1,4 +1,4 @@
-import type { SkillManifest, SkillResourceMeta } from '@lobechat/types';
+import type { SkillManifest, SkillResourceMeta } from '@ficlouds/types';
 import { relations } from 'drizzle-orm';
 import { index, jsonb, pgTable, text, uniqueIndex, varchar } from 'drizzle-orm/pg-core';
 

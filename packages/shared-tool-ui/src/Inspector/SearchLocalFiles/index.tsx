@@ -1,7 +1,7 @@
 'use client';
 
-import type { SearchFilesState } from '@lobechat/tool-runtime';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import type { SearchFilesState } from '@ficlouds/tool-runtime';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { Text } from '@lobehub/ui';
 import { cssVar, cx } from 'antd-style';
 import { memo } from 'react';

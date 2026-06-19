@@ -4,7 +4,7 @@ import type {
   GenerationConfig,
   ImageGenerationAsset,
   VideoGenerationAsset,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import debug from 'debug';
 import { and, eq } from 'drizzle-orm';
 
@@ -16,18 +16,18 @@ import type {
   NewGenerationBatch,
 } from '../schemas/generation';
 import { generationBatches } from '../schemas/generation';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 import { GenerationModel } from './generation';
 
 const log = debug('lobe-image:generation-batch-model');
 
 export class GenerationBatchModel {
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private userId: string;
   private fileService: FileService;
   private generationModel: GenerationModel;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
     this.fileService = new FileService(db, userId);

@@ -1,6 +1,6 @@
 import { parse as parsePartialJSON } from 'partial-json';
 
-import type { LobeToolManifest } from './types';
+import type { FiToolManifest } from './types';
 
 /**
  * JSON Schema type for tool parameters
@@ -54,13 +54,13 @@ const safeParseJSON = <T = Record<string, unknown>>(text?: string): T | undefine
  * ```
  */
 export class ToolArgumentsRepairer {
-  private manifest?: LobeToolManifest;
+  private manifest?: FiToolManifest;
 
   /**
    * Create a new ToolArgumentsRepairer
    * @param manifest - Tool manifest for schema lookup
    */
-  constructor(manifest?: LobeToolManifest) {
+  constructor(manifest?: FiToolManifest) {
     this.manifest = manifest;
   }
 

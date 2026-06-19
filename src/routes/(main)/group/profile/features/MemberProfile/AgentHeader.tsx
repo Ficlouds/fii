@@ -1,6 +1,6 @@
 'use client';
 
-import { DEFAULT_AVATAR, EDITOR_DEBOUNCE_TIME } from '@lobechat/const';
+import { DEFAULT_AVATAR, EDITOR_DEBOUNCE_TIME } from '@ficlouds/const';
 import { Block, Flexbox, Icon, Input, Skeleton, Tooltip } from '@lobehub/ui';
 import { useDebounceFn } from 'ahooks';
 import { message } from 'antd';

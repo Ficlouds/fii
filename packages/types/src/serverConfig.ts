@@ -68,7 +68,7 @@ export interface GlobalServerConfig {
   enabledOAuthSSO?: boolean;
   enableEmailVerification?: boolean;
   enableKlavis?: boolean;
-  enableLobehubSkill?: boolean;
+  enableFiSkill?: boolean;
   enableMagicLink?: boolean;
   enableMarketTrustedClient?: boolean;
   enableUploadFileToServer?: boolean;

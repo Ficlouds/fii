@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { DEFAULT_AGENT_CONFIG } from '@lobechat/const';
+import { DEFAULT_AGENT_CONFIG } from '@ficlouds/const';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AgentModel } from '@/database/models/agent';

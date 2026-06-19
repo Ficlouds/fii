@@ -4,18 +4,18 @@
  * Central registry for all builtin tool executors.
  * Executors are registered as class instances by identifier.
  */
-import { agentBuilderExecutor } from '@lobechat/builtin-tool-agent-builder/executor';
-import { agentManagementExecutor } from '@lobechat/builtin-tool-agent-management/executor';
-import { calculatorExecutor } from '@lobechat/builtin-tool-calculator/executor';
-import { cloudSandboxExecutor } from '@lobechat/builtin-tool-cloud-sandbox/executor';
-import { credsExecutor } from '@lobechat/builtin-tool-creds/executor';
-import { groupAgentBuilderExecutor } from '@lobechat/builtin-tool-group-agent-builder/executor';
-import { groupManagementExecutor } from '@lobechat/builtin-tool-group-management/executor';
-import { knowledgeBaseExecutor } from '@lobechat/builtin-tool-knowledge-base/client';
-import { lobeAgentExecutor } from '@lobechat/builtin-tool-lobe-agent/client';
-import { localSystemExecutor } from '@lobechat/builtin-tool-local-system/client';
-import { memoryExecutor } from '@lobechat/builtin-tool-memory/executor';
-import { taskExecutor } from '@lobechat/builtin-tool-task/client';
+import { agentBuilderExecutor } from '@ficlouds/builtin-tool-agent-builder/executor';
+import { agentManagementExecutor } from '@ficlouds/builtin-tool-agent-management/executor';
+import { calculatorExecutor } from '@ficlouds/builtin-tool-calculator/executor';
+import { cloudSandboxExecutor } from '@ficlouds/builtin-tool-cloud-sandbox/executor';
+import { credsExecutor } from '@ficlouds/builtin-tool-creds/executor';
+import { groupAgentBuilderExecutor } from '@ficlouds/builtin-tool-group-agent-builder/executor';
+import { groupManagementExecutor } from '@ficlouds/builtin-tool-group-management/executor';
+import { knowledgeBaseExecutor } from '@ficlouds/builtin-tool-knowledge-base/client';
+import { fiAgentExecutor } from '@ficlouds/builtin-tool-fi-agent/client';
+import { localSystemExecutor } from '@ficlouds/builtin-tool-local-system/client';
+import { memoryExecutor } from '@ficlouds/builtin-tool-memory/executor';
+import { taskExecutor } from '@ficlouds/builtin-tool-task/client';
 
 import type { BuiltinToolContext, BuiltinToolResult, IBuiltinToolExecutor } from '../types';
 import { activatorExecutor } from './lobe-activator';
@@ -152,7 +152,7 @@ registerExecutors([
   activatorExecutor,
   topicReferenceExecutor,
   userInteractionExecutor,
-  lobeAgentExecutor,
+  fiAgentExecutor,
   webOnboardingExecutor,
   webBrowsing,
 ]);

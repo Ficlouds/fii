@@ -2,8 +2,8 @@ import {
   type CreateNewEvalDatasets,
   type EvalDatasetRecord,
   type RAGEvalDataSetItem,
-} from '@lobechat/types';
-import { insertEvalDatasetRecordSchema } from '@lobechat/types';
+} from '@ficlouds/types';
+import { insertEvalDatasetRecordSchema } from '@ficlouds/types';
 import i18n from 'i18next';
 import { type SWRResponse } from 'swr';
 

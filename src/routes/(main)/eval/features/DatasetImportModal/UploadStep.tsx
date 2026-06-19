@@ -1,6 +1,6 @@
 'use client';
 
-import { type FileUploadState } from '@lobechat/types';
+import { type FileUploadState } from '@ficlouds/types';
 import { Center, Flexbox, Icon, Tag } from '@lobehub/ui';
 import { Divider, Progress, Upload } from 'antd';
 import { createStaticStyles } from 'antd-style';

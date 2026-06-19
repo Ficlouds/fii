@@ -1,4 +1,4 @@
-import { LOBE_CHAT_CLOUD } from '@lobechat/business-const';
+import { LOBE_CHAT_CLOUD } from '@ficlouds/business-const';
 import { LibraryBig } from 'lucide-react';
 import { memo, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -1,4 +1,4 @@
-import type { ModelTokensUsage } from '@lobechat/types';
+import type { ModelTokensUsage } from '@ficlouds/types';
 import type { Pricing, PricingUnitName } from 'model-bank';
 import { estimateTokenCount } from 'tokenx';
 

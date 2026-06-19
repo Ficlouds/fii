@@ -1,13 +1,13 @@
 // cspell:ignore tokenx
-import { filesPrompts } from '@lobechat/prompts';
+import { filesPrompts } from '@ficlouds/prompts';
 import type {
   ChatFileItem,
   ChatImageItem,
   ChatVideoItem,
   UIChatMessage,
   UploadFileItem,
-} from '@lobechat/types';
-import { getMimeType } from '@lobechat/utils/mimeType';
+} from '@ficlouds/types';
+import { getMimeType } from '@ficlouds/utils/mimeType';
 import { estimateTokenCount } from 'tokenx';
 
 const ESTIMATE_INPUT_MESSAGE_ID = '__cost_estimate_input__';

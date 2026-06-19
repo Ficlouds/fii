@@ -1,4 +1,4 @@
-import type { TaskStatus } from '@lobechat/types';
+import type { TaskStatus } from '@ficlouds/types';
 import { Block, Icon, Text, Tooltip } from '@lobehub/ui';
 import { cssVar, useThemeMode } from 'antd-style';
 import { UserCircle2 } from 'lucide-react';

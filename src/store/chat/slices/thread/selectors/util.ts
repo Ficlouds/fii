@@ -1,5 +1,5 @@
-import { type IThreadType, type UIChatMessage } from '@lobechat/types';
-import { ThreadType } from '@lobechat/types';
+import { type IThreadType, type UIChatMessage } from '@ficlouds/types';
+import { ThreadType } from '@ficlouds/types';
 
 /**
  * Generate parent messages for thread display

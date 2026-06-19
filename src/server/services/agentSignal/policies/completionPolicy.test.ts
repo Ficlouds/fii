@@ -1,6 +1,6 @@
 // @vitest-environment node
-import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
-import { BUILTIN_AGENT_SLUGS } from '@lobechat/builtin-agents';
+import { AGENT_SIGNAL_SOURCE_TYPES } from '@ficlouds/agent-signal/source';
+import { BUILTIN_AGENT_SLUGS } from '@ficlouds/builtin-agents';
 import { describe, expect, it, vi } from 'vitest';
 
 import { createCompletionPolicy } from './completionPolicy';

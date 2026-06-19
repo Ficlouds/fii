@@ -4,7 +4,7 @@ import type {
   AiProviderRuntimeConfig,
   CreateAiProviderParams,
   UpdateAiProviderConfigParams,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { and, asc, desc, eq } from 'drizzle-orm';
 import { isEmpty } from 'es-toolkit/compat';
 import { ModelProvider } from 'model-bank';
@@ -14,7 +14,7 @@ import { merge } from '@/utils/merge';
 
 import type { AiProviderSelectItem } from '../schemas';
 import { aiModels, aiProviders } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 type DecryptUserKeyVaults = (encryptKeyVaultsStr: string | null) => Promise<any>;
 
@@ -22,9 +22,9 @@ type EncryptUserKeyVaults = (keyVaults: string) => Promise<string>;
 
 export class AiProviderModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

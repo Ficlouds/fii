@@ -1,6 +1,6 @@
-import type { GenerateObjectSchema } from '@lobechat/model-runtime';
-import type { LayersEnum } from '@lobechat/types';
-import { ActivityTypeEnum, TypesEnum } from '@lobechat/types';
+import type { GenerateObjectSchema } from '@ficlouds/model-runtime';
+import type { LayersEnum } from '@ficlouds/types';
+import { ActivityTypeEnum, TypesEnum } from '@ficlouds/types';
 import type { JSONSchema7 } from 'json-schema';
 import { z } from 'zod';
 

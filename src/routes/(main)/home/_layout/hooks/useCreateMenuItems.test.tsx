@@ -16,11 +16,11 @@ const createNewPageMock = vi.hoisted(() => vi.fn());
 const messageErrorMock = vi.hoisted(() => vi.fn());
 const navigateMock = vi.hoisted(() => vi.fn());
 
-vi.mock('@lobechat/const', () => ({
+vi.mock('@ficlouds/const', () => ({
   isDesktop: true,
 }));
 
-vi.mock('@lobechat/heterogeneous-agents/client', () => ({
+vi.mock('@ficlouds/heterogeneous-agents/client', () => ({
   HETEROGENEOUS_AGENT_CLIENT_CONFIGS: [
     {
       avatar: 'claude-avatar',

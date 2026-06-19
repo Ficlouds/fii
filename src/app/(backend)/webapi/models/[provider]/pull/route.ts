@@ -1,5 +1,5 @@
-import { type ChatCompletionErrorPayload, type PullModelParams } from '@lobechat/model-runtime';
-import { ChatErrorType } from '@lobechat/types';
+import { type ChatCompletionErrorPayload, type PullModelParams } from '@ficlouds/model-runtime';
+import { ChatErrorType } from '@ficlouds/types';
 
 import { checkAuth } from '@/app/(backend)/middleware/auth';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';

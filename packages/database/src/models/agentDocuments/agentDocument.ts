@@ -2,7 +2,7 @@ import { and, asc, desc, eq, inArray, isNotNull, isNull } from 'drizzle-orm';
 
 import type { DocumentItem, NewAgentDocument, NewDocument } from '../../schemas';
 import { agentDocuments, documents } from '../../schemas';
-import type { LobeChatDatabase, Transaction } from '../../type';
+import type { FiDatabase, Transaction } from '../../type';
 import { deriveAgentDocumentFields } from './deriveFields';
 import { buildDocumentFilename } from './filename';
 import {
@@ -69,9 +69,9 @@ interface ConvertAgentDocumentToSkillIndexParams {
 
 export class AgentDocumentModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

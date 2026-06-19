@@ -1,12 +1,12 @@
-import { type MessageTextChunk } from '@lobechat/fetch-sse';
+import { type MessageTextChunk } from '@ficlouds/fetch-sse';
 import {
   chainPickEmoji,
   chainSummaryAgentName,
   chainSummaryDescription,
   chainSummaryTags,
-} from '@lobechat/prompts';
-import { type TracePayload } from '@lobechat/types';
-import { TraceNameMap, TraceTopicType } from '@lobechat/types';
+} from '@ficlouds/prompts';
+import { type TracePayload } from '@ficlouds/types';
+import { TraceNameMap, TraceTopicType } from '@ficlouds/types';
 import { getSingletonAnalyticsOptional } from '@lobehub/analytics';
 import { type PartialDeep } from 'type-fest';
 import { type StateCreator } from 'zustand/vanilla';
@@ -15,7 +15,7 @@ import { chatService } from '@/services/chat';
 import { globalHelpers } from '@/store/global/helpers';
 import { useUserStore } from '@/store/user';
 import { systemAgentSelectors } from '@/store/user/slices/settings/selectors';
-import { type LobeAgentChatConfig, type LobeAgentConfig } from '@/types/agent';
+import { type FiAgentChatConfig, type FiAgentConfig } from '@/types/agent';
 import { type MetaData } from '@/types/meta';
 import { type SystemAgentItem } from '@/types/user/settings';
 import { merge } from '@/utils/merge';
@@ -63,10 +63,10 @@ export interface Action extends PublicAction {
   resetAgentConfig: () => Promise<void>;
 
   resetAgentMeta: () => Promise<void>;
-  setAgentConfig: (config: PartialDeep<LobeAgentConfig>) => Promise<void>;
+  setAgentConfig: (config: PartialDeep<FiAgentConfig>) => Promise<void>;
   setAgentMeta: (meta: Partial<MetaData>) => Promise<void>;
 
-  setChatConfig: (config: Partial<LobeAgentChatConfig>) => Promise<void>;
+  setChatConfig: (config: Partial<FiAgentChatConfig>) => Promise<void>;
   streamUpdateMetaArray: (key: keyof MetaData) => any;
   streamUpdateMetaString: (key: keyof MetaData) => any;
   toggleAgentPlugin: (pluginId: string, state?: boolean) => void;

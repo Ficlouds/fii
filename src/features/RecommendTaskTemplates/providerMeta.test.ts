@@ -1,4 +1,4 @@
-import type { TaskTemplateSkillRequirement } from '@lobechat/const';
+import type { TaskTemplateSkillRequirement } from '@ficlouds/const';
 import { describe, expect, it } from 'vitest';
 
 import { findNextUnconnectedSpec, getProviderMeta } from './providerMeta';

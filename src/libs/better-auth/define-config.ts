@@ -1,8 +1,8 @@
 import { expo } from '@better-auth/expo';
 import { passkey } from '@better-auth/passkey';
-import { ENABLE_BUSINESS_FEATURES } from '@lobechat/business-const';
-import { createNanoId, idGenerator, serverDB } from '@lobechat/database';
-import * as schema from '@lobechat/database/schemas';
+import { ENABLE_BUSINESS_FEATURES } from '@ficlouds/business-const';
+import { createNanoId, idGenerator, serverDB } from '@ficlouds/database';
+import * as schema from '@ficlouds/database/schemas';
 import bcrypt from 'bcryptjs';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { verifyPassword as defaultVerifyPassword } from 'better-auth/crypto';
@@ -291,8 +291,8 @@ export function defineConfig(customOptions: CustomBetterAuthOptions) {
         },
       }),
       passkey({
-        rpName: 'LobeHub',
-        // Extract rpID from auth URL (e.g., 'lobehub.com' from 'https://lobehub.com')
+        rpName: 'Fi',
+        // Extract rpID from auth URL (e.g., 'ficlouds.com' from 'https://ficlouds.com')
         // Returns undefined if AUTH_URL is not set (e.g., in e2e tests)
         rpID: getPasskeyRpID(),
         // Support multiple origins: web + Android APK key hashes

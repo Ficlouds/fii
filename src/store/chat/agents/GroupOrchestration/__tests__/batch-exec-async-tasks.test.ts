@@ -1,6 +1,6 @@
-import { type AgentState } from '@lobechat/agent-runtime';
-import { ThreadStatus } from '@lobechat/types';
-import { nanoid } from '@lobechat/utils';
+import { type AgentState } from '@ficlouds/agent-runtime';
+import { ThreadStatus } from '@ficlouds/types';
+import { nanoid } from '@ficlouds/utils';
 import { describe, expect, it, vi } from 'vitest';
 
 import { aiAgentService } from '@/services/aiAgent';

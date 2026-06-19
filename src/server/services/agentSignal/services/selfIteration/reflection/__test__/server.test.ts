@@ -1,10 +1,10 @@
 // @vitest-environment node
-import { createSource } from '@lobechat/agent-signal';
-import type { SourceAgentSelfReflectionRequested } from '@lobechat/agent-signal/source';
-import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
+import { createSource } from '@ficlouds/agent-signal';
+import type { SourceAgentSelfReflectionRequested } from '@ficlouds/agent-signal/source';
+import { AGENT_SIGNAL_SOURCE_TYPES } from '@ficlouds/agent-signal/source';
 import { describe, expect, it, vi } from 'vitest';
 
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 
 import type { SelfReflectionReviewContext } from '../handler';
 import { createServerSelfReflectionPolicyOptions } from '../server';
@@ -51,7 +51,7 @@ describe('createServerSelfReflectionPolicyOptions', () => {
   it('builds source-scoped self-iteration executor runtime and disables legacy planner execution', async () => {
     const options = createServerSelfReflectionPolicyOptions({
       agentId: 'agent-1',
-      db: {} as unknown as LobeChatDatabase,
+      db: {} as unknown as FiDatabase,
       selfIterationEnabled: true,
       userId: 'user-1',
     });

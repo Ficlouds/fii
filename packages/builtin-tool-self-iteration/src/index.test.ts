@@ -1,4 +1,4 @@
-import type { LobeToolManifest, OperationToolSet, ToolSource } from '@lobechat/context-engine';
+import type { FiToolManifest, OperationToolSet, ToolSource } from '@ficlouds/context-engine';
 import { describe, expect, it, vi } from 'vitest';
 
 import {
@@ -13,7 +13,7 @@ import {
 
 interface ToolSetParts {
   enabledToolIds: string[];
-  manifestMap: Record<string, LobeToolManifest>;
+  manifestMap: Record<string, FiToolManifest>;
   sourceMap: Record<string, ToolSource>;
   tools: OperationToolSet['tools'];
 }

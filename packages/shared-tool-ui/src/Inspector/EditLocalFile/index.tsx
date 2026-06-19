@@ -1,7 +1,7 @@
 'use client';
 
-import type { EditFileState } from '@lobechat/tool-runtime';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import type { EditFileState } from '@ficlouds/tool-runtime';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { Icon, Text } from '@lobehub/ui';
 import { createStaticStyles, cssVar, cx } from 'antd-style';
 import { Minus, Plus } from 'lucide-react';

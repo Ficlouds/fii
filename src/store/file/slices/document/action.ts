@@ -1,4 +1,4 @@
-import { createNanoId } from '@lobechat/utils';
+import { createNanoId } from '@ficlouds/utils';
 import { type SWRResponse } from 'swr';
 
 import { useClientDataSWRWithSync } from '@/libs/swr';

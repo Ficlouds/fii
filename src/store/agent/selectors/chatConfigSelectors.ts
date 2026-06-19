@@ -1,4 +1,4 @@
-import { type LobeAgentChatConfig } from '@lobechat/types';
+import { type FiAgentChatConfig } from '@ficlouds/types';
 
 import { type AgentStoreState } from '@/store/agent/initialState';
 
@@ -6,7 +6,7 @@ import { chatConfigByIdSelectors } from './chatConfigByIdSelectors';
 
 // ============ Current Agent Selectors (reuses chatConfigByIdSelectors) ============ //
 
-const currentChatConfig = (s: AgentStoreState): LobeAgentChatConfig =>
+const currentChatConfig = (s: AgentStoreState): FiAgentChatConfig =>
   chatConfigByIdSelectors.getChatConfigById(s.activeAgentId || '')(s);
 
 const agentSearchMode = (s: AgentStoreState) =>

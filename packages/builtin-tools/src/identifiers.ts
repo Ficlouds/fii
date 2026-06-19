@@ -1,25 +1,25 @@
-import { LobeActivatorManifest } from '@lobechat/builtin-tool-activator';
-import { AgentBuilderManifest } from '@lobechat/builtin-tool-agent-builder';
-import { AgentDocumentsManifest } from '@lobechat/builtin-tool-agent-documents';
-import { AgentManagementManifest } from '@lobechat/builtin-tool-agent-management';
-import { CalculatorManifest } from '@lobechat/builtin-tool-calculator';
-import { CloudSandboxManifest } from '@lobechat/builtin-tool-cloud-sandbox';
-import { CredsManifest } from '@lobechat/builtin-tool-creds';
-import { GroupAgentBuilderManifest } from '@lobechat/builtin-tool-group-agent-builder';
-import { GroupManagementManifest } from '@lobechat/builtin-tool-group-management';
-import { KnowledgeBaseManifest } from '@lobechat/builtin-tool-knowledge-base';
-import { LobeAgentManifest } from '@lobechat/builtin-tool-lobe-agent';
-import { LocalSystemManifest } from '@lobechat/builtin-tool-local-system';
-import { MemoryManifest } from '@lobechat/builtin-tool-memory';
-import { NotebookManifest } from '@lobechat/builtin-tool-notebook';
-import { PageAgentManifest } from '@lobechat/builtin-tool-page-agent';
-import { selfFeedbackIntentManifest } from '@lobechat/builtin-tool-self-iteration';
-import { SkillStoreManifest } from '@lobechat/builtin-tool-skill-store';
-import { SkillsManifest } from '@lobechat/builtin-tool-skills';
-import { TopicReferenceManifest } from '@lobechat/builtin-tool-topic-reference';
-import { UserInteractionManifest } from '@lobechat/builtin-tool-user-interaction';
-import { WebBrowsingManifest } from '@lobechat/builtin-tool-web-browsing';
-import { WebOnboardingManifest } from '@lobechat/builtin-tool-web-onboarding';
+import { LobeActivatorManifest } from '@ficlouds/builtin-tool-activator';
+import { AgentBuilderManifest } from '@ficlouds/builtin-tool-agent-builder';
+import { AgentDocumentsManifest } from '@ficlouds/builtin-tool-agent-documents';
+import { AgentManagementManifest } from '@ficlouds/builtin-tool-agent-management';
+import { CalculatorManifest } from '@ficlouds/builtin-tool-calculator';
+import { CloudSandboxManifest } from '@ficlouds/builtin-tool-cloud-sandbox';
+import { CredsManifest } from '@ficlouds/builtin-tool-creds';
+import { GroupAgentBuilderManifest } from '@ficlouds/builtin-tool-group-agent-builder';
+import { GroupManagementManifest } from '@ficlouds/builtin-tool-group-management';
+import { KnowledgeBaseManifest } from '@ficlouds/builtin-tool-knowledge-base';
+import { FiAgentManifest } from '@ficlouds/builtin-tool-fi-agent';
+import { LocalSystemManifest } from '@ficlouds/builtin-tool-local-system';
+import { MemoryManifest } from '@ficlouds/builtin-tool-memory';
+import { NotebookManifest } from '@ficlouds/builtin-tool-notebook';
+import { PageAgentManifest } from '@ficlouds/builtin-tool-page-agent';
+import { selfFeedbackIntentManifest } from '@ficlouds/builtin-tool-self-iteration';
+import { SkillStoreManifest } from '@ficlouds/builtin-tool-skill-store';
+import { SkillsManifest } from '@ficlouds/builtin-tool-skills';
+import { TopicReferenceManifest } from '@ficlouds/builtin-tool-topic-reference';
+import { UserInteractionManifest } from '@ficlouds/builtin-tool-user-interaction';
+import { WebBrowsingManifest } from '@ficlouds/builtin-tool-web-browsing';
+import { WebOnboardingManifest } from '@ficlouds/builtin-tool-web-onboarding';
 
 export const builtinToolIdentifiers: string[] = [
   AgentBuilderManifest.identifier,
@@ -42,6 +42,6 @@ export const builtinToolIdentifiers: string[] = [
   LobeActivatorManifest.identifier,
   WebBrowsingManifest.identifier,
   UserInteractionManifest.identifier,
-  LobeAgentManifest.identifier,
+  FiAgentManifest.identifier,
   WebOnboardingManifest.identifier,
 ];

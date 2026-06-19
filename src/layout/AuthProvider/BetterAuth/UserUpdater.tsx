@@ -5,7 +5,7 @@ import { createStoreUpdater } from 'zustand-utils';
 
 import { useSession } from '@/libs/better-auth/auth-client';
 import { useUserStore } from '@/store/user';
-import { type LobeUser } from '@/types/user';
+import { type FiUser } from '@/types/user';
 
 /**
  * Sync Better-Auth session state to Zustand store
@@ -50,7 +50,7 @@ const UserUpdater = memo(() => {
             fullName: betterAuthUser.name,
             id: betterAuthUser.id,
             username: betterAuthUser.username,
-          } as LobeUser,
+          } as FiUser,
         };
       });
       return;

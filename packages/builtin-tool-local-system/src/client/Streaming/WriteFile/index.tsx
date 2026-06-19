@@ -1,7 +1,7 @@
 'use client';
 
-import type { WriteLocalFileParams } from '@lobechat/electron-client-ipc';
-import type { BuiltinStreamingProps } from '@lobechat/types';
+import type { WriteLocalFileParams } from '@ficlouds/electron-client-ipc';
+import type { BuiltinStreamingProps } from '@ficlouds/types';
 import { Highlighter, Markdown } from '@lobehub/ui';
 import path from 'path-browserify-esm';
 import { memo } from 'react';

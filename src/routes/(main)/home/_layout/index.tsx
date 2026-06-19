@@ -1,6 +1,6 @@
 import { Flexbox } from '@lobehub/ui';
 import { useTheme } from 'antd-style';
-import { type FC, type ReactNode, useEffect, useMemo, useState } from 'react';
+import { type FC, type ReactNode, useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import { useIsDark } from '@/hooks/useIsDark';
@@ -19,12 +19,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const theme = useTheme();
   const { pathname } = useLocation();
   const isHomeRoute = pathname === '/';
-  const [hasActivated, setHasActivated] = useState(true);
   const content = children ?? <Outlet />;
-
-  useEffect(() => {
-    if (isHomeRoute) setHasActivated(true);
-  }, [isHomeRoute]);
 
   const cssVariables = useMemo<Record<string, string>>(
     () => ({
@@ -33,17 +28,17 @@ const Layout: FC<LayoutProps> = ({ children }) => {
     [theme.colorBgContainerSecondary],
   );
 
-  if (!hasActivated) return null;
-
   return (
     <>
       {/* Register sidebar content via portal - no layout impact */}
       <Sidebar />
+      {/* Hidden via display:none on non-home routes so React state (chat) is preserved
+          but the home content doesn't cover the route Outlet */}
       <Flexbox
         className={isDarkMode ? styles.contentDark : styles.contentLight}
         flex={1}
         height={'100%'}
-        style={{ ...cssVariables, transition: 'width 0.15s ease, flex 0.15s ease' }}
+        style={{ ...cssVariables, display: isHomeRoute ? undefined : 'none', transition: 'width 0.15s ease, flex 0.15s ease' }}
         width={'100%'}
       >
         {content}

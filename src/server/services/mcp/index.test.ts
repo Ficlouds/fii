@@ -223,7 +223,7 @@ describe('MCPService', () => {
       args: ['--test'],
     };
 
-    it('should successfully list tools and transform to LobeChatPluginApi format', async () => {
+    it('should successfully list tools and transform to FiPluginApi format', async () => {
       const mockTools = [
         {
           name: 'tool1',

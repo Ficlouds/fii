@@ -42,7 +42,7 @@ vi.mock('@/const/env', () => ({
   isWindows: true,
 }));
 
-vi.mock('@lobechat/desktop-bridge', () => ({
+vi.mock('@ficlouds/desktop-bridge', () => ({
   TITLE_BAR_HEIGHT: 38,
 }));
 

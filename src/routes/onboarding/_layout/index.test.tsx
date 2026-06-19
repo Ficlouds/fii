@@ -1,5 +1,5 @@
-import type * as BusinessConst from '@lobechat/business-const';
-import type * as Const from '@lobechat/const';
+import type * as BusinessConst from '@ficlouds/business-const';
+import type * as Const from '@ficlouds/const';
 import { cleanup, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -13,7 +13,7 @@ const mocks = vi.hoisted(() => ({
   serverConfigInit: true,
 }));
 
-vi.mock('@lobechat/business-const', async (importOriginal) => {
+vi.mock('@ficlouds/business-const', async (importOriginal) => {
   const actual = (await importOriginal()) as typeof BusinessConst;
   return {
     ...actual,
@@ -23,7 +23,7 @@ vi.mock('@lobechat/business-const', async (importOriginal) => {
   };
 });
 
-vi.mock('@lobechat/const', async (importOriginal) => {
+vi.mock('@ficlouds/const', async (importOriginal) => {
   const actual = (await importOriginal()) as typeof Const;
   return {
     ...actual,

@@ -1,7 +1,7 @@
 // @vitest-environment node
-import type { LobeChatDatabase } from '@lobechat/database';
-import { agentSkills } from '@lobechat/database/schemas';
-import { getTestDB } from '@lobechat/database/test-utils';
+import type { FiDatabase } from '@ficlouds/database';
+import { agentSkills } from '@ficlouds/database/schemas';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AgentDocumentModel } from '@/database/models/agentDocuments';
@@ -17,7 +17,7 @@ import { agentSkillsRouter } from '../../agentSkills';
 import { cleanupTestUser, createTestAgent, createTestContext, createTestUser } from './setup';
 
 // Mock getServerDB to return our test database instance
-let testDB: LobeChatDatabase;
+let testDB: FiDatabase;
 vi.mock('@/database/core/db-adaptor', () => ({
   getServerDB: vi.fn(() => testDB),
 }));
@@ -91,7 +91,7 @@ const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
 
 describe('Skill Router Integration Tests', () => {
-  let serverDB: LobeChatDatabase;
+  let serverDB: FiDatabase;
   let agentDocumentModel: AgentDocumentModel;
   let userId: string;
 
@@ -871,9 +871,9 @@ description: A skill from URL
 
     it('should keep the market identifier stable when re-importing from market', async () => {
       mockMarketServiceInstance.getSkillDownloadUrl
-        .mockReturnValueOnce('https://market.lobehub.com/api/v1/skills/github.owner.repo/download')
+        .mockReturnValueOnce('https://market.ficlouds.com/api/v1/skills/github.owner.repo/download')
         .mockReturnValueOnce(
-          'https://market.lobehub.com/api/v1/skills/github.owner.repo/download?version=1.0.0',
+          'https://market.ficlouds.com/api/v1/skills/github.owner.repo/download?version=1.0.0',
         );
 
       mockFetch.mockResolvedValue({

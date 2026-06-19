@@ -243,7 +243,7 @@ describe('AgentWorkingSidebar', () => {
   });
 
   it('shows review when the agent has a git working directory but the topic does not', () => {
-    mocks.agentStoreState.agentWorkingDirectoryById['agent-1'] = '/Users/hai/LobeHub/lobehub';
+    mocks.agentStoreState.agentWorkingDirectoryById['agent-1'] = '/Users/hai/Fi/lobehub';
     mocks.repoType = 'git';
     useGlobalStore.setState({
       status: {
@@ -255,6 +255,6 @@ describe('AgentWorkingSidebar', () => {
     render(<AgentWorkingSidebar />);
 
     expect(screen.getByRole('button', { name: 'Review' })).toBeInTheDocument();
-    expect(screen.getByTestId('review-panel')).toHaveTextContent('/Users/hai/LobeHub/lobehub');
+    expect(screen.getByTestId('review-panel')).toHaveTextContent('/Users/hai/Fi/lobehub');
   });
 });

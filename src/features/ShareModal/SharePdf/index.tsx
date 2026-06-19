@@ -1,4 +1,4 @@
-import { type UIChatMessage } from '@lobechat/types';
+import { type UIChatMessage } from '@ficlouds/types';
 import { type FormItemProps } from '@lobehub/ui';
 import { Button, Flexbox, Form } from '@lobehub/ui';
 import { App, Switch } from 'antd';

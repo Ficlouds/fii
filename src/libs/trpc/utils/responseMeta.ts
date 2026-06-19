@@ -1,4 +1,4 @@
-import { AUTH_REQUIRED_HEADER, TRPC_ERROR_CODE_UNAUTHORIZED } from '@lobechat/desktop-bridge';
+import { AUTH_REQUIRED_HEADER, TRPC_ERROR_CODE_UNAUTHORIZED } from '@ficlouds/desktop-bridge';
 import { type TRPCError } from '@trpc/server';
 
 interface ResponseMetaParams {

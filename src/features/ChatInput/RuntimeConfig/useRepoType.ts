@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { useEffect, useMemo } from 'react';
 import useSWR from 'swr';
 

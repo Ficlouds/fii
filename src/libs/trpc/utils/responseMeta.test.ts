@@ -1,4 +1,4 @@
-import { AUTH_REQUIRED_HEADER, TRPC_ERROR_CODE_UNAUTHORIZED } from '@lobechat/desktop-bridge';
+import { AUTH_REQUIRED_HEADER, TRPC_ERROR_CODE_UNAUTHORIZED } from '@ficlouds/desktop-bridge';
 import { TRPCError } from '@trpc/server';
 import { describe, expect, it } from 'vitest';
 

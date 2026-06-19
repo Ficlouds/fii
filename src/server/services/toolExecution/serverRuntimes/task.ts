@@ -1,4 +1,4 @@
-import { normalizeListTasksParams, TaskIdentifier } from '@lobechat/builtin-tool-task';
+import { normalizeListTasksParams, TaskIdentifier } from '@ficlouds/builtin-tool-task';
 import {
   formatDependencyAdded,
   formatDependencyRemoved,
@@ -8,8 +8,8 @@ import {
   formatTaskEdited,
   formatTaskList,
   priorityLabel,
-} from '@lobechat/prompts';
-import type { TaskAutomationMode, TaskStatus } from '@lobechat/types';
+} from '@ficlouds/prompts';
+import type { TaskAutomationMode, TaskStatus } from '@ficlouds/types';
 
 import { AgentModel } from '@/database/models/agent';
 import { TaskModel } from '@/database/models/task';

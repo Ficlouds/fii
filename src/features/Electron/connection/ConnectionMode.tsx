@@ -1,9 +1,8 @@
-import { type StorageMode } from '@lobechat/electron-client-ipc';
-import { StorageModeEnum } from '@lobechat/electron-client-ipc';
+import { type StorageMode } from '@ficlouds/electron-client-ipc';
+import { StorageModeEnum } from '@ficlouds/electron-client-ipc';
 import { Button, Center, Flexbox, Input, stopPropagation } from '@lobehub/ui';
-import { LobeHub } from '@lobehub/ui/brand';
 import { createStaticStyles } from 'antd-style';
-import { Server } from 'lucide-react';
+import { Cloud, Server } from 'lucide-react';
 import { memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -146,10 +145,10 @@ const ConnectionMode = memo<ConnectionModeProps>(({ setWaiting }) => {
             </div>
           </Flexbox>
           <Option
-            description={t('sync.lobehubCloud.description')}
-            icon={LobeHub}
+            description={t('sync.fiCloud.description')}
+            icon={Cloud}
             isSelected={selectedOption === StorageModeEnum.Cloud}
-            label={t('sync.lobehubCloud.title')}
+            label={t('sync.fiCloud.title')}
             value={StorageModeEnum.Cloud}
             onClick={handleSelectOption}
           />
@@ -167,7 +166,7 @@ const ConnectionMode = memo<ConnectionModeProps>(({ setWaiting }) => {
                   <Input
                     autoFocus
                     className={styles.selfHostedInput}
-                    placeholder="https://your-lobechat.com"
+                    placeholder="https://your-fi.ficlouds.com"
                     status={urlError ? 'error' : undefined}
                     value={selfHostedUrl}
                     onClick={stopPropagation}

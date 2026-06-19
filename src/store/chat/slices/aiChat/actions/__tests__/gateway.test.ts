@@ -1,5 +1,5 @@
-import type { AgentStreamEvent } from '@lobechat/agent-gateway-client';
-import { RequestTrigger } from '@lobechat/types';
+import type { AgentStreamEvent } from '@ficlouds/agent-gateway-client';
+import { RequestTrigger } from '@ficlouds/types';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { aiAgentService } from '@/services/aiAgent';

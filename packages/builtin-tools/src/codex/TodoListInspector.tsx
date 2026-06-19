@@ -1,9 +1,9 @@
 'use client';
 
-import type { TodoWriteArgs } from '@lobechat/builtin-tool-claude-code';
-import { ClaudeCodeApiName } from '@lobechat/builtin-tool-claude-code';
-import { ClaudeCodeInspectors } from '@lobechat/builtin-tool-claude-code/client';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import type { TodoWriteArgs } from '@ficlouds/builtin-tool-claude-code';
+import { ClaudeCodeApiName } from '@ficlouds/builtin-tool-claude-code';
+import { ClaudeCodeInspectors } from '@ficlouds/builtin-tool-claude-code/client';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { type ComponentType, memo } from 'react';
 
 import { type CodexTodoListArgs, toTodoWriteArgs } from './utils';

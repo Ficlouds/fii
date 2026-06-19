@@ -1,5 +1,5 @@
-import { AgentRuntimeError } from '@lobechat/model-runtime';
-import { ChatErrorType } from '@lobechat/types';
+import { AgentRuntimeError } from '@ficlouds/model-runtime';
+import { ChatErrorType } from '@ficlouds/types';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { assertOIDCUserActive } from '@/libs/oidc-provider/access-control';
@@ -8,13 +8,13 @@ import { createErrorResponse } from '@/utils/errorResponse';
 
 import { checkAuth, type RequestHandler } from './index';
 
-vi.mock('@lobechat/model-runtime', () => ({
+vi.mock('@ficlouds/model-runtime', () => ({
   AgentRuntimeError: {
     createError: vi.fn((type: string) => ({ errorType: type })),
   },
 }));
 
-vi.mock('@lobechat/types', () => ({
+vi.mock('@ficlouds/types', () => ({
   ChatErrorType: {
     InternalServerError: 'InternalServerError',
     Unauthorized: 'Unauthorized',
@@ -45,7 +45,7 @@ vi.mock('@/libs/observability/traceparent', () => ({
   injectActiveTraceHeaders: vi.fn(),
 }));
 
-vi.mock('@lobechat/observability-otel/api', () => ({
+vi.mock('@ficlouds/observability-otel/api', () => ({
   context: { with: vi.fn((_ctx: any, fn: () => any) => fn()) },
 }));
 

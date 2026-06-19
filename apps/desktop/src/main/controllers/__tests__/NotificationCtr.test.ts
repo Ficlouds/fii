@@ -1,4 +1,4 @@
-import type { ShowDesktopNotificationParams } from '@lobechat/electron-client-ipc';
+import type { ShowDesktopNotificationParams } from '@ficlouds/electron-client-ipc';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { App } from '@/core/App';

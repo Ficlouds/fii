@@ -1,5 +1,5 @@
 // @vitest-environment node
-import type { LobeChatDatabase, Transaction } from '@lobechat/database';
+import type { FiDatabase, Transaction } from '@ficlouds/database';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
@@ -270,7 +270,7 @@ const createService = () => {
     {
       transaction: async <T>(callback: (trx: Transaction) => Promise<T>) =>
         callback({} as Transaction),
-    } as LobeChatDatabase,
+    } as FiDatabase,
     'user-1',
     {
       agentDocumentModel,

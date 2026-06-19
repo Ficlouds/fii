@@ -1,4 +1,4 @@
-import { renderPlaceholderTemplate } from '@lobechat/context-engine';
+import { renderPlaceholderTemplate } from '@ficlouds/context-engine';
 
 import { preferencePrompt } from '../prompts';
 import type { PreferenceMemory } from '../schemas';

@@ -1,4 +1,4 @@
-import type { TaskDetailWorkspaceNode } from '@lobechat/types';
+import type { TaskDetailWorkspaceNode } from '@ficlouds/types';
 import {
   ActionIcon,
   Block,

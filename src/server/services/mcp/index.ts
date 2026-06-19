@@ -1,11 +1,11 @@
 import {
   type CheckMcpInstallResult,
   type CustomPluginMetadata,
-  type LobeChatPluginApi,
+  type FiPluginApi,
   type ToolManifest,
   type ToolManifestSettings,
-} from '@lobechat/types';
-import { safeParseJSON } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { safeParseJSON } from '@ficlouds/utils';
 import { type DeploymentOption } from '@lobehub/market-sdk';
 import { McpError } from '@modelcontextprotocol/sdk/types.js';
 import { TRPCError } from '@trpc/server';
@@ -91,7 +91,7 @@ export class MCPService {
   // --- MCP Interaction ---
 
   // listTools now accepts MCPClientParams
-  async listTools(params: MCPClientParams): Promise<LobeChatPluginApi[]> {
+  async listTools(params: MCPClientParams): Promise<FiPluginApi[]> {
     const loggableParams = this.sanitizeForLogging(params);
 
     return retry(
@@ -108,7 +108,7 @@ export class MCPService {
             loggableParams,
             result.length,
           );
-          return result.map<LobeChatPluginApi>((item) => ({
+          return result.map<FiPluginApi>((item) => ({
             // Assuming identifier is the unique name/id
             description: item.description,
             name: item.name,
@@ -487,7 +487,7 @@ export class MCPService {
   }
 
   private transformMCPToolToLobeAPI = (data: McpTool[]) => {
-    return data.map<LobeChatPluginApi>((item) => ({
+    return data.map<FiPluginApi>((item) => ({
       // Assuming identifier is the unique name/id
       description: item.description,
       name: item.name,

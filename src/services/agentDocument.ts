@@ -1,5 +1,5 @@
-import type { DocumentLoadFormat, DocumentLoadRule } from '@lobechat/agent-templates';
-import { type AgentContextDocument } from '@lobechat/context-engine';
+import type { DocumentLoadFormat, DocumentLoadRule } from '@ficlouds/agent-templates';
+import { type AgentContextDocument } from '@ficlouds/context-engine';
 
 import { lambdaClient } from '@/libs/trpc/client';
 import { invalidateDocumentMutation } from '@/services/document/invalidation';

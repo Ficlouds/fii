@@ -1,4 +1,4 @@
-import type { GroundingSearch, ModelReasoning, ToolIntervention } from '@lobechat/types';
+import type { GroundingSearch, ModelReasoning, ToolIntervention } from '@ficlouds/types';
 import {
   boolean,
   index,

@@ -1,6 +1,6 @@
 'use client';
 
-import { useWatchBroadcast } from '@lobechat/electron-client-ipc';
+import { useWatchBroadcast } from '@ficlouds/electron-client-ipc';
 import { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 

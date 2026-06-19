@@ -1,5 +1,5 @@
-import type { OperationSkillSet } from '@lobechat/context-engine';
-import { SkillEngine } from '@lobechat/context-engine';
+import type { OperationSkillSet } from '@ficlouds/context-engine';
+import { SkillEngine } from '@ficlouds/context-engine';
 
 import { isBuiltinSkillAvailableInCurrentEnv } from '@/helpers/toolAvailability';
 import { getToolStoreState } from '@/store/tool';

@@ -1,4 +1,4 @@
-import { LocalSystemIdentifier, LocalSystemManifest } from '@lobechat/builtin-tool-local-system';
+import { LocalSystemIdentifier, LocalSystemManifest } from '@ficlouds/builtin-tool-local-system';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { type ToolExecutionContext } from '../../types';

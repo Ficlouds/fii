@@ -1,7 +1,7 @@
 'use client';
 
-import type { InitDocumentArgs } from '@lobechat/editor-runtime';
-import type { BuiltinStreamingProps } from '@lobechat/types';
+import type { InitDocumentArgs } from '@ficlouds/editor-runtime';
+import type { BuiltinStreamingProps } from '@ficlouds/types';
 import { Flexbox, Icon, Text } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { FileText, Hash, ListTree } from 'lucide-react';

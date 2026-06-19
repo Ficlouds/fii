@@ -49,7 +49,7 @@ const {
   };
 });
 
-vi.mock('@lobechat/observability-otel/modules/agent-signal', () => ({
+vi.mock('@ficlouds/observability-otel/modules/agent-signal', () => ({
   actionCounter: { add: actionCounterAdd },
   actionDurationHistogram: { record: actionDurationRecord },
   actionResultCounter: { add: actionResultCounterAdd },

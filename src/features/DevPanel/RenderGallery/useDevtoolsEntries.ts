@@ -1,17 +1,17 @@
 'use client';
 
-import { listBuiltinInspectorEntries } from '@lobechat/builtin-tools/inspectors';
-import { listBuiltinInterventionEntries } from '@lobechat/builtin-tools/interventions';
-import { listBuiltinPlaceholderEntries } from '@lobechat/builtin-tools/placeholders';
-import { listBuiltinRenderEntries } from '@lobechat/builtin-tools/renders';
-import { listBuiltinStreamingEntries } from '@lobechat/builtin-tools/streamings';
+import { listBuiltinInspectorEntries } from '@ficlouds/builtin-tools/inspectors';
+import { listBuiltinInterventionEntries } from '@ficlouds/builtin-tools/interventions';
+import { listBuiltinPlaceholderEntries } from '@ficlouds/builtin-tools/placeholders';
+import { listBuiltinRenderEntries } from '@ficlouds/builtin-tools/renders';
+import { listBuiltinStreamingEntries } from '@ficlouds/builtin-tools/streamings';
 import type {
   BuiltinInspector,
   BuiltinIntervention,
   BuiltinPlaceholder,
   BuiltinRender,
   BuiltinStreaming,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import type { MenuProps } from '@lobehub/ui';
 import { useMemo } from 'react';
 

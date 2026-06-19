@@ -1,4 +1,4 @@
-import type { LobeAgentSession, LobeGroupSession } from '@lobechat/types';
+import type { FiAgentSession, LobeGroupSession } from '@ficlouds/types';
 
 import { DEFAULT_AGENT_META, DEFAULT_INBOX_AVATAR } from './meta';
 import { DEFAULT_AGENT_CONFIG } from './settings';
@@ -8,10 +8,10 @@ export const INBOX_SESSION_ID = 'inbox';
 
 export const WELCOME_GUIDE_CHAT_ID = 'welcome';
 
-const DEFAULT_AGENT_SESSION_TYPE = 'agent' as LobeAgentSession['type'];
+const DEFAULT_AGENT_SESSION_TYPE = 'agent' as FiAgentSession['type'];
 const DEFAULT_GROUP_SESSION_TYPE = 'group' as LobeGroupSession['type'];
 
-export const DEFAULT_AGENT_LOBE_SESSION: LobeAgentSession = {
+export const DEFAULT_AGENT_LOBE_SESSION: FiAgentSession = {
   config: DEFAULT_AGENT_CONFIG,
   createdAt: new Date(),
   id: '',
@@ -30,7 +30,7 @@ export const DEFAULT_GROUP_LOBE_SESSION: LobeGroupSession = {
   updatedAt: new Date(),
 };
 
-export const DEFAULT_INBOX_SESSION: LobeAgentSession = merge(DEFAULT_AGENT_LOBE_SESSION, {
+export const DEFAULT_INBOX_SESSION: FiAgentSession = merge(DEFAULT_AGENT_LOBE_SESSION, {
   id: 'inbox',
   meta: {
     avatar: DEFAULT_INBOX_AVATAR,

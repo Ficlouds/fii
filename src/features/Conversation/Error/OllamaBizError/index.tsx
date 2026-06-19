@@ -1,4 +1,4 @@
-import { type ChatMessageError } from '@lobechat/types';
+import { type ChatMessageError } from '@ficlouds/types';
 import { type AlertProps } from '@lobehub/ui';
 import { Skeleton } from '@lobehub/ui';
 import { memo } from 'react';

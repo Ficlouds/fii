@@ -1,5 +1,5 @@
 // @vitest-environment node
-import type { ClientSecretPayload } from '@lobechat/types';
+import type { ClientSecretPayload } from '@ficlouds/types';
 import { ModelProvider } from 'model-bank';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 

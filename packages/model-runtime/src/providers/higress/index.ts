@@ -1,4 +1,4 @@
-import type { ChatModelCard } from '@lobechat/types';
+import type { ChatModelCard } from '@ficlouds/types';
 import { uniqueId } from 'es-toolkit/compat';
 import { ModelProvider } from 'model-bank';
 
@@ -18,8 +18,8 @@ export interface HigressModelCard {
 export const params = {
   constructorOptions: {
     defaultHeaders: {
-      'HTTP-Referer': 'https://lobehub.com',
-      'X-Title': 'LobeHub',
+      'HTTP-Referer': 'https://ficlouds.com',
+      'X-Title': 'Fi',
       'x-Request-Id': uniqueId('lobe-chat-'),
     },
   },

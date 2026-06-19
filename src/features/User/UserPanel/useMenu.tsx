@@ -1,5 +1,5 @@
-import { LOBE_CHAT_CLOUD, UTM_SOURCE } from '@lobechat/business-const';
-import { DOWNLOAD_URL, isDesktop } from '@lobechat/const';
+import { LOBE_CHAT_CLOUD, UTM_SOURCE } from '@ficlouds/business-const';
+import { DOWNLOAD_URL, isDesktop } from '@ficlouds/const';
 import { Flexbox, Hotkey, Icon, Tag } from '@lobehub/ui';
 import { type ItemType } from 'antd/es/menu/interface';
 import { BrainCircuit, Cloudy, Download, HardDriveDownload, LogOut, Settings2 } from 'lucide-react';

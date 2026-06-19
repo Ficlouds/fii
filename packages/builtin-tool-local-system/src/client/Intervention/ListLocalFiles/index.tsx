@@ -1,5 +1,5 @@
-import type { ListLocalFileParams } from '@lobechat/electron-client-ipc';
-import type { BuiltinInterventionProps } from '@lobechat/types';
+import type { ListLocalFileParams } from '@ficlouds/electron-client-ipc';
+import type { BuiltinInterventionProps } from '@ficlouds/types';
 import { Flexbox } from '@lobehub/ui';
 import { memo } from 'react';
 

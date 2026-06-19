@@ -1,6 +1,6 @@
-import { isDesktop } from '@lobechat/const';
-import { TITLE_BAR_HEIGHT } from '@lobechat/desktop-bridge';
-import { type LobeToolCustomPlugin } from '@lobechat/types';
+import { isDesktop } from '@ficlouds/const';
+import { TITLE_BAR_HEIGHT } from '@ficlouds/desktop-bridge';
+import { type FiToolCustomPlugin } from '@ficlouds/types';
 import { Button, Drawer, Flexbox } from '@lobehub/ui';
 import { App, Form, Popconfirm } from 'antd';
 import { useResponsive } from 'antd-style';
@@ -14,10 +14,10 @@ interface DevModalProps {
   mode?: 'edit' | 'create';
   onDelete?: () => void;
   onOpenChange: (open: boolean) => void;
-  onSave?: (value: LobeToolCustomPlugin) => Promise<void> | void;
-  onValueChange?: (value: Partial<LobeToolCustomPlugin>) => void;
+  onSave?: (value: FiToolCustomPlugin) => Promise<void> | void;
+  onValueChange?: (value: Partial<FiToolCustomPlugin>) => void;
   open?: boolean;
-  value?: LobeToolCustomPlugin;
+  value?: FiToolCustomPlugin;
 }
 
 const DevModal = memo<DevModalProps>(
@@ -97,7 +97,7 @@ const DevModal = memo<DevModalProps>(
           if (onSave) {
             setSubmitting(true);
             try {
-              await onSave?.(info.values as LobeToolCustomPlugin);
+              await onSave?.(info.values as FiToolCustomPlugin);
               message.success(t(isEditMode ? 'dev.updateSuccess' : 'dev.saveSuccess'));
               onOpenChange(false);
             } catch (error) {

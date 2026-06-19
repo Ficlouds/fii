@@ -3,7 +3,7 @@
 import {
   WebOnboardingApiName,
   WebOnboardingIdentifier,
-} from '@lobechat/builtin-tool-web-onboarding';
+} from '@ficlouds/builtin-tool-web-onboarding';
 import { Flexbox } from '@lobehub/ui';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';

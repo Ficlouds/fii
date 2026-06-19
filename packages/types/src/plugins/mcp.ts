@@ -176,7 +176,7 @@ export interface MCPInstallProgress {
   // Structured error information, displayed when installation fails
   errorInfo?: MCPErrorInfo;
   manifest?: any;
-  // LobeChatPluginManifest
+  // FiPluginManifest
   needsConfig?: boolean;
   // 0-100
   progress: number;

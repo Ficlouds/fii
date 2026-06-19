@@ -1,4 +1,4 @@
-import type { NetworkProxySettings } from '@lobechat/electron-client-ipc';
+import type { NetworkProxySettings } from '@ficlouds/electron-client-ipc';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ProxyDispatcherManager } from '../dispatcher';

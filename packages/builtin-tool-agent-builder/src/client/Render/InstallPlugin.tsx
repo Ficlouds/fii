@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { Flexbox } from '@lobehub/ui';
 import { CheckCircle, Clock, XCircle } from 'lucide-react';
 import { memo } from 'react';
@@ -15,7 +15,7 @@ const InstallPlugin = memo<BuiltinRenderProps<InstallPluginParams, InstallPlugin
       installed,
       awaitingApproval,
       isKlavis,
-      isLobehubSkill,
+      isFiSkill,
       serverStatus,
       error,
     } = pluginState || {};
@@ -51,7 +51,7 @@ const InstallPlugin = memo<BuiltinRenderProps<InstallPluginParams, InstallPlugin
         <Flexbox horizontal align={'center'} gap={8} style={{ fontSize: 13 }}>
           <Clock size={14} style={{ color: 'var(--lobe-warning-6)' }} />
           <span style={{ fontWeight: 500 }}>
-            {isKlavis || isLobehubSkill ? (
+            {isKlavis || isFiSkill ? (
               <>
                 Waiting for authorization:{' '}
                 <code
@@ -98,7 +98,7 @@ const InstallPlugin = memo<BuiltinRenderProps<InstallPluginParams, InstallPlugin
         <Flexbox horizontal align={'center'} gap={8} style={{ fontSize: 13 }}>
           <CheckCircle size={14} style={{ color: 'var(--lobe-success-6)' }} />
           <span style={{ fontWeight: 500 }}>
-            {isKlavis || isLobehubSkill ? 'Connected and enabled' : 'Installed and enabled'}:{' '}
+            {isKlavis || isFiSkill ? 'Connected and enabled' : 'Installed and enabled'}:{' '}
             <code
               style={{
                 background: 'var(--lobe-fill-tertiary)',

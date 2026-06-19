@@ -1,5 +1,5 @@
-import type { UpdateAgentConfigParams } from '@lobechat/builtin-tool-agent-builder';
-import type { LobeAgentConfig, MetaData } from '@lobechat/types';
+import type { UpdateAgentConfigParams } from '@ficlouds/builtin-tool-agent-builder';
+import type { FiAgentConfig, MetaData } from '@ficlouds/types';
 
 /**
  * Group Agent Builder Tool Identifier
@@ -134,7 +134,7 @@ export interface CreateGroupParams {
     /**
      * Model parameters for the supervisor
      */
-    params?: Partial<LobeAgentConfig['params']>;
+    params?: Partial<FiAgentConfig['params']>;
     /**
      * AI provider for the supervisor
      */

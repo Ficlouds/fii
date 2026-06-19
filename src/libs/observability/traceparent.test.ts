@@ -1,10 +1,10 @@
-import type * as OtelApiModule from '@lobechat/observability-otel/api';
+import type * as OtelApiModule from '@ficlouds/observability-otel/api';
 import { type Mock } from 'vitest';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { getActiveTraceId, injectSpanTraceHeaders } from './traceparent';
 
-vi.mock('@lobechat/observability-otel/api', () => {
+vi.mock('@ficlouds/observability-otel/api', () => {
   const inject = vi.fn();
   const setSpan = vi.fn((_ctx, span) => span);
   const getActiveSpan = vi.fn();
@@ -30,7 +30,7 @@ const mockSpan = (traceId: string, spanId: string) =>
 const headersWith = (...args: ConstructorParameters<typeof Headers>) => new Headers(...args);
 
 describe('injectSpanTraceHeaders', () => {
-  const api = vi.importMock<typeof OtelApiModule>('@lobechat/observability-otel/api');
+  const api = vi.importMock<typeof OtelApiModule>('@ficlouds/observability-otel/api');
 
   afterEach(() => {
     vi.resetAllMocks();
@@ -74,7 +74,7 @@ describe('injectSpanTraceHeaders', () => {
 });
 
 describe('getActiveTraceId', () => {
-  const api = vi.importMock<typeof OtelApiModule>('@lobechat/observability-otel/api');
+  const api = vi.importMock<typeof OtelApiModule>('@ficlouds/observability-otel/api');
 
   afterEach(() => {
     vi.resetAllMocks();

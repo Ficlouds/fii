@@ -5,7 +5,7 @@ import {
   DEFAULT_DISCOVER_PROVIDER_ITEM,
   isDesktop,
   KLAVIS_SERVER_TYPES,
-} from '@lobechat/const';
+} from '@ficlouds/const';
 import {
   type AgentStatus,
   type AssistantListResponse,
@@ -31,7 +31,7 @@ import {
   type PluginQueryParams,
   type ProviderListResponse,
   type ProviderQueryParams,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import {
   AssistantCategory,
   AssistantSorts,
@@ -42,12 +42,12 @@ import {
   ModelSorts,
   PluginSorts,
   ProviderSorts,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import {
   getAudioInputUnitRate,
   getTextInputUnitRate,
   getTextOutputUnitRate,
-} from '@lobechat/utils';
+} from '@ficlouds/utils';
 import {
   type CategoryItem,
   type CategoryListQuery,
@@ -131,7 +131,7 @@ export class DiscoverService {
     const deviceId = await getDeviceId();
 
     const { client_id, client_secret } = await this.market.registerClient({
-      clientName: `LobeHub ${isDesktop ? 'Desktop' : 'Web'}`,
+      clientName: `Fi ${isDesktop ? 'Desktop' : 'Web'}`,
       clientType: isDesktop ? 'desktop' : 'web',
       deviceId,
       platform: isDesktop ? process.platform : userAgent,
@@ -591,7 +591,7 @@ export class DiscoverService {
         forkedFromAgentId: (data as any).forkedFromAgentId,
         homepage:
           (data as any).homepage ||
-          `https://lobehub.com/discover/assistant/${(data as any).identifier}`,
+          `https://ficlouds.com/discover/assistant/${(data as any).identifier}`,
         identifier: (data as any).identifier,
         isValidated: (data as any).isValidated,
         knowledgeCount:
@@ -743,7 +743,7 @@ export class DiscoverService {
           createdAt: item.createdAt || item.updatedAt || new Date().toISOString(),
           description: item.description || item.summary || '',
           forkCount: item.forkCount,
-          homepage: item.homepage || `https://lobehub.com/discover/assistant/${item.identifier}`,
+          homepage: item.homepage || `https://ficlouds.com/discover/assistant/${item.identifier}`,
           identifier: item.identifier,
           installCount: item.installCount,
           knowledgeCount: item.knowledgeCount ?? item.config?.knowledgeBases?.length ?? 0,
@@ -956,7 +956,7 @@ export class DiscoverService {
           config: {} as any,
           createdAt: item.createdAt || item.updatedAt || new Date().toISOString(),
           description: item.description || '',
-          homepage: `https://lobehub.com/discover/assistant/${item.identifier}`,
+          homepage: `https://ficlouds.com/discover/assistant/${item.identifier}`,
           identifier: item.identifier,
           installCount: item.installCount,
           knowledgeCount: item.knowledgeCount || 0,
@@ -1137,17 +1137,17 @@ export class DiscoverService {
     }
 
     // Step 3: Try to find in builtin tools
-    const { builtinTools } = await import('@lobechat/builtin-tools');
+    const { builtinTools } = await import('@ficlouds/builtin-tools');
     const builtinTool = builtinTools.find((tool) => tool.identifier === identifier);
     if (builtinTool) {
       log('getPluginDetail: found builtin tool for identifier=%s', identifier);
       const plugin: DiscoverPluginDetail = {
-        author: 'LobeHub',
+        author: 'Fi',
         avatar: builtinTool.manifest.meta.avatar || '',
         category: undefined,
         createdAt: '',
         description: builtinTool.manifest.meta.description || '',
-        homepage: 'https://lobehub.com',
+        homepage: 'https://ficlouds.com',
         identifier: builtinTool.identifier,
         manifest: undefined,
         related: [],
@@ -1172,7 +1172,7 @@ export class DiscoverService {
         avatar: typeof klavisTool.icon === 'string' ? klavisTool.icon : '',
         category: undefined,
         createdAt: '',
-        description: `LobeHub Mcp Server: ${klavisTool.label}`,
+        description: `Fi Mcp Server: ${klavisTool.label}`,
         homepage: 'https://klavis.ai',
         identifier: klavisTool.identifier,
         manifest: undefined,
@@ -1836,7 +1836,7 @@ export class DiscoverService {
         createdAt: agent.createdAt,
         description: agent.description || '',
         forkCount: agent.forkCount,
-        homepage: `https://lobehub.com/discover/assistant/${agent.identifier}`,
+        homepage: `https://ficlouds.com/discover/assistant/${agent.identifier}`,
         identifier: agent.identifier,
         installCount: agent.installCount,
         isValidated: agent.isValidated,
@@ -1857,7 +1857,7 @@ export class DiscoverService {
         createdAt: group.createdAt,
         description: group.description || '',
         forkCount: group.forkCount,
-        homepage: `https://lobehub.com/discover/group_agent/${group.identifier}`,
+        homepage: `https://ficlouds.com/discover/group_agent/${group.identifier}`,
         identifier: group.identifier,
         installCount: group.installCount || 0,
         isFeatured: group.isFeatured || false,
@@ -1882,7 +1882,7 @@ export class DiscoverService {
           description: agent.description || '',
           forkCount: agent.forkCount || 0,
           forkedFromAgentId: agent.forkedFromAgentId || null,
-          homepage: `https://lobehub.com/discover/assistant/${agent.identifier}`,
+          homepage: `https://ficlouds.com/discover/assistant/${agent.identifier}`,
           identifier: agent.identifier,
           installCount: agent.installCount,
           isValidated: agent.isValidated,
@@ -1905,7 +1905,7 @@ export class DiscoverService {
         description: group.description || '',
         forkCount: group.forkCount || 0,
         forkedFromGroupId: group.forkedFromGroupId || null,
-        homepage: `https://lobehub.com/discover/group_agent/${group.identifier}`,
+        homepage: `https://ficlouds.com/discover/group_agent/${group.identifier}`,
         identifier: group.identifier,
         installCount: group.installCount || 0,
         isFeatured: group.isFeatured || false,
@@ -1930,7 +1930,7 @@ export class DiscoverService {
           description: agent.description || '',
           forkCount: agent.forkCount || 0,
           forkedFromAgentId: agent.forkedFromAgentId || null,
-          homepage: `https://lobehub.com/discover/assistant/${agent.identifier}`,
+          homepage: `https://ficlouds.com/discover/assistant/${agent.identifier}`,
           identifier: agent.identifier,
           installCount: agent.installCount,
           isValidated: agent.isValidated,
@@ -1953,7 +1953,7 @@ export class DiscoverService {
         description: group.description || '',
         forkCount: group.forkCount || 0,
         forkedFromGroupId: group.forkedFromGroupId || null,
-        homepage: `https://lobehub.com/discover/group_agent/${group.identifier}`,
+        homepage: `https://ficlouds.com/discover/group_agent/${group.identifier}`,
         identifier: group.identifier,
         installCount: group.installCount || 0,
         isFeatured: group.isFeatured || false,
@@ -1999,7 +1999,7 @@ export class DiscoverService {
         category: plugin.category,
         createdAt: plugin.createdAt,
         description: plugin.description || '',
-        homepage: `https://lobehub.com/discover/plugin/${plugin.identifier}`,
+        homepage: `https://ficlouds.com/discover/plugin/${plugin.identifier}`,
         identifier: plugin.identifier,
         installCount: plugin.installCount || 0,
         isClaimed: plugin.isClaimed || false,

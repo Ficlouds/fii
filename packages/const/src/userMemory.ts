@@ -1,4 +1,4 @@
-import { DEFAULT_EMBEDDING_PROVIDER } from '@lobechat/business-const';
+import { DEFAULT_EMBEDDING_PROVIDER } from '@ficlouds/business-const';
 
 import { DEFAULT_EMBEDDING_MODEL } from './settings';
 

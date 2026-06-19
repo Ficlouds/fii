@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { documentHistories, documents, files, users } from '@lobechat/database/schemas';
+import { documentHistories, documents, files, users } from '@ficlouds/database/schemas';
 import { and, desc, eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
@@ -7,11 +7,11 @@ import { DOCUMENT_HISTORY_SOURCE_LIMITS } from '@/const/documentHistory';
 import { getTestDB } from '@/database/core/getTestDB';
 import { DocumentModel } from '@/database/models/document';
 import { FileModel } from '@/database/models/file';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 
 import { DocumentHistoryService } from '../history';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'document-history-service-test-user-id';
 const userId2 = 'document-history-service-test-user-id-2';

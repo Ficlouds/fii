@@ -1,1 +1,1 @@
-export { loadModels } from '@lobechat/business-model-bank/model-config';
+export { loadModels } from '@ficlouds/business-model-bank/model-config';

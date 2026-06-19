@@ -1,8 +1,8 @@
 import os from 'node:os';
 import path from 'node:path';
 
-import type { ElectronIPCEventHandler } from '@lobechat/electron-server-ipc';
-import { ElectronIPCServer } from '@lobechat/electron-server-ipc';
+import type { ElectronIPCEventHandler } from '@ficlouds/electron-server-ipc';
+import { ElectronIPCServer } from '@ficlouds/electron-server-ipc';
 import { app, nativeTheme, protocol } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import * as electronIs from 'electron-is';
@@ -93,7 +93,7 @@ export class App {
     logger.info(` lng: ${app.getLocale()}`);
     logger.info(` bin: ${binDir}`);
     logger.info('----------------------------------------------');
-    logger.info('Starting LobeHub...');
+    logger.info('Starting Fi...');
 
     // Append bundled binaries and CLI wrapper directories to PATH for tool resolution
     const pathSep = process.platform === 'win32' ? ';' : ':';
@@ -431,7 +431,7 @@ export class App {
     if (!isDev) return;
 
     logger.debug('Setting up dev branding');
-    app.setName('lobehub-desktop-dev');
+    app.setName('ficlouds-desktop-dev');
     if (electronIs.macOS()) {
       app.dock!.setIcon(path.join(buildDir, 'icon-dev.png'));
     }

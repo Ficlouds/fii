@@ -4,10 +4,10 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { getTestDB } from '../../core/getTestDB';
 import { agentOperations, users } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { AgentOperationModel } from '../agentOperation';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'agent-operation-test-user-id';
 const otherUserId = 'agent-operation-test-other-user';

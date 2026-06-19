@@ -1,6 +1,6 @@
 'use client';
 
-import type { ConversationContext } from '@lobechat/types';
+import type { ConversationContext } from '@ficlouds/types';
 import type { DropdownItem } from '@lobehub/ui';
 import {
   ActionIcon,

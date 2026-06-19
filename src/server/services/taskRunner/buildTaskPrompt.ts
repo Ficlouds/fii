@@ -1,5 +1,5 @@
-import { buildTaskRunPrompt } from '@lobechat/prompts';
-import type { TaskItem, TaskTopicHandoff, WorkspaceData } from '@lobechat/types';
+import { buildTaskRunPrompt } from '@ficlouds/prompts';
+import type { TaskItem, TaskTopicHandoff, WorkspaceData } from '@ficlouds/types';
 
 import type { BriefModel } from '@/database/models/brief';
 import type { TaskModel } from '@/database/models/task';
@@ -15,7 +15,7 @@ export interface BuildTaskPromptDeps {
  * Server-side orchestrator: fetches task context from the DB and renders the
  * prompt that `task.run` injects into the agent runtime.
  *
- * Pure prompt rendering lives in `@lobechat/prompts` (`buildTaskRunPrompt`).
+ * Pure prompt rendering lives in `@ficlouds/prompts` (`buildTaskRunPrompt`).
  * This wrapper is the DB-aware layer that assembles the input from models.
  */
 export async function buildTaskPrompt(

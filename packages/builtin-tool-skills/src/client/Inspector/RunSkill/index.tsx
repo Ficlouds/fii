@@ -1,7 +1,7 @@
 'use client';
 
-import { AGENT_SKILLS_IDENTIFIER_PREFIX } from '@lobechat/const';
-import { type BuiltinInspectorProps } from '@lobechat/types';
+import { AGENT_SKILLS_IDENTIFIER_PREFIX } from '@ficlouds/const';
+import { type BuiltinInspectorProps } from '@ficlouds/types';
 import { SkillsIcon } from '@lobehub/ui/icons';
 import { createStaticStyles, cx } from 'antd-style';
 import { memo } from 'react';

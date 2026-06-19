@@ -2,7 +2,7 @@ import { and, count, desc, eq, inArray, isNull, notInArray } from 'drizzle-orm';
 
 import type { DocumentItem, NewDocument } from '../schemas';
 import { DOCUMENT_FOLDER_TYPE, documents } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export interface QueryDocumentParams {
   current?: number;
@@ -13,9 +13,9 @@ export interface QueryDocumentParams {
 
 export class DocumentModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

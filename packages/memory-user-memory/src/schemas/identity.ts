@@ -1,4 +1,4 @@
-import { MergeStrategyEnum } from '@lobechat/types';
+import { MergeStrategyEnum } from '@ficlouds/types';
 import { z } from 'zod';
 
 import { MemoryTypeSchema } from './common';

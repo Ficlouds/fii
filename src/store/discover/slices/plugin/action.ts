@@ -3,7 +3,7 @@ import {
   type IdentifiersResponse,
   type PluginListResponse,
   type PluginQueryParams,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { type CategoryItem, type CategoryListQuery } from '@lobehub/market-sdk';
 import { type SWRResponse } from 'swr';
 import useSWR from 'swr';

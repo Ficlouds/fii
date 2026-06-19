@@ -1,4 +1,4 @@
-import type { TaskAutomationMode } from '@lobechat/types';
+import type { TaskAutomationMode } from '@ficlouds/types';
 import {
   ActionIcon,
   Avatar,

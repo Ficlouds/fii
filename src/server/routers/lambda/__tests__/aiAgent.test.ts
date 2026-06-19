@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 import {
   agents,
   agentsToSessions,
@@ -7,8 +7,8 @@ import {
   sessions,
   threads,
   topics,
-} from '@lobechat/database/schemas';
-import { getTestDB } from '@lobechat/database/test-utils';
+} from '@ficlouds/database/schemas';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { eq } from 'drizzle-orm';
 import type * as ModelBankModule from 'model-bank';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -17,7 +17,7 @@ import { aiAgentRouter } from '../aiAgent';
 import { cleanupTestUser, createTestUser } from './integration/setup';
 
 // Mock getServerDB to return our test database instance
-let testDB: LobeChatDatabase;
+let testDB: FiDatabase;
 vi.mock('@/database/core/db-adaptor', () => ({
   getServerDB: vi.fn(() => testDB),
 }));
@@ -84,7 +84,7 @@ vi.mock('model-bank', async (importOriginal) => {
  * 3. Verify interactions with the database
  */
 describe('AI Agent Router Integration Tests', () => {
-  let serverDB: LobeChatDatabase;
+  let serverDB: FiDatabase;
   let userId: string;
   let testAgentId: string;
   let testSessionId: string;

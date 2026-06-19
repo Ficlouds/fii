@@ -1,4 +1,4 @@
-import { deserializeParts } from '@lobechat/utils';
+import { deserializeParts } from '@ficlouds/utils';
 import { type MarkdownProps } from '@lobehub/ui';
 import { memo } from 'react';
 

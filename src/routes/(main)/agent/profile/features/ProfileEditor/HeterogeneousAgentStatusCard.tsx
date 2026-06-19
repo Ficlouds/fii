@@ -1,12 +1,12 @@
 'use client';
 
-import { isDesktop } from '@lobechat/const';
-import { type ClaudeAuthStatus, type ToolStatus } from '@lobechat/electron-client-ipc';
+import { isDesktop } from '@ficlouds/const';
+import { type ClaudeAuthStatus, type ToolStatus } from '@ficlouds/electron-client-ipc';
 import {
   getHeterogeneousAgentClientConfig,
   isRemoteHeterogeneousType,
-} from '@lobechat/heterogeneous-agents/client';
-import type { HeterogeneousProviderConfig } from '@lobechat/types';
+} from '@ficlouds/heterogeneous-agents/client';
+import type { HeterogeneousProviderConfig } from '@ficlouds/types';
 import { ActionIcon, CopyButton, Flexbox, Icon, Input, Tag, Text, Tooltip } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { Loader2Icon, PencilLine, RefreshCw, XCircle } from 'lucide-react';

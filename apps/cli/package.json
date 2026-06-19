@@ -1,5 +1,5 @@
 {
-  "name": "@lobehub/cli",
+  "name": "@ficlouds/cli",
   "version": "0.0.22",
   "type": "module",
   "bin": {
@@ -28,10 +28,10 @@
     "type-check": "tsc --noEmit"
   },
   "devDependencies": {
-    "@lobechat/agent-gateway-client": "workspace:*",
-    "@lobechat/device-gateway-client": "workspace:*",
-    "@lobechat/heterogeneous-agents": "workspace:*",
-    "@lobechat/local-file-shell": "workspace:*",
+    "@ficlouds/agent-gateway-client": "workspace:*",
+    "@ficlouds/device-gateway-client": "workspace:*",
+    "@ficlouds/heterogeneous-agents": "workspace:*",
+    "@ficlouds/local-file-shell": "workspace:*",
     "@trpc/client": "^11.8.1",
     "@types/node": "^22.13.5",
     "@types/ws": "^8.18.1",

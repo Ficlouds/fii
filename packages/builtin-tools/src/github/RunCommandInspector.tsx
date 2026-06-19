@@ -1,7 +1,7 @@
 'use client';
 
-import { inspectorTextStyles, shinyTextStyles } from '@lobechat/shared-tool-ui/styles';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import { inspectorTextStyles, shinyTextStyles } from '@ficlouds/shared-tool-ui/styles';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { Github } from '@lobehub/icons';
 import { createStaticStyles, cssVar, cx } from 'antd-style';
 import { Check, X } from 'lucide-react';

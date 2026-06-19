@@ -1,6 +1,6 @@
 'use client';
 
-import { TITLE_BAR_HEIGHT } from '@lobechat/desktop-bridge';
+import { TITLE_BAR_HEIGHT } from '@ficlouds/desktop-bridge';
 import { Flexbox } from '@lobehub/ui';
 import { type FC } from 'react';
 

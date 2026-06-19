@@ -1,5 +1,5 @@
-import { isDesktop } from '@lobechat/const';
-import { uuid } from '@lobechat/utils';
+import { isDesktop } from '@ficlouds/const';
+import { uuid } from '@ficlouds/utils';
 
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
@@ -54,9 +54,9 @@ export const VARIABLE_GENERATORS = {
    *
    * | Value | Example |
    * |-------|---------|
-   * | `{{email}}` | demo@lobehub.com |
+   * | `{{email}}` | demo@ficlouds.com |
    * | `{{nickname}}` | Community User |
-   * | `{{username}}` | LobeChat |
+   * | `{{username}}` | Fi |
    *
    */
   email: () => userProfileSelectors.email(useUserStore.getState()) ?? '',
@@ -140,7 +140,7 @@ export const VARIABLE_GENERATORS = {
    * | `{{musicPath}}` | /Users/username/Music |
    * | `{{picturesPath}}` | /Users/username/Pictures |
    * | `{{videosPath}}` | /Users/username/Videos |
-   * | `{{userDataPath}}` | /Users/username/Library/Application Support/LobeChat |
+   * | `{{userDataPath}}` | /Users/username/Library/Application Support/Fi |
    * | `{{workingDirectory}}` | /Users/username/Projects/my-project |
    *
    */

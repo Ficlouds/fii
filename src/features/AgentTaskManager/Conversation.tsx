@@ -1,6 +1,6 @@
 'use client';
 
-import { isChatGroupSessionId } from '@lobechat/types';
+import { isChatGroupSessionId } from '@ficlouds/types';
 import { Flexbox, Text } from '@lobehub/ui';
 import { memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';

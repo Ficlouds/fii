@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/builtin-tool-memory",
+  "name": "@ficlouds/builtin-tool-memory",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -12,15 +12,15 @@
   "main": "./src/index.ts",
   "scripts": {},
   "dependencies": {
-    "@lobechat/memory-user-memory": "workspace:*",
-    "@lobechat/prompts": "workspace:*"
+    "@ficlouds/memory-user-memory": "workspace:*",
+    "@ficlouds/prompts": "workspace:*"
   },
   "devDependencies": {
-    "@lobechat/types": "workspace:*",
+    "@ficlouds/types": "workspace:*",
     "@types/json-schema": "^7.0.15"
   },
   "peerDependencies": {
-    "@lobehub/ui": "^5",
+    "@ficlouds/ui": "^5",
     "antd-style": "*",
     "lucide-react": "*",
     "react": "*",

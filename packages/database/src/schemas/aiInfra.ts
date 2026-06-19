@@ -1,4 +1,4 @@
-import type { AiProviderConfig, AiProviderSettings } from '@lobechat/types';
+import type { AiProviderConfig, AiProviderSettings } from '@ficlouds/types';
 import {
   boolean,
   index,

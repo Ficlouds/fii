@@ -1,5 +1,5 @@
-import { type LobeChatDatabase } from '@lobechat/database';
-import { parseDataUri } from '@lobechat/model-runtime';
+import { type FiDatabase } from '@ficlouds/database';
+import { parseDataUri } from '@ficlouds/model-runtime';
 import debug from 'debug';
 import { sha256 } from 'js-sha256';
 import mime from 'mime';
@@ -80,7 +80,7 @@ interface ImageForGeneration {
 export class GenerationService {
   private fileService: FileService;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.fileService = new FileService(db, userId);
   }
 

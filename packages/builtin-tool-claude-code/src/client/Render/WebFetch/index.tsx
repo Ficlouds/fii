@@ -1,7 +1,7 @@
 'use client';
 
-import { ToolResultCard } from '@lobechat/shared-tool-ui/components';
-import type { BuiltinRenderProps } from '@lobechat/types';
+import { ToolResultCard } from '@ficlouds/shared-tool-ui/components';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { Markdown, Text } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { Link } from 'lucide-react';

@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/editor-runtime",
+  "name": "@ficlouds/editor-runtime",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -7,13 +7,13 @@
   },
   "main": "./src/index.ts",
   "dependencies": {
-    "@lobechat/prompts": "workspace:*"
+    "@ficlouds/prompts": "workspace:*"
   },
   "devDependencies": {
     "lexical": "^0.42.0"
   },
   "peerDependencies": {
-    "@lobehub/editor": "^4",
+    "@ficlouds/editor": "^4",
     "debug": "*"
   }
 }

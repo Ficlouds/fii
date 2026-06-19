@@ -1,5 +1,5 @@
-import { getMessageError } from '@lobechat/fetch-sse';
-import { type ChatMessageError } from '@lobechat/types';
+import { getMessageError } from '@ficlouds/fetch-sse';
+import { type ChatMessageError } from '@ficlouds/types';
 import { type SpeechRecognitionOptions } from '@lobehub/tts/react';
 import { useSpeechRecognition } from '@lobehub/tts/react';
 import isEqual from 'fast-deep-equal';

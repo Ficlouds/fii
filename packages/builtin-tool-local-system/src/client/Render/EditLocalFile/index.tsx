@@ -1,5 +1,5 @@
-import type { EditLocalFileState } from '@lobechat/builtin-tool-local-system';
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { EditLocalFileState } from '@ficlouds/builtin-tool-local-system';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { Alert, Flexbox, PatchDiff, Skeleton } from '@lobehub/ui';
 import React, { memo } from 'react';
 

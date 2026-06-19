@@ -1,4 +1,4 @@
-import { KNOWN_TASK_TEMPLATE_IDS } from '@lobechat/const';
+import { KNOWN_TASK_TEMPLATE_IDS } from '@ficlouds/const';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 

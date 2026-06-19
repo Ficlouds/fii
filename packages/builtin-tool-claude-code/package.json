@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/builtin-tool-claude-code",
+  "name": "@ficlouds/builtin-tool-claude-code",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -9,13 +9,13 @@
   },
   "main": "./src/index.ts",
   "dependencies": {
-    "@lobechat/shared-tool-ui": "workspace:*"
+    "@ficlouds/shared-tool-ui": "workspace:*"
   },
   "devDependencies": {
-    "@lobechat/types": "workspace:*"
+    "@ficlouds/types": "workspace:*"
   },
   "peerDependencies": {
-    "@lobehub/ui": "^5",
+    "@ficlouds/ui": "^5",
     "antd-style": "*",
     "lucide-react": "*",
     "path-browserify-esm": "*",

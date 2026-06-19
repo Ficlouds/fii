@@ -1,4 +1,4 @@
-import type { LobeAgentChatConfig } from '@lobechat/types';
+import type { FiAgentChatConfig } from '@ficlouds/types';
 import { type FormItemProps } from '@lobehub/ui';
 import { Form } from '@lobehub/ui';
 import { Form as AntdForm, Grid, Switch } from 'antd';
@@ -52,7 +52,7 @@ interface ControlsFormProps {
  * Users may still have only `thinking: 'disabled'`; treating that as unset would
  * show the model default and could persist the opposite value on unrelated edits.
  */
-const resolveEnableReasoningInitialValue = (config: LobeAgentChatConfig) => {
+const resolveEnableReasoningInitialValue = (config: FiAgentChatConfig) => {
   if (Object.hasOwn(config, 'enableReasoning')) return config.enableReasoning;
 
   if (config.thinking === 'enabled') return true;

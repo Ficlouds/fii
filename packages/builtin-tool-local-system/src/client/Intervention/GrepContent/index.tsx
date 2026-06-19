@@ -1,5 +1,5 @@
-import  { type GrepContentParams } from '@lobechat/electron-client-ipc';
-import  { type BuiltinInterventionProps } from '@lobechat/types';
+import  { type GrepContentParams } from '@ficlouds/electron-client-ipc';
+import  { type BuiltinInterventionProps } from '@ficlouds/types';
 import { Flexbox, Highlighter, Text } from '@lobehub/ui';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';

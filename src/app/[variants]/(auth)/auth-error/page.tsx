@@ -1,7 +1,7 @@
 'use client';
 
 import { SiDiscord } from '@icons-pack/react-simple-icons';
-import { SOCIAL_URL } from '@lobechat/business-const';
+import { SOCIAL_URL } from '@ficlouds/business-const';
 import { Button, Flexbox, Icon, Text } from '@lobehub/ui';
 import { cssVar } from 'antd-style';
 import Link from 'next/link';

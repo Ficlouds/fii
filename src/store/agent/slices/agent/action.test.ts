@@ -1,10 +1,10 @@
-import { CHAT_GROUP_SESSION_ID_PREFIX } from '@lobechat/types';
+import { CHAT_GROUP_SESSION_ID_PREFIX } from '@ficlouds/types';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { agentService } from '@/services/agent';
 import { agentDocumentService } from '@/services/agentDocument';
-import { type LobeAgentConfig } from '@/types/agent';
+import { type FiAgentConfig } from '@/types/agent';
 import { withSWR } from '~test-utils';
 
 import { useAgentStore } from '../../store';
@@ -452,7 +452,7 @@ describe('AgentSlice Actions', () => {
         id: 'agent-1',
         model: 'gpt-4',
         systemRole: 'You are a helpful assistant',
-      } as LobeAgentConfig;
+      } as FiAgentConfig;
 
       vi.mocked(agentService.getAgentConfigById).mockResolvedValueOnce(mockAgentConfig as any);
 
@@ -474,7 +474,7 @@ describe('AgentSlice Actions', () => {
         id: 'agent-1',
         model: 'gpt-4',
         systemRole: 'You are a helpful assistant',
-      } as LobeAgentConfig;
+      } as FiAgentConfig;
 
       useAgentStore.setState({ activeAgentId: 'agent-current' });
       vi.mocked(agentService.getAgentConfigById).mockResolvedValueOnce(mockAgentConfig as any);

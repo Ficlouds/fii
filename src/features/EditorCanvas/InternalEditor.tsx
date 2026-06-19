@@ -1,6 +1,6 @@
 'use client';
 
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import type { IEditor } from '@lobehub/editor';
 import {
   ReactImagePlugin,

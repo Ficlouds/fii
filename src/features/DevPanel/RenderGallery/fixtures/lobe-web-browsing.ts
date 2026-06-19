@@ -7,35 +7,35 @@ export default defineFixtures({
   fixtures: {
     crawlMultiPages: single({
       args: {
-        urls: ['https://lobehub.com', 'https://docs.lobehub.com'],
+        urls: ['https://ficlouds.com', 'https://docs.ficlouds.com'],
       },
       pluginState: {
         results: [
           {
             crawler: 'firecrawl',
             data: {
-              content: 'LobeHub ships desktop and web experiences for AI collaboration.',
+              content: 'Fi ships desktop and web experiences for AI collaboration.',
               description: 'Product homepage',
-              title: 'LobeHub',
-              url: 'https://lobehub.com',
+              title: 'Fi',
+              url: 'https://ficlouds.com',
             },
-            originalUrl: 'https://lobehub.com',
+            originalUrl: 'https://ficlouds.com',
           },
           {
             crawler: 'firecrawl',
             data: {
               content: 'Developer documentation for routing, tooling, and local testing.',
               description: 'Docs homepage',
-              title: 'LobeHub Docs',
-              url: 'https://docs.lobehub.com',
+              title: 'Fi Docs',
+              url: 'https://docs.ficlouds.com',
             },
-            originalUrl: 'https://docs.lobehub.com',
+            originalUrl: 'https://docs.ficlouds.com',
           },
         ],
       },
     }),
     crawlSinglePage: single({
-      args: { url: 'https://lobehub.com/blog' },
+      args: { url: 'https://ficlouds.com/blog' },
       pluginState: {
         results: [
           {
@@ -43,10 +43,10 @@ export default defineFixtures({
             data: {
               content: 'Recent product updates and engineering notes.',
               description: 'Blog landing page',
-              title: 'LobeHub Blog',
-              url: 'https://lobehub.com/blog',
+              title: 'Fi Blog',
+              url: 'https://ficlouds.com/blog',
             },
-            originalUrl: 'https://lobehub.com/blog',
+            originalUrl: 'https://ficlouds.com/blog',
           },
         ],
       },
@@ -54,12 +54,12 @@ export default defineFixtures({
     search: variants([
       {
         args: {
-          query: 'LobeHub devtools preview route',
+          query: 'Fi devtools preview route',
           searchEngines: ['google', 'bing'],
         },
         label: 'With results',
         pluginState: {
-          query: 'LobeHub devtools preview route',
+          query: 'Fi devtools preview route',
           results: [
             {
               content: 'Documentation and implementation notes about local preview tooling.',

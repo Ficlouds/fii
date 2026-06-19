@@ -1,4 +1,4 @@
-import { type BriefAction, DEFAULT_BRIEF_ACTIONS, type TaskStatus } from '@lobechat/types';
+import { type BriefAction, DEFAULT_BRIEF_ACTIONS, type TaskStatus } from '@ficlouds/types';
 import { Button, Flexbox, Icon, Text, Tooltip } from '@lobehub/ui';
 import { cssVar } from 'antd-style';
 import { Check, SquarePen, Workflow } from 'lucide-react';

@@ -1,8 +1,8 @@
-import type { AgentSignalScope } from '@lobechat/agent-signal';
+import type { AgentSignalScope } from '@ficlouds/agent-signal';
 import {
   type AgentSignalProducerScopeInput,
   AgentSignalScopeKey,
-} from '@lobechat/agent-signal/source';
+} from '@ficlouds/agent-signal/source';
 
 /** Resolves the canonical runtime scope key for one source scope. */
 export const resolveRuntimeScopeKey = (scope: AgentSignalScope) => {

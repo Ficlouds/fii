@@ -1,7 +1,7 @@
 'use client';
 
-import { priorityLabel } from '@lobechat/prompts';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import { priorityLabel } from '@ficlouds/prompts';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { createStaticStyles, cssVar, cx } from 'antd-style';
 import type { ReactNode } from 'react';
 import { memo } from 'react';

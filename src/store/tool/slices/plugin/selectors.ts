@@ -1,7 +1,7 @@
-import { type ToolManifest } from '@lobechat/types';
+import { type ToolManifest } from '@ficlouds/types';
 
 import { isInstalledPluginAvailableInCurrentEnv } from '@/helpers/toolAvailability';
-import { type InstallPluginMeta, type LobeToolCustomPlugin } from '@/types/tool/plugin';
+import { type InstallPluginMeta, type FiToolCustomPlugin } from '@/types/tool/plugin';
 
 import { type ToolStoreState } from '../../initialState';
 
@@ -22,7 +22,7 @@ const getPluginMetaById = (id: string) => (s: ToolStoreState) => {
 
 const getCustomPluginById = (id: string) => (s: ToolStoreState) =>
   installedPlugins(s).find((i) => i.identifier === id && i.type === 'customPlugin') as
-    | LobeToolCustomPlugin
+    | FiToolCustomPlugin
     | undefined;
 
 const getToolManifestById = (id: string) => (s: ToolStoreState) =>

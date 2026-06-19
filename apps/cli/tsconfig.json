@@ -13,8 +13,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "paths": {
-      "@lobechat/device-gateway-client": ["../../packages/device-gateway-client/src"],
-      "@lobechat/local-file-shell": ["../../packages/local-file-shell/src"],
+      "@ficlouds/device-gateway-client": ["../../packages/device-gateway-client/src"],
+      "@ficlouds/local-file-shell": ["../../packages/local-file-shell/src"],
       "@/*": ["../../src/*"]
     }
   },

@@ -11,7 +11,7 @@ const read = (filePath: string) => readFileSync(path.join(root, filePath), 'utf8
 describe('agent signal prompt boundaries', () => {
   /**
    * @example
-   * Self-iteration execute delegates model-facing runtime prompt text to @lobechat/prompts.
+   * Self-iteration execute delegates model-facing runtime prompt text to @ficlouds/prompts.
    */
   it('keeps self-iteration runtime prompt words out of execute service', () => {
     const source = read('src/server/services/agentSignal/services/selfIteration/execute.ts');
@@ -23,7 +23,7 @@ describe('agent signal prompt boundaries', () => {
 
   /**
    * @example
-   * Memory writer delegates model-facing prompt words to @lobechat/prompts.
+   * Memory writer delegates model-facing prompt words to @ficlouds/prompts.
    */
   it('keeps memory writer prompt words out of user memory action service', () => {
     const source = read(

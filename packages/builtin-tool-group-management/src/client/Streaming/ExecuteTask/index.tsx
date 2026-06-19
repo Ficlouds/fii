@@ -1,7 +1,7 @@
 'use client';
 
-import { DEFAULT_AVATAR } from '@lobechat/const';
-import type { BuiltinStreamingProps } from '@lobechat/types';
+import { DEFAULT_AVATAR } from '@ficlouds/const';
+import type { BuiltinStreamingProps } from '@ficlouds/types';
 import { Avatar, Flexbox, Markdown } from '@lobehub/ui';
 import { createStaticStyles, useTheme } from 'antd-style';
 import { memo } from 'react';

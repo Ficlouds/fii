@@ -1,22 +1,22 @@
-import { ASYNC_TASK_TIMEOUT } from '@lobechat/business-config/server';
-import type { UserMemoryExtractionMetadata } from '@lobechat/types';
+import { ASYNC_TASK_TIMEOUT } from '@ficlouds/business-config/server';
+import type { UserMemoryExtractionMetadata } from '@ficlouds/types';
 import {
   AsyncTaskError,
   AsyncTaskErrorType,
   AsyncTaskStatus,
   AsyncTaskType,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { and, eq, inArray, lt, or, sql } from 'drizzle-orm';
 
 import type { AsyncTaskSelectItem, NewAsyncTaskItem } from '../schemas';
 import { asyncTasks } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export class AsyncTaskModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }
@@ -42,7 +42,7 @@ export class AsyncTaskModel {
     return this.db.query.asyncTasks.findFirst({ where: and(eq(asyncTasks.id, id)) });
   };
 
-  static findByInferenceId = async (db: LobeChatDatabase, inferenceId: string) => {
+  static findByInferenceId = async (db: FiDatabase, inferenceId: string) => {
     return db.query.asyncTasks.findFirst({
       where: eq(asyncTasks.inferenceId, inferenceId),
     });

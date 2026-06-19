@@ -1,4 +1,4 @@
-import type { TaskTemplate, TaskTemplateSkillRequirement } from '@lobechat/const';
+import type { TaskTemplate, TaskTemplateSkillRequirement } from '@ficlouds/const';
 import { useMemo } from 'react';
 
 import { getMainIconProvider } from './resolveTemplateIcon';

@@ -1,5 +1,5 @@
-import { useToolRenderCapabilities } from '@lobechat/shared-tool-ui';
-import type { ReadFileState } from '@lobechat/tool-runtime';
+import { useToolRenderCapabilities } from '@ficlouds/shared-tool-ui';
+import type { ReadFileState } from '@ficlouds/tool-runtime';
 import { ActionIcon, Flexbox, Icon, Markdown, Text } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { AlignLeft, Asterisk, ExternalLink, FolderOpen } from 'lucide-react';

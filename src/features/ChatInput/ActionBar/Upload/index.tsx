@@ -1,4 +1,4 @@
-import { validateVideoFileSize } from '@lobechat/utils/client';
+import { validateVideoFileSize } from '@ficlouds/utils/client';
 import { type ItemType } from '@lobehub/ui';
 import { Icon, Tooltip } from '@lobehub/ui';
 import { Upload } from 'antd';

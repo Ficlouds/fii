@@ -2,10 +2,10 @@ import type {
   ChatCompletionTool,
   GenerateObjectPayload,
   GenerateObjectSchema,
-} from '@lobechat/model-runtime';
-import type { OpenAIChatMessage } from '@lobechat/types';
+} from '@ficlouds/model-runtime';
+import type { OpenAIChatMessage } from '@ficlouds/types';
 
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 
 export interface AiGenerationObjectInput {
@@ -27,7 +27,7 @@ export interface AiGenerationObjectOptions {
    * Structured tracing config (scenario / promptVersion / schemaName /
    * agentId / topicId / inputHint / ...). Forwarded to the
    * `llm_generation_tracing` hook. Strongly typed by `TracingOptions` from
-   * `@lobechat/llm-generation-tracing` at call sites.
+   * `@ficlouds/llm-generation-tracing` at call sites.
    */
   tracing?: Record<string, unknown>;
 }
@@ -45,10 +45,10 @@ export interface AiGenerationObjectOptions {
  * Construct one per request — `db` and `userId` come from the request context.
  */
 export class AiGenerationService {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly userId: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

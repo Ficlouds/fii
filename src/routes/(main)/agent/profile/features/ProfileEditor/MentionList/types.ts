@@ -1,4 +1,4 @@
-import { type API } from '@lobechat/prompts';
+import { type API } from '@ficlouds/prompts';
 import { type DropdownItem } from '@lobehub/ui';
 
 export type MentionEntityType = 'collection' | 'api';

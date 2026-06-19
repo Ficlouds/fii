@@ -1,4 +1,4 @@
-import { type LobeToolManifest } from '@lobechat/context-engine';
+import { type FiToolManifest } from '@ficlouds/context-engine';
 import { MarketSDK } from '@lobehub/market-sdk';
 import debug from 'debug';
 import { type NextRequest } from 'next/server';
@@ -8,7 +8,7 @@ import { generateTrustedClientToken, getTrustedClientTokenForSession } from '@/l
 
 const log = debug('lobe-server:market-service');
 
-const MARKET_BASE_URL = process.env.MARKET_BASE_URL || 'https://market.lobehub.com';
+const MARKET_BASE_URL = process.env.MARKET_BASE_URL || 'https://market.ficlouds.com';
 
 // ============================== Helper Functions ==============================
 
@@ -23,7 +23,7 @@ export function extractAccessToken(req: NextRequest): string | undefined {
   return undefined;
 }
 
-export interface LobehubSkillExecuteParams {
+export interface FiSkillExecuteParams {
   args: Record<string, any>;
   context?: {
     topicId?: string;
@@ -32,7 +32,7 @@ export interface LobehubSkillExecuteParams {
   toolName: string;
 }
 
-export interface LobehubSkillExecuteResult {
+export interface FiSkillExecuteResult {
   content: string;
   error?: { code: string; message?: string };
   success: boolean;
@@ -123,7 +123,7 @@ export class MarketService {
   // ============================== Feedback Methods ==============================
 
   /**
-   * Submit feedback to LobeHub
+   * Submit feedback to Fi
    */
   async submitFeedback(params: {
     clientInfo?: {
@@ -391,7 +391,7 @@ export class MarketService {
   // ============================== Skills Methods (using SDK) ==============================
 
   /**
-   * Search for skills in the LobeHub Market
+   * Search for skills in the Fi Market
    */
   async searchSkill(params: {
     category?: string;
@@ -458,14 +458,14 @@ export class MarketService {
   }
 
   /**
-   * Execute a LobeHub Skill tool
+   * Execute a Fi Skill tool
    * @param params - The skill execution parameters (provider, toolName, args)
    * @returns Execution result with content and success status
    */
-  async executeLobehubSkill(params: LobehubSkillExecuteParams): Promise<LobehubSkillExecuteResult> {
+  async executeFiSkill(params: FiSkillExecuteParams): Promise<FiSkillExecuteResult> {
     const { provider, toolName, args, context } = params;
 
-    log('executeLobehubSkill: %s/%s with args: %O, context: %O', provider, toolName, args, context);
+    log('executeFiSkill: %s/%s with args: %O, context: %O', provider, toolName, args, context);
 
     try {
       const response = await this.market.skills.callTool(provider, {
@@ -475,7 +475,7 @@ export class MarketService {
         tool: toolName,
       });
 
-      log('executeLobehubSkill: response: %O', response);
+      log('executeFiSkill: response: %O', response);
 
       return {
         content: typeof response.data === 'string' ? response.data : JSON.stringify(response.data),
@@ -483,7 +483,7 @@ export class MarketService {
       };
     } catch (error) {
       const err = error as Error;
-      console.error('MarketService.executeLobehubSkill error %s/%s: %O', provider, toolName, err);
+      console.error('MarketService.executeFiSkill error %s/%s: %O', provider, toolName, err);
 
       // MarketAPIError carries the full error response body from the API,
       // including structured details (command, exitCode, stdout, stderr).
@@ -504,31 +504,31 @@ export class MarketService {
   }
 
   /**
-   * Fetch LobeHub Skills manifests from Market API
+   * Fetch Fi Skills manifests from Market API
    * Gets user's connected skills and builds tool manifests for agent execution
    *
    * @returns Array of tool manifests for connected skills
    */
-  async getLobehubSkillManifests(): Promise<LobeToolManifest[]> {
+  async getFiSkillManifests(): Promise<FiToolManifest[]> {
     try {
       // 1. Get user's connected skills
       const { connections } = await this.market.connect.listConnections();
       if (!connections || connections.length === 0) {
-        log('getLobehubSkillManifests: no connected skills found');
+        log('getFiSkillManifests: no connected skills found');
         return [];
       }
 
-      log('getLobehubSkillManifests: found %d connected skills', connections.length);
+      log('getFiSkillManifests: found %d connected skills', connections.length);
 
       // 2. Fetch tools for each connection and build manifests
-      const manifests: LobeToolManifest[] = [];
+      const manifests: FiToolManifest[] = [];
 
       for (const connection of connections) {
         try {
           // Connection returns providerId (e.g., 'twitter', 'linear'), not numeric id
           const providerId = (connection as any).providerId;
           if (!providerId) {
-            log('getLobehubSkillManifests: connection missing providerId: %O', connection);
+            log('getFiSkillManifests: connection missing providerId: %O', connection);
             continue;
           }
           const icon = (connection as any).icon;
@@ -537,7 +537,7 @@ export class MarketService {
           // connection.providerName is the *user's* display name on that provider,
           // NOT the provider's own name (e.g., "LiJian" instead of "Linear").
           // Static label map — avoids importing LOBEHUB_SKILL_PROVIDERS which
-          // pulls in react-icons (client-side only). Keep in sync with lobehubSkill.ts.
+          // pulls in react-icons (client-side only). Keep in sync with fiSkill.ts.
           const PROVIDER_LABELS: Record<string, string> = {
             github: 'GitHub',
             linear: 'Linear',
@@ -551,7 +551,7 @@ export class MarketService {
           const { tools, instruction } = await this.market.skills.listTools(providerId);
           if (!tools || tools.length === 0) continue;
 
-          const manifest: LobeToolManifest = {
+          const manifest: FiToolManifest = {
             api: tools.map((tool: any) => ({
               description: tool.description || '',
               name: tool.name,
@@ -560,7 +560,7 @@ export class MarketService {
             identifier: providerId,
             meta: {
               avatar: icon || '🔗',
-              description: `LobeHub Skill: ${providerLabel}`,
+              description: `Fi Skill: ${providerLabel}`,
               tags: ['lobehub-skill', providerId],
               title: providerLabel,
             },
@@ -570,18 +570,18 @@ export class MarketService {
 
           manifests.push(manifest);
           log(
-            'getLobehubSkillManifests: built manifest for %s with %d tools',
+            'getFiSkillManifests: built manifest for %s with %d tools',
             providerId,
             tools.length,
           );
         } catch (error) {
-          log('getLobehubSkillManifests: failed to fetch tools for connection: %O', error);
+          log('getFiSkillManifests: failed to fetch tools for connection: %O', error);
         }
       }
 
       return manifests;
     } catch (error) {
-      log('getLobehubSkillManifests: error fetching skills: %O', error);
+      log('getFiSkillManifests: error fetching skills: %O', error);
       return [];
     }
   }

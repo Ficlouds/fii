@@ -1,14 +1,14 @@
-import { MemoryIdentifier } from '@lobechat/builtin-tool-memory';
+import { MemoryIdentifier } from '@ficlouds/builtin-tool-memory';
 import {
   MemoryExecutionRuntime,
   type MemoryRuntimeService,
-} from '@lobechat/builtin-tool-memory/executionRuntime';
-import { BRANDING_PROVIDER, ENABLE_BUSINESS_FEATURES } from '@lobechat/business-const';
+} from '@ficlouds/builtin-tool-memory/executionRuntime';
+import { BRANDING_PROVIDER, ENABLE_BUSINESS_FEATURES } from '@ficlouds/business-const';
 import {
   DEFAULT_USER_MEMORY_EMBEDDING_MODEL_ITEM,
   MEMORY_SEARCH_TOP_K_LIMITS,
-} from '@lobechat/const';
-import type { LobeChatDatabase } from '@lobechat/database';
+} from '@ficlouds/const';
+import type { FiDatabase } from '@ficlouds/database';
 import type {
   ActivityMemoryItemSchema,
   AddIdentityActionSchema,
@@ -17,7 +17,7 @@ import type {
   PreferenceMemoryItemSchema,
   RemoveIdentityActionSchema,
   UpdateIdentityActionSchema,
-} from '@lobechat/memory-user-memory/schemas';
+} from '@ficlouds/memory-user-memory/schemas';
 import type {
   AddActivityMemoryResult,
   AddContextMemoryResult,
@@ -30,8 +30,8 @@ import type {
   SearchMemoryParams,
   SearchMemoryResult,
   UpdateIdentityMemoryResult,
-} from '@lobechat/types';
-import { LayersEnum } from '@lobechat/types';
+} from '@ficlouds/types';
+import { LayersEnum } from '@ficlouds/types';
 import { eq } from 'drizzle-orm';
 import type { z } from 'zod';
 
@@ -87,7 +87,7 @@ const applySearchLimitsByEffort = (
   };
 };
 
-const getEmbeddingRuntime = async (serverDB: LobeChatDatabase, userId: string) => {
+const getEmbeddingRuntime = async (serverDB: FiDatabase, userId: string) => {
   const { provider, model: embeddingModel } =
     getServerDefaultFilesConfig().embeddingModel || DEFAULT_USER_MEMORY_EMBEDDING_MODEL_ITEM;
 
@@ -126,7 +126,7 @@ class MemoryServerRuntimeService implements MemoryRuntimeService {
   private messageId?: string;
   private memoryModel: UserMemoryModel;
   private operationId?: string;
-  private serverDB: LobeChatDatabase;
+  private serverDB: FiDatabase;
   private taskId?: string;
   private toolCallId?: string;
   private topicId?: string;
@@ -142,7 +142,7 @@ class MemoryServerRuntimeService implements MemoryRuntimeService {
     memoryEmbeddingRuntime?: ToolExecutionMemoryEmbeddingRuntime;
     memoryModel: UserMemoryModel;
     operationId?: string;
-    serverDB: LobeChatDatabase;
+    serverDB: FiDatabase;
     taskId?: string;
     toolCallId?: string;
     topicId?: string;

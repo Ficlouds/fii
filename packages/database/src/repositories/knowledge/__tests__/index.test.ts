@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { FilesTabs, SortType } from '@lobechat/types';
+import { FilesTabs, SortType } from '@ficlouds/types';
 import { eq } from 'drizzle-orm';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -14,10 +14,10 @@ import {
   knowledgeBases,
   users,
 } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import { KnowledgeRepo } from '../index';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'knowledge-repo-test-user';
 const otherUserId = 'other-knowledge-user';

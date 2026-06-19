@@ -2,8 +2,8 @@ import {
   type SearchParams,
   type UniformSearchResponse,
   type UniformSearchResult,
-} from '@lobechat/types';
-import { getJinaSearchBaseUrl } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { getJinaSearchBaseUrl } from '@ficlouds/utils';
 import { TRPCError } from '@trpc/server';
 import debug from 'debug';
 import urlJoin from 'url-join';

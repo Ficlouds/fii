@@ -8,24 +8,24 @@ import path from 'node:path';
 import type { Readable, Writable } from 'node:stream';
 import { finished as streamFinished } from 'node:stream/promises';
 
-import type { HeterogeneousAgentSessionError } from '@lobechat/electron-client-ipc';
+import type { HeterogeneousAgentSessionError } from '@ficlouds/electron-client-ipc';
 import {
   CLAUDE_CODE_CLI_INSTALL_COMMANDS,
   CLAUDE_CODE_CLI_INSTALL_DOCS_URL,
   CODEX_CLI_INSTALL_COMMANDS,
   CODEX_CLI_INSTALL_DOCS_URL,
   HeterogeneousAgentSessionErrorCode,
-} from '@lobechat/electron-client-ipc';
-import type { AskUserBridge } from '@lobechat/heterogeneous-agents/askUser';
-import { AskUserMcpServer } from '@lobechat/heterogeneous-agents/askUser';
-import type { AgentContentBlock } from '@lobechat/heterogeneous-agents/spawn';
+} from '@ficlouds/electron-client-ipc';
+import type { AskUserBridge } from '@ficlouds/heterogeneous-agents/askUser';
+import { AskUserMcpServer } from '@ficlouds/heterogeneous-agents/askUser';
+import type { AgentContentBlock } from '@ficlouds/heterogeneous-agents/spawn';
 import {
   AgentStreamPipeline,
   buildAgentInput,
   materializeImageToPath,
   normalizeImage,
   resolveCliSpawnPlan,
-} from '@lobechat/heterogeneous-agents/spawn';
+} from '@ficlouds/heterogeneous-agents/spawn';
 import { app as electronApp, BrowserWindow } from 'electron';
 
 import { getHeterogeneousAgentDriver } from '@/modules/heterogeneousAgent';

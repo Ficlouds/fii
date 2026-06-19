@@ -1,6 +1,6 @@
 'use client';
 
-import { type AgentItem } from '@lobechat/types';
+import { type AgentItem } from '@ficlouds/types';
 import { ModelIcon } from '@lobehub/icons';
 import { ActionIcon, Flexbox, Icon, Popover, Skeleton, Text } from '@lobehub/ui';
 import { SkillsIcon } from '@lobehub/ui/icons';

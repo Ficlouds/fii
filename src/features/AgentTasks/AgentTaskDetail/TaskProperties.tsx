@@ -1,4 +1,4 @@
-import type { TaskPriority, TaskStatus } from '@lobechat/types';
+import type { TaskPriority, TaskStatus } from '@ficlouds/types';
 import { Block, Text } from '@lobehub/ui';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';

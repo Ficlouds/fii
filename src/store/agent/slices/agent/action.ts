@@ -1,6 +1,6 @@
-import { isDesktop } from '@lobechat/const';
-import { type AgentContextDocument } from '@lobechat/context-engine';
-import { isChatGroupSessionId } from '@lobechat/types';
+import { isDesktop } from '@ficlouds/const';
+import { type AgentContextDocument } from '@ficlouds/context-engine';
+import { isChatGroupSessionId } from '@ficlouds/types';
 import { getSingletonAnalyticsOptional } from '@lobehub/analytics';
 import isEqual from 'fast-deep-equal';
 import { produce } from 'immer';
@@ -21,8 +21,8 @@ import { getUserStoreState } from '@/store/user';
 import { userProfileSelectors } from '@/store/user/selectors';
 import type {
   AgentItem,
-  LobeAgentChatConfig,
-  LobeAgentConfig,
+  FiAgentChatConfig,
+  FiAgentConfig,
   RuntimeEnvConfig,
 } from '@/types/agent';
 import { toAgentContextDocuments } from '@/utils/agentDocumentContextMapping';
@@ -181,7 +181,7 @@ export class AgentSliceActionImpl {
     await updateAgentConfig({ plugins: newPlugins });
   };
 
-  updateAgentChatConfig = async (config: Partial<LobeAgentChatConfig>): Promise<void> => {
+  updateAgentChatConfig = async (config: Partial<FiAgentChatConfig>): Promise<void> => {
     const { activeAgentId } = this.#get();
 
     if (!activeAgentId) return;
@@ -191,14 +191,14 @@ export class AgentSliceActionImpl {
 
   updateAgentChatConfigById = async (
     agentId: string,
-    config: Partial<LobeAgentChatConfig>,
+    config: Partial<FiAgentChatConfig>,
   ): Promise<void> => {
     if (!agentId) return;
 
     await this.#get().updateAgentConfigById(agentId, { chatConfig: config });
   };
 
-  updateAgentConfig = async (config: PartialDeep<LobeAgentConfig>): Promise<void> => {
+  updateAgentConfig = async (config: PartialDeep<FiAgentConfig>): Promise<void> => {
     const { activeAgentId } = this.#get();
 
     if (!activeAgentId) return;
@@ -210,7 +210,7 @@ export class AgentSliceActionImpl {
 
   updateAgentConfigById = async (
     agentId: string,
-    config: PartialDeep<LobeAgentConfig>,
+    config: PartialDeep<FiAgentConfig>,
   ): Promise<void> => {
     if (!agentId) return;
 
@@ -275,17 +275,17 @@ export class AgentSliceActionImpl {
   useFetchAgentConfig = (
     isLogin: boolean | undefined,
     agentId: string,
-  ): SWRResponse<LobeAgentConfig> => {
+  ): SWRResponse<FiAgentConfig> => {
     const swrKey =
       isLogin === true && agentId && !isChatGroupSessionId(agentId)
         ? ([FETCH_AGENT_CONFIG_KEY, agentId] as const)
         : null;
 
-    return useClientDataSWRWithSync<LobeAgentConfig>(
+    return useClientDataSWRWithSync<FiAgentConfig>(
       swrKey,
       async () => {
         const data = await agentService.getAgentConfigById(agentId);
-        return data as LobeAgentConfig;
+        return data as FiAgentConfig;
       },
       {
         onData: (data) => {
@@ -300,17 +300,17 @@ export class AgentSliceActionImpl {
   useHydrateAgentConfig = (
     isLogin: boolean | undefined,
     agentId: string,
-  ): SWRResponse<LobeAgentConfig> => {
+  ): SWRResponse<FiAgentConfig> => {
     const swrKey =
       isLogin === true && agentId && !isChatGroupSessionId(agentId)
         ? ([FETCH_AGENT_CONFIG_KEY, agentId] as const)
         : null;
 
-    return useClientDataSWRWithSync<LobeAgentConfig>(
+    return useClientDataSWRWithSync<FiAgentConfig>(
       swrKey,
       async () => {
         const data = await agentService.getAgentConfigById(agentId);
-        return data as LobeAgentConfig;
+        return data as FiAgentConfig;
       },
       {
         onData: (data) => {
@@ -365,7 +365,7 @@ export class AgentSliceActionImpl {
     return request;
   };
 
-  internal_dispatchAgentMap = (id: string, config: PartialDeep<LobeAgentConfig>): void => {
+  internal_dispatchAgentMap = (id: string, config: PartialDeep<FiAgentConfig>): void => {
     const agentMap = produce(this.#get().agentMap, (draft) => {
       if (!draft[id]) {
         draft[id] = config;
@@ -381,7 +381,7 @@ export class AgentSliceActionImpl {
 
   optimisticUpdateAgentConfig = async (
     id: string,
-    data: PartialDeep<LobeAgentConfig>,
+    data: PartialDeep<FiAgentConfig>,
     signal?: AbortSignal,
   ): Promise<void> => {
     const { internal_dispatchAgentMap, updateSaveStatus } = this.#get();
@@ -417,7 +417,7 @@ export class AgentSliceActionImpl {
     const { internal_dispatchAgentMap, updateSaveStatus } = this.#get();
 
     // 1. Optimistic update - meta fields are at the top level of agent config
-    internal_dispatchAgentMap(id, meta as PartialDeep<LobeAgentConfig>);
+    internal_dispatchAgentMap(id, meta as PartialDeep<FiAgentConfig>);
     updateSaveStatus('saving');
 
     try {

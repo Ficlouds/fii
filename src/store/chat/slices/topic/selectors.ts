@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { t } from 'i18next';
 
 import {

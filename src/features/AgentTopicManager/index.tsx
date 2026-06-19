@@ -1,6 +1,6 @@
 'use client';
 
-import { groupTopicsByProject, groupTopicsByUpdatedTime } from '@lobechat/utils/client/topic';
+import { groupTopicsByProject, groupTopicsByUpdatedTime } from '@ficlouds/utils/client/topic';
 import { Flexbox, Skeleton } from '@lobehub/ui';
 import { memo, useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';

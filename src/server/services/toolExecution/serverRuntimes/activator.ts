@@ -1,11 +1,11 @@
-import { builtinSkills } from '@lobechat/builtin-skills';
-import { LobeActivatorIdentifier } from '@lobechat/builtin-tool-activator';
+import { builtinSkills } from '@ficlouds/builtin-skills';
+import { LobeActivatorIdentifier } from '@ficlouds/builtin-tool-activator';
 import {
   ActivatorExecutionRuntime,
   type ActivatorRuntimeService,
   type ToolManifestInfo,
-} from '@lobechat/builtin-tool-activator/executionRuntime';
-import { SkillsExecutionRuntime } from '@lobechat/builtin-tool-skills/executionRuntime';
+} from '@ficlouds/builtin-tool-activator/executionRuntime';
+import { SkillsExecutionRuntime } from '@ficlouds/builtin-tool-skills/executionRuntime';
 
 import { AgentSkillModel } from '@/database/models/agentSkill';
 import { filterBuiltinSkills } from '@/helpers/skillFilters';

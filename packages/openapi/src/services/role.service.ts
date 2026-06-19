@@ -3,7 +3,7 @@ import { and, count, eq, ilike, inArray, or, sql } from 'drizzle-orm';
 
 import type { RoleItem } from '@/database/schemas/rbac';
 import { permissions, rolePermissions, roles, userRoles } from '@/database/schemas/rbac';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 
 import { BaseService } from '../common/base.service';
 import { processPaginationConditions } from '../helpers/pagination';
@@ -19,7 +19,7 @@ import type {
 } from '../types/role.type';
 
 export class RoleService extends BaseService {
-  constructor(db: LobeChatDatabase, userId: string | null) {
+  constructor(db: FiDatabase, userId: string | null) {
     super(db, userId);
   }
 

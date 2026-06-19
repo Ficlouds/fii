@@ -1,5 +1,5 @@
-import type { LocalReadFileParams } from '@lobechat/electron-client-ipc';
-import type { BuiltinInterventionProps } from '@lobechat/types';
+import type { LocalReadFileParams } from '@ficlouds/electron-client-ipc';
+import type { BuiltinInterventionProps } from '@ficlouds/types';
 import { Flexbox, Icon, Text } from '@lobehub/ui';
 import { ChevronRight } from 'lucide-react';
 import path from 'path-browserify-esm';

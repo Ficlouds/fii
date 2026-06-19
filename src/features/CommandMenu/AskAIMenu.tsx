@@ -1,4 +1,4 @@
-import { DEFAULT_AVATAR, DEFAULT_INBOX_AVATAR } from '@lobechat/const';
+import { DEFAULT_AVATAR, DEFAULT_INBOX_AVATAR } from '@ficlouds/const';
 import { Avatar } from '@lobehub/ui';
 import { GroupBotSquareIcon } from '@lobehub/ui/icons';
 import { Command } from 'cmdk';

@@ -1,7 +1,7 @@
 import {
   RemoteDeviceExecutionRuntime,
   RemoteDeviceIdentifier,
-} from '@lobechat/builtin-tool-remote-device';
+} from '@ficlouds/builtin-tool-remote-device';
 
 import { deviceProxy } from '../deviceProxy';
 import { type ServerRuntimeRegistration } from './types';

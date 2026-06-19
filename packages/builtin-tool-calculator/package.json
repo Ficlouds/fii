@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/builtin-tool-calculator",
+  "name": "@ficlouds/builtin-tool-calculator",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -9,16 +9,16 @@
   },
   "main": "./src/index.ts",
   "dependencies": {
-    "@lobechat/prompts": "workspace:*",
+    "@ficlouds/prompts": "workspace:*",
     "@thi.ng/base-n": "^2.7.58",
     "mathjs": "^15.1.0",
     "nerdamer-prime": "^1.3.1"
   },
   "devDependencies": {
-    "@lobechat/types": "workspace:*"
+    "@ficlouds/types": "workspace:*"
   },
   "peerDependencies": {
-    "@lobehub/ui": "^5",
+    "@ficlouds/ui": "^5",
     "antd-style": "*",
     "lucide-react": "*",
     "react": "*",

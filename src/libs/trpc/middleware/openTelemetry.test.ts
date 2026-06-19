@@ -15,7 +15,7 @@ const mocks = vi.hoisted(() => ({
   capturedMiddleware: undefined as any,
 }));
 
-vi.mock('@lobechat/observability-otel/api', () => {
+vi.mock('@ficlouds/observability-otel/api', () => {
   const tracer = {
     startSpan: vi.fn(() => ({
       spanContext: () => spanContext,

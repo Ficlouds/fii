@@ -1355,46 +1355,46 @@ When I am ___, I need ___
 
   'tools.klavis.verifyAuth': 'I have completed authentication',
 
-  'tools.lobehubSkill.authorize': 'Authorize',
+  'tools.fiSkill.authorize': 'Authorize',
 
-  'tools.lobehubSkill.connect': 'Connect',
+  'tools.fiSkill.connect': 'Connect',
 
-  'tools.lobehubSkill.connected': 'Connected',
+  'tools.fiSkill.connected': 'Connected',
 
-  'tools.lobehubSkill.disconnect': 'Disconnect',
+  'tools.fiSkill.disconnect': 'Disconnect',
 
-  'tools.lobehubSkill.disconnectConfirm.desc':
+  'tools.fiSkill.disconnectConfirm.desc':
     "You can still continue previous chats that reference {{name}} content. However, the assistant won't be able to access new content or perform new tasks.",
 
-  'tools.lobehubSkill.disconnectConfirm.title': 'Disconnect {{name}}?',
+  'tools.fiSkill.disconnectConfirm.title': 'Disconnect {{name}}?',
 
-  'tools.lobehubSkill.disconnected': 'Disconnected',
+  'tools.fiSkill.disconnected': 'Disconnected',
 
-  'tools.lobehubSkill.error': 'Error',
+  'tools.fiSkill.error': 'Error',
   // Fi Skill Providers i18n
-  'tools.lobehubSkill.providers.github.description':
+  'tools.fiSkill.providers.github.description':
     'GitHub is a platform for version control and collaboration, enabling developers to host, review, and manage code repositories.',
-  'tools.lobehubSkill.providers.github.readme':
+  'tools.fiSkill.providers.github.readme':
     'Connect to GitHub to access your repositories, create and manage issues, review pull requests, and collaborate on code—all through natural conversation with your AI assistant.',
-  'tools.lobehubSkill.providers.linear.description':
+  'tools.fiSkill.providers.linear.description':
     'Linear is a modern issue tracking and project management tool designed for high-performance teams to build better software faster',
-  'tools.lobehubSkill.providers.linear.readme':
+  'tools.fiSkill.providers.linear.readme':
     'Bring the power of Linear directly into your AI assistant. Create and update issues, manage sprints, track project progress, and streamline your development workflow—all through natural conversation.',
-  'tools.lobehubSkill.providers.microsoft.description':
+  'tools.fiSkill.providers.microsoft.description':
     'Outlook Calendar is an integrated scheduling tool within Microsoft Outlook that enables users to create appointments, organize meetings with others, and manage their time and events effectively.',
-  'tools.lobehubSkill.providers.microsoft.readme':
+  'tools.fiSkill.providers.microsoft.readme':
     'Integrate with Outlook Calendar to view, create, and manage your events seamlessly. Schedule meetings, check availability, set reminders, and coordinate your time—all through natural language commands.',
-  'tools.lobehubSkill.providers.notion.description':
+  'tools.fiSkill.providers.notion.description':
     'Notion is a collaborative productivity and note-taking application.',
-  'tools.lobehubSkill.providers.notion.readme':
+  'tools.fiSkill.providers.notion.readme':
     'Connect to Notion to access and manage your workspace. Create pages, search content, update databases, and organize your knowledge base—all through natural conversation with your AI assistant.',
-  'tools.lobehubSkill.providers.twitter.description':
+  'tools.fiSkill.providers.twitter.description':
     'X (Twitter) is a social media platform for sharing real-time updates, news, and engaging with your audience through posts, replies, and direct messages.',
-  'tools.lobehubSkill.providers.twitter.readme':
+  'tools.fiSkill.providers.twitter.readme':
     'Connect to X (Twitter) to post tweets, manage your timeline, and engage with your audience. Create content, schedule posts, monitor mentions, and build your social media presence through conversational AI.',
-  'tools.lobehubSkill.providers.vercel.description':
+  'tools.fiSkill.providers.vercel.description':
     'Vercel is a cloud platform for frontend developers, providing hosting and serverless functions to deploy web applications with ease.',
-  'tools.lobehubSkill.providers.vercel.readme':
+  'tools.fiSkill.providers.vercel.readme':
     'Connect to Vercel to manage your deployments, monitor project status, and control your infrastructure. Deploy applications, check build logs, manage environment variables, and scale your projects through conversational AI.',
 
   'tools.notInstalled': 'Not Installed',

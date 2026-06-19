@@ -1,6 +1,6 @@
-import { type ChatCompletionErrorPayload } from '@lobechat/model-runtime';
-import { AGENT_RUNTIME_ERROR_SET } from '@lobechat/model-runtime';
-import { ChatErrorType } from '@lobechat/types';
+import { type ChatCompletionErrorPayload } from '@ficlouds/model-runtime';
+import { AGENT_RUNTIME_ERROR_SET } from '@ficlouds/model-runtime';
+import { ChatErrorType } from '@ficlouds/types';
 
 import { checkAuth } from '@/app/(backend)/middleware/auth';
 import { createTraceOptions, initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';

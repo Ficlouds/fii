@@ -1,6 +1,6 @@
 'use client';
 
-import { INBOX_SESSION_ID } from '@lobechat/const';
+import { INBOX_SESSION_ID } from '@ficlouds/const';
 import { Avatar, Flexbox, Icon, Input, Popover, Tooltip } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
 import isEqual from 'fast-deep-equal';

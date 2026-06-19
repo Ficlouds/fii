@@ -1,5 +1,5 @@
-import { parseDataUri } from '@lobechat/model-runtime';
-import { uuid } from '@lobechat/utils';
+import { parseDataUri } from '@ficlouds/model-runtime';
+import { uuid } from '@ficlouds/utils';
 import dayjs from 'dayjs';
 import { sha256 } from 'js-sha256';
 

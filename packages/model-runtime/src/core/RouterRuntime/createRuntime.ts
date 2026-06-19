@@ -2,9 +2,9 @@
  * @see https://github.com/lobehub/lobe-chat/discussions/6563
  */
 import type { GoogleGenAIOptions } from '@google/genai';
-import type { ChatModelCard } from '@lobechat/types';
-import { AgentRuntimeErrorType } from '@lobechat/types';
-import { createTimingHelpers, getDurationMs } from '@lobechat/utils';
+import type { ChatModelCard } from '@ficlouds/types';
+import { AgentRuntimeErrorType } from '@ficlouds/types';
+import { createTimingHelpers, getDurationMs } from '@ficlouds/utils';
 import debug from 'debug';
 import type { ClientOptions } from 'openai';
 import type OpenAI from 'openai';

@@ -1,6 +1,6 @@
 'use client';
 
-import { FILE_URL } from '@lobechat/business-const';
+import { FILE_URL } from '@ficlouds/business-const';
 import { Notion } from '@lobehub/icons';
 import { type MenuProps } from '@lobehub/ui';
 import { Button, DropdownMenu, Icon } from '@lobehub/ui';

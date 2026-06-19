@@ -1,4 +1,4 @@
-import type { LobeChatDatabase } from '@lobechat/database';
+import type { FiDatabase } from '@ficlouds/database';
 
 import { AgentModel } from '@/database/models/agent';
 import { AgentDocumentModel } from '@/database/models/agentDocuments';
@@ -25,7 +25,7 @@ import { SkillMount } from './SkillMount';
  * Returns:
  * - A skill mount that routes unified skill paths to namespace-specific providers.
  */
-export const createSkillMount = (db: LobeChatDatabase, userId: string) => {
+export const createSkillMount = (db: FiDatabase, userId: string) => {
   const agentModel = new AgentModel(db, userId);
   const agentDocumentModel = new AgentDocumentModel(db, userId);
   const documentService = new DocumentService(db, userId);

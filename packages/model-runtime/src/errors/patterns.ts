@@ -1,5 +1,5 @@
-import type { ILobeAgentRuntimeErrorType } from '@lobechat/types';
-import { AgentRuntimeErrorType } from '@lobechat/types';
+import type { ILobeAgentRuntimeErrorType } from '@ficlouds/types';
+import { AgentRuntimeErrorType } from '@ficlouds/types';
 
 /**
  * One entry in the pattern registry.

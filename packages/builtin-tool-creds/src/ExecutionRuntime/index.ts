@@ -1,5 +1,5 @@
-import { getKlavisServerByServerIdentifier, getLobehubSkillProviderById } from '@lobechat/const';
-import type { BuiltinServerRuntimeOutput } from '@lobechat/types';
+import { getKlavisServerByServerIdentifier, getFiSkillProviderById } from '@ficlouds/const';
+import type { BuiltinServerRuntimeOutput } from '@ficlouds/types';
 
 import type {
   ConnectKlavisServiceParams,
@@ -113,7 +113,7 @@ export class CredsExecutionRuntime {
     // Server-side cannot open OAuth popups or access browser stores.
     // Guide the user to connect via the frontend UI.
     return {
-      content: `To connect ${serverType.label}, please use the LobeHub app UI to initiate the Klavis OAuth flow. Server-side execution cannot open OAuth popups. Go to Settings or the onboarding page to connect ${serverType.label}.`,
+      content: `To connect ${serverType.label}, please use the Fi app UI to initiate the Klavis OAuth flow. Server-side execution cannot open OAuth popups. Go to Settings or the onboarding page to connect ${serverType.label}.`,
       state: {
         connected: false,
         identifier: service,
@@ -136,7 +136,7 @@ export class CredsExecutionRuntime {
       const { provider } = args;
 
       // Get provider config for display name
-      const providerConfig = getLobehubSkillProviderById(provider);
+      const providerConfig = getFiSkillProviderById(provider);
       if (!providerConfig) {
         return {
           content: `Unknown OAuth provider: ${provider}. Available providers: ${LOBEHUB_OAUTH_PROVIDER_LIST}`,
@@ -164,7 +164,7 @@ export class CredsExecutionRuntime {
       // Get the authorization URL
       // Note: In background execution, we cannot use window.location.origin
       // Normalize APP_URL by removing trailing slash to avoid double-slash in redirectUri
-      const appUrl = (process.env.APP_URL || 'https://app.lobehub.com').replace(/\/+$/, '');
+      const appUrl = (process.env.APP_URL || 'https://app.ficlouds.com').replace(/\/+$/, '');
       const redirectUri = `${appUrl}/oauth/callback/success?provider=${provider}`;
       const response = await this.credsService.getOAuthAuthorizeUrl(provider, redirectUri);
 

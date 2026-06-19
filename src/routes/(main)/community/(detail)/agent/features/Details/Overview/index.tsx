@@ -1,4 +1,4 @@
-import { BRANDING_NAME } from '@lobechat/business-const';
+import { BRANDING_NAME } from '@ficlouds/business-const';
 import { Block, Collapse, Flexbox } from '@lobehub/ui';
 import { ChatList } from '@lobehub/ui/chat';
 import { useTheme } from 'antd-style';

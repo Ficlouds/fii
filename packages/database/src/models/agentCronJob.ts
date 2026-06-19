@@ -7,13 +7,13 @@ import type {
   UpdateAgentCronJobData,
 } from '../schemas/agentCronJob';
 import { agentCronJobs } from '../schemas/agentCronJob';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export class AgentCronJobModel {
   private readonly userId: string;
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId?: string) {
+  constructor(db: FiDatabase, userId?: string) {
     this.db = db;
     this.userId = userId!;
   }
@@ -64,7 +64,7 @@ export class AgentCronJobModel {
   }
 
   // Get all enabled cron jobs (system-wide for execution)
-  static async getEnabledJobs(db: LobeChatDatabase): Promise<AgentCronJob[]> {
+  static async getEnabledJobs(db: FiDatabase): Promise<AgentCronJob[]> {
     return db
       .select()
       .from(agentCronJobs)
@@ -127,7 +127,7 @@ export class AgentCronJobModel {
 
   // Update execution statistics after job execution
   static async updateExecutionStats(
-    db: LobeChatDatabase,
+    db: FiDatabase,
     jobId: string,
   ): Promise<AgentCronJob | null> {
     // Update execution statistics and decrement remaining executions

@@ -1,13 +1,13 @@
-import { isDesktop, TRACING_SCENARIOS } from '@lobechat/const';
-import { HotkeyEnum, KeyEnum } from '@lobechat/const/hotkeys';
-import { HETEROGENEOUS_TYPE_LABELS } from '@lobechat/heterogeneous-agents';
+import { isDesktop, TRACING_SCENARIOS } from '@ficlouds/const';
+import { HotkeyEnum, KeyEnum } from '@ficlouds/const/hotkeys';
+import { HETEROGENEOUS_TYPE_LABELS } from '@ficlouds/heterogeneous-agents';
 import {
   chainInputCompletion,
   escapeXmlAttr,
   INPUT_COMPLETION_PROMPT_VERSION,
   INPUT_COMPLETION_SCHEMA_NAME,
-} from '@lobechat/prompts';
-import { isCommandPressed } from '@lobechat/utils';
+} from '@ficlouds/prompts';
+import { isCommandPressed } from '@ficlouds/utils';
 import type { IEditor } from '@lobehub/editor';
 import { INSERT_MENTION_COMMAND, ReactAutoCompletePlugin, ReactMathPlugin } from '@lobehub/editor';
 import { Editor, FloatMenu, useEditorState } from '@lobehub/editor/react';

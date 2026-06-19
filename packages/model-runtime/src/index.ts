@@ -47,7 +47,7 @@ export { LobeGLMCodingPlanAI } from './providers/glmCodingPlan';
 export { LobeGoogleAI } from './providers/google';
 export { LobeGroq } from './providers/groq';
 export { LobeKimiCodingPlanAI } from './providers/kimiCodingPlan';
-export { LobeHubAI } from './providers/lobehub';
+export { FiAI } from './providers/lobehub';
 export { LobeLongCatAI } from './providers/longcat';
 export { LobeMinimaxAI } from './providers/minimax';
 export { LobeMinimaxCodingPlanAI } from './providers/minimaxCodingPlan';

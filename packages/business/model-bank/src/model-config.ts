@@ -1,31 +1,31 @@
 import type { AiFullModelCard } from 'model-bank';
 import { loadModels as loadModelBankModels, ModelProvider } from 'model-bank';
 
-interface LobeHubModelConfig {
+interface FiModelConfig {
   models: AiFullModelCard[];
   planCardModels: string[];
   updatedAt?: string;
   version: number;
 }
 
-const getDefaultLobeHubModelConfig = (): LobeHubModelConfig => ({
+const getDefaultFiModelConfig = (): FiModelConfig => ({
   models: [],
   planCardModels: [],
   version: 1,
 });
 
-const loadLobeHubModelConfig = async (): Promise<LobeHubModelConfig> =>
-  getDefaultLobeHubModelConfig();
+const loadFiModelConfig = async (): Promise<FiModelConfig> =>
+  getDefaultFiModelConfig();
 
 export const loadModels = async () =>
   loadModelBankModels({
     providerLoaders: {
-      [ModelProvider.LobeHub]: loadLobeHubModels,
+      [ModelProvider.Fi]: loadFiModels,
     },
   });
 
-const loadLobeHubModels = async (): Promise<AiFullModelCard[]> =>
-  (await loadLobeHubModelConfig()).models;
+const loadFiModels = async (): Promise<AiFullModelCard[]> =>
+  (await loadFiModelConfig()).models;
 
-export const loadLobeHubPlanCardModels = async (): Promise<string[]> =>
-  (await loadLobeHubModelConfig()).planCardModels;
+export const loadFiPlanCardModels = async (): Promise<string[]> =>
+  (await loadFiModelConfig()).planCardModels;

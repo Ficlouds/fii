@@ -1,4 +1,4 @@
-import { type AgentGroupDetail } from '@lobechat/types';
+import { type AgentGroupDetail } from '@ficlouds/types';
 
 import {
   type ChatGroupAgentItem,

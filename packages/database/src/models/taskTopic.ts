@@ -1,18 +1,18 @@
-import type { BriefDecision, TaskTopicHandoff } from '@lobechat/types';
+import type { BriefDecision, TaskTopicHandoff } from '@ficlouds/types';
 import { and, count, desc, eq, gte, sql } from 'drizzle-orm';
 
 import type { TaskTopicItem } from '../schemas/task';
 import { tasks, taskTopics } from '../schemas/task';
 import { topics } from '../schemas/topic';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 const TERMINAL_TOPIC_STATUSES = new Set(['canceled', 'completed', 'failed', 'timeout']);
 
 export class TaskTopicModel {
   private readonly userId: string;
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

@@ -1,7 +1,7 @@
 'use client';
 
-import { AGENT_PROFILE_URL } from '@lobechat/const';
-import type { AgentEvalRunDetail } from '@lobechat/types';
+import { AGENT_PROFILE_URL } from '@ficlouds/const';
+import type { AgentEvalRunDetail } from '@ficlouds/types';
 import { ActionIcon, Avatar, copyToClipboard, Flexbox, Highlighter, Markdown } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';
 import { App, Button, Card, Tag, Typography } from 'antd';

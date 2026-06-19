@@ -1,5 +1,5 @@
-import { DEFAULT_AVATAR, DEFAULT_INBOX_AVATAR } from '@lobechat/const';
-import type { ScreenCaptureAgentOption } from '@lobechat/electron-client-ipc';
+import { DEFAULT_AVATAR, DEFAULT_INBOX_AVATAR } from '@ficlouds/const';
+import type { ScreenCaptureAgentOption } from '@ficlouds/electron-client-ipc';
 
 const LOBE_AI_TITLE = 'Lobe AI';
 const UNTITLED_AGENT_TITLE = 'Untitled Agent';

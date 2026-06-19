@@ -2,13 +2,13 @@ import { and, desc, eq } from 'drizzle-orm';
 
 import type { NewSessionGroup, SessionGroupItem } from '../schemas';
 import { sessionGroups } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export class TemplateModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

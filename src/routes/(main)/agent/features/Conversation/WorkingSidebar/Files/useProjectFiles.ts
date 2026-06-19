@@ -1,5 +1,5 @@
-import { isDesktop } from '@lobechat/const';
-import type { ProjectFileIndexResult } from '@lobechat/electron-client-ipc';
+import { isDesktop } from '@ficlouds/const';
+import type { ProjectFileIndexResult } from '@ficlouds/electron-client-ipc';
 
 import { useClientDataSWR } from '@/libs/swr';
 import { localFileService } from '@/services/electron/localFileService';

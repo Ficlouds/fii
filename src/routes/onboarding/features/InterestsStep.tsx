@@ -1,6 +1,6 @@
 'use client';
 
-import { normalizeInterestsForStorage } from '@lobechat/const';
+import { normalizeInterestsForStorage } from '@ficlouds/const';
 import { Block, Button, Flexbox, Icon, Input, Text } from '@lobehub/ui';
 import { cssVar } from 'antd-style';
 import { BriefcaseIcon, Undo2Icon } from 'lucide-react';

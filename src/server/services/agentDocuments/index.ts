@@ -4,11 +4,11 @@ import type {
   DocumentLoadRules,
   DocumentTemplateSet,
   PolicyLoad,
-} from '@lobechat/agent-templates';
-import { DocumentLoadPosition, getDocumentTemplate } from '@lobechat/agent-templates';
-import { buildAgentSkillIdentifier } from '@lobechat/const';
-import type { LobeChatDatabase } from '@lobechat/database';
-import { DOCUMENT_FOLDER_TYPE } from '@lobechat/database/schemas';
+} from '@ficlouds/agent-templates';
+import { DocumentLoadPosition, getDocumentTemplate } from '@ficlouds/agent-templates';
+import { buildAgentSkillIdentifier } from '@ficlouds/const';
+import type { FiDatabase } from '@ficlouds/database';
+import { DOCUMENT_FOLDER_TYPE } from '@ficlouds/database/schemas';
 
 import type {
   AgentDocument,
@@ -93,7 +93,7 @@ export class AgentDocumentsService {
   private documentService: DocumentService;
   private topicDocumentModel: TopicDocumentModel;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.agentDocumentModel = new AgentDocumentModel(db, userId);
     this.documentService = new DocumentService(db, userId);
     this.topicDocumentModel = new TopicDocumentModel(db, userId);

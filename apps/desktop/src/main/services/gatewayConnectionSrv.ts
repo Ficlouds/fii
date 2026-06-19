@@ -6,9 +6,9 @@ import type {
   MessageApiRequestMessage,
   SystemInfoRequestMessage,
   ToolCallRequestMessage,
-} from '@lobechat/device-gateway-client';
-import { GatewayClient } from '@lobechat/device-gateway-client';
-import type { GatewayConnectionStatus } from '@lobechat/electron-client-ipc';
+} from '@ficlouds/device-gateway-client';
+import { GatewayClient } from '@ficlouds/device-gateway-client';
+import type { GatewayConnectionStatus } from '@ficlouds/electron-client-ipc';
 import { app, powerSaveBlocker } from 'electron';
 
 import { createLogger } from '@/utils/logger';
@@ -17,7 +17,7 @@ import { ServiceModule } from './index';
 
 const logger = createLogger('services:GatewayConnectionSrv');
 
-const DEFAULT_GATEWAY_URL = 'https://device-gateway.lobehub.com';
+const DEFAULT_GATEWAY_URL = 'https://device-gateway.ficlouds.com';
 
 interface ToolCallHandler {
   (apiName: string, args: any): Promise<unknown>;

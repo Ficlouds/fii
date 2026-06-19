@@ -1,5 +1,5 @@
-import { RunCommandRender } from '@lobechat/shared-tool-ui/renders';
-import type { RenderDisplayControl } from '@lobechat/types';
+import { RunCommandRender } from '@ficlouds/shared-tool-ui/renders';
+import type { RenderDisplayControl } from '@ficlouds/types';
 
 import { ClaudeCodeApiName } from '../../types';
 import Agent from './Agent';
@@ -50,7 +50,7 @@ export const ClaudeCodeRenders = {
 /**
  * Per-APIName default display control for CC tool renders.
  *
- * CC doesn't ship a LobeChat manifest (its tools come from Anthropic tool_use
+ * CC doesn't ship a Fi manifest (its tools come from Anthropic tool_use
  * blocks at runtime), so the store's manifest-based `getRenderDisplayControl`
  * can't reach these. The builtin-tools aggregator exposes this map via
  * `getBuiltinRenderDisplayControl` as a fallback.

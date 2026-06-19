@@ -1,4 +1,4 @@
-import type { LocalSystemToolSnapshot } from '@lobechat/types';
+import type { LocalSystemToolSnapshot } from '@ficlouds/types';
 import debug from 'debug';
 
 import { BaseProcessor } from '../base/BaseProcessor';

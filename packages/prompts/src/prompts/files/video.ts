@@ -1,5 +1,5 @@
-import type { ChatVideoItem } from '@lobechat/types';
-import { createVisualFileRef } from '@lobechat/types';
+import type { ChatVideoItem } from '@ficlouds/types';
+import { createVisualFileRef } from '@ficlouds/types';
 
 const videoPrompt = (
   item: ChatVideoItem,

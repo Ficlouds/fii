@@ -1,4 +1,4 @@
-import type { BriefArtifactDocument, BriefArtifacts } from '@lobechat/types';
+import type { BriefArtifactDocument, BriefArtifacts } from '@ficlouds/types';
 import { Block, Flexbox, Icon, Text } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { ChevronRightIcon, FileTextIcon } from 'lucide-react';

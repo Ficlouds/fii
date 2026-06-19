@@ -14,7 +14,7 @@ import {
   oidcSessions,
 } from '../../../schemas/oidc';
 
-vi.mock('@lobechat/utils/server', () => ({
+vi.mock('@ficlouds/utils/server', () => ({
   getUserAuth: vi.fn(),
 }));
 
@@ -207,12 +207,12 @@ describe('DrizzleAdapter', () => {
 
     describe('DeviceCode payload accountId protection', () => {
       afterEach(async () => {
-        const { getUserAuth } = await import('@lobechat/utils/server');
+        const { getUserAuth } = await import('@ficlouds/utils/server');
         vi.mocked(getUserAuth).mockReset();
       });
 
       it('should NOT inject accountId into DeviceCode payload from auth context', async () => {
-        const { getUserAuth } = await import('@lobechat/utils/server');
+        const { getUserAuth } = await import('@ficlouds/utils/server');
         vi.mocked(getUserAuth).mockResolvedValueOnce({ userId: testUserId } as any);
 
         const adapter = new DrizzleAdapter('DeviceCode', serverDB);
@@ -258,7 +258,7 @@ describe('DrizzleAdapter', () => {
       });
 
       it('should still inject accountId into non-DeviceCode payload from auth context', async () => {
-        const { getUserAuth } = await import('@lobechat/utils/server');
+        const { getUserAuth } = await import('@ficlouds/utils/server');
         vi.mocked(getUserAuth).mockResolvedValueOnce({ userId: testUserId } as any);
 
         const adapter = new DrizzleAdapter('Interaction', serverDB);

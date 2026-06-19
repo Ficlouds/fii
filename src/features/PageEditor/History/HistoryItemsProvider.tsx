@@ -1,6 +1,6 @@
 'use client';
 
-import { type StoreApiWithSelector } from '@lobechat/types';
+import { type StoreApiWithSelector } from '@ficlouds/types';
 import type { PropsWithChildren } from 'react';
 import { memo, useLayoutEffect } from 'react';
 import { subscribeWithSelector } from 'zustand/middleware';

@@ -10,7 +10,7 @@ import { generateTrustedClientToken } from '@/libs/trusted-client';
 import { normalizeLocale } from '@/locales/resources';
 import type { AgentForkBatchResult, AgentForkResponse } from '@/types/discover';
 
-const MARKET_BASE_URL = process.env.MARKET_BASE_URL || 'https://market.lobehub.com';
+const MARKET_BASE_URL = process.env.MARKET_BASE_URL || 'https://market.ficlouds.com';
 
 interface MarketUserInfo {
   accountId: number;
@@ -36,7 +36,7 @@ interface FetchMarketUserInfoOptions {
 
 /**
  * Fetch Market user info using either trustedClientToken or accessToken
- * Returns the Market accountId which is different from LobeChat userId
+ * Returns the Market accountId which is different from Fi userId
  *
  * Priority:
  * 1. trustedClientToken (if userInfo is provided and TRUSTED_CLIENT_SECRET is configured)

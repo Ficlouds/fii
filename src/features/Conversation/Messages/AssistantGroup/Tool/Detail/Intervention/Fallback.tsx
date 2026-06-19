@@ -2,9 +2,9 @@ import {
   type ActivateToolsParams,
   ActivatorApiName,
   LobeActivatorIdentifier,
-} from '@lobechat/builtin-tool-activator';
-import { builtinToolIdentifiers } from '@lobechat/builtin-tools/identifiers';
-import { safeParseJSON } from '@lobechat/utils';
+} from '@ficlouds/builtin-tool-activator';
+import { builtinToolIdentifiers } from '@ficlouds/builtin-tools/identifiers';
+import { safeParseJSON } from '@ficlouds/utils';
 import { ActionIcon, Avatar, Flexbox, Icon } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import isEqual from 'fast-deep-equal';

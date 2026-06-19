@@ -1,9 +1,9 @@
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
 import {
   buildUpstashWorkflowAttributes,
   tracer as upstashWorkflowTracer,
-} from '@lobechat/observability-otel/modules/upstash-workflow';
-import { LayersEnum, MemorySourceType } from '@lobechat/types';
+} from '@ficlouds/observability-otel/modules/upstash-workflow';
+import { LayersEnum, MemorySourceType } from '@ficlouds/types';
 import { type WorkflowContext } from '@upstash/workflow';
 import { WorkflowAbort } from '@upstash/workflow';
 

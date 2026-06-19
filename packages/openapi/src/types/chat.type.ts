@@ -1,4 +1,4 @@
-import type { LobeAgentChatConfig, OpenAIChatMessage } from '@lobechat/types';
+import type { FiAgentChatConfig, OpenAIChatMessage } from '@ficlouds/types';
 import { z } from 'zod';
 
 // ==================== Chat Service Types ====================
@@ -80,7 +80,7 @@ export const TranslateServiceParamsSchema = z.object({
  */
 export interface MessageGenerationParams {
   agentId?: string;
-  chatConfig?: Partial<LobeAgentChatConfig>;
+  chatConfig?: Partial<FiAgentChatConfig>;
   conversationHistory: Array<{
     content: string;
     role: 'user' | 'assistant' | 'system';

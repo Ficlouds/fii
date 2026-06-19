@@ -1,14 +1,14 @@
-import { type BuiltinAgentSlug } from '@lobechat/builtin-agents';
-import { BUILTIN_AGENT_SLUGS, getAgentRuntimeConfig } from '@lobechat/builtin-agents';
-import { PageAgentIdentifier } from '@lobechat/builtin-tool-page-agent';
-import { TaskIdentifier } from '@lobechat/builtin-tool-task';
-import { type LobeToolManifest } from '@lobechat/context-engine';
+import { type BuiltinAgentSlug } from '@ficlouds/builtin-agents';
+import { BUILTIN_AGENT_SLUGS, getAgentRuntimeConfig } from '@ficlouds/builtin-agents';
+import { PageAgentIdentifier } from '@ficlouds/builtin-tool-page-agent';
+import { TaskIdentifier } from '@ficlouds/builtin-tool-task';
+import { type FiToolManifest } from '@ficlouds/context-engine';
 import {
   type ChatCompletionTool,
-  type LobeAgentChatConfig,
-  type LobeAgentConfig,
+  type FiAgentChatConfig,
+  type FiAgentConfig,
   type MessageMapScope,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import debug from 'debug';
 import { produce } from 'immer';
 
@@ -44,9 +44,9 @@ const isBuiltinAgentSlug = (slug: string): slug is BuiltinAgentSlug => {
  * Uses immer to create a new object without mutating the original.
  */
 const applyParamsFromChatConfig = (
-  agentConfig: LobeAgentConfig,
-  chatConfig: LobeAgentChatConfig,
-): LobeAgentConfig => {
+  agentConfig: FiAgentConfig,
+  chatConfig: FiAgentChatConfig,
+): FiAgentConfig => {
   // If params is not defined, return agentConfig as-is
   if (!agentConfig?.params) {
     return agentConfig;
@@ -104,7 +104,7 @@ export interface AgentConfigResolverContext {
   /** Message map scope (e.g., 'page', 'main', 'thread') */
   scope?: MessageMapScope;
   /** Target agent config for agent-builder */
-  targetAgentConfig?: LobeAgentConfig;
+  targetAgentConfig?: FiAgentConfig;
 }
 
 /**
@@ -112,11 +112,11 @@ export interface AgentConfigResolverContext {
  */
 export interface ResolvedAgentConfig {
   /** The resolved agent config */
-  agentConfig: LobeAgentConfig;
+  agentConfig: FiAgentConfig;
   /** The chat config */
-  chatConfig: LobeAgentChatConfig;
+  chatConfig: FiAgentChatConfig;
   /** Enabled manifests for context engineering (populated by internal_createAgentState) */
-  enabledManifests?: LobeToolManifest[];
+  enabledManifests?: FiToolManifest[];
   /** Enabled tool IDs after filtering (populated by internal_createAgentState) */
   enabledToolIds?: string[];
   /** Whether this is a builtin agent */
@@ -138,7 +138,7 @@ export interface ResolvedAgentConfig {
  *
  * For builtin agents (identified by slug), this will:
  * 1. Get the base config from the agent store
- * 2. Get the runtime config from @lobechat/builtin-agents
+ * 2. Get the runtime config from @ficlouds/builtin-agents
  * 3. Merge the runtime systemRole into the agent config
  *
  * For regular agents, this simply returns the config from the store.
@@ -402,7 +402,7 @@ export const resolveAgentConfig = (ctx: AgentConfigResolverContext): ResolvedAge
       : basePlugins;
 
   // Merge chatConfig: runtime chatConfig overrides base chatConfig
-  let resolvedChatConfig: LobeAgentChatConfig = {
+  let resolvedChatConfig: FiAgentChatConfig = {
     ...chatConfig,
     ...runtimeConfig?.chatConfig,
   };
@@ -450,7 +450,7 @@ export const resolveAgentConfig = (ctx: AgentConfigResolverContext): ResolvedAge
   }
 
   // Merge runtime systemRole into agent config
-  const resolvedAgentConfig: LobeAgentConfig = {
+  const resolvedAgentConfig: FiAgentConfig = {
     ...agentConfig,
     systemRole: resolvedSystemRole,
   };

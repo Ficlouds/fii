@@ -1,4 +1,4 @@
-import type { EvalBenchmarkRubric, RubricConfigLLM } from '@lobechat/types';
+import type { EvalBenchmarkRubric, RubricConfigLLM } from '@ficlouds/types';
 
 import type { MatchContext, MatchResult } from './types';
 

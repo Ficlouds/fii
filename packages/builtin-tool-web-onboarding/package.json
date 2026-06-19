@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/builtin-tool-web-onboarding",
+  "name": "@ficlouds/builtin-tool-web-onboarding",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -12,16 +12,16 @@
   },
   "main": "./src/index.ts",
   "dependencies": {
-    "@lobechat/const": "workspace:*",
-    "@lobechat/markdown-patch": "workspace:*",
-    "@lobechat/prompts": "workspace:*",
+    "@ficlouds/const": "workspace:*",
+    "@ficlouds/markdown-patch": "workspace:*",
+    "@ficlouds/prompts": "workspace:*",
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@lobechat/types": "workspace:*"
+    "@ficlouds/types": "workspace:*"
   },
   "peerDependencies": {
-    "@lobehub/ui": "^5",
+    "@ficlouds/ui": "^5",
     "antd": "^6",
     "antd-style": "*",
     "react": "*",

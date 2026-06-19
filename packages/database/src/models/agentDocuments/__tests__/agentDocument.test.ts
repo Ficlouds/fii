@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { getTestDB } from '../../../core/getTestDB';
 import { agentDocuments, agents, documents, users } from '../../../schemas';
 import { DOCUMENT_FOLDER_TYPE } from '../../../schemas/file';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import {
   AgentDocumentModel,
   DocumentLoadFormat,
@@ -23,7 +23,7 @@ const otherAgentId = 'other-agent-document-test-agent';
 
 let agentDocumentModel: AgentDocumentModel;
 let otherAgentDocumentModel: AgentDocumentModel;
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 beforeEach(async () => {
   await serverDB.delete(users);

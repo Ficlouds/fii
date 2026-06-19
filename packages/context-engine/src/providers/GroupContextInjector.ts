@@ -1,5 +1,5 @@
-import type { GroupContextMemberInfo } from '@lobechat/prompts';
-import { formatGroupMembers, groupContextTemplate } from '@lobechat/prompts';
+import type { GroupContextMemberInfo } from '@ficlouds/prompts';
+import { formatGroupMembers, groupContextTemplate } from '@ficlouds/prompts';
 import debug from 'debug';
 
 import { BaseFirstUserContentProvider } from '../base/BaseFirstUserContentProvider';
@@ -15,7 +15,7 @@ const log = debug('context-engine:provider:GroupContextInjector');
 
 /**
  * Group member info for context injection
- * Re-export from @lobechat/prompts for convenience
+ * Re-export from @ficlouds/prompts for convenience
  */
 export type GroupMemberInfo = GroupContextMemberInfo;
 
@@ -126,7 +126,7 @@ export class GroupContextInjector extends BaseFirstUserContentProvider {
 
   /**
    * Build the group context block
-   * Uses template from @lobechat/prompts with direct variable replacement
+   * Uses template from @ficlouds/prompts with direct variable replacement
    */
   private buildGroupContextBlock(): string {
     const {
@@ -138,7 +138,7 @@ export class GroupContextInjector extends BaseFirstUserContentProvider {
       systemPrompt,
     } = this.config;
 
-    // Use formatGroupMembers from @lobechat/prompts
+    // Use formatGroupMembers from @ficlouds/prompts
     const membersText = members ? formatGroupMembers(members, currentAgentId) : '';
 
     // Direct variable replacement on template

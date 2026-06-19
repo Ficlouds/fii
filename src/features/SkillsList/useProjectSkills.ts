@@ -1,4 +1,4 @@
-import { type ListProjectSkillsResult, type ProjectSkillItem } from '@lobechat/electron-client-ipc';
+import { type ListProjectSkillsResult, type ProjectSkillItem } from '@ficlouds/electron-client-ipc';
 import path from 'pathe';
 import { useMemo } from 'react';
 

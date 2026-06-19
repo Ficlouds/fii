@@ -7,7 +7,7 @@ import {
 } from './index';
 
 // Mock dependencies
-vi.mock('@lobechat/utils', () => ({
+vi.mock('@ficlouds/utils', () => ({
   uuid: () => 'mocked-uuid-12345',
 }));
 

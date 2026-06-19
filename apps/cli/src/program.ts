@@ -42,7 +42,7 @@ export function createProgram() {
 
   program
     .name('lh')
-    .description('LobeHub CLI - manage and connect to LobeHub services')
+    .description('Fi CLI - manage and connect to Fi services')
     .version(version);
 
   registerLoginCommand(program);

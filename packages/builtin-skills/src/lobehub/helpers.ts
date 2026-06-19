@@ -1,4 +1,4 @@
-import type { SkillResourceMeta } from '@lobechat/types';
+import type { SkillResourceMeta } from '@ficlouds/types';
 
 /**
  * Convert a simple path→content map to Record<string, SkillResourceMeta>.

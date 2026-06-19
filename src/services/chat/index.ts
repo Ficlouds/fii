@@ -1,23 +1,23 @@
-import { AgentBuilderIdentifier } from '@lobechat/builtin-tool-agent-builder';
+import { AgentBuilderIdentifier } from '@ficlouds/builtin-tool-agent-builder';
 import {
   KLAVIS_SERVER_TYPES,
   LOBEHUB_SKILL_PROVIDERS,
   REQUEST_AGENT_ID_HEADER,
   REQUEST_TOPIC_ID_HEADER,
   REQUEST_TRIGGER_HEADER,
-} from '@lobechat/const';
-import { type OfficialToolItem } from '@lobechat/context-engine';
-import { type FetchSSEOptions } from '@lobechat/fetch-sse';
-import { fetchSSE, standardizeAnimationStyle } from '@lobechat/fetch-sse';
-import type { ChatCompletionErrorPayload } from '@lobechat/model-runtime';
-import { AgentRuntimeError, responsesAPIModels } from '@lobechat/model-runtime';
+} from '@ficlouds/const';
+import { type OfficialToolItem } from '@ficlouds/context-engine';
+import { type FetchSSEOptions } from '@ficlouds/fetch-sse';
+import { fetchSSE, standardizeAnimationStyle } from '@ficlouds/fetch-sse';
+import type { ChatCompletionErrorPayload } from '@ficlouds/model-runtime';
+import { AgentRuntimeError, responsesAPIModels } from '@ficlouds/model-runtime';
 import type {
   RuntimeInitialContext,
   RuntimeStepContext,
   TracePayload,
   UIChatMessage,
-} from '@lobechat/types';
-import { ChatErrorType, TraceTagMap } from '@lobechat/types';
+} from '@ficlouds/types';
+import { ChatErrorType, TraceTagMap } from '@ficlouds/types';
 import { merge } from 'es-toolkit/compat';
 import { ModelProvider } from 'model-bank';
 
@@ -35,7 +35,7 @@ import { getToolStoreState } from '@/store/tool';
 import {
   builtinToolSelectors,
   klavisStoreSelectors,
-  lobehubSkillStoreSelectors,
+  fiSkillStoreSelectors,
 } from '@/store/tool/selectors';
 import { getUserStoreState, useUserStore } from '@/store/user';
 import {
@@ -238,7 +238,7 @@ class ChatService {
           const server = allKlavisServers.find((s) => s.identifier === klavisType.identifier);
 
           officialTools.push({
-            description: `LobeHub Mcp Server: ${klavisType.label}`,
+            description: `Fi Mcp Server: ${klavisType.label}`,
             enabled: enabledPlugins.includes(klavisType.identifier),
             identifier: klavisType.identifier,
             installed: !!server,
@@ -248,19 +248,19 @@ class ChatService {
         }
       }
 
-      // Get LobehubSkill providers (if enabled)
-      const isLobehubSkillEnabled =
+      // Get FiSkill providers (if enabled)
+      const isFiSkillEnabled =
         typeof window !== 'undefined' &&
-        window.global_serverConfigStore?.getState()?.serverConfig?.enableLobehubSkill;
+        window.global_serverConfigStore?.getState()?.serverConfig?.enableFiSkill;
 
-      if (isLobehubSkillEnabled) {
-        const allLobehubSkillServers = lobehubSkillStoreSelectors.getServers(toolState);
+      if (isFiSkillEnabled) {
+        const allFiSkillServers = fiSkillStoreSelectors.getServers(toolState);
 
         for (const provider of LOBEHUB_SKILL_PROVIDERS) {
-          const server = allLobehubSkillServers.find((s) => s.identifier === provider.id);
+          const server = allFiSkillServers.find((s) => s.identifier === provider.id);
 
           officialTools.push({
-            description: `LobeHub Skill Provider: ${provider.label}`,
+            description: `Fi Skill Provider: ${provider.label}`,
             enabled: enabledPlugins.includes(provider.id),
             identifier: provider.id,
             installed: !!server,

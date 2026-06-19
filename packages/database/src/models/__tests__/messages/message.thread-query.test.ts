@@ -3,10 +3,10 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { getTestDB } from '../../../core/getTestDB';
 import { agents, messages, sessions, threads, topics, users } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import { MessageModel } from '../../message';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'thread-query-test-user';
 const messageModel = new MessageModel(serverDB, userId);

@@ -1,4 +1,4 @@
-import type { ChatModelCard } from '@lobechat/types';
+import type { ChatModelCard } from '@ficlouds/types';
 import type OpenAI from 'openai';
 
 import { MODEL_LIST_CONFIGS, processModelList } from '../../utils/modelParse';

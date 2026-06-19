@@ -1,18 +1,18 @@
-import type { IdentityListParams, IdentityListResult } from '@lobechat/types';
-import { RelationshipEnum } from '@lobechat/types';
+import type { IdentityListParams, IdentityListResult } from '@ficlouds/types';
+import { RelationshipEnum } from '@ficlouds/types';
 import type { SQL } from 'drizzle-orm';
 import { and, asc, desc, eq, inArray, isNull, or, sql } from 'drizzle-orm';
 
 import type { NewUserMemoryIdentity, UserMemoryIdentity } from '../../schemas';
 import { userMemories, userMemoriesIdentities } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { normalizeBm25MatchQuery, SAFE_BM25_QUERY_OPTIONS } from '../../utils/bm25';
 
 export class UserMemoryIdentityModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

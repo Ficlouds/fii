@@ -1,7 +1,7 @@
 // @vitest-environment node
-import { type LobeChatDatabase } from '@lobechat/database';
-import { users, userSettings } from '@lobechat/database/schemas';
-import { getTestDB } from '@lobechat/database/test-utils';
+import { type FiDatabase } from '@ficlouds/database';
+import { users, userSettings } from '@ficlouds/database/schemas';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { UserPersonaModel } from '@/database/models/userMemory/persona';
@@ -63,7 +63,7 @@ const structuredResult = {
 
 const toolCall = vi.fn().mockResolvedValue(structuredResult);
 
-vi.mock('@lobechat/memory-user-memory', () => ({
+vi.mock('@ficlouds/memory-user-memory', () => ({
   UserPersonaExtractor: vi.fn().mockImplementation(() => ({
     toolCall,
   })),
@@ -73,7 +73,7 @@ vi.mock('@/server/services/memory/userMemory/extract', () => ({
   resolveRuntimeAgentConfig: vi.fn().mockResolvedValue({}),
 }));
 
-let db: LobeChatDatabase;
+let db: FiDatabase;
 const userId = 'user-persona-service';
 
 beforeEach(async () => {

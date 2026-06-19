@@ -7,13 +7,13 @@ import {
   agentEvalTestCases,
   type NewAgentEvalBenchmark,
 } from '../../schemas';
-import { type LobeChatDatabase } from '../../type';
+import { type FiDatabase } from '../../type';
 
 export class AgentEvalBenchmarkModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

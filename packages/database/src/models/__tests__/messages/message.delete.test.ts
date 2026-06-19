@@ -17,10 +17,10 @@ import {
   topics,
   users,
 } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import { MessageModel } from '../../message';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'message-delete-test';
 const otherUserId = 'message-delete-test-other';

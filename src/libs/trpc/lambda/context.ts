@@ -1,5 +1,5 @@
-import { type Context as OtContext } from '@lobechat/observability-otel/api';
-import { type ClientSecretPayload } from '@lobechat/types';
+import { type Context as OtContext } from '@ficlouds/observability-otel/api';
+import { type ClientSecretPayload } from '@ficlouds/types';
 import { parse } from 'cookie';
 import debug from 'debug';
 import { type NextRequest } from 'next/server';

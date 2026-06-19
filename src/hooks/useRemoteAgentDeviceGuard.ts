@@ -1,4 +1,4 @@
-import { isRemoteHeterogeneousType } from '@lobechat/heterogeneous-agents';
+import { isRemoteHeterogeneousType } from '@ficlouds/heterogeneous-agents';
 import { useCallback, useEffect, useState } from 'react';
 
 import { lambdaClient } from '@/libs/trpc/client';

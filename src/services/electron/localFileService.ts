@@ -38,7 +38,7 @@ import {
   type ShowSaveDialogParams,
   type ShowSaveDialogResult,
   type WriteLocalFileParams,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 
 import { ensureElectronIpc } from '@/utils/electron/ipc';
 

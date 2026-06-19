@@ -1,4 +1,4 @@
-import { type UIChatMessage } from '@lobechat/types';
+import { type UIChatMessage } from '@ficlouds/types';
 
 export interface DataState {
   /**

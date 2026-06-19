@@ -1,7 +1,7 @@
-import { getDocumentTemplate } from '@lobechat/agent-templates';
-import { BUILTIN_AGENT_SLUGS } from '@lobechat/builtin-agents';
-import { CURRENT_ONBOARDING_VERSION } from '@lobechat/const';
-import type { OnboardingUserInfo } from '@lobechat/context-engine';
+import { getDocumentTemplate } from '@ficlouds/agent-templates';
+import { BUILTIN_AGENT_SLUGS } from '@ficlouds/builtin-agents';
+import { CURRENT_ONBOARDING_VERSION } from '@ficlouds/const';
+import type { OnboardingUserInfo } from '@ficlouds/context-engine';
 import type {
   AgentOnboardingStructuredField,
   ChatTopicMetadata,
@@ -12,14 +12,14 @@ import type {
   SaveUserQuestionInput,
   UserAgentOnboarding,
   UserAgentOnboardingContext,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import {
   MAX_ONBOARDING_STEPS,
   MIN_DISCOVERY_USER_MESSAGES,
   RECOMMENDED_DISCOVERY_USER_MESSAGES,
   SAVE_USER_QUESTION_FIELDS,
-} from '@lobechat/types';
-import { isRecord, merge, pickTrimmedString } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { isRecord, merge, pickTrimmedString } from '@ficlouds/utils';
 import { and, count, eq, sql } from 'drizzle-orm';
 
 import { AgentModel } from '@/database/models/agent';
@@ -33,7 +33,7 @@ import {
   userPersonaDocumentHistories,
   userPersonaDocuments,
 } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { KeyVaultsGateKeeper } from '@/server/modules/KeyVaultsEncrypt';
 import { AgentService } from '@/server/services/agent';
 import { AgentDocumentsService } from '@/server/services/agentDocuments';
@@ -127,7 +127,7 @@ export class OnboardingService {
   private readonly userModel: UserModel;
 
   constructor(
-    private readonly db: LobeChatDatabase,
+    private readonly db: FiDatabase,
     userId: string,
   ) {
     this.userId = userId;
@@ -586,7 +586,7 @@ export class OnboardingService {
         sql`SELECT pg_advisory_xact_lock(hashtext(${this.userId + ':' + input.agentId})::bigint)`,
       );
 
-      const trxDb = trx as unknown as LobeChatDatabase;
+      const trxDb = trx as unknown as FiDatabase;
       const trxTopicModel = new TopicModel(trxDb, this.userId);
       const trxUserModel = new UserModel(trxDb, this.userId);
 

@@ -3,7 +3,7 @@ import debug from 'debug';
 import type { MessengerPlatform } from '@/config/messenger';
 import { AgentBotProviderModel } from '@/database/models/agentBotProvider';
 import { TopicModel } from '@/database/models/topic';
-import { type LobeChatDatabase } from '@/database/type';
+import { type FiDatabase } from '@/database/type';
 import { getAgentRuntimeRedisClient } from '@/server/modules/AgentRuntime/redis';
 import { KeyVaultsGateKeeper } from '@/server/modules/KeyVaultsEncrypt';
 import { getMessageGatewayClient } from '@/server/services/gateway/MessageGatewayClient';
@@ -102,9 +102,9 @@ export interface BotCallbackBody {
 // --------------- Service ---------------
 
 export class BotCallbackService {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
 
-  constructor(db: LobeChatDatabase) {
+  constructor(db: FiDatabase) {
     this.db = db;
   }
 

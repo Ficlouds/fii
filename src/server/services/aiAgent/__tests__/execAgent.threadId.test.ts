@@ -93,10 +93,10 @@ vi.mock('@/server/services/agentRuntime', () => ({
   })),
 }));
 
-// Mock MarketService (for getLobehubSkillManifests)
+// Mock MarketService (for getFiSkillManifests)
 vi.mock('@/server/services/market', () => ({
   MarketService: vi.fn().mockImplementation(() => ({
-    getLobehubSkillManifests: vi.fn().mockResolvedValue([]),
+    getFiSkillManifests: vi.fn().mockResolvedValue([]),
   })),
 }));
 

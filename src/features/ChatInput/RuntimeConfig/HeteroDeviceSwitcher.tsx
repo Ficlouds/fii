@@ -1,9 +1,9 @@
 'use client';
 
 import { SiApple, SiLinux } from '@icons-pack/react-simple-icons';
-import { isDesktop } from '@lobechat/const';
-import { isRemoteHeterogeneousType } from '@lobechat/heterogeneous-agents';
-import type { HeteroExecutionTarget, RuntimeEnvMode } from '@lobechat/types';
+import { isDesktop } from '@ficlouds/const';
+import { isRemoteHeterogeneousType } from '@ficlouds/heterogeneous-agents';
+import type { HeteroExecutionTarget, RuntimeEnvMode } from '@ficlouds/types';
 import { Microsoft } from '@lobehub/icons';
 import { Flexbox, Icon, Popover, Tooltip } from '@lobehub/ui';
 import { createStaticStyles, cssVar, cx } from 'antd-style';

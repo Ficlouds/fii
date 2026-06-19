@@ -1,10 +1,10 @@
-import type { FetchSSEOptions } from '@lobechat/fetch-sse';
+import type { FetchSSEOptions } from '@ficlouds/fetch-sse';
 import type {
   RequestTrigger,
   RuntimeInitialContext,
   RuntimeStepContext,
   TracePayload,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 interface ChatRequestMetadata extends Record<string, unknown> {
   trigger?: RequestTrigger;

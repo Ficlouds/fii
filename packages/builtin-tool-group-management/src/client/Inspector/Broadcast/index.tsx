@@ -1,7 +1,7 @@
 'use client';
 
-import { DEFAULT_AVATAR } from '@lobechat/const';
-import type { AgentGroupMember, BuiltinInspectorProps } from '@lobechat/types';
+import { DEFAULT_AVATAR } from '@ficlouds/const';
+import type { AgentGroupMember, BuiltinInspectorProps } from '@ficlouds/types';
 import { Avatar, Flexbox } from '@lobehub/ui';
 import { createStaticStyles, cx, useTheme } from 'antd-style';
 import { memo, useMemo } from 'react';

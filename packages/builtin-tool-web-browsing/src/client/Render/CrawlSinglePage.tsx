@@ -1,4 +1,4 @@
-import type { BuiltinRenderProps, CrawlPluginState, CrawlSinglePageQuery } from '@lobechat/types';
+import type { BuiltinRenderProps, CrawlPluginState, CrawlSinglePageQuery } from '@ficlouds/types';
 import { memo } from 'react';
 
 import PageContent from './PageContent';

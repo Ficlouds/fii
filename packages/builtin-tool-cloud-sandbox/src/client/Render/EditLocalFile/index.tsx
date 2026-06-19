@@ -1,7 +1,7 @@
 'use client';
 
 import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { ActionIcon, Block, Flexbox, Highlighter, Text } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { ChevronDown, ChevronUp } from 'lucide-react';

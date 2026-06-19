@@ -5,7 +5,7 @@ import { agentRuntimeClient } from '../client';
 
 // Mock fetchEventSource
 const mockFetchEventSource = vi.fn();
-vi.mock('@lobechat/utils/client', () => ({
+vi.mock('@ficlouds/utils/client', () => ({
   fetchEventSource: (url: string, options: any) => mockFetchEventSource(url, options),
 }));
 

@@ -1,15 +1,15 @@
-import type { LobeChatDatabase } from '@lobechat/database';
-import type { ModelRuntime } from '@lobechat/model-runtime';
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
+import type { FiDatabase } from '@ficlouds/database';
+import type { ModelRuntime } from '@ficlouds/model-runtime';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
 import {
   gateKeeperCallDurationHistogram,
   gateKeeperCallsCounter,
   layerCallDurationHistogram,
   layersCallsCounter,
   tracer,
-} from '@lobechat/observability-otel/modules/memory-user-memory';
-import { attributesCommon } from '@lobechat/observability-otel/node';
-import { LayersEnum } from '@lobechat/types';
+} from '@ficlouds/observability-otel/modules/memory-user-memory';
+import { attributesCommon } from '@ficlouds/observability-otel/node';
+import { LayersEnum } from '@ficlouds/types';
 
 import {
   ActivityExtractor,
@@ -57,7 +57,7 @@ export interface MemoryExtractionRuntimeOptions {
 export interface MemoryExtractionServiceOptions {
   callbacks?: ExtractorOptions['callbacks'];
   config: MemoryExtractionLLMConfig;
-  db: LobeChatDatabase;
+  db: FiDatabase;
   language?: string;
   runtimes: MemoryExtractionRuntimeOptions;
 }

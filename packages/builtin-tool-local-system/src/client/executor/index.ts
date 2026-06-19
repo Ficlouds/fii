@@ -11,9 +11,9 @@ import type {
   MoveLocalFilesParams,
   RunCommandParams,
   WriteLocalFileParams,
-} from '@lobechat/electron-client-ipc';
-import type { BuiltinToolResult } from '@lobechat/types';
-import { BaseExecutor } from '@lobechat/types';
+} from '@ficlouds/electron-client-ipc';
+import type { BuiltinToolResult } from '@ficlouds/types';
+import { BaseExecutor } from '@ficlouds/types';
 
 import { localFileService } from '@/services/electron/localFileService';
 

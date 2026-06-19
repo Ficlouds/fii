@@ -1,5 +1,5 @@
-import { getModelPropertyWithFallback } from '@lobechat/model-runtime';
-import { merge } from '@lobechat/utils';
+import { getModelPropertyWithFallback } from '@ficlouds/model-runtime';
+import { merge } from '@ficlouds/utils';
 import { produce } from 'immer';
 import { type AiFullModelCard, type AiModelType } from 'model-bank';
 

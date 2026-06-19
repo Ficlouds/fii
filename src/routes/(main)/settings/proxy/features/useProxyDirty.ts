@@ -1,4 +1,4 @@
-import { type NetworkProxySettings } from '@lobechat/electron-client-ipc';
+import { type NetworkProxySettings } from '@ficlouds/electron-client-ipc';
 import { Form as AntdForm, type FormInstance } from 'antd';
 import { useMemo } from 'react';
 

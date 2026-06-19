@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { createEnableChecker } from '../enableCheckerFactory';
-import type { LobeToolManifest } from '../types';
+import type { FiToolManifest } from '../types';
 
 const makeParams = (pluginId: string, overrides: Record<string, any> = {}) => ({
   manifest: {
@@ -9,7 +9,7 @@ const makeParams = (pluginId: string, overrides: Record<string, any> = {}) => ({
     identifier: pluginId,
     meta: {},
     type: 'builtin' as const,
-  } as LobeToolManifest,
+  } as FiToolManifest,
   model: 'gpt-4',
   pluginId,
   provider: 'openai',
@@ -129,7 +129,7 @@ describe('createEnableChecker', () => {
         identifier: 'test-tool',
         meta: {},
         type: 'builtin' as const,
-      } as LobeToolManifest;
+      } as FiToolManifest;
 
       checker({
         context: { environment: 'desktop' },

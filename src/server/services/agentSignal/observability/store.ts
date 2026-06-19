@@ -1,4 +1,4 @@
-import type { BaseAction, BaseSignal, ExecutorResult } from '@lobechat/agent-signal';
+import type { BaseAction, BaseSignal, ExecutorResult } from '@ficlouds/agent-signal';
 import {
   actionCounter,
   actionDurationHistogram,
@@ -9,7 +9,7 @@ import {
   signalCounter,
   sourceCounter,
   tracer,
-} from '@lobechat/observability-otel/modules/agent-signal';
+} from '@ficlouds/observability-otel/modules/agent-signal';
 
 import { toAgentSignalTraceEvents } from './traceEvents';
 import type { AgentSignalObservabilityProjection } from './types';

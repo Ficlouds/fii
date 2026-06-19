@@ -1,4 +1,4 @@
-import { DEFAULT_AGENT_CHAT_CONFIG, DEFAULT_AGENT_SEARCH_FC_MODEL } from '@lobechat/const';
+import { DEFAULT_AGENT_CHAT_CONFIG, DEFAULT_AGENT_SEARCH_FC_MODEL } from '@ficlouds/const';
 import { describe, expect, it, vi } from 'vitest';
 
 import { type AgentStoreState } from '@/store/agent/initialState';
@@ -8,7 +8,7 @@ import { initialBuiltinAgentSliceState } from '@/store/agent/slices/builtin/init
 import { chatConfigByIdSelectors } from './chatConfigByIdSelectors';
 
 // Mock model runtime functions
-vi.mock('@lobechat/model-runtime', () => ({
+vi.mock('@ficlouds/model-runtime', () => ({
   isContextCachingModel: vi.fn((model) => model === 'claude-3-5-sonnet'),
   isThinkingWithToolClaudeModel: vi.fn((model) => model === 'claude-3-7-sonnet'),
 }));

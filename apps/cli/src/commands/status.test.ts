@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 // Mock resolveToken
 vi.mock('../auth/resolveToken', () => ({
   resolveToken: vi.fn().mockResolvedValue({
-    serverUrl: 'https://app.lobehub.com',
+    serverUrl: 'https://app.ficlouds.com',
     token: 'test-token',
     tokenType: 'jwt',
     userId: 'test-user',
@@ -31,7 +31,7 @@ let clientEventHandlers: Record<string, (...args: any[]) => any> = {};
 let connectCalled = false;
 let clientOptions: any = {};
 
-vi.mock('@lobechat/device-gateway-client', () => ({
+vi.mock('@ficlouds/device-gateway-client', () => ({
   GatewayClient: vi.fn().mockImplementation((opts: any) => {
     clientOptions = opts;
     clientEventHandlers = {};
@@ -129,7 +129,7 @@ describe('status command', () => {
     clientEventHandlers['connected']?.();
 
     await parsePromise;
-    expect(clientOptions.serverUrl).toBe('https://app.lobehub.com');
+    expect(clientOptions.serverUrl).toBe('https://app.ficlouds.com');
   });
 
   it('should log CONNECTED on successful connection', async () => {

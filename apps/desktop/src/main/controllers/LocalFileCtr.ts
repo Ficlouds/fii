@@ -39,7 +39,7 @@ import {
   type ShowSaveDialogParams,
   type ShowSaveDialogResult,
   type WriteLocalFileParams,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 import {
   editLocalFile,
   expandTilde,
@@ -50,7 +50,7 @@ import {
   renameLocalFile,
   type SearchOptions,
   writeLocalFile,
-} from '@lobechat/local-file-shell';
+} from '@ficlouds/local-file-shell';
 import { dialog, shell } from 'electron';
 import { execa } from 'execa';
 import { unzipSync } from 'fflate';

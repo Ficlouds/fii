@@ -1,5 +1,5 @@
-import { formatPageSelections } from '@lobechat/prompts';
-import type { PageSelection } from '@lobechat/types';
+import { formatPageSelections } from '@ficlouds/prompts';
+import type { PageSelection } from '@ficlouds/types';
 import debug from 'debug';
 
 import { BaseEveryUserContentProvider } from '../base/BaseEveryUserContentProvider';

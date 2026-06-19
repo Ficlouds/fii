@@ -1,11 +1,11 @@
-import type { BuiltinToolManifest } from '@lobechat/types';
+import type { BuiltinToolManifest } from '@ficlouds/types';
 
 import { systemPrompt } from './systemRole';
 import { NotebookApiName, NotebookIdentifier } from './types';
 
 /**
  * @deprecated Notebook is no longer injected into the LLM tools engine.
- * Use `@lobechat/builtin-tool-agent-documents` for new document tooling; the
+ * Use `@ficlouds/builtin-tool-agent-documents` for new document tooling; the
  * topic → page flow now calls `agentDocumentService.createForTopic`, which
  * creates an agent document and records a `topic_documents` association in
  * the same transaction. This manifest is kept for type/import compatibility

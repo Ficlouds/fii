@@ -6,11 +6,11 @@ import { uuid } from '@/utils/uuid';
 
 import { getTestDB } from '../../../core/getTestDB';
 import { agents, embeddings, files, messages, sessions, topics, users } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import { MessageModel } from '../../message';
 import { codeEmbedding } from '../fixtures/embedding';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'message-stats-test';
 const otherUserId = 'message-stats-test-other';

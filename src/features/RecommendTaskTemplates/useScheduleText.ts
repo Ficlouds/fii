@@ -1,4 +1,4 @@
-import { formatScheduleTime, parseCronPattern, WEEKDAY_I18N_KEYS } from '@lobechat/utils/cron';
+import { formatScheduleTime, parseCronPattern, WEEKDAY_I18N_KEYS } from '@ficlouds/utils/cron';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 

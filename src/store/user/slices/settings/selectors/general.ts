@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 
 import { DEFAULT_LANG } from '@/const/locale';
 import { type Locales, normalizeLocale } from '@/locales/resources';

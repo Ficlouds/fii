@@ -1,5 +1,5 @@
-import { BRANDING_PROVIDER } from '@lobechat/business-const';
-import { getCachedTextInputUnitRate } from '@lobechat/utils';
+import { BRANDING_PROVIDER } from '@ficlouds/business-const';
+import { getCachedTextInputUnitRate } from '@ficlouds/utils';
 import { Accordion, AccordionItem, Flexbox, Icon, Tag, Tooltip } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import type { LucideIcon } from 'lucide-react';

@@ -1,6 +1,6 @@
 'use client';
 
-import { type CredType } from '@lobechat/types';
+import { type CredType } from '@ficlouds/types';
 import { Flexbox } from '@lobehub/ui';
 import { Card } from 'antd';
 import { createStaticStyles } from 'antd-style';

@@ -1,4 +1,4 @@
-import { type ChatMessageError } from '@lobechat/types';
+import { type ChatMessageError } from '@ficlouds/types';
 import { type AudioPlayerProps } from '@lobehub/tts/react';
 import { AudioPlayer } from '@lobehub/tts/react';
 import { ActionIcon, Alert, Button, Flexbox, Highlighter } from '@lobehub/ui';

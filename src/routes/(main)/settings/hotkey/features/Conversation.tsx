@@ -1,6 +1,6 @@
 'use client';
 
-import { HotkeyGroupEnum } from '@lobechat/const/hotkeys';
+import { HotkeyGroupEnum } from '@ficlouds/const/hotkeys';
 import { type FormGroupItemType } from '@lobehub/ui';
 import { Form, HotkeyInput, Icon, Skeleton } from '@lobehub/ui';
 import isEqual from 'fast-deep-equal';

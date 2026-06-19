@@ -1,20 +1,20 @@
-import { BUILTIN_AGENT_SLUGS } from '@lobechat/builtin-agents';
+import { BUILTIN_AGENT_SLUGS } from '@ficlouds/builtin-agents';
 import {
   type UpdateDocumentArgs,
   WebOnboardingApiName,
   WebOnboardingIdentifier,
-} from '@lobechat/builtin-tool-web-onboarding';
+} from '@ficlouds/builtin-tool-web-onboarding';
 import {
   AgentMarketplaceExecutionRuntime,
   type ShowAgentMarketplaceArgs,
   type SubmitAgentPickArgs,
-} from '@lobechat/builtin-tool-web-onboarding/agentMarketplace';
+} from '@ficlouds/builtin-tool-web-onboarding/agentMarketplace';
 import {
   createDocumentReadResult,
   createWebOnboardingToolResult,
-} from '@lobechat/builtin-tool-web-onboarding/utils';
-import { type BuiltinToolContext, type BuiltinToolResult } from '@lobechat/types';
-import { BaseExecutor } from '@lobechat/types';
+} from '@ficlouds/builtin-tool-web-onboarding/utils';
+import { type BuiltinToolContext, type BuiltinToolResult } from '@ficlouds/types';
+import { BaseExecutor } from '@ficlouds/types';
 
 import {
   trackOnboardingMarketplacePicked,

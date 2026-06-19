@@ -1,6 +1,6 @@
 'use client';
 
-import { ClaudeCodeIdentifier } from '@lobechat/builtin-tool-claude-code/client';
+import { ClaudeCodeIdentifier } from '@ficlouds/builtin-tool-claude-code/client';
 
 import { defineFixtures, single, variants } from './_helpers';
 
@@ -160,7 +160,7 @@ export default defineFixtures({
     Read: single({
       args: { file_path: 'packages/builtin-tools/src/renders.ts' },
       content:
-        "1  import { RunCommandRender } from '@lobechat/shared-tool-ui/renders';\n2  export interface BuiltinRenderRegistryEntry { ... }",
+        "1  import { RunCommandRender } from '@ficlouds/shared-tool-ui/renders';\n2  export interface BuiltinRenderRegistryEntry { ... }",
     }),
     ScheduleWakeup: single({
       args: {
@@ -175,7 +175,7 @@ export default defineFixtures({
     TaskOutput: single({
       args: { block: false, task_id: 'task-build-2025-04-25', timeout_ms: 8000 },
       content:
-        '✅  Vite: compile and bundle finished (200) http://localhost:9876/\nDebug Proxy: https://app.lobehub.com/_dangerous_local_dev_proxy?debug-host=http://localhost:9876',
+        '✅  Vite: compile and bundle finished (200) http://localhost:9876/\nDebug Proxy: https://app.ficlouds.com/_dangerous_local_dev_proxy?debug-host=http://localhost:9876',
     }),
     TaskStop: single({
       args: { task_id: 'task-build-2025-04-25' },

@@ -1,10 +1,10 @@
-import { chainSummaryTitle } from '@lobechat/prompts';
-import type { UserSystemAgentConfig, UserSystemAgentConfigKey } from '@lobechat/types';
-import { RequestTrigger } from '@lobechat/types';
+import { chainSummaryTitle } from '@ficlouds/prompts';
+import type { UserSystemAgentConfig, UserSystemAgentConfigKey } from '@ficlouds/types';
+import { RequestTrigger } from '@ficlouds/types';
 import debug from 'debug';
 
 import { UserModel } from '@/database/models/user';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 
 import { resolveSystemAgentModelConfig } from './modelConfig';
@@ -34,10 +34,10 @@ const TOPIC_TITLE_SCHEMA = {
  * (topic, translation, agentMeta, etc.).
  */
 export class SystemAgentService {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly userId: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

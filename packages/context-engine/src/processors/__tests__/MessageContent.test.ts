@@ -1,10 +1,10 @@
-import type { ChatImageItem, ChatVideoItem, UIChatMessage } from '@lobechat/types';
+import type { ChatImageItem, ChatVideoItem, UIChatMessage } from '@ficlouds/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { PipelineContext } from '../../types';
 import { MessageContentProcessor, VISION_DOWNGRADE_PLACEHOLDER } from '../MessageContent';
 
-vi.mock('@lobechat/utils/imageToBase64', async (importOriginal) => {
+vi.mock('@ficlouds/utils/imageToBase64', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>();
   return {
     ...actual,

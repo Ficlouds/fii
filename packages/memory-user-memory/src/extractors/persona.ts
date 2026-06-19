@@ -1,5 +1,5 @@
-import { renderPlaceholderTemplate } from '@lobechat/context-engine';
-import { RequestTrigger } from '@lobechat/types';
+import { renderPlaceholderTemplate } from '@ficlouds/context-engine';
+import { RequestTrigger } from '@ficlouds/types';
 import { z } from 'zod';
 
 import { userPersonaPrompt } from '../prompts';

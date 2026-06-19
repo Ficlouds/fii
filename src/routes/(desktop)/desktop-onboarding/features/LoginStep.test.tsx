@@ -1,4 +1,4 @@
-import type { DataSyncConfig } from '@lobechat/electron-client-ipc';
+import type { DataSyncConfig } from '@ficlouds/electron-client-ipc';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -13,7 +13,7 @@ const mockElectronState = vi.hoisted(() => ({
   useDataSyncConfig: vi.fn(() => ({})),
 }));
 
-vi.mock('@lobechat/electron-client-ipc', () => ({
+vi.mock('@ficlouds/electron-client-ipc', () => ({
   useWatchBroadcast: vi.fn(),
 }));
 
@@ -69,7 +69,7 @@ vi.mock('react-i18next', () => ({
           'authResult.failed.desc': 'Authorization failed',
           'authResult.failed.title': 'Authorization Failed',
           'authResult.success.desc':
-            'Please click the Start button below to continue using LobeHub Desktop',
+            'Please click the Start button below to continue using Fi Desktop',
           'authResult.success.title': 'Authorization Successful',
           'back': 'Back',
           'screen5.actions.cancel': 'Cancel',

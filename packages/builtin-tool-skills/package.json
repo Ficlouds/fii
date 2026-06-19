@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/builtin-tool-skills",
+  "name": "@ficlouds/builtin-tool-skills",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -10,15 +10,15 @@
   },
   "main": "./src/index.ts",
   "dependencies": {
-    "@lobechat/const": "workspace:*",
-    "@lobechat/prompts": "workspace:*",
-    "@lobechat/shared-tool-ui": "workspace:*"
+    "@ficlouds/const": "workspace:*",
+    "@ficlouds/prompts": "workspace:*",
+    "@ficlouds/shared-tool-ui": "workspace:*"
   },
   "devDependencies": {
-    "@lobechat/types": "workspace:*"
+    "@ficlouds/types": "workspace:*"
   },
   "peerDependencies": {
-    "@lobehub/ui": "^5",
+    "@ficlouds/ui": "^5",
     "antd-style": "*",
     "react": "*",
     "react-i18next": "*"

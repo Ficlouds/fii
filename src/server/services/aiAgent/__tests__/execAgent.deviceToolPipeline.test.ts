@@ -1,5 +1,5 @@
-import { LocalSystemManifest } from '@lobechat/builtin-tool-local-system';
-import { RemoteDeviceManifest } from '@lobechat/builtin-tool-remote-device';
+import { LocalSystemManifest } from '@ficlouds/builtin-tool-local-system';
+import { RemoteDeviceManifest } from '@ficlouds/builtin-tool-remote-device';
 import type * as ModelBankModule from 'model-bank';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -80,7 +80,7 @@ vi.mock('@/server/services/agentRuntime', () => ({
 
 vi.mock('@/server/services/market', () => ({
   MarketService: vi.fn().mockImplementation(() => ({
-    getLobehubSkillManifests: vi.fn().mockResolvedValue([]),
+    getFiSkillManifests: vi.fn().mockResolvedValue([]),
   })),
 }));
 

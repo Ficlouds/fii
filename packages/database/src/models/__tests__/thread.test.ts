@@ -1,10 +1,10 @@
-import { ThreadStatus, ThreadType } from '@lobechat/types';
+import { ThreadStatus, ThreadType } from '@ficlouds/types';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { getTestDB } from '../../core/getTestDB';
 import { sessions, threads, topics, users } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { ThreadModel } from '../thread';
 
 const userId = 'thread-user-test';
@@ -12,7 +12,7 @@ const otherUserId = 'other-user-test';
 const sessionId = 'thread-session';
 const topicId = 'thread-topic';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 const threadModel = new ThreadModel(serverDB, userId);
 
 describe('ThreadModel', () => {

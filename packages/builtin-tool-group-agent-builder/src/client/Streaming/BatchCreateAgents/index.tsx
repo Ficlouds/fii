@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinStreamingProps } from '@lobechat/types';
+import type { BuiltinStreamingProps } from '@ficlouds/types';
 import { Avatar, Block, Flexbox, Markdown } from '@lobehub/ui';
 import { Divider } from 'antd';
 import { createStaticStyles } from 'antd-style';

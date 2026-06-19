@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 import {
   agentEvalBenchmarks,
   agentEvalDatasets,
@@ -7,8 +7,8 @@ import {
   agentEvalRunTopics,
   agentEvalTestCases,
   topics,
-} from '@lobechat/database/schemas';
-import { getTestDB } from '@lobechat/database/test-utils';
+} from '@ficlouds/database/schemas';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -26,7 +26,7 @@ vi.mock('@/server/services/file', () => ({
 }));
 
 // Mock getServerDB to return our test database instance
-let testDB: LobeChatDatabase;
+let testDB: FiDatabase;
 vi.mock('@/database/core/db-adaptor', () => ({
   getServerDB: vi.fn(() => testDB),
 }));
@@ -41,7 +41,7 @@ vi.mock('@/database/core/db-adaptor', () => ({
  * 4. Verify permissions and data isolation (users can only operate on their own data)
  */
 describe('Agent Eval Router Integration Tests', () => {
-  let serverDB: LobeChatDatabase;
+  let serverDB: FiDatabase;
   let userId: string;
 
   beforeEach(async () => {

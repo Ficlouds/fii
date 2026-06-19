@@ -1,7 +1,7 @@
-import type { LobeChatDatabase } from '@lobechat/database';
-import { topics } from '@lobechat/database/schemas';
-import type { OpenAIChatMessage } from '@lobechat/model-runtime';
-import type { ChatTopicMetadata } from '@lobechat/types';
+import type { FiDatabase } from '@ficlouds/database';
+import { topics } from '@ficlouds/database/schemas';
+import type { OpenAIChatMessage } from '@ficlouds/model-runtime';
+import type { ChatTopicMetadata } from '@ficlouds/types';
 import { and, eq } from 'drizzle-orm';
 import { u } from 'unist-builder';
 import { toXml } from 'xast-util-to-xml';
@@ -30,14 +30,14 @@ export interface ChatTopicProviderOptions {
 
 export interface ChatTopicResultRecorderOptions {
   currentMetadata?: ChatTopicMetadata;
-  database: LobeChatDatabase;
+  database: FiDatabase;
   lastMessageAt?: string;
   messageCount?: number;
   topicId: string;
   traceId?: string;
 }
 
-export class LobeChatTopicContextProvider implements MemoryContextProvider<
+export class FiTopicContextProvider implements MemoryContextProvider<
   Record<string, unknown>,
   Record<string, unknown>
 > {
@@ -123,7 +123,7 @@ export class LobeChatTopicContextProvider implements MemoryContextProvider<
   }
 }
 
-export class LobeChatTopicResultRecorder implements MemoryResultRecorder<{
+export class FiTopicResultRecorder implements MemoryResultRecorder<{
   processedMemoryCount: number;
 }> {
   private readonly options: ChatTopicResultRecorderOptions;

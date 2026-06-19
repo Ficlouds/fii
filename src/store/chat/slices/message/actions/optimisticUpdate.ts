@@ -10,9 +10,9 @@ import {
   type ModelReasoning,
   type UIChatMessage,
   type UpdateMessageRAGParams,
-} from '@lobechat/types';
-import { ChatErrorType } from '@lobechat/types';
-import { nanoid } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { ChatErrorType } from '@ficlouds/types';
+import { nanoid } from '@ficlouds/utils';
 
 import { messageService } from '@/services/message';
 import { type ChatStore } from '@/store/chat/store';

@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { Icon, Tooltip } from '@lobehub/ui';
 import { createStaticStyles, cssVar, cx } from 'antd-style';
 import { CornerDownRight } from 'lucide-react';

@@ -1,4 +1,4 @@
-// Re-export shared state types from @lobechat/tool-runtime
+// Re-export shared state types from @ficlouds/tool-runtime
 export type {
   EditFileState as EditLocalFileState,
   GetCommandOutputState,
@@ -12,7 +12,7 @@ export type {
   RunCommandState,
   SearchFilesState as SearchLocalFilesState,
   WriteFileState as WriteLocalFileState,
-} from '@lobechat/tool-runtime';
+} from '@ficlouds/tool-runtime';
 
 // ==================== Cloud-Specific State ====================
 

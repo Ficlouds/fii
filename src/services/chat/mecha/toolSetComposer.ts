@@ -1,6 +1,6 @@
-import { PageAgentIdentifier } from '@lobechat/builtin-tool-page-agent';
-import type { LobeToolManifest, ToolsGenerationResult } from '@lobechat/context-engine';
-import { generateToolsFromManifest } from '@lobechat/context-engine';
+import { PageAgentIdentifier } from '@ficlouds/builtin-tool-page-agent';
+import type { FiToolManifest, ToolsGenerationResult } from '@ficlouds/context-engine';
+import { generateToolsFromManifest } from '@ficlouds/context-engine';
 import debug from 'debug';
 
 type UniformToolArray = NonNullable<ToolsGenerationResult['tools']>;
@@ -15,19 +15,19 @@ export interface ToolSetComposerContext {
 
 export interface ToolSetComposerInput {
   context: ToolSetComposerContext;
-  injectedManifests?: LobeToolManifest[];
+  injectedManifests?: FiToolManifest[];
   toolsDetailed: ToolsGenerationResult;
 }
 
 export interface ComposedToolSet {
-  enabledManifests: LobeToolManifest[];
+  enabledManifests: FiToolManifest[];
   enabledToolIds: string[];
   tools?: UniformTool[];
 }
 
 const mergeInjectedManifests = (
   base: ComposedToolSet,
-  injectedManifests: LobeToolManifest[] | undefined,
+  injectedManifests: FiToolManifest[] | undefined,
 ): ComposedToolSet => {
   if (!injectedManifests?.length) return base;
 

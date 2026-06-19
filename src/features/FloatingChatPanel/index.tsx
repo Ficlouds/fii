@@ -1,6 +1,6 @@
 'use client';
 
-import { ThreadType, type UIChatMessage } from '@lobechat/types';
+import { ThreadType, type UIChatMessage } from '@ficlouds/types';
 import { FloatingSheet, type FloatingSheetProps } from '@lobehub/ui/base-ui';
 import { createStaticStyles } from 'antd-style';
 import type { ReactNode } from 'react';

@@ -1,5 +1,5 @@
-import { TopicReferenceExecutor } from '@lobechat/builtin-tool-topic-reference/executor';
-import type { BuiltinToolResult } from '@lobechat/types';
+import { TopicReferenceExecutor } from '@ficlouds/builtin-tool-topic-reference/executor';
+import type { BuiltinToolResult } from '@ficlouds/types';
 
 import { lambdaClient } from '@/libs/trpc/client';
 

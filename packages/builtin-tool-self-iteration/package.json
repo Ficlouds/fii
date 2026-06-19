@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/builtin-tool-self-iteration",
+  "name": "@ficlouds/builtin-tool-self-iteration",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -10,11 +10,11 @@
   },
   "main": "./src/index.ts",
   "devDependencies": {
-    "@lobechat/context-engine": "workspace:*",
-    "@lobechat/types": "workspace:*"
+    "@ficlouds/context-engine": "workspace:*",
+    "@ficlouds/types": "workspace:*"
   },
   "peerDependencies": {
-    "@lobehub/ui": "^5",
+    "@ficlouds/ui": "^5",
     "antd-style": "*",
     "lucide-react": "*",
     "react": "*",

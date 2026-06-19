@@ -1,8 +1,8 @@
 /**
  * Desktop isolated workspace stub.
  *
- * `@lobechat/types` is only consumed via `import type` in desktop code and in
- * the `@lobechat/const` entrypoints it reaches (currently `desktopGlobalShortcuts`).
+ * `@ficlouds/types` is only consumed via `import type` in desktop code and in
+ * the `@ficlouds/const` entrypoints it reaches (currently `desktopGlobalShortcuts`).
  * Those specifiers are erased at build time, so this package has no runtime
  * exports — we only need to surface the types that reach the desktop tsgo
  * project. Keep these in sync with `packages/types/src/hotkey.ts`.

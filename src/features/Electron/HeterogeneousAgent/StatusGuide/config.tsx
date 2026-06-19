@@ -3,7 +3,7 @@ import {
   CLAUDE_CODE_CLI_INSTALL_DOCS_URL,
   CODEX_CLI_INSTALL_COMMANDS,
   CODEX_CLI_INSTALL_DOCS_URL,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 import { ClaudeCode, Codex } from '@lobehub/icons';
 
 import {

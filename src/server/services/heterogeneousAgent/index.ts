@@ -1,5 +1,5 @@
-import type { AgentStreamEvent } from '@lobechat/agent-gateway-client';
-import type { LobeChatDatabase } from '@lobechat/database';
+import type { AgentStreamEvent } from '@ficlouds/agent-gateway-client';
+import type { FiDatabase } from '@ficlouds/database';
 import debug from 'debug';
 
 import { MessageModel } from '@/database/models/message';
@@ -67,7 +67,7 @@ export interface HeterogeneousAgentServiceOptions {
  * `topic.metadata.heterogeneousSessions`.
  */
 export class HeterogeneousAgentService {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly messageModel: MessageModel;
   private readonly persistenceHandler: HeterogeneousPersistenceHandler;
   private readonly streamEventManager: IStreamEventManager;
@@ -75,7 +75,7 @@ export class HeterogeneousAgentService {
   private readonly userId: string;
 
   constructor(
-    db: LobeChatDatabase,
+    db: FiDatabase,
     userId: string,
     options: HeterogeneousAgentServiceOptions = {},
   ) {

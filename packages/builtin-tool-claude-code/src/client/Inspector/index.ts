@@ -4,7 +4,7 @@ import {
   createGlobLocalFilesInspector,
   createGrepContentInspector,
   createRunCommandInspector,
-} from '@lobechat/shared-tool-ui/inspectors';
+} from '@ficlouds/shared-tool-ui/inspectors';
 
 import { ClaudeCodeApiName } from '../../types';
 import { AgentInspector } from './Agent';

@@ -1,12 +1,12 @@
-import { builtinTools } from '@lobechat/builtin-tools';
-import { ToolArgumentsRepairer, ToolNameResolver } from '@lobechat/context-engine';
-import { type ChatToolPayload, type MessageToolCall, type ToolManifest } from '@lobechat/types';
+import { builtinTools } from '@ficlouds/builtin-tools';
+import { ToolArgumentsRepairer, ToolNameResolver } from '@ficlouds/context-engine';
+import { type ChatToolPayload, type MessageToolCall, type ToolManifest } from '@ficlouds/types';
 
 import { type ChatStore } from '@/store/chat/store';
 import { useToolStore } from '@/store/tool';
 import {
   klavisStoreSelectors,
-  lobehubSkillStoreSelectors,
+  fiSkillStoreSelectors,
   pluginSelectors,
 } from '@/store/tool/selectors';
 import { type StoreSetter } from '@/store/types';
@@ -38,7 +38,7 @@ export class PluginInternalsActionImpl {
     const manifests: Record<string, ToolManifest> = {};
 
     // Track source for each identifier
-    const sourceMap: Record<string, 'builtin' | 'mcp' | 'klavis' | 'lobehubSkill'> = {};
+    const sourceMap: Record<string, 'builtin' | 'mcp' | 'klavis' | 'fiSkill'> = {};
 
     // Get all installed plugins (all treated as MCP now)
     const installedPlugins = pluginSelectors.installedPlugins(toolStoreState);
@@ -66,12 +66,12 @@ export class PluginInternalsActionImpl {
       }
     }
 
-    // Get all LobeHub Skill tools
-    const lobehubSkillTools = lobehubSkillStoreSelectors.lobehubSkillAsLobeTools(toolStoreState);
-    for (const tool of lobehubSkillTools) {
+    // Get all Fi Skill tools
+    const fiSkillTools = fiSkillStoreSelectors.fiSkillAsLobeTools(toolStoreState);
+    for (const tool of fiSkillTools) {
       if (tool.manifest) {
         manifests[tool.identifier] = tool.manifest as ToolManifest;
-        sourceMap[tool.identifier] = 'lobehubSkill';
+        sourceMap[tool.identifier] = 'fiSkill';
       }
     }
 

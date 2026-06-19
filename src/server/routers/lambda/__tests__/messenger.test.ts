@@ -93,7 +93,7 @@ const buildSlackInstall = () => ({
   id: 'install-1',
   installedByPlatformUserId: 'U_INSTALLER',
   installedByUserId: 'user-1',
-  metadata: { scope: 'chat:write', tenantName: 'LobeHub' },
+  metadata: { scope: 'chat:write', tenantName: 'Fi' },
   platform: 'slack',
   revokedAt: null,
   tenantId: 'T_LOBE',
@@ -134,7 +134,7 @@ describe('messengerRouter.listMyInstallations', () => {
         platform: 'slack',
         scope: 'chat:write',
         tenantId: 'T_LOBE',
-        tenantName: 'LobeHub',
+        tenantName: 'Fi',
       }),
     ]);
     expect(mockMarkRevoked).not.toHaveBeenCalled();
@@ -177,7 +177,7 @@ describe('messengerRouter.peekLinkToken', () => {
       platformUserId: 'U_ALICE',
       platformUsername: 'alice',
       tenantId: 'T_LOBE',
-      tenantName: 'LobeHub',
+      tenantName: 'Fi',
     });
     mockFindByPlatformUser.mockResolvedValue(undefined);
 
@@ -190,7 +190,7 @@ describe('messengerRouter.peekLinkToken', () => {
       platformUserId: 'U_ALICE',
       status: 'active',
       tenantId: 'T_LOBE',
-      tenantName: 'LobeHub',
+      tenantName: 'Fi',
     });
     expect(mockPeekConsumedLinkToken).not.toHaveBeenCalled();
   });

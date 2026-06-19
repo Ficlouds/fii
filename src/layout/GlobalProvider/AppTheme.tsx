@@ -2,7 +2,7 @@
 
 import 'antd/dist/reset.css';
 
-import { TITLE_BAR_HEIGHT } from '@lobechat/desktop-bridge';
+import { TITLE_BAR_HEIGHT } from '@ficlouds/desktop-bridge';
 import { type NeutralColors, type PrimaryColors } from '@lobehub/ui';
 import { ConfigProvider, FontLoader, ThemeProvider } from '@lobehub/ui';
 import { message as antdMessage } from 'antd';

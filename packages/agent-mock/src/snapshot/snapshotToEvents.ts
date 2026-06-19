@@ -1,4 +1,4 @@
-import type { ExecutionSnapshot, StepSnapshot } from '@lobechat/agent-tracing';
+import type { ExecutionSnapshot, StepSnapshot } from '@ficlouds/agent-tracing';
 
 import type { MockEvent } from '../types';
 import { splitTextIntoChunks } from './chunkSplitter';

@@ -1,13 +1,13 @@
 import { and, asc, count, desc, eq, isNull, or } from 'drizzle-orm';
 
 import { agentEvalDatasets, agentEvalTestCases, type NewAgentEvalDataset } from '../../schemas';
-import { type LobeChatDatabase } from '../../type';
+import { type FiDatabase } from '../../type';
 
 export class AgentEvalDatasetModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { extractEnabledModels, parseModelString, transformToAiModelList } from './parseModels';
 
-vi.mock('@lobechat/business-model-bank/model-config', async () => {
+vi.mock('@ficlouds/business-model-bank/model-config', async () => {
   const { LOBE_DEFAULT_MODEL_LIST } = await import('model-bank');
   return {
     loadModels: vi.fn().mockResolvedValue(LOBE_DEFAULT_MODEL_LIST),

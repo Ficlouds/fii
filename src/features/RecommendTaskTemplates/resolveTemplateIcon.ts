@@ -1,6 +1,6 @@
 import type { IconType } from '@icons-pack/react-simple-icons';
 import { SiGithub } from '@icons-pack/react-simple-icons';
-import type { TaskTemplate, TaskTemplateIcon, TaskTemplateSkillRequirement } from '@lobechat/const';
+import type { TaskTemplate, TaskTemplateIcon, TaskTemplateSkillRequirement } from '@ficlouds/const';
 import { type LucideIcon, Sparkles } from 'lucide-react';
 
 import { getProviderMeta } from './providerMeta';

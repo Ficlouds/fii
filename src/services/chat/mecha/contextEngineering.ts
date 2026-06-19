@@ -1,18 +1,18 @@
-import { LobeActivatorIdentifier } from '@lobechat/builtin-tool-activator';
-import { AgentBuilderIdentifier } from '@lobechat/builtin-tool-agent-builder';
-import { AgentManagementIdentifier } from '@lobechat/builtin-tool-agent-management';
+import { LobeActivatorIdentifier } from '@ficlouds/builtin-tool-activator';
+import { AgentBuilderIdentifier } from '@ficlouds/builtin-tool-agent-builder';
+import { AgentManagementIdentifier } from '@ficlouds/builtin-tool-agent-management';
 import {
   CredsIdentifier,
   type CredSummary,
   generateCredsList,
   generateKlavisServicesList,
   type KlavisServiceSummary,
-} from '@lobechat/builtin-tool-creds';
-import { GroupAgentBuilderIdentifier } from '@lobechat/builtin-tool-group-agent-builder';
-import { LobeAgentIdentifier } from '@lobechat/builtin-tool-lobe-agent';
-import { PageAgentIdentifier } from '@lobechat/builtin-tool-page-agent';
-import { WebOnboardingIdentifier } from '@lobechat/builtin-tool-web-onboarding';
-import { KLAVIS_SERVER_TYPES, LOBEHUB_SKILL_PROVIDERS } from '@lobechat/const';
+} from '@ficlouds/builtin-tool-creds';
+import { GroupAgentBuilderIdentifier } from '@ficlouds/builtin-tool-group-agent-builder';
+import { FiAgentIdentifier } from '@ficlouds/builtin-tool-fi-agent';
+import { PageAgentIdentifier } from '@ficlouds/builtin-tool-page-agent';
+import { WebOnboardingIdentifier } from '@ficlouds/builtin-tool-web-onboarding';
+import { KLAVIS_SERVER_TYPES, LOBEHUB_SKILL_PROVIDERS } from '@ficlouds/const';
 import type {
   AgentBuilderContext,
   AgentContextDocument,
@@ -20,21 +20,21 @@ import type {
   AgentManagementContext,
   GroupAgentBuilderContext,
   GroupOfficialToolItem,
-  LobeToolManifest,
+  FiToolManifest,
   MemoryContext,
   OnboardingContext,
   PlanTodoConfig,
   ToolDiscoveryConfig,
   UserMemoryData,
-} from '@lobechat/context-engine';
-import { MessagesEngine, resolveTopicReferences } from '@lobechat/context-engine';
-import { historySummaryPrompt } from '@lobechat/prompts';
+} from '@ficlouds/context-engine';
+import { MessagesEngine, resolveTopicReferences } from '@ficlouds/context-engine';
+import { historySummaryPrompt } from '@ficlouds/prompts';
 import type {
   OpenAIChatMessage,
   RuntimeInitialContext,
   RuntimeStepContext,
   UIChatMessage,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import debug from 'debug';
 
 import { isCanUseFC } from '@/helpers/isCanUseFC';
@@ -52,7 +52,7 @@ import { getToolStoreState } from '@/store/tool';
 import {
   builtinToolSelectors,
   klavisStoreSelectors,
-  lobehubSkillStoreSelectors,
+  fiSkillStoreSelectors,
   toolSelectors,
 } from '@/store/tool/selectors';
 import { KlavisServerStatus } from '@/store/tool/slices/klavisStore';
@@ -82,7 +82,7 @@ interface ContextEngineeringContext {
   initialContext?: RuntimeInitialContext;
   inputTemplate?: string;
   /** Tool manifests with systemRole and API definitions */
-  manifests?: LobeToolManifest[];
+  manifests?: FiToolManifest[];
   /** Memory-related context for prompt/runtime behavior */
   memoryContext?: MemoryContext;
   messages: UIChatMessage[];
@@ -242,7 +242,7 @@ export const contextEngineering = async ({
             const server = allKlavisServers.find((s) => s.identifier === klavisType.identifier);
 
             officialTools.push({
-              description: `LobeHub Mcp Server: ${klavisType.label}`,
+              description: `Fi Mcp Server: ${klavisType.label}`,
               enabled: enabledPlugins.includes(klavisType.identifier),
               identifier: klavisType.identifier,
               installed: !!server,
@@ -252,19 +252,19 @@ export const contextEngineering = async ({
           }
         }
 
-        // Get LobehubSkill providers (if enabled)
-        const isLobehubSkillEnabled =
+        // Get FiSkill providers (if enabled)
+        const isFiSkillEnabled =
           typeof window !== 'undefined' &&
-          window.global_serverConfigStore?.getState()?.serverConfig?.enableLobehubSkill;
+          window.global_serverConfigStore?.getState()?.serverConfig?.enableFiSkill;
 
-        if (isLobehubSkillEnabled) {
-          const allLobehubSkillServers = lobehubSkillStoreSelectors.getServers(toolState);
+        if (isFiSkillEnabled) {
+          const allFiSkillServers = fiSkillStoreSelectors.getServers(toolState);
 
           for (const provider of LOBEHUB_SKILL_PROVIDERS) {
-            const server = allLobehubSkillServers.find((s) => s.identifier === provider.id);
+            const server = allFiSkillServers.find((s) => s.identifier === provider.id);
 
             officialTools.push({
-              description: `LobeHub Skill Provider: ${provider.label}`,
+              description: `Fi Skill Provider: ${provider.label}`,
               enabled: enabledPlugins.includes(provider.id),
               identifier: provider.id,
               installed: !!server,
@@ -319,7 +319,7 @@ export const contextEngineering = async ({
 
   // Resolve plan + todos context (now part of the lobe-agent tool).
   // Lobe-agent must be enabled and topicId must be provided.
-  const isPlanTodoEnabled = tools?.includes(LobeAgentIdentifier) ?? false;
+  const isPlanTodoEnabled = tools?.includes(FiAgentIdentifier) ?? false;
   let planTodoConfig: PlanTodoConfig | undefined;
 
   if (isPlanTodoEnabled && topicId) {
@@ -560,12 +560,12 @@ export const contextEngineering = async ({
       }
     }
 
-    // LobehubSkill providers (if enabled)
-    const isLobehubSkillEnabled =
+    // FiSkill providers (if enabled)
+    const isFiSkillEnabled =
       typeof window !== 'undefined' &&
-      window.global_serverConfigStore?.getState()?.serverConfig?.enableLobehubSkill;
+      window.global_serverConfigStore?.getState()?.serverConfig?.enableFiSkill;
 
-    if (isLobehubSkillEnabled) {
+    if (isFiSkillEnabled) {
       for (const provider of LOBEHUB_SKILL_PROVIDERS) {
         availablePlugins.push({
           description: provider.description,
@@ -721,7 +721,7 @@ export const contextEngineering = async ({
       KLAVIS_SERVICES_LIST: () => klavisServicesList,
       // NOTICE(@nekomeowww): required by builtin-tool-memory/src/systemRole.ts
       memory_effort: () => (userMemoryConfig ? (memoryContext?.effort ?? '') : ''),
-      // Current agent + topic identity — referenced by the LobeHub builtin
+      // Current agent + topic identity — referenced by the Fi builtin
       // skill (packages/builtin-skills/src/lobehub/content.ts) so the model
       // can run `lh agent run -a {{agent_id}}` etc without first having to
       // search for itself. Read lazily from stores so we only pay the cost

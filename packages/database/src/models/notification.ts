@@ -2,13 +2,13 @@ import { and, count, desc, eq, inArray, lt, or } from 'drizzle-orm';
 
 import type { NewNotification, NewNotificationDelivery } from '../schemas/notification';
 import { notificationDeliveries, notifications } from '../schemas/notification';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export class NotificationModel {
   private readonly userId: string;
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

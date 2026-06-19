@@ -1,6 +1,6 @@
 'use client';
 
-import { BRANDING_NAME } from '@lobechat/business-const';
+import { BRANDING_NAME } from '@ficlouds/business-const';
 import { Avatar, Button, Flexbox, Icon } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { LucideArrowUpRightFromSquare, TelescopeIcon } from 'lucide-react';

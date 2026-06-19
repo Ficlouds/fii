@@ -1,7 +1,7 @@
 import { and, asc, count, desc, eq, ilike, inArray, isNull } from 'drizzle-orm';
 
 import { messages, messagesFiles } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { idGenerator } from '@/database/utils/idGenerator';
 import { FileService as CoreFileService } from '@/server/services/file';
 
@@ -33,7 +33,7 @@ export interface MessageCountResult {
 export class MessageService extends BaseService {
   private coreFileService: CoreFileService;
 
-  constructor(db: LobeChatDatabase, userId: string | null) {
+  constructor(db: FiDatabase, userId: string | null) {
     super(db, userId);
 
     this.coreFileService = new CoreFileService(db, userId!);

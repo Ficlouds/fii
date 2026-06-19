@@ -9,13 +9,13 @@ import { AiModelSourceEnum } from 'model-bank';
 
 import type { AiModelSelectItem, NewAiModelItem } from '../schemas';
 import { aiModels } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export class AiModelModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }
@@ -190,7 +190,7 @@ export class AiModelModel {
     }
 
     // Get default model list to preserve type information
-    const { loadModels } = await import('@lobechat/business-model-bank/model-config');
+    const { loadModels } = await import('@ficlouds/business-model-bank/model-config');
     const defaultModels = await loadModels();
     const defaultModelMap = new Map(defaultModels.map((m) => [`${m.providerId}:${m.id}`, m]));
 

@@ -1,12 +1,12 @@
-import type { MigrationTableItem } from '@lobechat/types';
+import type { MigrationTableItem } from '@ficlouds/types';
 import { sql } from 'drizzle-orm';
 
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export class DrizzleMigrationModel {
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase) {
+  constructor(db: FiDatabase) {
     this.db = db;
   }
 

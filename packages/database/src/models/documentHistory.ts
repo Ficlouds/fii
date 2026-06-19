@@ -2,7 +2,7 @@ import { and, desc, eq, lt, or } from 'drizzle-orm';
 
 import type { DocumentHistoryItem, NewDocumentHistory } from '../schemas';
 import { documentHistories, documents } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export interface QueryDocumentHistoryParams {
   beforeId?: string;
@@ -13,9 +13,9 @@ export interface QueryDocumentHistoryParams {
 
 export class DocumentHistoryModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

@@ -1,5 +1,5 @@
-import type { EditorRuntime } from '@lobechat/editor-runtime';
-import type { BuiltinToolContext } from '@lobechat/types';
+import type { EditorRuntime } from '@ficlouds/editor-runtime';
+import type { BuiltinToolContext } from '@ficlouds/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { PageAgentIdentifier } from '../types';

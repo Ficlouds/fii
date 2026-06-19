@@ -10,13 +10,13 @@ import {
   topics,
   users,
 } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import { TopicModel } from '../../topic';
 
 const userId = 'topic-query-user';
 const userId2 = 'topic-query-user-2';
 const sessionId = 'topic-query-session';
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 const topicModel = new TopicModel(serverDB, userId);
 
 describe('TopicModel - Query', () => {

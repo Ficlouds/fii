@@ -1,4 +1,4 @@
-import type { TaskTemplateSkillRequirement } from '@lobechat/const';
+import type { TaskTemplateSkillRequirement } from '@ficlouds/const';
 import { Button, Flexbox, Icon, Image, Text } from '@lobehub/ui';
 import { cssVar } from 'antd-style';
 import { memo, useCallback, useMemo } from 'react';

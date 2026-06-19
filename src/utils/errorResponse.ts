@@ -1,8 +1,8 @@
-import { AUTH_REQUIRED_HEADER } from '@lobechat/desktop-bridge';
-import { type ILobeAgentRuntimeErrorType } from '@lobechat/model-runtime';
-import { AgentRuntimeErrorType } from '@lobechat/model-runtime';
-import { type ErrorResponse, type ErrorType } from '@lobechat/types';
-import { ChatErrorType } from '@lobechat/types';
+import { AUTH_REQUIRED_HEADER } from '@ficlouds/desktop-bridge';
+import { type ILobeAgentRuntimeErrorType } from '@ficlouds/model-runtime';
+import { AgentRuntimeErrorType } from '@ficlouds/model-runtime';
+import { type ErrorResponse, type ErrorType } from '@ficlouds/types';
+import { ChatErrorType } from '@ficlouds/types';
 
 /**
  * Error types that indicate a real authentication failure.
@@ -32,7 +32,7 @@ const getStatus = (errorType: ILobeAgentRuntimeErrorType | ErrorType) => {
     case AgentRuntimeErrorType.ExceededToolLimit:
     case ChatErrorType.SubscriptionKeyMismatch:
     case ChatErrorType.SystemTimeNotMatchError:
-    case ChatErrorType.LobeHubModelDeprecated: {
+    case ChatErrorType.FiModelDeprecated: {
       return 400;
     }
 

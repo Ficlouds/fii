@@ -1,9 +1,9 @@
-import { TRACING_SCENARIOS } from '@lobechat/const';
-import type { TracingOptions } from '@lobechat/llm-generation-tracing';
-import type { FollowUpChip, FollowUpExtractInput, FollowUpExtractResult } from '@lobechat/types';
+import { TRACING_SCENARIOS } from '@ficlouds/const';
+import type { TracingOptions } from '@ficlouds/llm-generation-tracing';
+import type { FollowUpChip, FollowUpExtractInput, FollowUpExtractResult } from '@ficlouds/types';
 import debug from 'debug';
 
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { AiGenerationService } from '@/server/services/aiGeneration';
 
 import { buildSuggestionPrompt, FOLLOW_UP_PROMPT_VERSION } from './prompts';
@@ -14,10 +14,10 @@ const log = debug('lobe-server:follow-up-action-service');
 const EMPTY_RESULT = (messageId: string): FollowUpExtractResult => ({ chips: [], messageId });
 
 export class FollowUpActionService {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly userId: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

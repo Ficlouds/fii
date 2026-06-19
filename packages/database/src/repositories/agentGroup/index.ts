@@ -1,11 +1,11 @@
-import { BUILTIN_AGENT_SLUGS } from '@lobechat/builtin-agents';
-import type { AgentGroupDetail, AgentGroupMember } from '@lobechat/types';
-import { cleanObject } from '@lobechat/utils';
+import { BUILTIN_AGENT_SLUGS } from '@ficlouds/builtin-agents';
+import type { AgentGroupDetail, AgentGroupMember } from '@ficlouds/types';
+import { cleanObject } from '@ficlouds/utils';
 import { and, eq, inArray } from 'drizzle-orm';
 
 import type { AgentItem, ChatGroupItem, NewChatGroup, NewChatGroupAgent } from '../../schemas';
 import { agents, chatGroups, chatGroupsAgents } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 
 export interface SupervisorAgentConfig {
   avatar?: string;
@@ -52,9 +52,9 @@ export interface CreateGroupWithSupervisorResult {
  */
 export class AgentGroupRepository {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

@@ -1,6 +1,6 @@
-import { BUILTIN_AGENT_SLUGS } from '@lobechat/builtin-agents';
-import type { ConversationContext } from '@lobechat/types';
-import { isChatGroupSessionId } from '@lobechat/types';
+import { BUILTIN_AGENT_SLUGS } from '@ficlouds/builtin-agents';
+import type { ConversationContext } from '@ficlouds/types';
+import { isChatGroupSessionId } from '@ficlouds/types';
 import type { ReactNode } from 'react';
 import { createContext, memo, use, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMatch } from 'react-router-dom';

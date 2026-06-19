@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { type Theme } from 'antd-style';
 import { css } from 'antd-style';
 import { rgba } from 'polished';

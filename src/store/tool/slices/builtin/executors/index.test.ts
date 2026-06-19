@@ -1,8 +1,8 @@
-import { LobeAgentApiName, LobeAgentIdentifier } from '@lobechat/builtin-tool-lobe-agent';
+import { FiAgentApiName, FiAgentIdentifier } from '@ficlouds/builtin-tool-fi-agent';
 import {
   WebOnboardingApiName,
   WebOnboardingIdentifier,
-} from '@lobechat/builtin-tool-web-onboarding';
+} from '@ficlouds/builtin-tool-web-onboarding';
 import { describe, expect, it, vi } from 'vitest';
 
 import { getApiNamesForIdentifier, hasExecutor } from './index';
@@ -39,6 +39,6 @@ describe('builtin executor registry', () => {
   });
 
   it('registers visual understanding executor APIs', () => {
-    expect(hasExecutor(LobeAgentIdentifier, LobeAgentApiName.analyzeVisualMedia)).toBe(true);
+    expect(hasExecutor(FiAgentIdentifier, FiAgentApiName.analyzeVisualMedia)).toBe(true);
   });
 });

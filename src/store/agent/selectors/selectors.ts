@@ -1,4 +1,4 @@
-import { DEFAULT_PROVIDER } from '@lobechat/business-const';
+import { DEFAULT_PROVIDER } from '@ficlouds/business-const';
 import {
   DEFAULT_AGENT_CONFIG,
   DEFAULT_AVATAR,
@@ -7,16 +7,16 @@ import {
   DEFAULT_MODEL,
   DEFAUTT_AGENT_TTS_CONFIG,
   isDesktop,
-} from '@lobechat/const';
+} from '@ficlouds/const';
 import {
   type AgentMode,
   type KnowledgeItem,
-  type LobeAgentConfig,
-  type LobeAgentTTSConfig,
+  type FiAgentConfig,
+  type FiAgentTTSConfig,
   type MetaData,
   type RuntimeEnvConfig,
-} from '@lobechat/types';
-import { KnowledgeType } from '@lobechat/types';
+} from '@ficlouds/types';
+import { KnowledgeType } from '@ficlouds/types';
 import { VoiceList } from '@lobehub/tts';
 
 import { DEFAULT_OPENING_QUESTIONS } from '@/features/AgentSetting/store/selectors';
@@ -91,16 +91,16 @@ const inboxAgentConfig = (s: AgentStoreState) => {
   const id = builtinAgentSelectors.inboxAgentId(s);
   // Server returns inbox config already merged with DEFAULT_AGENT_CONFIG and serverDefaultAgentConfig,
   // so we can directly use it. Fallback to DEFAULT_AGENT_CONFIG if not initialized yet.
-  return id ? (s.agentMap[id] as LobeAgentConfig) : DEFAULT_AGENT_CONFIG;
+  return id ? (s.agentMap[id] as FiAgentConfig) : DEFAULT_AGENT_CONFIG;
 };
 const inboxAgentModel = (s: AgentStoreState) => inboxAgentConfig(s).model;
 
 const getAgentConfigById =
   (agentId: string) =>
-  (s: AgentStoreState): LobeAgentConfig =>
-    s.agentMap[agentId] as LobeAgentConfig;
+  (s: AgentStoreState): FiAgentConfig =>
+    s.agentMap[agentId] as FiAgentConfig;
 
-export const currentAgentConfig = (s: AgentStoreState): LobeAgentConfig =>
+export const currentAgentConfig = (s: AgentStoreState): FiAgentConfig =>
   getAgentConfigById(s.activeAgentId || '')(s);
 
 const currentAgentSystemRole = (s: AgentStoreState) => {
@@ -146,7 +146,7 @@ const currentAgentFiles = (s: AgentStoreState) => {
   return config?.files || [];
 };
 
-const currentAgentTTS = (s: AgentStoreState): LobeAgentTTSConfig => {
+const currentAgentTTS = (s: AgentStoreState): FiAgentTTSConfig => {
   const config = currentAgentConfig(s);
 
   return config?.tts || DEFAUTT_AGENT_TTS_CONFIG;
@@ -279,7 +279,7 @@ const isCurrentAgentExternal = (s: AgentStoreState): boolean => !currentAgentDat
 
 /**
  * Whether current agent is driven by an external heterogeneous runtime
- * (e.g. Claude Code). These agents skip LobeHub's message-channel / model
+ * (e.g. Claude Code). These agents skip Fi's message-channel / model
  * pickers because their toolchain is owned by the external runtime.
  */
 const isCurrentAgentHeterogeneous = (s: AgentStoreState): boolean =>

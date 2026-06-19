@@ -1,4 +1,4 @@
-import { sanitizeToolCallArguments } from '@lobechat/utils';
+import { sanitizeToolCallArguments } from '@ficlouds/utils';
 import debug from 'debug';
 
 import { BaseProcessor } from '../base/BaseProcessor';

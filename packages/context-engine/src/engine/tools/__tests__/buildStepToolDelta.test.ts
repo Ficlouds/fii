@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
 import { buildStepToolDelta } from '../buildStepToolDelta';
-import type { LobeToolManifest } from '../types';
+import type { FiToolManifest } from '../types';
 
-const mockLocalSystemManifest: LobeToolManifest = {
+const mockLocalSystemManifest: FiToolManifest = {
   api: [
     {
       description: 'Run command',
@@ -16,7 +16,7 @@ const mockLocalSystemManifest: LobeToolManifest = {
   type: 'builtin',
 };
 
-const mockSearchManifest: LobeToolManifest = {
+const mockSearchManifest: FiToolManifest = {
   api: [
     {
       description: 'Search',

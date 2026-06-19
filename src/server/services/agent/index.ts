@@ -1,9 +1,9 @@
-import { type BuiltinAgentSlug } from '@lobechat/builtin-agents';
-import { BUILTIN_AGENTS } from '@lobechat/builtin-agents';
-import { DEFAULT_AGENT_CONFIG } from '@lobechat/const';
-import { type LobeChatDatabase } from '@lobechat/database';
-import { type AgentItem, type LobeAgentConfig } from '@lobechat/types';
-import { cleanObject, merge } from '@lobechat/utils';
+import { type BuiltinAgentSlug } from '@ficlouds/builtin-agents';
+import { BUILTIN_AGENTS } from '@ficlouds/builtin-agents';
+import { DEFAULT_AGENT_CONFIG } from '@ficlouds/const';
+import { type FiDatabase } from '@ficlouds/database';
+import { type AgentItem, type FiAgentConfig } from '@ficlouds/types';
+import { cleanObject, merge } from '@ficlouds/utils';
 import debug from 'debug';
 import { type PartialDeep } from 'type-fest';
 
@@ -28,7 +28,7 @@ const log = debug('lobe-agent:service');
  * Agent config with required id field.
  * Used when returning agent config from database (id is always present).
  */
-export type AgentConfigWithId = LobeAgentConfig & { id: string; slug?: string | null };
+export type AgentConfigWithId = FiAgentConfig & { id: string; slug?: string | null };
 
 interface AgentWelcomeData {
   openQuestions: string[];
@@ -43,11 +43,11 @@ interface AgentWelcomeData {
  */
 export class AgentService {
   private readonly userId: string;
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly agentModel: AgentModel;
   private readonly userModel: UserModel;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
     this.agentModel = new AgentModel(db, userId);
@@ -176,11 +176,11 @@ export class AgentService {
   private mergeDefaultConfig(
     agent: any,
     defaultAgentConfig: Awaited<ReturnType<UserModel['getUserSettingsDefaultAgentConfig']>>,
-  ): LobeAgentConfig | null {
+  ): FiAgentConfig | null {
     if (!agent) return null;
 
     const userDefaultAgentConfig =
-      (defaultAgentConfig as { config?: PartialDeep<LobeAgentConfig> })?.config || {};
+      (defaultAgentConfig as { config?: PartialDeep<FiAgentConfig> })?.config || {};
 
     // Merge configs in order: DEFAULT -> server -> user -> agent
     const serverDefaultAgentConfig = getServerDefaultAgentConfig();

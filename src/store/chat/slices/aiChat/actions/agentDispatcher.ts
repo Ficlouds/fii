@@ -1,6 +1,6 @@
-import { isDesktop as defaultIsDesktop } from '@lobechat/const';
-import { isRemoteHeterogeneousType } from '@lobechat/heterogeneous-agents';
-import { type HeteroExecutionTarget, type HeterogeneousProviderConfig } from '@lobechat/types';
+import { isDesktop as defaultIsDesktop } from '@ficlouds/const';
+import { isRemoteHeterogeneousType } from '@ficlouds/heterogeneous-agents';
+import { type HeteroExecutionTarget, type HeterogeneousProviderConfig } from '@ficlouds/types';
 
 /**
  * Which agent runtime should handle an operation.

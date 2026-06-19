@@ -1,4 +1,4 @@
-import type { MockCase } from '@lobechat/agent-mock';
+import type { MockCase } from '@ficlouds/agent-mock';
 import { Flexbox, Input, Popover, Text, usePopoverContext } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { ChevronDown } from 'lucide-react';

@@ -2,7 +2,7 @@ import type {
   AgentEvalRunDetail,
   AgentEvalRunListItem,
   AgentEvalRunResults,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 export interface RunSliceState {
   /**

@@ -1,10 +1,10 @@
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 import {
   type SkillResourceContent,
   type SkillResourceMeta,
   type SkillResourceTreeNode,
-} from '@lobechat/types';
-import { getMimeType } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { getMimeType } from '@ficlouds/utils';
 import debug from 'debug';
 import { sha256 } from 'js-sha256';
 
@@ -31,7 +31,7 @@ function isTextMimeType(mimeType: string): boolean {
 export class SkillResourceService {
   private fileService: FileService;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.fileService = new FileService(db, userId);
   }
 

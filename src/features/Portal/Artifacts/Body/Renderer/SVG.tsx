@@ -1,5 +1,5 @@
-import { BRANDING_NAME } from '@lobechat/business-const';
-import { copyImageToClipboard, sanitizeSVGContent } from '@lobechat/utils/client';
+import { BRANDING_NAME } from '@ficlouds/business-const';
+import { copyImageToClipboard, sanitizeSVGContent } from '@ficlouds/utils/client';
 import { Button, Center, DropdownMenu, Flexbox, Tooltip } from '@lobehub/ui';
 import { snapdom } from '@zumer/snapdom';
 import { App, Space } from 'antd';

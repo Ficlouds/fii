@@ -1,4 +1,4 @@
-import { type ErrorType } from '@lobechat/types';
+import { type ErrorType } from '@ficlouds/types';
 import { type AlertProps } from '@lobehub/ui';
 
 export default function useBusinessErrorAlertConfig(

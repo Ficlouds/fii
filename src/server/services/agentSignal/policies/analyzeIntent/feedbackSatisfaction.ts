@@ -1,13 +1,13 @@
-import type { RuntimeProcessorResult } from '@lobechat/agent-signal';
-import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
-import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@lobechat/const';
-import type { GenerateObjectPayload, GenerateObjectSchema } from '@lobechat/model-runtime';
-import { chainAgentSignalAnalyzeIntentFeedbackSatisfaction } from '@lobechat/prompts';
-import { RequestTrigger } from '@lobechat/types';
+import type { RuntimeProcessorResult } from '@ficlouds/agent-signal';
+import { AGENT_SIGNAL_SOURCE_TYPES } from '@ficlouds/agent-signal/source';
+import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@ficlouds/const';
+import type { GenerateObjectPayload, GenerateObjectSchema } from '@ficlouds/model-runtime';
+import { chainAgentSignalAnalyzeIntentFeedbackSatisfaction } from '@ficlouds/prompts';
+import { RequestTrigger } from '@ficlouds/types';
 import debug from 'debug';
 import { z } from 'zod';
 
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 
 import { classifySatisfaction, transitionToSignals } from '../../processors';
@@ -148,7 +148,7 @@ export interface FeedbackSatisfactionJudgeAgentModelConfig {
 export interface CreateFeedbackSatisfactionJudgePolicyOptions {
   /** Optional diagnostics sink for malformed structured classifier output. */
   classifierDiagnostics?: ClassifierDiagnosticsService;
-  db?: LobeChatDatabase;
+  db?: FiDatabase;
   judge?: FeedbackSatisfactionJudge;
   model?: string;
   provider?: string;
@@ -169,12 +169,12 @@ export interface CreateFeedbackSatisfactionJudgePolicyOptions {
  * - One validated satisfaction result parsed from structured model output
  */
 export class FeedbackSatisfactionJudgeAgentService implements FeedbackSatisfactionJudge {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly modelConfig: FeedbackSatisfactionJudgeAgentModelConfig;
   private readonly userId: string;
 
   constructor(
-    db: LobeChatDatabase,
+    db: FiDatabase,
     userId: string,
     modelConfig: Partial<FeedbackSatisfactionJudgeAgentModelConfig> = {},
   ) {

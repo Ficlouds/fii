@@ -1,5 +1,5 @@
-import { useToolRenderCapabilities } from '@lobechat/shared-tool-ui';
-import type { ChatMessagePluginError } from '@lobechat/types';
+import { useToolRenderCapabilities } from '@ficlouds/shared-tool-ui';
+import type { ChatMessagePluginError } from '@ficlouds/types';
 import { Block, Empty, Flexbox, Skeleton } from '@lobehub/ui';
 import { SearchIcon } from 'lucide-react';
 import { memo } from 'react';

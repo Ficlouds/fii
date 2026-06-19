@@ -9,7 +9,7 @@ const wrapper = ({ children }: { children: ReactNode }) => (
   <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>{children}</SWRConfig>
 );
 
-vi.mock('@lobechat/const', () => ({
+vi.mock('@ficlouds/const', () => ({
   isDesktop: true,
 }));
 

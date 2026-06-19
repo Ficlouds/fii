@@ -1,12 +1,12 @@
 import { randomBytes } from 'node:crypto';
 
-import { BRANDING_PROVIDER } from '@lobechat/business-const';
-import { loadModels } from '@lobechat/business-model-bank/model-config';
+import { BRANDING_PROVIDER } from '@ficlouds/business-const';
+import { loadModels } from '@ficlouds/business-model-bank/model-config';
 import {
   buildMappedBusinessModelFields,
   resolveBusinessModelMapping,
-} from '@lobechat/business-model-runtime';
-import { ChatErrorType, RequestTrigger } from '@lobechat/types';
+} from '@ficlouds/business-model-runtime';
+import { ChatErrorType, RequestTrigger } from '@ficlouds/types';
 import { TRPCError } from '@trpc/server';
 import debug from 'debug';
 import { and, eq } from 'drizzle-orm';
@@ -87,7 +87,7 @@ export const videoRouter = router({
       throw new TRPCError({
         cause: { data: { modelType: 'video', requestedModel: model } },
         code: 'BAD_REQUEST',
-        message: ChatErrorType.LobeHubModelDeprecated,
+        message: ChatErrorType.FiModelDeprecated,
       });
     }
 

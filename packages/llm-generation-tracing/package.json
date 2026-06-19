@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/llm-generation-tracing",
+  "name": "@ficlouds/llm-generation-tracing",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -12,7 +12,7 @@
     "lt": "./src/cli/index.ts"
   },
   "dependencies": {
-    "@lobechat/const": "workspace:*",
+    "@ficlouds/const": "workspace:*",
     "commander": "^13.1.0"
   }
 }

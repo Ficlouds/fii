@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { BriefItem } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import type * as SkillManagementModule from '@/server/services/skillManagement';
 
 import type * as ToolFirstRuntimeModule from '../../execute';
@@ -510,7 +510,7 @@ describe('createServerSelfReviewPolicyOptions', () => {
 
     const options = createServerSelfReviewPolicyOptions({
       agentId: 'agent-1',
-      db: {} as unknown as LobeChatDatabase,
+      db: {} as unknown as FiDatabase,
       selfIterationEnabled: true,
       userId: 'user-1',
     });
@@ -595,7 +595,7 @@ describe('createServerSelfReviewPolicyOptions', () => {
 
     const options = createServerSelfReviewPolicyOptions({
       agentId: 'agent-1',
-      db: {} as unknown as LobeChatDatabase,
+      db: {} as unknown as FiDatabase,
       selfIterationEnabled: true,
       userId: 'user-1',
     });
@@ -727,7 +727,7 @@ describe('createServerSelfReviewPolicyOptions', () => {
 
     const options = createServerSelfReviewPolicyOptions({
       agentId: 'agent-1',
-      db: {} as unknown as LobeChatDatabase,
+      db: {} as unknown as FiDatabase,
       selfIterationEnabled: true,
       userId: 'user-1',
     });
@@ -819,7 +819,7 @@ describe('createServerSelfReviewPolicyOptions', () => {
 
     const options = createServerSelfReviewPolicyOptions({
       agentId: 'agent-1',
-      db: {} as unknown as LobeChatDatabase,
+      db: {} as unknown as FiDatabase,
       selfIterationEnabled: true,
       userId: 'user-1',
     });
@@ -923,7 +923,7 @@ describe('createServerSelfReviewPolicyOptions', () => {
 
     const options = createServerSelfReviewPolicyOptions({
       agentId: 'agent-1',
-      db: {} as unknown as LobeChatDatabase,
+      db: {} as unknown as FiDatabase,
       selfIterationEnabled: true,
       userId: 'user-1',
     });

@@ -1,4 +1,4 @@
-import { DEFAULT_SECURITY_BLACKLIST, InterventionChecker } from '@lobechat/agent-runtime';
+import { DEFAULT_SECURITY_BLACKLIST, InterventionChecker } from '@ficlouds/agent-runtime';
 import { Alert, Flexbox } from '@lobehub/ui';
 import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';

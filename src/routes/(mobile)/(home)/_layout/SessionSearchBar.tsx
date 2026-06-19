@@ -1,6 +1,6 @@
 'use client';
 
-import { HotkeyEnum } from '@lobechat/const/hotkeys';
+import { HotkeyEnum } from '@ficlouds/const/hotkeys';
 import { SearchBar } from '@lobehub/ui';
 import { type ChangeEvent } from 'react';
 import { memo, useCallback } from 'react';

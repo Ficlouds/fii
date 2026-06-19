@@ -1,4 +1,4 @@
-import { DEFAULT_PREFERENCE } from '@lobechat/const';
+import { DEFAULT_PREFERENCE } from '@ficlouds/const';
 
 import { type UserStore } from '@/store/user';
 

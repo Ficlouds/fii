@@ -1,4 +1,4 @@
-import { Plans } from '@lobechat/types';
+import { Plans } from '@ficlouds/types';
 import { Center, Flexbox, Icon, Tag } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { Atom, Box, CircleSlash, Sparkle, Zap } from 'lucide-react';

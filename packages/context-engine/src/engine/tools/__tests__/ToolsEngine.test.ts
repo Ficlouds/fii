@@ -2,10 +2,10 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { createEnableChecker } from '../enableCheckerFactory';
 import { ToolsEngine } from '../ToolsEngine';
-import type { LobeToolManifest } from '../types';
+import type { FiToolManifest } from '../types';
 
 // Mock manifest schemas for testing
-const mockWebBrowsingManifest: LobeToolManifest = {
+const mockWebBrowsingManifest: FiToolManifest = {
   api: [
     {
       description: 'Search the web',
@@ -27,7 +27,7 @@ const mockWebBrowsingManifest: LobeToolManifest = {
   type: 'builtin',
 };
 
-const mockDalleManifest: LobeToolManifest = {
+const mockDalleManifest: FiToolManifest = {
   api: [
     {
       description: 'Generate images',
@@ -169,7 +169,7 @@ describe('ToolsEngine', () => {
     });
 
     it('should default object-typed parameters required to [] when omitted', () => {
-      const allOptionalManifest: LobeToolManifest = {
+      const allOptionalManifest: FiToolManifest = {
         api: [
           {
             description: 'Search with all-optional params',
@@ -567,7 +567,7 @@ describe('ToolsEngine', () => {
 
   describe('ToolsEngine Integration Tests (migrated from enabledSchema)', () => {
     // Mock manifest data similar to the original tool selector tests
-    const mockManifests: LobeToolManifest[] = [
+    const mockManifests: FiToolManifest[] = [
       {
         identifier: 'plugin-1',
         api: [{ name: 'api-1', description: 'API 1', parameters: {} }],
@@ -926,7 +926,7 @@ describe('ToolsEngine', () => {
    */
   describe('enabledSchema Migration to ToolsEngine', () => {
     // Sample manifest data that mimics the old toolSelectors test data
-    const sampleManifests: LobeToolManifest[] = [
+    const sampleManifests: FiToolManifest[] = [
       {
         identifier: 'plugin-1',
         api: [{ name: 'api-1', description: 'API 1', parameters: {} }],
@@ -1110,7 +1110,7 @@ describe('ToolsEngine', () => {
   });
 
   describe('explicit activation with always-on builtins', () => {
-    const builtinManifests: LobeToolManifest[] = [
+    const builtinManifests: FiToolManifest[] = [
       {
         identifier: 'lobe-activator',
         api: [
@@ -1286,7 +1286,7 @@ describe('ToolsEngine', () => {
   });
 
   describe('excludeDefaultToolIds (manual skill mode)', () => {
-    const builtinManifests: LobeToolManifest[] = [
+    const builtinManifests: FiToolManifest[] = [
       {
         identifier: 'lobe-activator',
         api: [{ name: 'run', description: 'Run tool', parameters: {} }],

@@ -1,4 +1,4 @@
-import { BRANDING_NAME } from '@lobechat/business-const';
+import { BRANDING_NAME } from '@ficlouds/business-const';
 import { type SegmentedProps } from '@lobehub/ui';
 import { snapdom } from '@zumer/snapdom';
 import dayjs from 'dayjs';

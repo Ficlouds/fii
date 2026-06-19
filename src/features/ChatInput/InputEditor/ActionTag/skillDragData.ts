@@ -1,4 +1,4 @@
-import { SKILL_DRAG_MIME } from '@lobechat/const';
+import { SKILL_DRAG_MIME } from '@ficlouds/const';
 import { cssVar } from 'antd-style';
 import type React from 'react';
 

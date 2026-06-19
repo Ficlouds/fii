@@ -1,5 +1,5 @@
-import type { DiscordChannelInfo, DiscordGuildInfo, DiscordThreadInfo } from '@lobechat/prompts';
-import { formatDiscordContext } from '@lobechat/prompts';
+import type { DiscordChannelInfo, DiscordGuildInfo, DiscordThreadInfo } from '@ficlouds/prompts';
+import { formatDiscordContext } from '@ficlouds/prompts';
 import debug from 'debug';
 
 import { BaseFirstUserContentProvider } from '../base/BaseFirstUserContentProvider';

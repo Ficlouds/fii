@@ -3,7 +3,7 @@ import {
   type MessageToolCall,
   type SendMessageParams,
   type UIChatMessage,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 /**
  * Conversation Lifecycle Hooks

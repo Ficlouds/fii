@@ -1,3 +1,3 @@
-import { remarklint } from '@lobehub/lint';
+import { remarklint } from '@ficlouds/lint';
 
 export default remarklint;

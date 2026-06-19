@@ -12,10 +12,10 @@ import {
   topicShares,
   users,
 } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { TopicShareModel } from '../topicShare';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'topic-share-test-user-id';
 const userId2 = 'topic-share-test-user-id-2';

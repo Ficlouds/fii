@@ -1,6 +1,6 @@
-import { getBuiltinRender } from '@lobechat/builtin-tools/renders';
-import { getBuiltinStreaming } from '@lobechat/builtin-tools/streamings';
-import { LOADING_FLAT } from '@lobechat/const';
+import { getBuiltinRender } from '@ficlouds/builtin-tools/renders';
+import { getBuiltinStreaming } from '@ficlouds/builtin-tools/streamings';
+import { LOADING_FLAT } from '@ficlouds/const';
 import { AccordionItem, Flexbox, Skeleton } from '@lobehub/ui';
 import { Divider } from 'antd';
 import isEqual from 'fast-deep-equal';

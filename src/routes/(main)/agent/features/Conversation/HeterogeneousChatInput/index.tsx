@@ -3,7 +3,7 @@
 import {
   HETEROGENEOUS_TYPE_LABELS,
   isRemoteHeterogeneousType,
-} from '@lobechat/heterogeneous-agents';
+} from '@ficlouds/heterogeneous-agents';
 import { Alert, Button, Flexbox } from '@lobehub/ui';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +22,7 @@ import { useChatStore } from '@/store/chat';
 import WorkingDirectoryBar from './WorkingDirectoryBar';
 
 // Heterogeneous agents (e.g. Claude Code) bring their own toolchain, memory,
-// and model, so LobeHub-side pickers don't apply. Typo is kept so the user
+// and model, so Fi-side pickers don't apply. Typo is kept so the user
 // can still toggle the rich-text formatting bar.
 const leftActions: ActionKeys[] = ['typo'];
 const rightActions: ActionKeys[] = [];

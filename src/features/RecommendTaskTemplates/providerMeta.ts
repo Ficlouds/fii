@@ -1,12 +1,12 @@
 import type {
-  LobehubSkillProviderType,
+  FiSkillProviderType,
   TaskTemplateSkillRequirement,
   TaskTemplateSkillSource,
-} from '@lobechat/const';
-import { getKlavisServerByServerIdentifier, getLobehubSkillProviderById } from '@lobechat/const';
+} from '@ficlouds/const';
+import { getKlavisServerByServerIdentifier, getFiSkillProviderById } from '@ficlouds/const';
 
 export interface SkillProviderMeta {
-  icon: LobehubSkillProviderType['icon'];
+  icon: FiSkillProviderType['icon'];
   label: string;
   provider: string;
   source: TaskTemplateSkillSource;
@@ -16,7 +16,7 @@ export const getProviderMeta = (
   spec: TaskTemplateSkillRequirement,
 ): SkillProviderMeta | undefined => {
   if (spec.source === 'lobehub') {
-    const p = getLobehubSkillProviderById(spec.provider);
+    const p = getFiSkillProviderById(spec.provider);
     if (!p) return undefined;
     return { icon: p.icon, label: p.label, provider: spec.provider, source: 'lobehub' };
   }

@@ -1,4 +1,4 @@
-import { type AgentEvalDataset, type AgentEvalDatasetListItem } from '@lobechat/types';
+import { type AgentEvalDataset, type AgentEvalDatasetListItem } from '@ficlouds/types';
 
 export interface DatasetSliceState {
   datasetDetailMap: Record<string, AgentEvalDataset>;

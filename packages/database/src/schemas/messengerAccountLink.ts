@@ -6,8 +6,8 @@ import { agents } from './agent';
 import { users } from './user';
 
 /**
- * Maps a LobeHub user to a single IM account per platform (e.g. one Telegram
- * account ↔ one LobeHub user). The active agent for that IM session is
+ * Maps a Fi user to a single IM account per platform (e.g. one Telegram
+ * account ↔ one Fi user). The active agent for that IM session is
  * tracked here so the user can switch among ALL their agents from the IM
  * client (`/agents` + `/switch <n>`) or the web UI without re-running the
  * verify-im flow per agent.
@@ -59,16 +59,16 @@ export const messengerAccountLinks = pgTable(
     ...timestamps,
   },
   (t) => [
-    // One IM account per (platform, tenant) binds to exactly one LobeHub user.
+    // One IM account per (platform, tenant) binds to exactly one Fi user.
     // The tenant column lets the same Slack user id under two workspaces
-    // bind to different LobeHub users — without it, the second workspace
+    // bind to different Fi users — without it, the second workspace
     // install would clash on the legacy 2-column index.
     uniqueIndex('messenger_account_links_platform_tenant_user_unique').on(
       t.platform,
       t.tenantId,
       t.platformUserId,
     ),
-    // One LobeHub user has at most one IM account per (platform, tenant) —
+    // One Fi user has at most one IM account per (platform, tenant) —
     // i.e. one user can be linked into Slack workspace A AND workspace B
     // simultaneously, but only one account per workspace.
     uniqueIndex('messenger_account_links_user_platform_tenant_unique').on(

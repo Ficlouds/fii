@@ -2,7 +2,7 @@ import type { AiProviderModelListItem } from 'model-bank';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { getTestDB } from '../../../core/getTestDB';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import { AiInfraRepos } from '../index';
 
 const userId = 'test-user-id';
@@ -11,14 +11,14 @@ const mockProviderConfigs = {
   anthropic: { enabled: false },
 };
 
-vi.mock('@lobechat/business-model-bank/model-config', async () => {
+vi.mock('@ficlouds/business-model-bank/model-config', async () => {
   const { LOBE_DEFAULT_MODEL_LIST } = await import('model-bank');
   return {
     loadModels: vi.fn().mockResolvedValue(LOBE_DEFAULT_MODEL_LIST),
   };
 });
 
-let serverDB: LobeChatDatabase;
+let serverDB: FiDatabase;
 let repo: AiInfraRepos;
 
 beforeAll(async () => {

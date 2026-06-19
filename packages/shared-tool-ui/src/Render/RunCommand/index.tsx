@@ -1,7 +1,7 @@
 'use client';
 
-import type { RunCommandState } from '@lobechat/tool-runtime';
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { RunCommandState } from '@ficlouds/tool-runtime';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { Block, Flexbox, Highlighter } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { memo } from 'react';

@@ -1,6 +1,6 @@
 'use client';
 
-import { AsyncTaskStatus } from '@lobechat/types';
+import { AsyncTaskStatus } from '@ficlouds/types';
 import { Flexbox } from '@lobehub/ui';
 import { memo, useMemo } from 'react';
 

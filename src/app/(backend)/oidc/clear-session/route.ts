@@ -1,6 +1,6 @@
-import { serverDB } from '@lobechat/database';
-import { oidcSessions } from '@lobechat/database/schemas';
-import { getUserAuth } from '@lobechat/utils/server';
+import { serverDB } from '@ficlouds/database';
+import { oidcSessions } from '@ficlouds/database/schemas';
+import { getUserAuth } from '@ficlouds/utils/server';
 import debug from 'debug';
 import { eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';

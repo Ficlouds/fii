@@ -1,6 +1,6 @@
 'use client';
 
-import { type SkillResourceTreeNode } from '@lobechat/types';
+import { type SkillResourceTreeNode } from '@ficlouds/types';
 import { Github } from '@lobehub/icons';
 import { ActionIcon, Avatar, Flexbox, Icon } from '@lobehub/ui';
 import { Skeleton } from 'antd';

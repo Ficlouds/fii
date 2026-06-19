@@ -3,14 +3,14 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { getTestDB } from '../../../core/getTestDB';
 import { agents, messagePlugins, messages, sessions, topics, users } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import type { CreateTopicParams } from '../../topic';
 import { TopicModel } from '../../topic';
 
 const userId = 'topic-create-user';
 const userId2 = 'topic-create-user-2';
 const sessionId = 'topic-create-session';
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 const topicModel = new TopicModel(serverDB, userId);
 
 describe('TopicModel - Create', () => {

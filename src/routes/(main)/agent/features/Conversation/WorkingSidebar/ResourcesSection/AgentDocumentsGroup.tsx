@@ -1,4 +1,4 @@
-import { buildAgentSkillIdentifier } from '@lobechat/const';
+import { buildAgentSkillIdentifier } from '@ficlouds/const';
 import { ActionIcon, Center, Empty, Flexbox, Text } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';
 import { SkillsIcon } from '@lobehub/ui/icons';

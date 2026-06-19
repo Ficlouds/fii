@@ -1,4 +1,4 @@
-import { DocumentLoadFormat, DocumentLoadRule, PolicyLoad } from '@lobechat/agent-templates';
+import { DocumentLoadFormat, DocumentLoadRule, PolicyLoad } from '@ficlouds/agent-templates';
 import { describe, expect, it } from 'vitest';
 
 import type { AgentDocumentWithRules } from '@/database/models/agentDocuments';

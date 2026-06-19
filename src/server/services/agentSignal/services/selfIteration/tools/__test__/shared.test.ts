@@ -1,4 +1,4 @@
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { SelfReviewProposalBaseSnapshot } from '../../review/proposal';
@@ -30,7 +30,7 @@ const { spanEnd, spanRecordException, spanSetAttribute, spanSetStatus, startActi
     return { spanEnd, spanRecordException, spanSetAttribute, spanSetStatus, startActiveSpan };
   });
 
-vi.mock('@lobechat/observability-otel/modules/agent-signal', () => ({
+vi.mock('@ficlouds/observability-otel/modules/agent-signal', () => ({
   tracer: { startActiveSpan },
 }));
 

@@ -3,7 +3,7 @@ import { and, count, desc, eq, ilike, inArray, ne, or } from 'drizzle-orm';
 import { ALL_SCOPE } from '@/const/rbac';
 import { RbacModel } from '@/database/models/rbac';
 import { messages, roles, userRoles, users } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { idGenerator } from '@/database/utils/idGenerator';
 
 import { BaseService } from '../common/base.service';
@@ -24,7 +24,7 @@ import type {
  * User service implementation class
  */
 export class UserService extends BaseService {
-  constructor(db: LobeChatDatabase, userId: string | null) {
+  constructor(db: FiDatabase, userId: string | null) {
     super(db, userId);
   }
 

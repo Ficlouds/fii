@@ -6,11 +6,11 @@ import { uuid } from '@/utils/uuid';
 
 import { getTestDB } from '../../core/getTestDB';
 import { chunks, embeddings, fileChunks, files, unstructuredChunks, users } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { ChunkModel } from '../chunk';
 import { codeEmbedding, designThinkingQuery, designThinkingQuery2 } from './fixtures/embedding';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'chunk-model-test-user-id';
 const chunkModel = new ChunkModel(serverDB, userId);

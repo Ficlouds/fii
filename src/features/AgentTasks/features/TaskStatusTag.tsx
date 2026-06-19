@@ -1,4 +1,4 @@
-import type { TaskStatus } from '@lobechat/types';
+import type { TaskStatus } from '@ficlouds/types';
 import { type DropdownItem, DropdownMenu, Icon, type MenuInfo, Tooltip } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import type { LucideIcon } from 'lucide-react';

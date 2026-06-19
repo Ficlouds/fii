@@ -1,4 +1,4 @@
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 import debug from 'debug';
 import urlJoin from 'url-join';
 
@@ -37,9 +37,9 @@ const getPresignedPreviewCacheTtlSeconds = (expiresInSeconds: number) =>
  */
 export class S3StaticFileImpl implements FileServiceImpl {
   private readonly s3: FileS3;
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
 
-  constructor(db: LobeChatDatabase) {
+  constructor(db: FiDatabase) {
     this.db = db;
     this.s3 = new FileS3();
   }

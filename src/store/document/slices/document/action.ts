@@ -1,7 +1,7 @@
 'use client';
 
-import { EDITOR_DEBOUNCE_TIME, EDITOR_MAX_WAIT } from '@lobechat/const';
-import type { DocumentItem } from '@lobechat/database/schemas';
+import { EDITOR_DEBOUNCE_TIME, EDITOR_MAX_WAIT } from '@ficlouds/const';
+import type { DocumentItem } from '@ficlouds/database/schemas';
 import type { IEditor } from '@lobehub/editor';
 import { debounce } from 'es-toolkit/compat';
 import type { SWRResponse } from 'swr';

@@ -1,4 +1,4 @@
-import { AGENT_ONBOARDING_ENABLED } from '@lobechat/business-const';
+import { AGENT_ONBOARDING_ENABLED } from '@ficlouds/business-const';
 
 export const ONBOARDING_AGENT_PATH = '/onboarding/agent';
 export const ONBOARDING_CLASSIC_PATH = '/onboarding/classic';

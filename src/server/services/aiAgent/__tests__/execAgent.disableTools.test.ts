@@ -8,7 +8,7 @@ const {
   mockCreateServerAgentToolsEngine,
   mockGetAgentConfig,
   mockGetKlavisManifests,
-  mockGetLobehubSkillManifests,
+  mockGetFiSkillManifests,
   mockMessageCreate,
   mockPluginQuery,
 } = vi.hoisted(() => ({
@@ -19,7 +19,7 @@ const {
   }),
   mockGetAgentConfig: vi.fn(),
   mockGetKlavisManifests: vi.fn().mockResolvedValue([]),
-  mockGetLobehubSkillManifests: vi.fn().mockResolvedValue([]),
+  mockGetFiSkillManifests: vi.fn().mockResolvedValue([]),
   mockMessageCreate: vi.fn(),
   mockPluginQuery: vi.fn().mockResolvedValue([]),
 }));
@@ -79,7 +79,7 @@ vi.mock('@/server/services/agentRuntime', () => ({
 
 vi.mock('@/server/services/market', () => ({
   MarketService: vi.fn().mockImplementation(() => ({
-    getLobehubSkillManifests: mockGetLobehubSkillManifests,
+    getFiSkillManifests: mockGetFiSkillManifests,
   })),
 }));
 
@@ -161,7 +161,7 @@ describe('AiAgentService.execAgent - disableTools', () => {
     expect(mockPluginQuery).not.toHaveBeenCalled();
 
     // Manifest fetches should NOT be called
-    expect(mockGetLobehubSkillManifests).not.toHaveBeenCalled();
+    expect(mockGetFiSkillManifests).not.toHaveBeenCalled();
     expect(mockGetKlavisManifests).not.toHaveBeenCalled();
 
     // ToolsEngine should NOT be created
@@ -181,7 +181,7 @@ describe('AiAgentService.execAgent - disableTools', () => {
 
     // All tool discovery steps should be called
     expect(mockPluginQuery).toHaveBeenCalledTimes(1);
-    expect(mockGetLobehubSkillManifests).toHaveBeenCalledTimes(1);
+    expect(mockGetFiSkillManifests).toHaveBeenCalledTimes(1);
     expect(mockGetKlavisManifests).toHaveBeenCalledTimes(1);
     expect(mockCreateServerAgentToolsEngine).toHaveBeenCalledTimes(1);
   });

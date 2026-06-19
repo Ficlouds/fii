@@ -33,8 +33,8 @@ import type {
   SendMessageState,
   UnpinMessageParams,
   UnpinMessageState,
-} from '@lobechat/builtin-tool-message/executionRuntime';
-import type { WechatApiClient } from '@lobechat/chat-adapter-wechat';
+} from '@ficlouds/builtin-tool-message/executionRuntime';
+import type { WechatApiClient } from '@ficlouds/chat-adapter-wechat';
 
 import { getAgentRuntimeRedisClient } from '@/server/modules/AgentRuntime/redis';
 import type { MessageRuntimeService } from '@/server/services/toolExecution/serverRuntimes/message/adapters/types';

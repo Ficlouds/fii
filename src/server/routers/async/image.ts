@@ -1,10 +1,10 @@
-import { ASYNC_TASK_TIMEOUT } from '@lobechat/business-config/server';
-import { ENABLE_BUSINESS_FEATURES } from '@lobechat/business-const';
+import { ASYNC_TASK_TIMEOUT } from '@ficlouds/business-config/server';
+import { ENABLE_BUSINESS_FEATURES } from '@ficlouds/business-const';
 import {
   buildMappedBusinessModelFields,
   resolveBusinessModelMapping,
-} from '@lobechat/business-model-runtime';
-import { AsyncTaskError, AsyncTaskStatus, RequestTrigger } from '@lobechat/types';
+} from '@ficlouds/business-model-runtime';
+import { AsyncTaskError, AsyncTaskStatus, RequestTrigger } from '@ficlouds/types';
 import { TRPCError } from '@trpc/server';
 import debug from 'debug';
 import { type RuntimeImageGenParams } from 'model-bank';

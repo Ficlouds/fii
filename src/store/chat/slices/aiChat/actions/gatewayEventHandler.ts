@@ -6,14 +6,14 @@ import type {
   ToolEndData,
   ToolExecuteData,
   ToolStartData,
-} from '@lobechat/agent-gateway-client';
+} from '@ficlouds/agent-gateway-client';
 import type {
   BuiltinToolResult,
   ChatMessageError,
   ConversationContext,
   UIChatMessage,
-} from '@lobechat/types';
-import { AgentRuntimeErrorType } from '@lobechat/types';
+} from '@ficlouds/types';
+import { AgentRuntimeErrorType } from '@ficlouds/types';
 
 import { messageService } from '@/services/message';
 import { emitClientAgentSignalSourceEvent } from '@/store/chat/slices/aiChat/actions/agentSignalBridge';

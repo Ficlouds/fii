@@ -1,4 +1,4 @@
-import type { DataSyncConfig } from '@lobechat/electron-client-ipc';
+import type { DataSyncConfig } from '@ficlouds/electron-client-ipc';
 import { BrowserWindow, shell } from 'electron';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 

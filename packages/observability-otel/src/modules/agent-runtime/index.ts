@@ -8,7 +8,7 @@ import { trace } from '@opentelemetry/api';
  * When OTEL is not initialized, `getTracer` returns a no-op provider, so calling
  * `tracer.startActiveSpan` is safe and cheap in environments without telemetry.
  */
-export const tracer = trace.getTracer('@lobechat/agent-runtime', '0.0.1');
+export const tracer = trace.getTracer('@ficlouds/agent-runtime', '0.0.1');
 
 export * from './attributes';
 export * from './semconv';

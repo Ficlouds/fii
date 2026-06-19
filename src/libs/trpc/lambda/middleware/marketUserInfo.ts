@@ -1,4 +1,4 @@
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 
 import { UserModel } from '@/database/models/user';
 import { type TrustedClientUserInfo } from '@/libs/trusted-client';
@@ -7,7 +7,7 @@ import { trpc } from '../init';
 
 interface ContextWithServerDB {
   marketAccessToken?: string;
-  serverDB?: LobeChatDatabase;
+  serverDB?: FiDatabase;
   userId?: string | null;
 }
 

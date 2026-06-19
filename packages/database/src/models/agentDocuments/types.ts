@@ -1,4 +1,4 @@
-// Re-export all types from @lobechat/agent-templates for backward compatibility
+// Re-export all types from @ficlouds/agent-templates for backward compatibility
 
 // Runtime values (enums, consts)
 // Database-specific types that remain here
@@ -8,7 +8,7 @@ import type {
   DocumentLoadFormat,
   DocumentLoadRules,
   PolicyLoad,
-} from '@lobechat/agent-templates';
+} from '@ficlouds/agent-templates';
 
 export {
   AgentAccess,
@@ -17,10 +17,10 @@ export {
   DocumentLoadPosition,
   DocumentLoadRule,
   PolicyLoad,
-} from '@lobechat/agent-templates';
+} from '@ficlouds/agent-templates';
 
 // Type-only exports (interfaces)
-export type { AgentDocumentPolicy, DocumentLoadRules } from '@lobechat/agent-templates';
+export type { AgentDocumentPolicy, DocumentLoadRules } from '@ficlouds/agent-templates';
 
 export type AgentDocumentSourceType = 'file' | 'web' | 'api' | 'topic' | 'agent' | 'agent-signal';
 

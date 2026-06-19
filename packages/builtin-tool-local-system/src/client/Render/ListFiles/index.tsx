@@ -1,5 +1,5 @@
-import type { ListFilesState } from '@lobechat/tool-runtime';
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { ListFilesState } from '@ficlouds/tool-runtime';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { memo } from 'react';
 
 import SearchResult from './Result';

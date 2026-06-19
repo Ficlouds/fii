@@ -1,7 +1,7 @@
 'use client';
 
-import type { EvalRubricScore } from '@lobechat/types';
-import { formatCost, formatShortenNumber } from '@lobechat/utils';
+import type { EvalRubricScore } from '@ficlouds/types';
+import { formatCost, formatShortenNumber } from '@ficlouds/utils';
 import { Flexbox, Tag, Text } from '@lobehub/ui';
 import { Collapse, Divider, Progress, Typography } from 'antd';
 import { createStaticStyles } from 'antd-style';

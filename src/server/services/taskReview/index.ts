@@ -1,10 +1,10 @@
-import type { EvaluateResult, RubricResult } from '@lobechat/eval-rubric';
-import { evaluate } from '@lobechat/eval-rubric';
-import type { EvalBenchmarkRubric, UserSystemAgentConfig } from '@lobechat/types';
+import type { EvaluateResult, RubricResult } from '@ficlouds/eval-rubric';
+import { evaluate } from '@ficlouds/eval-rubric';
+import type { EvalBenchmarkRubric, UserSystemAgentConfig } from '@ficlouds/types';
 import debug from 'debug';
 
 import { UserModel } from '@/database/models/user';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 
 import { resolveSystemAgentModelConfig } from '../systemAgent/modelConfig';
@@ -34,10 +34,10 @@ export interface ReviewResult {
 }
 
 export class TaskReviewService {
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private userId: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }
@@ -66,7 +66,7 @@ export class TaskReviewService {
     // 2. Initialize ModelRuntime for LLM-based rubrics
     const modelRuntime = await initModelRuntimeFromDB(this.db, this.userId, provider);
 
-    // 3. Run evaluate() from @lobechat/eval-rubric
+    // 3. Run evaluate() from @ficlouds/eval-rubric
     const result: EvaluateResult = await evaluate(
       {
         actual: content,

@@ -1,4 +1,4 @@
-import { HeterogeneousAgentSessionErrorCode } from '@lobechat/electron-client-ipc';
+import { HeterogeneousAgentSessionErrorCode } from '@ficlouds/electron-client-ipc';
 import { Flexbox, Snippet, Text } from '@lobehub/ui';
 import { useTranslation } from 'react-i18next';
 

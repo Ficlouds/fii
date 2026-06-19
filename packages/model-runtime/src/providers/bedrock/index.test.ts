@@ -16,7 +16,7 @@ const loadModelsMock = vi.hoisted(() => vi.fn().mockResolvedValue([]));
 // Mock the console.error to avoid polluting test output
 vi.spyOn(console, 'error').mockImplementation(() => {});
 
-vi.mock('@lobechat/business-model-bank/model-config', () => ({
+vi.mock('@ficlouds/business-model-bank/model-config', () => ({
   loadModels: loadModelsMock,
 }));
 

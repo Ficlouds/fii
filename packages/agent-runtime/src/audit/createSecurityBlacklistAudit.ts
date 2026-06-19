@@ -1,7 +1,7 @@
 import {
   type DynamicInterventionResolver,
   type GlobalInterventionAuditConfig,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 import { InterventionChecker } from '../core/InterventionChecker';
 import { DEFAULT_SECURITY_BLACKLIST } from './defaultSecurityBlacklist';

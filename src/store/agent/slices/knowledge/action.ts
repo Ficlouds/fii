@@ -1,4 +1,4 @@
-import { type KnowledgeItem } from '@lobechat/types';
+import { type KnowledgeItem } from '@ficlouds/types';
 import { type SWRResponse } from 'swr';
 
 import { mutate, useClientDataSWR } from '@/libs/swr';

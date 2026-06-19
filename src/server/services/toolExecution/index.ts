@@ -1,5 +1,5 @@
-import { type ChatToolPayload } from '@lobechat/types';
-import { safeParseJSON } from '@lobechat/utils';
+import { type ChatToolPayload } from '@ficlouds/types';
+import { safeParseJSON } from '@ficlouds/utils';
 import debug from 'debug';
 
 import { type CloudMCPParams, type ToolCallContent } from '@/libs/mcp';
@@ -164,7 +164,7 @@ export class ToolExecutionService {
       };
     }
 
-    // Extract MCP params from manifest (stored in customParams.mcp in LobeTool)
+    // Extract MCP params from manifest (stored in customParams.mcp in FiTool)
     const mcpParams = (manifest as any).mcpParams;
     if (!mcpParams) {
       log('MCP configuration not found in manifest for: %s ', identifier);

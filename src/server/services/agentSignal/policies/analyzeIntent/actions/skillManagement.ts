@@ -3,25 +3,25 @@ import {
   type AgentRuntimeContext,
   type AgentState,
   GeneralChatAgent,
-} from '@lobechat/agent-runtime';
+} from '@ficlouds/agent-runtime';
 import type {
   AgenticAttempt,
   BaseAction,
   ExecutorResult,
   SignalAttempt,
-} from '@lobechat/agent-signal';
-import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@lobechat/const';
+} from '@ficlouds/agent-signal';
+import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@ficlouds/const';
 import {
   generateToolsFromManifest,
-  type LobeToolManifest,
+  type FiToolManifest,
   ToolNameResolver,
-} from '@lobechat/context-engine';
+} from '@ficlouds/context-engine';
 import type {
   ChatStreamPayload,
   GenerateObjectSchema,
   ModelRuntime,
-} from '@lobechat/model-runtime';
-import { consumeStreamUntilDone } from '@lobechat/model-runtime';
+} from '@ficlouds/model-runtime';
+import { consumeStreamUntilDone } from '@ficlouds/model-runtime';
 import {
   AGENT_SKILL_CONSOLIDATE_SYSTEM_ROLE,
   AGENT_SKILL_CREATE_SYSTEM_ROLE,
@@ -32,14 +32,14 @@ import {
   createAgentSkillCreatePrompt,
   createAgentSkillManagerDecisionPrompt,
   createAgentSkillRefinePrompt,
-} from '@lobechat/prompts';
-import type { ChatToolPayload, MessageToolCall, ModelUsage } from '@lobechat/types';
-import { RequestTrigger } from '@lobechat/types';
+} from '@ficlouds/prompts';
+import type { ChatToolPayload, MessageToolCall, ModelUsage } from '@ficlouds/types';
+import { RequestTrigger } from '@ficlouds/types';
 import { z } from 'zod';
 
 import type { AgentDocument } from '@/database/models/agentDocuments';
 import { AgentDocumentModel } from '@/database/models/agentDocuments';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 import { AgentDocumentsService } from '@/server/services/agentDocuments';
 import { getSkillBundle } from '@/server/services/agentDocumentVfs/mounts/skills/providers/providerSkillsAgentDocumentUtils';
@@ -143,7 +143,7 @@ export interface SkillManagementActionInput {
 }
 
 export interface SkillManagementActionHandlerOptions {
-  db: LobeChatDatabase;
+  db: FiDatabase;
   /** Optional procedure state used to read user-stage skill intent records. */
   procedureState?: Pick<ProcedureStateService, 'skillIntentRecords'>;
   /** User-visible response language used as the default for newly-authored skill artifacts. */
@@ -550,7 +550,7 @@ const skillDecisionManifest = {
   },
   systemRole: 'Use read-only evidence tools before submitting a skill-management decision.',
   type: 'builtin',
-} satisfies LobeToolManifest;
+} satisfies FiToolManifest;
 
 interface SkillDecisionAgentRuntimeInput {
   model: string;
@@ -962,7 +962,7 @@ export const collectAgentSkillDecisionCandidates = (
 };
 
 const createDefaultSkillDecisionToolset = (
-  db: LobeChatDatabase,
+  db: FiDatabase,
   userId: string,
 ): SkillDecisionToolset => {
   const agentDocumentModel = new AgentDocumentModel(db, userId);
@@ -1161,7 +1161,7 @@ class SkillManagementDecisionAgentService {
   private readonly modelConfig: SkillManagementAgentModelConfig;
 
   constructor(
-    private db: LobeChatDatabase,
+    private db: FiDatabase,
     private userId: string,
     modelConfig: Partial<SkillManagementAgentModelConfig> = {},
     private toolsetFactory?: SkillManagementActionHandlerOptions['skillDecisionToolsetFactory'],
@@ -1213,7 +1213,7 @@ class SkillMaintainerWorkflowAgentService {
   private readonly modelConfig: SkillManagementAgentModelConfig;
 
   constructor(
-    private db: LobeChatDatabase,
+    private db: FiDatabase,
     private userId: string,
     modelConfig: Partial<SkillManagementAgentModelConfig> = {},
   ) {
@@ -1277,7 +1277,7 @@ class SkillCreateAuthoringAgentService {
   private readonly modelConfig: SkillManagementAgentModelConfig;
 
   constructor(
-    private db: LobeChatDatabase,
+    private db: FiDatabase,
     private userId: string,
     modelConfig: Partial<SkillManagementAgentModelConfig> = {},
   ) {

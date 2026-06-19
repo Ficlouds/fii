@@ -1,4 +1,4 @@
-import type { BriefArtifacts, BriefMetadata } from '@lobechat/types';
+import type { BriefArtifacts, BriefMetadata } from '@ficlouds/types';
 import {
   foreignKey,
   index,

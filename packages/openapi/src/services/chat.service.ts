@@ -1,13 +1,13 @@
-import type { ChatStreamPayload } from '@lobechat/model-runtime';
-import type { LobeAgentChatConfig, LobeAgentConfig, UserSystemAgentConfig } from '@lobechat/types';
-import { RequestTrigger } from '@lobechat/types';
+import type { ChatStreamPayload } from '@ficlouds/model-runtime';
+import type { FiAgentChatConfig, FiAgentConfig, UserSystemAgentConfig } from '@ficlouds/types';
+import { RequestTrigger } from '@ficlouds/types';
 import { and, eq } from 'drizzle-orm';
 
 import { getBusinessModelRuntimeHooks } from '@/business/server/model-runtime';
 import { DEFAULT_AGENT_CHAT_CONFIG, DEFAULT_SYSTEM_AGENT_CONFIG } from '@/const/settings';
 import { UserModel } from '@/database/models/user';
 import { agents, agentsToSessions, aiModels } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { KeyVaultsGateKeeper } from '@/server/modules/KeyVaultsEncrypt';
 import { initModelRuntimeWithUserPayload } from '@/server/modules/ModelRuntime';
 import { resolveSystemAgentModelConfig } from '@/server/services/systemAgent/modelConfig';
@@ -29,7 +29,7 @@ import type {
 export class ChatService extends BaseService {
   private config: ChatServiceConfig;
 
-  constructor(db: LobeChatDatabase, userId: string | null, config?: ChatServiceConfig) {
+  constructor(db: FiDatabase, userId: string | null, config?: ChatServiceConfig) {
     super(db, userId);
     this.config = {
       defaultModel: 'gpt-3.5-turbo',
@@ -114,7 +114,7 @@ export class ChatService extends BaseService {
    * @param agentId Agent ID
    * @returns Agent configuration
    */
-  private async getAgentConfig(agentId: string): Promise<LobeAgentChatConfig | null> {
+  private async getAgentConfig(agentId: string): Promise<FiAgentChatConfig | null> {
     try {
       const agent = await this.db.query.agents.findFirst({
         where: (agents, { eq, and }) => and(eq(agents.id, agentId)),
@@ -138,9 +138,9 @@ export class ChatService extends BaseService {
    * @returns Merged configuration
    */
   private mergeChatConfig(
-    agentConfig: LobeAgentChatConfig | null,
-    userConfig?: Partial<LobeAgentChatConfig>,
-  ): LobeAgentChatConfig {
+    agentConfig: FiAgentChatConfig | null,
+    userConfig?: Partial<FiAgentChatConfig>,
+  ): FiAgentChatConfig {
     // Merge by priority: user config > Agent config > default config
     return {
       ...DEFAULT_AGENT_CHAT_CONFIG,
@@ -154,7 +154,7 @@ export class ChatService extends BaseService {
    * @param chatConfig Chat configuration
    * @returns Search parameters
    */
-  private buildSearchParams(chatConfig: LobeAgentChatConfig) {
+  private buildSearchParams(chatConfig: FiAgentChatConfig) {
     const enabledSearch = chatConfig.searchMode !== 'off';
     const { useModelBuiltinSearch } = chatConfig;
 
@@ -531,7 +531,7 @@ export class ChatService extends BaseService {
       });
 
       // 2. Get Agent configuration (if agentId is provided)
-      let agentConfig: LobeAgentChatConfig | null = null;
+      let agentConfig: FiAgentChatConfig | null = null;
       if (params.agentId) {
         agentConfig = await this.getAgentConfig(params.agentId);
       }
@@ -607,7 +607,7 @@ export class ChatService extends BaseService {
     model?: string;
     provider?: string;
     sessionId?: string | null;
-  }): Promise<{ agent?: LobeAgentConfig; model?: string; provider?: string }> {
+  }): Promise<{ agent?: FiAgentConfig; model?: string; provider?: string }> {
     // If the user has already specified provider and model, use them directly
     if (params.provider && params.model) {
       return { model: params.model, provider: params.provider };
@@ -663,7 +663,7 @@ export class ChatService extends BaseService {
 
         // Return final config (user-specified > session config > default)
         return {
-          agent: agent as LobeAgentConfig,
+          agent: agent as FiAgentConfig,
           model: model.id || params.model,
           provider: model.providerId || params.provider,
         };

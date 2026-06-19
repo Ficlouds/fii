@@ -1,4 +1,4 @@
-import type { AgentTemplate } from '@lobechat/builtin-tool-web-onboarding/agentMarketplace';
+import type { AgentTemplate } from '@ficlouds/builtin-tool-web-onboarding/agentMarketplace';
 import { Avatar, Icon } from '@lobehub/ui';
 import { cx } from 'antd-style';
 import { CheckIcon } from 'lucide-react';

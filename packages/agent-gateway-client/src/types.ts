@@ -270,7 +270,7 @@ export interface AgentStreamClientEvents {
 export interface AgentStreamClientOptions {
   /** Auto-reconnect with lastEventId resume (default: true) */
   autoReconnect?: boolean;
-  /** Gateway WebSocket URL base (e.g. https://gateway.lobehub.com) */
+  /** Gateway WebSocket URL base (e.g. https://gateway.ficlouds.com) */
   gatewayUrl: string;
   /** Operation ID to subscribe to */
   operationId: string;

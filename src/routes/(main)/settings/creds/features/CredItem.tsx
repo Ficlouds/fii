@@ -1,6 +1,6 @@
 'use client';
 
-import { type UserCredSummary } from '@lobechat/types';
+import { type UserCredSummary } from '@ficlouds/types';
 import { Avatar, Button, DropdownMenu, Flexbox, Icon, stopPropagation } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';
 import { Tag } from 'antd';

@@ -1,4 +1,4 @@
-import type { BuiltinInspector } from '@lobechat/types';
+import type { BuiltinInspector } from '@ficlouds/types';
 
 import { GroupManagementApiName } from '../../types';
 import { BroadcastInspector } from './Broadcast';

@@ -10,7 +10,7 @@ export const lark: PlatformDefinition = {
   description: 'Connect a Lark bot',
   documentation: {
     portalUrl: 'https://open.larksuite.com/app',
-    setupGuideUrl: 'https://lobehub.com/docs/usage/channels/lark',
+    setupGuideUrl: 'https://ficlouds.com/docs/usage/channels/lark',
   },
   schema: sharedSchema,
   supportsMarkdown: false,

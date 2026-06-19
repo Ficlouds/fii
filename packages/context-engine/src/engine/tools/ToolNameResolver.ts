@@ -2,7 +2,7 @@ import { Md5 } from 'ts-md5';
 
 import type { ChatToolPayload, MessageToolCall } from '@/types/index';
 
-import type { LobeChatPluginApi, LobeToolManifest } from './types';
+import type { FiPluginApi, FiToolManifest } from './types';
 
 // Tool naming constants
 const PLUGIN_SCHEMA_SEPARATOR = '____';
@@ -88,7 +88,7 @@ export class ToolNameResolver {
    */
   resolve(
     toolCalls: MessageToolCall[],
-    manifests: Record<string, LobeToolManifest>,
+    manifests: Record<string, FiToolManifest>,
     offeredToolNames?: string[],
   ): ChatToolPayload[] {
     const offeredSet = offeredToolNames ? new Set(offeredToolNames) : null;
@@ -112,7 +112,7 @@ export class ToolNameResolver {
           const matches: string[] = [];
           for (const [id, manifest] of Object.entries(manifests)) {
             const matchedApi = manifest?.api?.find(
-              (api: LobeChatPluginApi) => api.name === bareName,
+              (api: FiPluginApi) => api.name === bareName,
             );
             if (!matchedApi) continue;
             // Restrict to tools actually offered to the LLM this turn so a
@@ -158,7 +158,7 @@ export class ToolNameResolver {
           const manifest = manifests[identifier];
 
           const api = manifest?.api.find(
-            (api: LobeChatPluginApi) => this.genHash(api.name) === md5,
+            (api: FiPluginApi) => this.genHash(api.name) === md5,
           );
           if (api) {
             payload.apiName = api.name;

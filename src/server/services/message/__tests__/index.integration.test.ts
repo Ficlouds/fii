@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 import {
   agents,
   agentsToSessions,
@@ -9,11 +9,11 @@ import {
   sessions,
   topics,
   users,
-} from '@lobechat/database/schemas';
-import { getTestDB } from '@lobechat/database/test-utils';
-import { HeterogeneousAgentSessionErrorCode } from '@lobechat/electron-client-ipc';
-import { AgentRuntimeErrorType } from '@lobechat/model-runtime';
-import { MessageGroupType } from '@lobechat/types';
+} from '@ficlouds/database/schemas';
+import { getTestDB } from '@ficlouds/database/test-utils';
+import { HeterogeneousAgentSessionErrorCode } from '@ficlouds/electron-client-ipc';
+import { AgentRuntimeErrorType } from '@ficlouds/model-runtime';
+import { MessageGroupType } from '@ficlouds/types';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -26,7 +26,7 @@ vi.mock('@/server/services/file', () => ({
   })),
 }));
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'message-service-integration-test';
 const otherUserId = 'message-service-integration-test-other';

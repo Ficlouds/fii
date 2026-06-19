@@ -1,4 +1,4 @@
-import { DEFAULT_INBOX_AVATAR } from '@lobechat/const';
+import { DEFAULT_INBOX_AVATAR } from '@ficlouds/const';
 import { Flexbox, Popover, Text, Tooltip } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';

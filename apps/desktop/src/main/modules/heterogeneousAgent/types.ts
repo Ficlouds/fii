@@ -32,7 +32,7 @@ export interface HeterogeneousAgentBuildPlanParams {
 
 /**
  * Per-agent CLI flag composition + stdin shape. Stream framing is no longer the
- * driver's concern — `AgentStreamPipeline` (`@lobechat/heterogeneous-agents/spawn`)
+ * driver's concern — `AgentStreamPipeline` (`@ficlouds/heterogeneous-agents/spawn`)
  * runs JSONL parsing + adapter conversion uniformly for every agent type.
  */
 export interface HeterogeneousAgentDriver {

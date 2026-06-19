@@ -7,7 +7,7 @@ import { type Klavis } from 'klavis';
 import { BuiltinAgentSkillDetailContent } from './BuiltinAgentSkillDetailContent';
 import { BuiltinSkillDetailContent } from './BuiltinSkillDetailContent';
 import { KlavisSkillDetailContent } from './KlavisSkillDetailContent';
-import { LobehubSkillDetailContent } from './LobehubSkillDetailContent';
+import { FiSkillDetailContent } from './FiSkillDetailContent';
 
 export interface CreateBuiltinAgentSkillDetailModalOptions {
   identifier: string;
@@ -56,15 +56,15 @@ export const createKlavisSkillDetailModal = ({
     width: 800,
   });
 
-export interface CreateLobehubSkillDetailModalOptions {
+export interface CreateFiSkillDetailModalOptions {
   identifier: string;
 }
 
-export const createLobehubSkillDetailModal = ({
+export const createFiSkillDetailModal = ({
   identifier,
-}: CreateLobehubSkillDetailModalOptions) =>
+}: CreateFiSkillDetailModalOptions) =>
   createModal({
-    children: <LobehubSkillDetailContent identifier={identifier} />,
+    children: <FiSkillDetailContent identifier={identifier} />,
     destroyOnHidden: true,
     footer: null,
     title: t('dev.title.skillDetails', { ns: 'plugin' }),

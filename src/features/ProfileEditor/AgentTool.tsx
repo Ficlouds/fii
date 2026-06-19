@@ -1,6 +1,6 @@
 'use client';
 
-import { KLAVIS_SERVER_TYPES, LOBEHUB_SKILL_PROVIDERS } from '@lobechat/const';
+import { KLAVIS_SERVER_TYPES, LOBEHUB_SKILL_PROVIDERS } from '@ficlouds/const';
 import { type ItemType } from '@lobehub/ui';
 import { Avatar, Button, Flexbox, Icon } from '@lobehub/ui';
 import { McpIcon, SkillsIcon } from '@lobehub/ui/icons';
@@ -15,8 +15,8 @@ import KlavisServerItem from '@/features/ChatInput/ActionBar/Tools/KlavisServerI
 import KlavisSkillIcon, {
   SKILL_ICON_SIZE,
 } from '@/features/ChatInput/ActionBar/Tools/KlavisSkillIcon';
-import LobehubSkillIcon from '@/features/ChatInput/ActionBar/Tools/LobehubSkillIcon';
-import LobehubSkillServerItem from '@/features/ChatInput/ActionBar/Tools/LobehubSkillServerItem';
+import FiSkillIcon from '@/features/ChatInput/ActionBar/Tools/FiSkillIcon';
+import FiSkillServerItem from '@/features/ChatInput/ActionBar/Tools/FiSkillServerItem';
 import MarketAgentSkillPopoverContent from '@/features/ChatInput/ActionBar/Tools/MarketAgentSkillPopoverContent';
 import MarketSkillIcon from '@/features/ChatInput/ActionBar/Tools/MarketSkillIcon';
 import ToolItem from '@/features/ChatInput/ActionBar/Tools/ToolItem';
@@ -33,10 +33,10 @@ import {
   agentSkillsSelectors,
   builtinToolSelectors,
   klavisStoreSelectors,
-  lobehubSkillStoreSelectors,
+  fiSkillStoreSelectors,
   pluginSelectors,
 } from '@/store/tool/selectors';
-import { type LobeToolMetaWithAvailability } from '@/store/tool/slices/builtin/selectors';
+import { type FiToolMetaWithAvailability } from '@/store/tool/slices/builtin/selectors';
 
 import PluginTag from './PluginTag';
 import PopoverContent from './PopoverContent';
@@ -99,9 +99,9 @@ const AgentTool = memo<AgentToolProps>(
     const allKlavisServers = useToolStore(klavisStoreSelectors.getServers, isEqual);
     const isKlavisEnabledInEnv = useServerConfigStore(serverConfigSelectors.enableKlavis);
 
-    // LobeHub Skill-related state
-    const allLobehubSkillServers = useToolStore(lobehubSkillStoreSelectors.getServers, isEqual);
-    const isLobehubSkillEnabled = useServerConfigStore(serverConfigSelectors.enableLobehubSkill);
+    // Fi Skill-related state
+    const allFiSkillServers = useToolStore(fiSkillStoreSelectors.getServers, isEqual);
+    const isFiSkillEnabled = useServerConfigStore(serverConfigSelectors.enableFiSkill);
 
     // Agent Skills-related state
     const installedBuiltinSkills = useToolStore(
@@ -121,12 +121,12 @@ const AgentTool = memo<AgentToolProps>(
     // Fetch plugins
     const [
       useFetchUserKlavisServers,
-      useFetchLobehubSkillConnections,
+      useFetchFiSkillConnections,
       useFetchUninstalledBuiltinTools,
       useFetchAgentSkills,
     ] = useToolStore((s) => [
       s.useFetchUserKlavisServers,
-      s.useFetchLobehubSkillConnections,
+      s.useFetchFiSkillConnections,
       s.useFetchUninstalledBuiltinTools,
       s.useFetchAgentSkills,
     ]);
@@ -138,8 +138,8 @@ const AgentTool = memo<AgentToolProps>(
     // Load user's Klavis integrations via SWR (from database)
     useFetchUserKlavisServers(isKlavisEnabledInEnv);
 
-    // Load user's LobeHub Skill connections via SWR
-    useFetchLobehubSkillConnections(isLobehubSkillEnabled);
+    // Load user's Fi Skill connections via SWR
+    useFetchFiSkillConnections(isFiSkillEnabled);
 
     // Toggle web browsing via searchMode - use byId action
     const toggleWebBrowsing = useCallback(async () => {
@@ -225,13 +225,13 @@ const AgentTool = memo<AgentToolProps>(
     // Filter out Klavis tools and skills from builtinList (they are displayed separately)
     // Optionally filter out tools with availableInWeb: false based on config (e.g., LocalSystem is desktop-only)
     const filteredBuiltinList = useMemo(() => {
-      // Cast to LobeToolMetaWithAvailability for type safety when filterAvailableInWeb is used
+      // Cast to FiToolMetaWithAvailability for type safety when filterAvailableInWeb is used
       type ListType = typeof builtinList;
       let list: ListType = builtinList;
 
       // Filter by availableInWeb if requested (only makes sense when using allMetaList)
       if (filterAvailableInWeb && useAllMetaList) {
-        list = (list as LobeToolMetaWithAvailability[]).filter(
+        list = (list as FiToolMetaWithAvailability[]).filter(
           (item) => item.availableInWeb,
         ) as ListType;
       }
@@ -286,13 +286,13 @@ const AgentTool = memo<AgentToolProps>(
       [isKlavisEnabledInEnv, allKlavisServers, effectiveAgentId, t],
     );
 
-    // LobeHub Skill Provider list items
-    const lobehubSkillItems = useMemo(
+    // Fi Skill Provider list items
+    const fiSkillItems = useMemo(
       () =>
-        isLobehubSkillEnabled
+        isFiSkillEnabled
           ? LOBEHUB_SKILL_PROVIDERS.map((provider) => ({
               icon: (
-                <LobehubSkillIcon
+                <FiSkillIcon
                   icon={provider.icon}
                   label={provider.label}
                   size={SKILL_ICON_SIZE}
@@ -300,7 +300,7 @@ const AgentTool = memo<AgentToolProps>(
               ),
               key: provider.id, // Use provider.id as key, consistent with pluginId
               label: (
-                <LobehubSkillServerItem
+                <FiSkillServerItem
                   agentId={effectiveAgentId}
                   label={provider.label}
                   provider={provider.id}
@@ -308,18 +308,18 @@ const AgentTool = memo<AgentToolProps>(
               ),
               popoverContent: (
                 <ToolItemDetailPopover
-                  icon={<LobehubSkillIcon icon={provider.icon} label={provider.label} size={36} />}
+                  icon={<FiSkillIcon icon={provider.icon} label={provider.label} size={36} />}
                   identifier={provider.id}
                   sourceLabel={provider.author}
                   title={provider.label}
-                  description={t(`tools.lobehubSkill.providers.${provider.id}.description` as any, {
+                  description={t(`tools.fiSkill.providers.${provider.id}.description` as any, {
                     defaultValue: provider.description,
                   })}
                 />
               ),
             }))
           : [],
-      [isLobehubSkillEnabled, allLobehubSkillServers, effectiveAgentId, t],
+      [isFiSkillEnabled, allFiSkillServers, effectiveAgentId, t],
     );
 
     // Handle plugin remove via Tag close - use byId actions
@@ -339,7 +339,7 @@ const AgentTool = memo<AgentToolProps>(
         }
       };
 
-    // Builtin Agent Skills list items (grouped under LobeHub)
+    // Builtin Agent Skills list items (grouped under Fi)
     const builtinAgentSkillItems = useMemo(
       () =>
         installedBuiltinSkills.map((skill) => ({
@@ -455,7 +455,7 @@ const AgentTool = memo<AgentToolProps>(
       [userAgentSkills, isToolEnabled, handleToggleTool, t],
     );
 
-    // Merge Builtin Agent Skills, builtin tools, LobeHub Skill Providers, and Klavis servers
+    // Merge Builtin Agent Skills, builtin tools, Fi Skill Providers, and Klavis servers
     const builtinItems = useMemo(
       () => [
         // 1. Builtin Agent Skills
@@ -502,8 +502,8 @@ const AgentTool = memo<AgentToolProps>(
             />
           ),
         })),
-        // 3. LobeHub Skill Providers
-        ...lobehubSkillItems,
+        // 3. Fi Skill Providers
+        ...fiSkillItems,
         // 4. Klavis servers
         ...klavisServerItems,
       ],
@@ -511,7 +511,7 @@ const AgentTool = memo<AgentToolProps>(
         builtinAgentSkillItems,
         filteredBuiltinList,
         klavisServerItems,
-        lobehubSkillItems,
+        fiSkillItems,
         isToolEnabled,
         handleToggleTool,
         t,
@@ -598,7 +598,7 @@ const AgentTool = memo<AgentToolProps>(
     // All tab items (marketplace tab)
     const allTabItems: ItemType[] = useMemo(
       () => [
-        // LobeHub group
+        // Fi group
         ...(builtinItems.length > 0
           ? [
               {
@@ -689,8 +689,8 @@ const AgentTool = memo<AgentToolProps>(
         plugins.includes(item.key as string),
       );
 
-      // Connected LobeHub Skill Providers
-      const connectedLobehubSkillItems = lobehubSkillItems.filter((item) =>
+      // Connected Fi Skill Providers
+      const connectedFiSkillItems = fiSkillItems.filter((item) =>
         plugins.includes(item.key as string),
       );
 
@@ -737,17 +737,17 @@ const AgentTool = memo<AgentToolProps>(
           ),
         }));
 
-      // LobeHub group (Builtin Agent Skills + builtin + LobeHub Skill + Klavis)
-      const lobehubGroupItems = [
+      // Fi group (Builtin Agent Skills + builtin + Fi Skill + Klavis)
+      const fiGroupItems = [
         ...enabledBuiltinAgentSkillItems,
         ...enabledBuiltinItems,
-        ...connectedLobehubSkillItems,
+        ...connectedFiSkillItems,
         ...connectedKlavisItems,
       ];
 
-      if (lobehubGroupItems.length > 0) {
+      if (fiGroupItems.length > 0) {
         items.push({
-          children: lobehubGroupItems,
+          children: fiGroupItems,
           key: 'installed-lobehub',
           label: t('skillStore.tabs.lobehub'),
           type: 'group',
@@ -940,7 +940,7 @@ const AgentTool = memo<AgentToolProps>(
       marketAgentSkills,
       userAgentSkills,
       klavisServerItems,
-      lobehubSkillItems,
+      fiSkillItems,
       communityPlugins,
       customPlugins,
       plugins,

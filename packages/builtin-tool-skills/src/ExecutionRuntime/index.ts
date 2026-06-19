@@ -1,12 +1,12 @@
-import { AGENT_SKILLS_IDENTIFIER_PREFIX } from '@lobechat/const';
-import { formatCommandResult, resourcesTreePrompt } from '@lobechat/prompts';
+import { AGENT_SKILLS_IDENTIFIER_PREFIX } from '@ficlouds/const';
+import { formatCommandResult, resourcesTreePrompt } from '@ficlouds/prompts';
 import type {
   BuiltinServerRuntimeOutput,
   BuiltinSkill,
   SkillItem,
   SkillListItem,
   SkillResourceContent,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 import type {
   ActivateSkillParams,
@@ -477,7 +477,7 @@ export class SkillsExecutionRuntime {
   }
 
   /**
-   * Format command result using the shared formatCommandResult from @lobechat/prompts.
+   * Format command result using the shared formatCommandResult from @ficlouds/prompts.
    * This ensures consistent content format across all runtimes.
    */
   private formatCommandOutput(command: string, result: CommandResult): BuiltinServerRuntimeOutput {

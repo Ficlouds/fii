@@ -1,8 +1,8 @@
 'use client';
 
-import { FilePathDisplay } from '@lobechat/shared-tool-ui/components';
-import { inspectorTextStyles, shinyTextStyles } from '@lobechat/shared-tool-ui/styles';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import { FilePathDisplay } from '@ficlouds/shared-tool-ui/components';
+import { inspectorTextStyles, shinyTextStyles } from '@ficlouds/shared-tool-ui/styles';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { Icon } from '@lobehub/ui';
 import { cssVar, cx } from 'antd-style';
 import { Check, X } from 'lucide-react';

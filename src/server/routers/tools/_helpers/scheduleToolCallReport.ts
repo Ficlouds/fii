@@ -1,4 +1,4 @@
-import { CURRENT_VERSION } from '@lobechat/const';
+import { CURRENT_VERSION } from '@ficlouds/const';
 import { type CallReportRequest } from '@lobehub/market-types';
 import { after } from 'next/server';
 

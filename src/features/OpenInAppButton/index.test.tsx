@@ -13,7 +13,7 @@ let hookReturn: {
 };
 let isDesktopValue = true;
 
-vi.mock('@lobechat/const', () => ({
+vi.mock('@ficlouds/const', () => ({
   get isDesktop() {
     return isDesktopValue;
   },

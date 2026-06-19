@@ -1,5 +1,5 @@
-import { BRANDING_NAME, ORG_NAME } from '@lobechat/business-const';
-import { OG_URL } from '@lobechat/const';
+import { BRANDING_NAME, ORG_NAME } from '@ficlouds/business-const';
+import { OG_URL } from '@ficlouds/const';
 
 import { getServerFeatureFlagsValue } from '@/config/featureFlags';
 import { OFFICIAL_URL } from '@/const/url';

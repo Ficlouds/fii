@@ -1,7 +1,7 @@
 import { and, eq, inArray } from 'drizzle-orm';
 
 import { agentsToSessions } from '@/database/schemas';
-import { type LobeChatDatabase } from '@/database/type';
+import { type FiDatabase } from '@/database/type';
 
 import { type ConversationContextInput } from '../_schema/context';
 
@@ -26,7 +26,7 @@ export interface ResolvedContext {
  */
 export const resolveContext = async (
   input: ConversationContextInput,
-  db: LobeChatDatabase,
+  db: FiDatabase,
   userId: string,
 ): Promise<ResolvedContext> => {
   let resolvedSessionId: string | null = input.sessionId ?? null;
@@ -65,7 +65,7 @@ export const resolveContext = async (
  */
 export const resolveAgentIdFromSession = async (
   sessionId: string,
-  db: LobeChatDatabase,
+  db: FiDatabase,
   userId: string,
 ): Promise<string | undefined> => {
   const [relation] = await db
@@ -89,7 +89,7 @@ export const resolveAgentIdFromSession = async (
  */
 export const batchResolveAgentIdFromSessions = async (
   sessionIds: string[],
-  db: LobeChatDatabase,
+  db: FiDatabase,
   userId: string,
 ): Promise<Map<string, string>> => {
   if (sessionIds.length === 0) return new Map();

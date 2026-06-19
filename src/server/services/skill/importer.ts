@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 import {
   type CreateSkillInput,
   type ImportGitHubInput,
@@ -8,8 +8,8 @@ import {
   type ImportZipInput,
   type SkillImportResult,
   type SkillManifest,
-} from '@lobechat/types';
-import { nanoid } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { nanoid } from '@ficlouds/utils';
 import debug from 'debug';
 
 import { AgentSkillModel } from '@/database/models/agentSkill';
@@ -30,12 +30,12 @@ export class SkillImporter {
   private github: GitHub;
   private userId: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.skillModel = new AgentSkillModel(db, userId);
     this.parser = new SkillParser();
     this.resourceService = new SkillResourceService(db, userId);
     this.fileService = new FileService(db, userId);
-    this.github = new GitHub({ userAgent: 'LobeHub-Skill-Importer' });
+    this.github = new GitHub({ userAgent: 'Fi-Skill-Importer' });
     this.userId = userId;
   }
 

@@ -1,4 +1,4 @@
-import type { LobeChatDatabase } from '@lobechat/database';
+import type { FiDatabase } from '@ficlouds/database';
 import { Md5 } from 'ts-md5';
 
 import { DocumentModel } from '@/database/models/document';
@@ -44,13 +44,13 @@ const hashContent = (content: string): string => Md5.hashStr(content);
  * fresh row every crawl while the server path was being patched to dedupe).
  */
 export class WebBrowsingDocumentService {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly userId: string;
   private readonly documentModel: DocumentModel;
   private readonly topicDocumentModel: TopicDocumentModel;
   private documentServiceInstance?: DocumentService;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
     this.documentModel = new DocumentModel(db, userId);

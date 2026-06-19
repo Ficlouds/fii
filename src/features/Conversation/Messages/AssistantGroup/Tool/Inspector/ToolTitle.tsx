@@ -1,4 +1,4 @@
-import { builtinToolIdentifiers } from '@lobechat/builtin-tools/identifiers';
+import { builtinToolIdentifiers } from '@ficlouds/builtin-tools/identifiers';
 import { Icon } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
 import isEqual from 'fast-deep-equal';

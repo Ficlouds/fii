@@ -49,22 +49,22 @@ const marketToolProcedure = authedProcedure
     });
   });
 
-// ============================== LobeHub Skill Procedures ==============================
+// ============================== Fi Skill Procedures ==============================
 /**
- * LobeHub Skill procedure with SDK and optional auth
+ * Fi Skill procedure with SDK and optional auth
  * Used for routes that may work without auth (like listing providers)
  */
-const lobehubSkillBaseProcedure = authedProcedure
+const fiSkillBaseProcedure = authedProcedure
   .use(serverDatabase)
   .use(telemetry)
   .use(marketUserInfo)
   .use(marketSDK);
 
 /**
- * LobeHub Skill procedure with required auth
+ * Fi Skill procedure with required auth
  * Used for routes that require user authentication
  */
-const lobehubSkillAuthProcedure = lobehubSkillBaseProcedure.use(requireMarketAuth);
+const fiSkillAuthProcedure = fiSkillBaseProcedure.use(requireMarketAuth);
 
 // ============================== Schema Definitions ==============================
 
@@ -388,11 +388,11 @@ export const marketRouter = router({
     .input(execInSandboxSchema)
     .mutation(({ input, ctx }) => execInSandboxHandler({ ctx, input })),
 
-  // ============================== LobeHub Skill ==============================
+  // ============================== Fi Skill ==============================
   /**
-   * Call a LobeHub Skill tool
+   * Call a Fi Skill tool
    */
-  connectCallTool: lobehubSkillAuthProcedure
+  connectCallTool: fiSkillAuthProcedure
     .input(
       z.object({
         args: z.record(z.any()).optional(),
@@ -446,7 +446,7 @@ export const marketRouter = router({
   /**
    * Get all connections health status
    */
-  connectGetAllHealth: lobehubSkillAuthProcedure.query(async ({ ctx }) => {
+  connectGetAllHealth: fiSkillAuthProcedure.query(async ({ ctx }) => {
     log('connectGetAllHealth');
 
     try {
@@ -468,7 +468,7 @@ export const marketRouter = router({
    * Get authorize URL for a provider
    * This calls the SDK's authorize method which generates a secure authorization URL
    */
-  connectGetAuthorizeUrl: lobehubSkillAuthProcedure
+  connectGetAuthorizeUrl: fiSkillAuthProcedure
     .input(
       z.object({
         provider: z.string(),
@@ -502,7 +502,7 @@ export const marketRouter = router({
   /**
    * Get connection status for a provider
    */
-  connectGetStatus: lobehubSkillAuthProcedure
+  connectGetStatus: fiSkillAuthProcedure
     .input(z.object({ provider: z.string() }))
     .query(async ({ input, ctx }) => {
       log('connectGetStatus: provider=%s', input.provider);
@@ -527,7 +527,7 @@ export const marketRouter = router({
   /**
    * List all user connections
    */
-  connectListConnections: lobehubSkillBaseProcedure.query(async ({ ctx }) => {
+  connectListConnections: fiSkillBaseProcedure.query(async ({ ctx }) => {
     log('connectListConnections');
 
     try {
@@ -550,7 +550,7 @@ export const marketRouter = router({
   /**
    * List available providers (public, no auth required)
    */
-  connectListProviders: lobehubSkillBaseProcedure.query(async ({ ctx }) => {
+  connectListProviders: fiSkillBaseProcedure.query(async ({ ctx }) => {
     log('connectListProviders');
 
     try {
@@ -570,7 +570,7 @@ export const marketRouter = router({
   /**
    * List tools for a provider
    */
-  connectListTools: lobehubSkillBaseProcedure
+  connectListTools: fiSkillBaseProcedure
     .input(z.object({ provider: z.string() }))
     .query(async ({ input, ctx }) => {
       log('connectListTools: provider=%s', input.provider);
@@ -593,7 +593,7 @@ export const marketRouter = router({
   /**
    * Refresh token for a provider
    */
-  connectRefresh: lobehubSkillAuthProcedure
+  connectRefresh: fiSkillAuthProcedure
     .input(z.object({ provider: z.string() }))
     .mutation(async ({ input, ctx }) => {
       log('connectRefresh: provider=%s', input.provider);
@@ -616,7 +616,7 @@ export const marketRouter = router({
   /**
    * Revoke connection for a provider
    */
-  connectRevoke: lobehubSkillAuthProcedure
+  connectRevoke: fiSkillAuthProcedure
     .input(z.object({ provider: z.string() }))
     .mutation(async ({ input, ctx }) => {
       log('connectRevoke: provider=%s', input.provider);

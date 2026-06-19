@@ -1,5 +1,5 @@
-import { executeMockStream, type MockCase } from '@lobechat/agent-mock';
-import type { ConversationContext } from '@lobechat/types';
+import { executeMockStream, type MockCase } from '@ficlouds/agent-mock';
+import type { ConversationContext } from '@ficlouds/types';
 import { useCallback } from 'react';
 
 import { topicSelectors } from '@/store/chat/selectors';

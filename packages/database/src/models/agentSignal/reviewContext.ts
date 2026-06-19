@@ -1,4 +1,4 @@
-import { INBOX_SESSION_ID } from '@lobechat/const';
+import { INBOX_SESSION_ID } from '@ficlouds/const';
 import { and, count, desc, eq, gte, isNull, lte, or, sql } from 'drizzle-orm';
 
 import {
@@ -10,7 +10,7 @@ import {
   topics,
   userMemories,
 } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 
 const parseAggregateTimestamp = (value: Date | string) =>
   value instanceof Date ? value : new Date(value);
@@ -97,10 +97,10 @@ export interface AgentSignalDocumentActivityRow {
 
 /** Database-backed context queries for Agent Signal self-review policies. */
 export class AgentSignalReviewContextModel {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly userId: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

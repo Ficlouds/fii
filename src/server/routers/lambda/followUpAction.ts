@@ -1,4 +1,4 @@
-import { FollowUpExtractInputSchema } from '@lobechat/types';
+import { FollowUpExtractInputSchema } from '@ficlouds/types';
 
 import { authedProcedure, router } from '@/libs/trpc/lambda';
 import { serverDatabase } from '@/libs/trpc/lambda/middleware';

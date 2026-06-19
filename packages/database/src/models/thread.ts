@@ -1,10 +1,10 @@
-import type { CreateThreadParams } from '@lobechat/types';
-import { ThreadStatus } from '@lobechat/types';
+import type { CreateThreadParams } from '@ficlouds/types';
+import { ThreadStatus } from '@ficlouds/types';
 import { and, desc, eq } from 'drizzle-orm';
 
 import type { ThreadItem } from '../schemas';
 import { threads } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 const queryColumns = {
   agentId: threads.agentId,
@@ -23,9 +23,9 @@ const queryColumns = {
 
 export class ThreadModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

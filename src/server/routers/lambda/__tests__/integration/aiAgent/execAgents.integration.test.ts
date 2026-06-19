@@ -5,9 +5,9 @@
  * Note: AgentStateManager and StreamEventManager will automatically use
  * InMemory implementations when Redis is not available (test environment).
  */
-import { type LobeChatDatabase } from '@lobechat/database';
-import { agents, topics } from '@lobechat/database/schemas';
-import { getTestDB } from '@lobechat/database/test-utils';
+import { type FiDatabase } from '@ficlouds/database';
+import { agents, topics } from '@ficlouds/database/schemas';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { eq } from 'drizzle-orm';
 import OpenAI from 'openai';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -23,7 +23,7 @@ import { createMockResponsesAPIStream } from './helpers';
 process.env.OPENAI_API_KEY = 'sk-test-fake-api-key-for-testing';
 
 // Mock getServerDB to return our test database instance
-let testDB: LobeChatDatabase;
+let testDB: FiDatabase;
 vi.mock('@/database/core/db-adaptor', () => ({
   getServerDB: vi.fn(() => testDB),
 }));
@@ -37,7 +37,7 @@ vi.mock('@/server/services/file', () => ({
 
 let mockResponsesCreate: any;
 
-let serverDB: LobeChatDatabase;
+let serverDB: FiDatabase;
 let userId: string;
 let testAgentId: string;
 let testAgent2Id: string;

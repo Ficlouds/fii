@@ -1,4 +1,4 @@
-import { AGENT_SKILLS_IDENTIFIER_PREFIX } from '@lobechat/const';
+import { AGENT_SKILLS_IDENTIFIER_PREFIX } from '@ficlouds/const';
 import {
   type getKernelFromEditor,
   ILitexmlService,

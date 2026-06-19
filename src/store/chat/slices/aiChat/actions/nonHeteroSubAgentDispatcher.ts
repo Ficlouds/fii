@@ -2,7 +2,7 @@ import type {
   ConversationContext,
   HeterogeneousProviderConfig,
   UIChatMessage,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 import type { ChatStore } from '@/store/chat/store';
 

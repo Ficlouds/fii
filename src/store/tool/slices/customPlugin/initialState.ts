@@ -1,10 +1,10 @@
-import { type LobeToolCustomPlugin } from '@/types/tool/plugin';
+import { type FiToolCustomPlugin } from '@/types/tool/plugin';
 
 export interface CustomPluginState {
   customPluginSearchKeywords?: string;
-  newCustomPlugin: Partial<LobeToolCustomPlugin>;
+  newCustomPlugin: Partial<FiToolCustomPlugin>;
 }
-export const defaultCustomPlugin: Partial<LobeToolCustomPlugin> = {
+export const defaultCustomPlugin: Partial<FiToolCustomPlugin> = {
   customParams: {
     apiMode: 'simple',
     enableSettings: false,

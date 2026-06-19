@@ -1,6 +1,6 @@
 /* eslint-disable unused-imports/no-unused-vars */
-import type { ReferralStatusString } from '@lobechat/types';
-import { Plans } from '@lobechat/types';
+import type { ReferralStatusString } from '@ficlouds/types';
+import { Plans } from '@ficlouds/types';
 
 export interface OnUserActivityForBusinessParams {
   currentTime: Date;

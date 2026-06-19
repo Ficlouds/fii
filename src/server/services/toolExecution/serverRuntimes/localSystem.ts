@@ -1,4 +1,4 @@
-import { LocalSystemIdentifier, LocalSystemManifest } from '@lobechat/builtin-tool-local-system';
+import { LocalSystemIdentifier, LocalSystemManifest } from '@ficlouds/builtin-tool-local-system';
 
 import { deviceProxy } from '../deviceProxy';
 import { type ServerRuntimeRegistration } from './types';

@@ -2,7 +2,7 @@ import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { pluginService } from '@/services/plugin';
-import { type LobeToolCustomPlugin } from '@/types/tool/plugin';
+import { type FiToolCustomPlugin } from '@/types/tool/plugin';
 
 import { useToolStore } from '../../store';
 import { defaultCustomPlugin } from './initialState';
@@ -28,7 +28,7 @@ describe('useToolStore:customPlugin', () => {
       act(() => {
         useToolStore.setState({
           // ...其他状态
-          installedPlugins: [{ identifier: 'test-plugin' } as LobeToolCustomPlugin],
+          installedPlugins: [{ identifier: 'test-plugin' } as FiToolCustomPlugin],
         });
       });
 
@@ -51,7 +51,7 @@ describe('useToolStore:customPlugin', () => {
           identifier: 'plugin2',
           meta: { title: 'New Plugin' },
         },
-      } as LobeToolCustomPlugin;
+      } as FiToolCustomPlugin;
       act(() => {
         useToolStore.setState({
           installedPlugins: [],
@@ -79,7 +79,7 @@ describe('useToolStore:customPlugin', () => {
           identifier: pluginId,
           meta: { title: 'Old Plugin', avatar: '🍎' },
         },
-      } as LobeToolCustomPlugin;
+      } as FiToolCustomPlugin;
 
       act(() => {
         useToolStore.setState({
@@ -96,7 +96,7 @@ describe('useToolStore:customPlugin', () => {
           meta: { title: 'Updated Plugin', avatar: '🥒' },
         },
         identifier: pluginId,
-      } as LobeToolCustomPlugin;
+      } as FiToolCustomPlugin;
 
       await act(async () => {
         await result.current.updateCustomPlugin(pluginId, updatedPlugin);
@@ -114,8 +114,8 @@ describe('useToolStore:customPlugin', () => {
           identifier: 'plugin3',
           meta: { title: 'Initial Plugin' },
         },
-      } as LobeToolCustomPlugin;
-      const updates = { meta: { title: 'Updated Name' } } as Partial<LobeToolCustomPlugin>;
+      } as FiToolCustomPlugin;
+      const updates = { meta: { title: 'Updated Name' } } as Partial<FiToolCustomPlugin>;
       const expectedNewCustomPlugin = { ...initialNewCustomPlugin, ...updates };
 
       act(() => {

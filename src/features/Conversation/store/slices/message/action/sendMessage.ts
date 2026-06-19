@@ -1,4 +1,4 @@
-import { type SendMessageParams } from '@lobechat/types';
+import { type SendMessageParams } from '@ficlouds/types';
 
 import { useChatStore } from '@/store/chat';
 

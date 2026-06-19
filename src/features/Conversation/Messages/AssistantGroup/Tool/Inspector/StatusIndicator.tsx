@@ -1,4 +1,4 @@
-import { type ToolIntervention } from '@lobechat/types';
+import { type ToolIntervention } from '@ficlouds/types';
 import { Block, Icon, Tooltip } from '@lobehub/ui';
 import { cssVar } from 'antd-style';
 import { AlertTriangle, Ban, Check, HandIcon, PauseIcon, X } from 'lucide-react';

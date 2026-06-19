@@ -248,13 +248,13 @@ describe('MarketService', () => {
     });
   });
 
-  describe('executeLobehubSkill', () => {
+  describe('executeFiSkill', () => {
     it('should return success result with string content', async () => {
       const service = new MarketService();
       const mockCallTool = vi.fn().mockResolvedValue({ data: 'tool result', success: true });
       (service as any).market.skills.callTool = mockCallTool;
 
-      const result = await service.executeLobehubSkill({
+      const result = await service.executeFiSkill({
         args: { query: 'test' },
         provider: 'my-provider',
         toolName: 'search',
@@ -273,7 +273,7 @@ describe('MarketService', () => {
       const mockCallTool = vi.fn().mockResolvedValue({ data: responseData, success: true });
       (service as any).market.skills.callTool = mockCallTool;
 
-      const result = await service.executeLobehubSkill({
+      const result = await service.executeFiSkill({
         args: {},
         provider: 'provider',
         toolName: 'listItems',
@@ -288,7 +288,7 @@ describe('MarketService', () => {
       const mockCallTool = vi.fn().mockRejectedValue(new Error('Network error'));
       (service as any).market.skills.callTool = mockCallTool;
 
-      const result = await service.executeLobehubSkill({
+      const result = await service.executeFiSkill({
         args: {},
         provider: 'provider',
         toolName: 'failTool',
@@ -302,14 +302,14 @@ describe('MarketService', () => {
     });
   });
 
-  describe('getLobehubSkillManifests', () => {
+  describe('getFiSkillManifests', () => {
     it('should return empty array when no connections', async () => {
       const service = new MarketService();
       (service as any).market.connect.listConnections = vi
         .fn()
         .mockResolvedValue({ connections: [] });
 
-      const result = await service.getLobehubSkillManifests();
+      const result = await service.getFiSkillManifests();
       expect(result).toEqual([]);
     });
 
@@ -319,7 +319,7 @@ describe('MarketService', () => {
         .fn()
         .mockResolvedValue({ connections: null });
 
-      const result = await service.getLobehubSkillManifests();
+      const result = await service.getFiSkillManifests();
       expect(result).toEqual([]);
     });
 
@@ -356,7 +356,7 @@ describe('MarketService', () => {
           });
         });
 
-      const manifests = await service.getLobehubSkillManifests();
+      const manifests = await service.getFiSkillManifests();
 
       expect(manifests).toHaveLength(2);
       expect(manifests[0]).toEqual({
@@ -370,7 +370,7 @@ describe('MarketService', () => {
         identifier: 'twitter',
         meta: {
           avatar: '🐦',
-          description: 'LobeHub Skill: X (Twitter)',
+          description: 'Fi Skill: X (Twitter)',
           tags: ['lobehub-skill', 'twitter'],
           title: 'X (Twitter)',
         },
@@ -390,7 +390,7 @@ describe('MarketService', () => {
         tools: [{ description: 'Create', inputSchema: {}, name: 'create' }],
       });
 
-      const manifests = await service.getLobehubSkillManifests();
+      const manifests = await service.getFiSkillManifests();
       expect(manifests).toHaveLength(1);
       expect(manifests[0].identifier).toBe('linear');
     });
@@ -406,10 +406,10 @@ describe('MarketService', () => {
         tools: [{ description: 'Search workspace', inputSchema: {}, name: 'notion-search' }],
       });
 
-      const manifests = await service.getLobehubSkillManifests();
+      const manifests = await service.getFiSkillManifests();
       expect(manifests).toHaveLength(1);
       expect(manifests[0].meta).toMatchObject({
-        description: 'LobeHub Skill: Notion',
+        description: 'Fi Skill: Notion',
         title: 'Notion',
       });
     });
@@ -421,7 +421,7 @@ describe('MarketService', () => {
       });
       (service as any).market.skills.listTools = vi.fn().mockResolvedValue({ tools: [] });
 
-      const manifests = await service.getLobehubSkillManifests();
+      const manifests = await service.getFiSkillManifests();
       expect(manifests).toEqual([]);
     });
 
@@ -434,7 +434,7 @@ describe('MarketService', () => {
         tools: [{ description: 'Do', inputSchema: {}, name: 'doThing' }],
       });
 
-      const manifests = await service.getLobehubSkillManifests();
+      const manifests = await service.getFiSkillManifests();
       expect(manifests[0].meta.avatar).toBe('🔗');
     });
 
@@ -444,7 +444,7 @@ describe('MarketService', () => {
         .fn()
         .mockRejectedValue(new Error('Network error'));
 
-      const manifests = await service.getLobehubSkillManifests();
+      const manifests = await service.getFiSkillManifests();
       expect(manifests).toEqual([]);
     });
 
@@ -463,7 +463,7 @@ describe('MarketService', () => {
         });
       });
 
-      const manifests = await service.getLobehubSkillManifests();
+      const manifests = await service.getFiSkillManifests();
       expect(manifests).toHaveLength(1);
       expect(manifests[0].identifier).toBe('working');
     });

@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { type MenuProps } from '@lobehub/ui';
 import { ActionIcon, DropdownMenu, Flexbox, Text } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';

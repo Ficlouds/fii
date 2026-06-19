@@ -1,4 +1,4 @@
-import type { ImporterEntryData } from '@lobechat/types';
+import type { ImporterEntryData } from '@ficlouds/types';
 import { and, eq, inArray, sql } from 'drizzle-orm';
 
 import { sanitizeUTF8 } from '@/utils/sanitizeUTF8';
@@ -13,7 +13,7 @@ import {
   sessions,
   topics,
 } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 
 interface ImportResult {
   added: number;
@@ -24,14 +24,14 @@ interface ImportResult {
 
 export class DeprecatedDataImporterRepos {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
   /**
    * The version of the importer that this module supports
    */
   supportVersion = 7;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

@@ -1,4 +1,4 @@
-import type { MessageContentPart } from '@lobechat/types';
+import type { MessageContentPart } from '@ficlouds/types';
 import { describe, expect, it } from 'vitest';
 
 import { deserializeParts, serializePartsForStorage } from './multimodalContent';

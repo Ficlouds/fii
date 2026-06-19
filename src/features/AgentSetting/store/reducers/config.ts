@@ -2,15 +2,15 @@ import { produce } from 'immer';
 import type { PartialDeep } from 'type-fest';
 
 import { DEFAULT_AGENT_CONFIG } from '@/const/settings';
-import type { LobeAgentConfig } from '@/types/agent';
+import type { FiAgentConfig } from '@/types/agent';
 import { merge } from '@/utils/merge';
 
 export type ConfigDispatch =
-  | { config: PartialDeep<LobeAgentConfig>; type: 'update' }
+  | { config: PartialDeep<FiAgentConfig>; type: 'update' }
   | { pluginId: string; state?: boolean; type: 'togglePlugin' }
   | { type: 'reset' };
 
-export const configReducer = (state: LobeAgentConfig, payload: ConfigDispatch): LobeAgentConfig => {
+export const configReducer = (state: FiAgentConfig, payload: ConfigDispatch): FiAgentConfig => {
   switch (payload.type) {
     case 'update': {
       return produce(state, (draftState) => {

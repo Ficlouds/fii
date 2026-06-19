@@ -1,5 +1,5 @@
-import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
-import { BUILTIN_AGENT_SLUGS } from '@lobechat/builtin-agents';
+import { AGENT_SIGNAL_SOURCE_TYPES } from '@ficlouds/agent-signal/source';
+import { BUILTIN_AGENT_SLUGS } from '@ficlouds/builtin-agents';
 
 import { defineAgentSignalHandlers, defineSourceHandler } from '../runtime/middleware';
 

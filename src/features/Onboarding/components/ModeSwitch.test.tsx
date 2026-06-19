@@ -12,7 +12,7 @@ const mockConfig = vi.hoisted(() => ({
   serverConfigInit: true,
 }));
 
-vi.mock('@lobechat/business-const', () => ({
+vi.mock('@ficlouds/business-const', () => ({
   get AGENT_ONBOARDING_ENABLED() {
     return mockConfig.AGENT_ONBOARDING_ENABLED;
   },
@@ -41,7 +41,7 @@ interface RenderModeSwitchOptions {
   showLabel?: boolean;
 }
 
-vi.mock('@lobechat/const', () => ({
+vi.mock('@ficlouds/const', () => ({
   get isDesktop() {
     return mockConfig.desktop;
   },

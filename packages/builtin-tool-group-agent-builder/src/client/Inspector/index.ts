@@ -4,8 +4,8 @@ import {
   InstallPluginInspector,
   SearchMarketToolsInspector,
   UpdateConfigInspector,
-} from '@lobechat/builtin-tool-agent-builder/client';
-import type { BuiltinInspector } from '@lobechat/types';
+} from '@ficlouds/builtin-tool-agent-builder/client';
+import type { BuiltinInspector } from '@ficlouds/types';
 
 import { GroupAgentBuilderApiName } from '../../types';
 import { BatchCreateAgentsInspector } from './BatchCreateAgents';

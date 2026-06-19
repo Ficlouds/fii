@@ -1,6 +1,6 @@
 'use client';
 
-import { BRANDING_NAME } from '@lobechat/business-const';
+import { BRANDING_NAME } from '@ficlouds/business-const';
 import { ActionIcon, Flexbox, FluentEmoji, SideNav } from '@lobehub/ui';
 import { createStaticStyles, cssVar, cx } from 'antd-style';
 import { XIcon } from 'lucide-react';

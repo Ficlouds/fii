@@ -1,4 +1,4 @@
-import type { ChatModelCard } from '@lobechat/types';
+import type { ChatModelCard } from '@ficlouds/types';
 import { ModelProvider } from 'model-bank';
 
 import type { OpenAICompatibleFactoryOptions } from '../../core/openaiCompatibleFactory';
@@ -9,7 +9,7 @@ export const params = {
   baseURL: 'https://api.together.xyz/v1',
   constructorOptions: {
     defaultHeaders: {
-      'HTTP-Referer': 'https://chat-preview.lobehub.com',
+      'HTTP-Referer': 'https://chat-preview.ficlouds.com',
       'X-Title': 'Lobe Chat',
     },
   },

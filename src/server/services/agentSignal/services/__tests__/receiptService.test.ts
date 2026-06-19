@@ -1,7 +1,7 @@
 // @vitest-environment node
-import type { BaseAction, ExecutorResult } from '@lobechat/agent-signal';
-import { createSource } from '@lobechat/agent-signal';
-import { LayersEnum } from '@lobechat/types';
+import type { BaseAction, ExecutorResult } from '@ficlouds/agent-signal';
+import { createSource } from '@ficlouds/agent-signal';
+import { LayersEnum } from '@ficlouds/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import { AGENT_SIGNAL_POLICY_ACTION_TYPES } from '../../policies/types';

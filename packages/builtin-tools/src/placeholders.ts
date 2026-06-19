@@ -3,12 +3,12 @@ import {
   LocalSystemIdentifier,
   LocalSystemListFilesPlaceholder,
   LocalSystemSearchFilesPlaceholder,
-} from '@lobechat/builtin-tool-local-system/client';
+} from '@ficlouds/builtin-tool-local-system/client';
 import {
   WebBrowsingManifest,
   WebBrowsingPlaceholders,
-} from '@lobechat/builtin-tool-web-browsing/client';
-import { type BuiltinPlaceholder } from '@lobechat/types';
+} from '@ficlouds/builtin-tool-web-browsing/client';
+import { type BuiltinPlaceholder } from '@ficlouds/types';
 
 /**
  * Builtin tools placeholders registry

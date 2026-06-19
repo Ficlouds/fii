@@ -1,6 +1,6 @@
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
-import { tracer } from '@lobechat/observability-otel/modules/agent-signal';
-import { isRecord } from '@lobechat/utils';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
+import { tracer } from '@ficlouds/observability-otel/modules/agent-signal';
+import { isRecord } from '@ficlouds/utils';
 import type { Context } from 'hono';
 
 import { getServerDB } from '@/database/server';

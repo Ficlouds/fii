@@ -1,12 +1,12 @@
 // @vitest-environment node
-import { BUILTIN_AGENT_SLUGS } from '@lobechat/builtin-agents';
+import { BUILTIN_AGENT_SLUGS } from '@ficlouds/builtin-agents';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { getTestDB } from '../../core/getTestDB';
 import { agents } from '../../schemas/agent';
 import { chatGroups, chatGroupsAgents } from '../../schemas/chatGroup';
 import { users } from '../../schemas/user';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { AgentGroupRepository } from './index';
 
 const userId = 'agent-group-test-user';
@@ -14,7 +14,7 @@ const otherUserId = 'other-agent-group-user';
 
 let agentGroupRepo: AgentGroupRepository;
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 beforeEach(async () => {
   // Clean up

@@ -1,6 +1,6 @@
 'use client';
 
-import type { FileSearchResult } from '@lobechat/types';
+import type { FileSearchResult } from '@ficlouds/types';
 import { Center, Flexbox, MaterialFileTypeIcon, Text, Tooltip } from '@lobehub/ui';
 import { cx } from 'antd-style';
 import { useTheme } from 'next-themes';

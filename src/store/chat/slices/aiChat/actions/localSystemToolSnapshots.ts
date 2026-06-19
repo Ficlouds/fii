@@ -1,7 +1,7 @@
-import { LocalSystemApiName, LocalSystemIdentifier } from '@lobechat/builtin-tool-local-system';
-import type { ListLocalFilesResult, LocalReadFileResult } from '@lobechat/electron-client-ipc';
-import { formatFileContent, formatFileList } from '@lobechat/prompts';
-import type { LocalSystemToolSnapshot } from '@lobechat/types';
+import { LocalSystemApiName, LocalSystemIdentifier } from '@ficlouds/builtin-tool-local-system';
+import type { ListLocalFilesResult, LocalReadFileResult } from '@ficlouds/electron-client-ipc';
+import { formatFileContent, formatFileList } from '@ficlouds/prompts';
+import type { LocalSystemToolSnapshot } from '@ficlouds/types';
 import { nanoid } from 'nanoid';
 
 import { localFileService } from '@/services/electron/localFileService';

@@ -1,9 +1,9 @@
-import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
-import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@lobechat/const';
+import { AGENT_SIGNAL_SOURCE_TYPES } from '@ficlouds/agent-signal/source';
+import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@ficlouds/const';
 
 import { AgentSignalReviewContextModel } from '@/database/models/agentSignal/reviewContext';
 import { BriefModel } from '@/database/models/brief';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 import { AGENT_SIGNAL_DEFAULTS } from '@/server/services/agentSignal/constants';
 import { runMemoryActionAgent } from '@/server/services/agentSignal/policies/analyzeIntent/actions/userMemory';
@@ -253,7 +253,7 @@ const createReflectionRuntimeTools = ({
   agentId: string;
   briefModel: BriefModel;
   context: SelfReflectionReviewContext;
-  db: LobeChatDatabase;
+  db: FiDatabase;
   skillDocumentService: SkillManagementDocumentService;
   sourceId: string;
   userId: string;
@@ -477,7 +477,7 @@ export class SelfReflectionServerRuntimeFactory implements SelfReflectionRuntime
     private readonly input: {
       agentId: string;
       briefModel: BriefModel;
-      db: LobeChatDatabase;
+      db: FiDatabase;
       skillDocumentService: SkillManagementDocumentService;
       userId: string;
     },

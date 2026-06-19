@@ -5,7 +5,7 @@ import { message } from '@/components/AntdStaticMethods';
 import { chatGroupService } from '@/services/chatGroup';
 import { sessionService } from '@/services/session';
 import { useSessionStore } from '@/store/session';
-import { LobeSessionType } from '@/types/session';
+import { FiSessionType } from '@/types/session';
 
 import { sessionSelectors } from './selectors';
 
@@ -81,7 +81,7 @@ describe('SessionAction', () => {
       });
 
       const call = vi.mocked(sessionService.createSession).mock.calls[0];
-      expect(call[0]).toEqual(LobeSessionType.Agent);
+      expect(call[0]).toEqual(FiSessionType.Agent);
       expect(call[1]).toMatchObject({ config: { chatConfig: { enableHistoryCount: true } } });
 
       expect(createdSessionId).toBe(newSessionId);
@@ -102,7 +102,7 @@ describe('SessionAction', () => {
       });
 
       const call = vi.mocked(sessionService.createSession).mock.calls[0];
-      expect(call[0]).toEqual(LobeSessionType.Agent);
+      expect(call[0]).toEqual(FiSessionType.Agent);
       expect(call[1]).toMatchObject({ config: { chatConfig: { enableHistoryCount: true } } });
 
       expect(createdSessionId).toBe(newSessionId);

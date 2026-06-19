@@ -1,6 +1,6 @@
-import { type LobeToolManifest } from '@lobechat/context-engine';
-import { type LobeChatDatabase } from '@lobechat/database';
-import { type ChatToolPayload, type ClientSecretPayload } from '@lobechat/types';
+import { type FiToolManifest } from '@ficlouds/context-engine';
+import { type FiDatabase } from '@ficlouds/database';
+import { type ChatToolPayload, type ClientSecretPayload } from '@ficlouds/types';
 
 export interface ToolExecutionMemoryEmbeddingRuntime {
   /** Embedding model id used by the memory search runtime. */
@@ -42,8 +42,8 @@ export interface ToolExecutionContext {
   projectSkills?: { location: string; name: string }[];
   /** Conversation scope captured when the operation was created */
   scope?: string | null;
-  /** Server database for LobeHub Skills execution */
-  serverDB?: LobeChatDatabase;
+  /** Server database for Fi Skills execution */
+  serverDB?: FiDatabase;
   /** Skip low-level result truncation so the AgentRuntime boundary can archive full content first. */
   skipResultTruncation?: boolean;
   /** Task ID when executing within the Task system */
@@ -52,7 +52,7 @@ export interface ToolExecutionContext {
   threadId?: string | null;
   /** Stable LLM tool call ID for structured tool outcome identity. */
   toolCallId?: string;
-  toolManifestMap: Record<string, LobeToolManifest>;
+  toolManifestMap: Record<string, FiToolManifest>;
   /**
    * Maximum length for tool execution result content (in characters)
    * @default 6000

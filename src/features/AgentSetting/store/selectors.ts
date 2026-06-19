@@ -4,12 +4,12 @@ import {
   DEFAULT_AGENT_CONFIG,
   DEFAUTT_AGENT_TTS_CONFIG,
 } from '@/const/settings';
-import { type LobeAgentChatConfig } from '@/types/agent';
+import { type FiAgentChatConfig } from '@/types/agent';
 import { merge } from '@/utils/merge';
 
 import { type Store } from './action';
 
-const chatConfig = (s: Store): LobeAgentChatConfig =>
+const chatConfig = (s: Store): FiAgentChatConfig =>
   s.config.chatConfig || DEFAULT_AGENT_CHAT_CONFIG;
 
 const currentAgentConfig = (s: Store) => merge(DEFAULT_AGENT_CONFIG, s.config);

@@ -1,4 +1,4 @@
-import type { GitBranchListItem } from '@lobechat/electron-client-ipc';
+import type { GitBranchListItem } from '@ficlouds/electron-client-ipc';
 import { Button, Icon, Input } from '@lobehub/ui';
 import {
   DropdownMenuItem,

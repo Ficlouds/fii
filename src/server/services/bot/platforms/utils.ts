@@ -1,4 +1,4 @@
-import { merge } from '@lobechat/utils';
+import { merge } from '@ficlouds/utils';
 
 import type {
   BotProviderConfig,

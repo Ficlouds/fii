@@ -1,10 +1,10 @@
-import { LobeActivatorIdentifier } from '@lobechat/builtin-tool-activator';
-import { SkillsIdentifier } from '@lobechat/builtin-tool-skills';
+import { LobeActivatorIdentifier } from '@ficlouds/builtin-tool-activator';
+import { SkillsIdentifier } from '@ficlouds/builtin-tool-skills';
 import {
   type StepActivatedSkill,
   type StepContextTodos,
   type UIChatMessage,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 import { chatHelpers } from '../../../helpers';
 import { type ChatStoreState } from '../../../initialState';

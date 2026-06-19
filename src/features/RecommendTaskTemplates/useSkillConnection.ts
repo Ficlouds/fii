@@ -1,13 +1,13 @@
-import type { TaskTemplateSkillRequirement } from '@lobechat/const';
-import { KLAVIS_SERVER_TYPES } from '@lobechat/const';
+import type { TaskTemplateSkillRequirement } from '@ficlouds/const';
+import { KLAVIS_SERVER_TYPES } from '@ficlouds/const';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { LOBEHUB_SKILL_AUTH_SUCCESS_MESSAGE } from '@/const/skillConnection';
 import { useToolStore } from '@/store/tool';
 import { klavisStoreSelectors } from '@/store/tool/slices/klavisStore/selectors';
 import { KlavisServerStatus } from '@/store/tool/slices/klavisStore/types';
-import { lobehubSkillStoreSelectors } from '@/store/tool/slices/lobehubSkillStore/selectors';
-import { LobehubSkillStatus } from '@/store/tool/slices/lobehubSkillStore/types';
+import { fiSkillStoreSelectors } from '@/store/tool/slices/fiSkillStore/selectors';
+import { FiSkillStatus } from '@/store/tool/slices/fiSkillStore/types';
 import { useUserStore } from '@/store/user';
 
 import type { SkillProviderMeta } from './providerMeta';
@@ -50,29 +50,29 @@ export interface UseSkillConnectionResult {
  * (e.g. hiding already-connected providers from the inline auth list).
  */
 export const useIsSkillConnected = () => {
-  const lobehubServers = useToolStore(lobehubSkillStoreSelectors.getServers);
+  const fiServers = useToolStore(fiSkillStoreSelectors.getServers);
   const klavisServers = useToolStore(klavisStoreSelectors.getServers);
 
   return useCallback(
     (spec: TaskTemplateSkillRequirement): boolean => {
       if (spec.source === 'lobehub') {
-        return lobehubServers.some(
-          (s) => s.identifier === spec.provider && s.status === LobehubSkillStatus.CONNECTED,
+        return fiServers.some(
+          (s) => s.identifier === spec.provider && s.status === FiSkillStatus.CONNECTED,
         );
       }
       return klavisServers.some(
         (s) => s.identifier === spec.provider && s.status === KlavisServerStatus.CONNECTED,
       );
     },
-    [lobehubServers, klavisServers],
+    [fiServers, klavisServers],
   );
 };
 
 export const useSkillConnection = (
   specs: TaskTemplateSkillRequirement[] | undefined,
 ): UseSkillConnectionResult => {
-  const getLobehubAuth = useToolStore((s) => s.getLobehubSkillAuthorizeUrl);
-  const checkLobehubStatus = useToolStore((s) => s.checkLobehubSkillStatus);
+  const getFiAuth = useToolStore((s) => s.getFiSkillAuthorizeUrl);
+  const checkFiStatus = useToolStore((s) => s.checkFiSkillStatus);
   const createKlavisServer = useToolStore((s) => s.createKlavisServer);
   const refreshKlavisServerTools = useToolStore((s) => s.refreshKlavisServerTools);
 
@@ -132,7 +132,7 @@ export const useSkillConnection = (
       pollIntervalRef.current = setInterval(async () => {
         try {
           if (target.source === 'lobehub') {
-            await checkLobehubStatus(target.provider);
+            await checkFiStatus(target.provider);
           } else {
             await refreshKlavisServerTools(target.provider);
           }
@@ -149,7 +149,7 @@ export const useSkillConnection = (
         setIsWaitingAuth(false);
       }, POLL_TIMEOUT_MS);
     },
-    [checkLobehubStatus, refreshKlavisServerTools],
+    [checkFiStatus, refreshKlavisServerTools],
   );
 
   const startWindowMonitor = useCallback(
@@ -175,7 +175,7 @@ export const useSkillConnection = (
           // to 15s for fallback polling to release isWaitingAuth.
           try {
             if (target.source === 'lobehub') {
-              await checkLobehubStatus(target.provider);
+              await checkFiStatus(target.provider);
             } else {
               await refreshKlavisServerTools(target.provider);
             }
@@ -203,7 +203,7 @@ export const useSkillConnection = (
         setIsWaitingAuth(false);
       }, OAUTH_OVERALL_TIMEOUT_MS);
     },
-    [checkLobehubStatus, refreshKlavisServerTools, startFallbackPolling],
+    [checkFiStatus, refreshKlavisServerTools, startFallbackPolling],
   );
 
   const openOAuthWindow = useCallback(
@@ -224,7 +224,7 @@ export const useSkillConnection = (
     [cleanup, startWindowMonitor],
   );
 
-  // Only LobeHub Skill OAuth signals completion via postMessage; Klavis relies on polling.
+  // Only Fi Skill OAuth signals completion via postMessage; Klavis relies on polling.
   useEffect(() => {
     const handler = (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
@@ -234,11 +234,11 @@ export const useSkillConnection = (
       const provider = event.data?.provider;
       if (!provider) return;
       cleanup();
-      void checkLobehubStatus(provider);
+      void checkFiStatus(provider);
     };
     window.addEventListener('message', handler);
     return () => window.removeEventListener('message', handler);
-  }, [checkLobehubStatus, cleanup]);
+  }, [checkFiStatus, cleanup]);
 
   const connect = useCallback(async () => {
     if (isConnectingRef.current || isWaitingAuth) return;
@@ -253,7 +253,7 @@ export const useSkillConnection = (
         const redirectUri = window.location.protocol.startsWith('http')
           ? `${window.location.origin}/oauth/callback/success?provider=${encodeURIComponent(next.provider)}`
           : undefined;
-        const { authorizeUrl } = await getLobehubAuth(next.provider, { redirectUri });
+        const { authorizeUrl } = await getFiAuth(next.provider, { redirectUri });
         openOAuthWindow(authorizeUrl, next);
         return;
       }
@@ -285,7 +285,7 @@ export const useSkillConnection = (
   }, [
     nextUnconnected,
     isWaitingAuth,
-    getLobehubAuth,
+    getFiAuth,
     createKlavisServer,
     refreshKlavisServerTools,
     openOAuthWindow,

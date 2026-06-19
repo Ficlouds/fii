@@ -1,13 +1,13 @@
-import type { AgentStreamEvent } from '@lobechat/agent-gateway-client';
-import { LOADING_FLAT } from '@lobechat/const';
+import type { AgentStreamEvent } from '@ficlouds/agent-gateway-client';
+import { LOADING_FLAT } from '@ficlouds/const';
 import {
   AgentRuntimeErrorType,
   type ChatMessageError,
   type ChatToolPayload,
   ThreadStatus,
   ThreadType,
-} from '@lobechat/types';
-import { createNanoId } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { createNanoId } from '@ficlouds/utils';
 import debug from 'debug';
 
 import type { MessageModel } from '@/database/models/message';

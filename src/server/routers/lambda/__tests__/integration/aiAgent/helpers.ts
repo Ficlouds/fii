@@ -1,7 +1,7 @@
 /**
  * Shared helpers for aiAgent integration tests
  */
-import { type AgentState } from '@lobechat/agent-runtime';
+import { type AgentState } from '@ficlouds/agent-runtime';
 import { vi } from 'vitest';
 
 import { type IAgentStateManager } from '@/server/modules/AgentRuntime/types';

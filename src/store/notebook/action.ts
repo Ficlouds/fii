@@ -1,6 +1,6 @@
-import { type DocumentType } from '@lobechat/builtin-tool-notebook';
-import { type DocumentItem } from '@lobechat/database/schemas';
-import { type NotebookDocument } from '@lobechat/types';
+import { type DocumentType } from '@ficlouds/builtin-tool-notebook';
+import { type DocumentItem } from '@ficlouds/database/schemas';
+import { type NotebookDocument } from '@ficlouds/types';
 import isEqual from 'fast-deep-equal';
 import { type SWRResponse } from 'swr';
 

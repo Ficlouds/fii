@@ -171,7 +171,7 @@ vi.mock('node:os', () => ({
   default: { hostname: vi.fn(() => 'mock-hostname') },
 }));
 
-vi.mock('@lobechat/device-gateway-client', () => ({
+vi.mock('@ficlouds/device-gateway-client', () => ({
   GatewayClient: MockGatewayClient,
 }));
 
@@ -301,7 +301,7 @@ describe('GatewayConnectionCtr', () => {
       expect(options).not.toBeNull();
       expect(options.token).toBe('mock-access-token');
       expect(options.deviceId).toBe('stored-device-id');
-      expect(options.gatewayUrl).toBe('https://device-gateway.lobehub.com');
+      expect(options.gatewayUrl).toBe('https://device-gateway.ficlouds.com');
       expect(options.logger).toBeDefined();
     });
 

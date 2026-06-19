@@ -1,4 +1,4 @@
-import type { HeterogeneousProviderConfig } from '@lobechat/types';
+import type { HeterogeneousProviderConfig } from '@ficlouds/types';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -11,11 +11,11 @@ const { detectHeterogeneousAgentCommand, getClaudeAuthStatus } = vi.hoisted(() =
   getClaudeAuthStatus: vi.fn(),
 }));
 
-vi.mock('@lobechat/const', () => ({
+vi.mock('@ficlouds/const', () => ({
   isDesktop: true,
 }));
 
-vi.mock('@lobechat/heterogeneous-agents/client', () => ({
+vi.mock('@ficlouds/heterogeneous-agents/client', () => ({
   getHeterogeneousAgentClientConfig: (type: string) =>
     type === 'claude-code'
       ? {

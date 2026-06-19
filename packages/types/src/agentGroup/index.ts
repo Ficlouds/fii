@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import type { AgentItem } from '../agent';
 
-export interface LobeChatGroupMetaConfig {
+export interface FiGroupMetaConfig {
   avatar?: string;
   backgroundColor?: string;
   description: string;
@@ -10,7 +10,7 @@ export interface LobeChatGroupMetaConfig {
   title: string;
 }
 
-export interface LobeChatGroupChatConfig {
+export interface FiGroupChatConfig {
   allowDM?: boolean;
   forkedFromIdentifier?: string;
   openingMessage?: string;
@@ -20,7 +20,7 @@ export interface LobeChatGroupChatConfig {
 }
 
 // Database config type (flat structure)
-export type LobeChatGroupConfig = LobeChatGroupChatConfig;
+export type FiGroupConfig = FiGroupChatConfig;
 
 // Zod schema for ChatGroupConfig (database insert)
 export const ChatGroupConfigSchema = z.object({
@@ -51,9 +51,9 @@ export const InsertChatGroupSchema = z.object({
 export type InsertChatGroup = z.infer<typeof InsertChatGroupSchema>;
 
 // Full group type with nested structure for UI components
-export interface LobeChatGroupFullConfig {
-  chat: LobeChatGroupChatConfig;
-  meta: LobeChatGroupMetaConfig;
+export interface FiGroupFullConfig {
+  chat: FiGroupChatConfig;
+  meta: FiGroupMetaConfig;
 }
 
 // Chat Group Agent types (independent from schema)
@@ -82,7 +82,7 @@ export interface NewChatGroup {
   avatar?: string | null;
   backgroundColor?: string | null;
   clientId?: string | null;
-  config?: LobeChatGroupConfig | null;
+  config?: FiGroupConfig | null;
   description?: string | null;
   groupId?: string | null;
   id?: string;
@@ -98,7 +98,7 @@ export interface ChatGroupItem {
   avatar?: string | null;
   backgroundColor?: string | null;
   clientId?: string | null;
-  config?: LobeChatGroupConfig | null;
+  config?: FiGroupConfig | null;
   content?: string | null;
   createdAt: Date;
   description?: string | null;

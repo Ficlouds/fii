@@ -1,5 +1,5 @@
 import { ToolNameResolver } from './ToolNameResolver';
-import type { LobeToolManifest, UniformTool } from './types';
+import type { FiToolManifest, UniformTool } from './types';
 
 // Create a singleton instance for backward compatibility
 const resolver = new ToolNameResolver();
@@ -35,7 +35,7 @@ export const normalizeToolParameters = (
 /**
  * Convert a tool manifest into LLM-compatible UniformTool definitions
  */
-export function generateToolsFromManifest(manifest: LobeToolManifest): UniformTool[] {
+export function generateToolsFromManifest(manifest: FiToolManifest): UniformTool[] {
   return manifest.api.map((api) => ({
     function: {
       description: api.description,
@@ -49,7 +49,7 @@ export function generateToolsFromManifest(manifest: LobeToolManifest): UniformTo
 /**
  * Validate manifest schema structure
  */
-export function validateManifest(manifest: any): manifest is LobeToolManifest {
+export function validateManifest(manifest: any): manifest is FiToolManifest {
   return Boolean(
     manifest &&
     typeof manifest === 'object' &&
@@ -64,9 +64,9 @@ export function validateManifest(manifest: any): manifest is LobeToolManifest {
  */
 export function filterValidManifests(manifestSchemas: any[]): {
   invalid: any[];
-  valid: LobeToolManifest[];
+  valid: FiToolManifest[];
 } {
-  const valid: LobeToolManifest[] = [];
+  const valid: FiToolManifest[] = [];
   const invalid: any[] = [];
 
   for (const manifest of manifestSchemas) {

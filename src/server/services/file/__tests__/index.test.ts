@@ -14,7 +14,7 @@ vi.mock('@/config/db', () => ({
 
 vi.mock('@/envs/app', () => ({
   appEnv: {
-    APP_URL: 'https://lobehub.com',
+    APP_URL: 'https://ficlouds.com',
   },
 }));
 
@@ -43,7 +43,7 @@ vi.mock('@/utils/uuid', () => ({
   nanoid: () => 'test-id',
 }));
 
-vi.mock('@lobechat/utils', async (importOriginal) => {
+vi.mock('@ficlouds/utils', async (importOriginal) => {
   const actual: any = await importOriginal();
   return { ...actual, uuid: () => 'test-uuid' };
 });
@@ -338,7 +338,7 @@ describe('FileService', () => {
 
       expect(result).toEqual({
         fileId: 'new-file-id',
-        url: 'https://lobehub.com/f/new-file-id',
+        url: 'https://ficlouds.com/f/new-file-id',
       });
     });
 
@@ -357,7 +357,7 @@ describe('FileService', () => {
 
       expect(result).toEqual({
         fileId: 'custom-id',
-        url: 'https://lobehub.com/f/custom-id',
+        url: 'https://ficlouds.com/f/custom-id',
       });
     });
 

@@ -1,5 +1,5 @@
-import type { ComfyUIKeyVault } from '@lobechat/types';
-import { createBasicAuthCredentials } from '@lobechat/utils';
+import type { ComfyUIKeyVault } from '@ficlouds/types';
+import { createBasicAuthCredentials } from '@ficlouds/utils';
 
 export interface BasicCredentials {
   password: string;

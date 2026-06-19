@@ -1,6 +1,6 @@
 'use client';
 
-import { HotkeyEnum, KeyEnum } from '@lobechat/const/hotkeys';
+import { HotkeyEnum, KeyEnum } from '@ficlouds/const/hotkeys';
 import { type MenuProps } from '@lobehub/ui';
 import { Flexbox, Hotkey, Icon } from '@lobehub/ui';
 import { BotMessageSquare, LucideCheck, MessageSquarePlus } from 'lucide-react';

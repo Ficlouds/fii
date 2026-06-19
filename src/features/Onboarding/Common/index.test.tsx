@@ -37,10 +37,10 @@ const renderCommon = async ({
   metrics.trackOnboardingStepCompleted.mockClear();
   metrics.trackOnboardingStepViewed.mockClear();
 
-  vi.doMock('@lobechat/business-const', () => ({
+  vi.doMock('@ficlouds/business-const', () => ({
     AGENT_ONBOARDING_ENABLED,
   }));
-  vi.doMock('@lobechat/const', () => ({ isDesktop: desktop }));
+  vi.doMock('@ficlouds/const', () => ({ isDesktop: desktop }));
   vi.doMock('@lobehub/ui', () => ({
     Flexbox: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   }));
@@ -122,8 +122,8 @@ const renderCommon = async ({
 
 afterEach(() => {
   cleanup();
-  vi.doUnmock('@lobechat/business-const');
-  vi.doUnmock('@lobechat/const');
+  vi.doUnmock('@ficlouds/business-const');
+  vi.doUnmock('@ficlouds/const');
   vi.doUnmock('@lobehub/ui');
   vi.doUnmock('@/components/Loading/BrandTextLoading');
   vi.doUnmock('@/hooks/useOnboardingAgentTemplates');

@@ -1,7 +1,7 @@
 'use client';
 
-import { DEFAULT_AVATAR } from '@lobechat/const';
-import type { BuiltinInterventionProps } from '@lobechat/types';
+import { DEFAULT_AVATAR } from '@ficlouds/const';
+import type { BuiltinInterventionProps } from '@ficlouds/types';
 import {
   Accordion,
   AccordionItem,

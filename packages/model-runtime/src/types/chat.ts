@@ -1,4 +1,4 @@
-import type { ModelPerformance, ModelTokensUsage, ModelUsage } from '@lobechat/types';
+import type { ModelPerformance, ModelTokensUsage, ModelUsage } from '@ficlouds/types';
 
 import type { MessageToolCall, MessageToolCallChunk } from './toolsCalling';
 

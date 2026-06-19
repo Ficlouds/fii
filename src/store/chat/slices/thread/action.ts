@@ -1,12 +1,12 @@
 // Disable the auto sort key eslint rule to make the code more logic and readable
-import { LOADING_FLAT } from '@lobechat/const';
-import { chainSummaryTitle } from '@lobechat/prompts';
+import { LOADING_FLAT } from '@ficlouds/const';
+import { chainSummaryTitle } from '@ficlouds/prompts';
 import {
   type CreateMessageParams,
   type IThreadType,
   type ThreadItem,
   type UIChatMessage,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import isEqual from 'fast-deep-equal';
 import { type SWRResponse } from 'swr';
 

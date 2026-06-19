@@ -1,4 +1,4 @@
-import type { LobeAgentConfig, MetaData } from '@lobechat/types';
+import type { FiAgentConfig, MetaData } from '@ficlouds/types';
 import type { PartialDeep } from 'type-fest';
 
 /**
@@ -122,7 +122,7 @@ export interface UpdateAgentParams {
   /**
    * Partial agent configuration to update
    */
-  config?: PartialDeep<LobeAgentConfig>;
+  config?: PartialDeep<FiAgentConfig>;
   /**
    * Partial metadata to update
    */

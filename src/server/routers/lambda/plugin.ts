@@ -1,4 +1,4 @@
-import { type LobeTool } from '@lobechat/types';
+import { type FiTool } from '@ficlouds/types';
 import { z } from 'zod';
 
 import { PluginModel } from '@/database/models/plugin';
@@ -66,7 +66,7 @@ export const pluginRouter = router({
     }),
 
   // TODO: In the future, this method also needs to use authedProcedure
-  getPlugins: publicProcedure.query(async ({ ctx }): Promise<LobeTool[]> => {
+  getPlugins: publicProcedure.query(async ({ ctx }): Promise<FiTool[]> => {
     if (!ctx.userId) return [];
 
     const serverDB = await getServerDB();

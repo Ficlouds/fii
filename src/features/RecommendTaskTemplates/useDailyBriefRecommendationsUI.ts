@@ -1,6 +1,6 @@
-import type { TaskTemplate, TaskTemplateSkillSource } from '@lobechat/const';
-import { TASK_TEMPLATE_RECOMMEND_COUNT } from '@lobechat/const';
-import { createNanoId } from '@lobechat/utils';
+import type { TaskTemplate, TaskTemplateSkillSource } from '@ficlouds/const';
+import { TASK_TEMPLATE_RECOMMEND_COUNT } from '@ficlouds/const';
+import { createNanoId } from '@ficlouds/utils';
 import { useSessionStorageState } from 'ahooks';
 import { App } from 'antd';
 import { useCallback, useMemo } from 'react';
@@ -114,9 +114,9 @@ export function useDailyBriefRecommendationsUI(
     return sources;
   }, [templates]);
   const useFetchUserKlavisServers = useToolStore((s) => s.useFetchUserKlavisServers);
-  const useFetchLobehubSkillConnections = useToolStore((s) => s.useFetchLobehubSkillConnections);
+  const useFetchFiSkillConnections = useToolStore((s) => s.useFetchFiSkillConnections);
   useFetchUserKlavisServers(requiredSources.has('klavis'));
-  useFetchLobehubSkillConnections(requiredSources.has('lobehub'));
+  useFetchFiSkillConnections(requiredSources.has('lobehub'));
 
   if (!swrEnabled) return { mode: 'hidden' };
   if (!isInit || isLoading) return { mode: 'skeleton', skeletonCount: recommendationCount };

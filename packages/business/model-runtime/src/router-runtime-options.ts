@@ -14,12 +14,12 @@ interface RouterInstance {
   };
 }
 
-interface LobehubRouterRuntimeOptions {
+interface FiRouterRuntimeOptions {
   id: string;
   routers: (options: any, runtimeContext: { model?: string }) => Promise<RouterInstance[]>;
 }
 
-export const lobehubRouterRuntimeOptions: LobehubRouterRuntimeOptions = {
+export const fiRouterRuntimeOptions: FiRouterRuntimeOptions = {
   id: 'lobehub',
 
   // eslint-disable-next-line unused-imports/no-unused-vars

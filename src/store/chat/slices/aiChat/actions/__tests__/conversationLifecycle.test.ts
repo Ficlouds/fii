@@ -1,4 +1,4 @@
-import type * as LobechatConstModule from '@lobechat/const';
+import type * as LobechatConstModule from '@ficlouds/const';
 import { act, renderHook } from '@testing-library/react';
 import { TRPCClientError } from '@trpc/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -27,7 +27,7 @@ const mockLocalFileService = vi.hoisted(() => ({
   readLocalFile: vi.fn(),
 }));
 
-vi.mock('@lobechat/const', async (importOriginal) => {
+vi.mock('@ficlouds/const', async (importOriginal) => {
   const actual = await importOriginal<typeof LobechatConstModule>();
   return {
     ...actual,

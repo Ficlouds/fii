@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { RequestTrigger } from '@lobechat/types';
+import { RequestTrigger } from '@ficlouds/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 

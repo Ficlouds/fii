@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/builtin-tool-cloud-sandbox",
+  "name": "@ficlouds/builtin-tool-cloud-sandbox",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -10,15 +10,15 @@
   },
   "main": "./src/index.ts",
   "dependencies": {
-    "@lobechat/builtin-tool-local-system": "workspace:*",
-    "@lobechat/shared-tool-ui": "workspace:*",
-    "@lobechat/tool-runtime": "workspace:*"
+    "@ficlouds/builtin-tool-local-system": "workspace:*",
+    "@ficlouds/shared-tool-ui": "workspace:*",
+    "@ficlouds/tool-runtime": "workspace:*"
   },
   "devDependencies": {
-    "@lobechat/types": "workspace:*"
+    "@ficlouds/types": "workspace:*"
   },
   "peerDependencies": {
-    "@lobehub/ui": "^5",
+    "@ficlouds/ui": "^5",
     "antd": "^6",
     "antd-style": "*",
     "lucide-react": "*",

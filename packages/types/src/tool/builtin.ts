@@ -133,7 +133,7 @@ export const ExtendedHumanInterventionConfigSchema = z.union([
   z.object({ dynamic: DynamicInterventionConfigSchema }),
 ]);
 
-export interface LobeChatPluginApi {
+export interface FiPluginApi {
   /**
    * Default execution timeout in milliseconds for this API.
    *
@@ -176,7 +176,7 @@ export interface LobeChatPluginApi {
   url?: string;
 }
 
-export const LobeChatPluginApiSchema = z.object({
+export const FiPluginApiSchema = z.object({
   defaultTimeoutMs: z.number().int().positive().optional(),
   description: z.string(),
   humanIntervention: ExtendedHumanInterventionConfigSchema.optional(),
@@ -187,7 +187,7 @@ export const LobeChatPluginApiSchema = z.object({
 });
 
 export interface BuiltinToolManifest {
-  api: LobeChatPluginApi[];
+  api: FiPluginApi[];
 
   /**
    * Supported execution environments for this tool.
@@ -227,7 +227,7 @@ export interface BuiltinToolManifest {
 }
 
 export const BuiltinToolManifestSchema = z.object({
-  api: z.array(LobeChatPluginApiSchema),
+  api: z.array(FiPluginApiSchema),
   executors: z.array(z.enum(['client', 'server'])).optional(),
   humanIntervention: ExtendedHumanInterventionConfigSchema.optional(),
   identifier: z.string(),

@@ -1,8 +1,8 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import {
   GetStreamableMcpServerManifestInputSchema,
   StreamableHTTPAuthSchema,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 

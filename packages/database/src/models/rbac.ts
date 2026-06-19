@@ -1,6 +1,6 @@
 import { and, eq, inArray, sql } from 'drizzle-orm';
 
-import { LobeChatDatabase } from '@/database/type';
+import { FiDatabase } from '@/database/type';
 
 import { RoleItem, permissions, rolePermissions, roles, userRoles } from '../schemas/rbac';
 
@@ -13,9 +13,9 @@ export interface UserPermissionInfo {
 
 export class RbacModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

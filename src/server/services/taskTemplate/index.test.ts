@@ -1,6 +1,6 @@
 // @vitest-environment node
-import type { TaskTemplate } from '@lobechat/const';
-import { TASK_TEMPLATE_RECOMMEND_COUNT, taskTemplates } from '@lobechat/const';
+import type { TaskTemplate } from '@ficlouds/const';
+import { TASK_TEMPLATE_RECOMMEND_COUNT, taskTemplates } from '@ficlouds/const';
 import { describe, expect, it } from 'vitest';
 
 import { isTemplateSkillSourceEligible, TaskTemplateService } from './index';

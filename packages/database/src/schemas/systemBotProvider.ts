@@ -6,7 +6,7 @@ import { timestamps } from './_helpers';
 /**
  * System-level (deployment-wide) bot provider credentials. Distinct from
  * `agent_bot_providers` (per-user-per-agent) — this table holds the App-level
- * credentials for the LobeHub-distributed messenger bots that any user can
+ * credentials for the Fi-distributed messenger bots that any user can
  * link their account to. Singleton per `platform` (one Discord App per
  * deployment, one Telegram bot, etc.).
  *

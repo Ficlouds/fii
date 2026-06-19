@@ -21,7 +21,7 @@ import type {
   GitWorkingTreePatches,
   GitWorkingTreeStatus,
   SubmoduleWorkingTreePatches,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 
 import { detectRepoType, resolveGitDir } from '@/utils/git';
 import { createLogger } from '@/utils/logger';

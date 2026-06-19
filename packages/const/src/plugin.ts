@@ -23,5 +23,5 @@ export const THINKING_TAG_REGEX = /<think\b[^>]*>([\S\s]*?)(?:<\/think>|$)/;
 
 export const MENTION_TAG_REGEX = /<mention\b[^>]*>([\S\s]*?)(?:<\/mention>|$)/;
 
-export const AGENTS_TAG = 'lobeAgents';
-export const AGENTS_TAG_REGEX = /<lobeAgents\b[^>]*(?:\/>|>([\S\s]*?)(?:<\/lobeAgents>|$))/;
+export const AGENTS_TAG = 'fiAgents';
+export const AGENTS_TAG_REGEX = /<fiAgents\b[^>]*(?:\/>|>([\S\s]*?)(?:<\/fiAgents>|$))/;

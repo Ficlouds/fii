@@ -1,6 +1,6 @@
 'use client';
 
-import { type BuiltinInspectorProps } from '@lobechat/types';
+import { type BuiltinInspectorProps } from '@ficlouds/types';
 import { SkillsIcon } from '@lobehub/ui/icons';
 import { createStaticStyles, cx } from 'antd-style';
 import { type TFunction } from 'i18next';

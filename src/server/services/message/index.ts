@@ -1,12 +1,12 @@
-import { type LobeChatDatabase } from '@lobechat/database';
-import { CompressionRepository } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
+import { CompressionRepository } from '@ficlouds/database';
 import {
   type CreateMessageParams,
   type QueryMessageParams,
   type UIChatMessage,
   type UpdateMessageParams,
-} from '@lobechat/types';
-import { createTimingHelpers, getDurationMs } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { createTimingHelpers, getDurationMs } from '@ficlouds/utils';
 
 import { MessageModel } from '@/database/models/message';
 
@@ -23,7 +23,7 @@ interface QueryOptions {
 }
 
 const { createPrefixedTimingContext, logTiming, toTimingContext } = createTimingHelpers(
-  'lobe-server:chat:lobehub:timing',
+  'lobe-server:chat:fi:timing',
 );
 
 const logMessageTiming = (
@@ -53,7 +53,7 @@ export class MessageService {
   private fileService: FileService;
   private compressionRepository: CompressionRepository;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.messageModel = new MessageModel(db, userId);
     this.fileService = new FileService(db, userId);
     this.compressionRepository = new CompressionRepository(db, userId);

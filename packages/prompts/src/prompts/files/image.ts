@@ -1,5 +1,5 @@
-import type { ChatImageItem } from '@lobechat/types';
-import { createVisualFileRef } from '@lobechat/types';
+import type { ChatImageItem } from '@ficlouds/types';
+import { createVisualFileRef } from '@ficlouds/types';
 
 const imagePrompt = (
   item: ChatImageItem,

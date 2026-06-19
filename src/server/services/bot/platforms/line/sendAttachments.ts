@@ -1,4 +1,4 @@
-import type { LineApiClient, LineOutboundMessage } from '@lobechat/chat-adapter-line';
+import type { LineApiClient, LineOutboundMessage } from '@ficlouds/chat-adapter-line';
 import debug from 'debug';
 
 import type { BotMessageAttachment } from '../types';

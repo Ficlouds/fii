@@ -1,5 +1,5 @@
-import { escapeXml } from '@lobechat/prompts';
-import type { RuntimeSelectedSkill } from '@lobechat/types';
+import { escapeXml } from '@ficlouds/prompts';
+import type { RuntimeSelectedSkill } from '@ficlouds/types';
 import debug from 'debug';
 
 import { BaseLastUserContentProvider } from '../base/BaseLastUserContentProvider';

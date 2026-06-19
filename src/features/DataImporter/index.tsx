@@ -1,7 +1,7 @@
 'use client';
 
-import { type ErrorShape, type ImportFileUploadState } from '@lobechat/types';
-import { ImportStage } from '@lobechat/types';
+import { type ErrorShape, type ImportFileUploadState } from '@ficlouds/types';
+import { ImportStage } from '@ficlouds/types';
 import { Center } from '@lobehub/ui';
 import { Upload } from 'antd';
 import { createStaticStyles, cx } from 'antd-style';

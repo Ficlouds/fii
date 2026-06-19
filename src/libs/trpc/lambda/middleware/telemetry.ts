@@ -1,5 +1,5 @@
-import { type LobeChatDatabase } from '@lobechat/database';
-import { type UserGeneralConfig } from '@lobechat/types';
+import { type FiDatabase } from '@ficlouds/database';
+import { type UserGeneralConfig } from '@ficlouds/types';
 
 import { UserModel } from '@/database/models/user';
 import { appEnv } from '@/envs/app';
@@ -7,7 +7,7 @@ import { appEnv } from '@/envs/app';
 import { trpc } from '../init';
 
 export interface TelemetryContext {
-  serverDB?: LobeChatDatabase;
+  serverDB?: FiDatabase;
   userId?: string | null;
 }
 

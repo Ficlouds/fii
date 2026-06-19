@@ -1,4 +1,4 @@
-import { type GlobalInterventionAuditConfig } from '@lobechat/types';
+import { type GlobalInterventionAuditConfig } from '@ficlouds/types';
 
 import { createSecurityBlacklistGlobalAudit } from './createSecurityBlacklistAudit';
 

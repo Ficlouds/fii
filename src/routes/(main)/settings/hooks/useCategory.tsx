@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { Avatar } from '@lobehub/ui';
 import { SkillsIcon } from '@lobehub/ui/icons';
 import {
@@ -135,7 +135,7 @@ export const useCategory = () => {
     // Agent group
     const agentItems: CategoryItem[] = [
       // Provider settings should not depend on Advanced tools: new users may need
-      // non-LobeHub providers, and desktop users often bring their own API keys.
+      // non-Fi providers, and desktop users often bring their own API keys.
       showProvider && {
         icon: Brain,
         key: SettingsTabs.Provider,

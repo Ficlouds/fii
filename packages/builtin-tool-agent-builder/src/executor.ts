@@ -4,9 +4,9 @@
  * Handles all agent builder tool calls for configuring and customizing agents.
  * Delegates to AgentManagerRuntime for actual implementation.
  */
-import { AgentManagerRuntime } from '@lobechat/agent-manager-runtime';
-import type { BuiltinToolContext, BuiltinToolResult } from '@lobechat/types';
-import { BaseExecutor } from '@lobechat/types';
+import { AgentManagerRuntime } from '@ficlouds/agent-manager-runtime';
+import type { BuiltinToolContext, BuiltinToolResult } from '@ficlouds/types';
+import { BaseExecutor } from '@ficlouds/types';
 
 import { agentService } from '@/services/agent';
 import { discoverService } from '@/services/discover';

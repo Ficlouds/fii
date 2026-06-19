@@ -1,5 +1,5 @@
-import { type AgentStreamEventType } from '@lobechat/agent-gateway-client';
-import { type ChatToolPayload } from '@lobechat/types';
+import { type AgentStreamEventType } from '@ficlouds/agent-gateway-client';
+import { type ChatToolPayload } from '@ficlouds/types';
 import debug from 'debug';
 import { type Redis } from 'ioredis';
 
@@ -97,7 +97,7 @@ export const stripFinalStateInEventData = (data: unknown): unknown => {
 
 /**
  * Server-side stream event shape. Wire-compatible with `AgentStreamEvent` in
- * `@lobechat/agent-gateway-client` (the type union is the single source of
+ * `@ficlouds/agent-gateway-client` (the type union is the single source of
  * truth) — heterogeneous CLI agents that ingest via `aiAgent.heteroIngest`
  * republish their events through this same manager unchanged.
  */

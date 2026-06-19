@@ -1,4 +1,4 @@
-import type { LobeToolManifest, PluginEnableChecker, ToolsGenerationContext } from './types';
+import type { FiToolManifest, PluginEnableChecker, ToolsGenerationContext } from './types';
 
 export interface EnableCheckerConfig {
   /**
@@ -13,7 +13,7 @@ export interface EnableCheckerConfig {
    */
   platformFilter?: (params: {
     context?: ToolsGenerationContext;
-    manifest: LobeToolManifest;
+    manifest: FiToolManifest;
     pluginId: string;
   }) => boolean | undefined;
 

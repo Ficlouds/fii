@@ -6,7 +6,7 @@ import { shareService } from '@/services/share';
 import { userService } from '@/services/user';
 import type { StoreSetter } from '@/store/types';
 import type { UserStore } from '@/store/user';
-import type { LobeAgentSettings } from '@/types/session';
+import type { FiAgentSettings } from '@/types/session';
 import type {
   SystemAgentItem,
   UserGeneralConfig,
@@ -193,7 +193,7 @@ export class UserSettingsActionImpl {
     await this.#get().refreshUserState();
   };
 
-  updateDefaultAgent = async (defaultAgent: PartialDeep<LobeAgentSettings>): Promise<void> => {
+  updateDefaultAgent = async (defaultAgent: PartialDeep<FiAgentSettings>): Promise<void> => {
     const config = defaultAgent.config;
     const shouldNormalizeModelProvider =
       config && (config.model !== undefined || config.provider !== undefined);

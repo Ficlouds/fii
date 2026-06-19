@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinInterventionProps } from '@lobechat/types';
+import type { BuiltinInterventionProps } from '@ficlouds/types';
 import { Avatar, Flexbox, Tooltip } from '@lobehub/ui';
 import { Input, InputNumber } from 'antd';
 import { createStaticStyles } from 'antd-style';

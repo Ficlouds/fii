@@ -1,14 +1,14 @@
 import {
   DEFAULT_USER_MEMORY_EMBEDDING_DIMENSIONS,
   DEFAULT_USER_MEMORY_EMBEDDING_MODEL_ITEM,
-} from '@lobechat/const';
-import { messages, topics } from '@lobechat/database/schemas';
+} from '@ficlouds/const';
+import { messages, topics } from '@ficlouds/database/schemas';
 import {
   ActivityMemoryItemSchema,
   BenchmarkLocomoContextProvider,
   type BenchmarkLocomoPart,
-  LobeChatTopicContextProvider,
-  LobeChatTopicResultRecorder,
+  FiTopicContextProvider,
+  FiTopicResultRecorder,
   type MemoryExtractionAgent,
   type MemoryExtractionJob,
   type MemoryExtractionResult,
@@ -17,27 +17,27 @@ import {
   RetrievalUserMemoryContextProvider,
   RetrievalUserMemoryIdentitiesProvider,
   type WithActivity,
-} from '@lobechat/memory-user-memory';
+} from '@ficlouds/memory-user-memory';
 import {
   type Embeddings,
   type GenerateObjectPayload,
   type LLMRoleType,
   type ModelRuntimeHooks,
   type OpenAIChatMessage,
-} from '@lobechat/model-runtime';
-import { ModelRuntime } from '@lobechat/model-runtime';
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
+} from '@ficlouds/model-runtime';
+import { ModelRuntime } from '@ficlouds/model-runtime';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
 import {
   ATTR_GEN_AI_OPERATION_NAME,
   ATTR_GEN_AI_REQUEST_MODEL,
-} from '@lobechat/observability-otel/gen-ai';
+} from '@ficlouds/observability-otel/gen-ai';
 import {
   layerEntriesHistogram,
   processedDurationHistogram,
   processedSourceCounter,
   tracer,
-} from '@lobechat/observability-otel/modules/memory-user-memory';
-import { attributesCommon } from '@lobechat/observability-otel/node';
+} from '@ficlouds/observability-otel/modules/memory-user-memory';
+import { attributesCommon } from '@ficlouds/observability-otel/node';
 import type {
   AiProviderRuntimeState,
   ChatTopicMetadata,
@@ -46,8 +46,8 @@ import type {
   MemoryExtractionTraceError,
   MemoryExtractionTracePayload,
   UserServiceModelConfig,
-} from '@lobechat/types';
-import { RequestTrigger } from '@lobechat/types';
+} from '@ficlouds/types';
+import { RequestTrigger } from '@ficlouds/types';
 import { type FlowControl } from '@upstash/qstash';
 import { Client } from '@upstash/workflow';
 import debug from 'debug';
@@ -1481,7 +1481,7 @@ export class MemoryExtractionExecutor {
         const startTime = Date.now();
         let extractionJob: MemoryExtractionJob | null = null;
         let extraction: MemoryExtractionResult | null = null;
-        let resultRecorder: LobeChatTopicResultRecorder | null = null;
+        let resultRecorder: FiTopicResultRecorder | null = null;
         let tracePayload: MemoryExtractionTracePayload<
           MemoryExtractionResult,
           MemoryExtractionJob | null,
@@ -1586,14 +1586,14 @@ export class MemoryExtractionExecutor {
 
           const messageIds = extractorConversations.map((item) => item.id);
 
-          const topicContextProvider = new LobeChatTopicContextProvider({
+          const topicContextProvider = new FiTopicContextProvider({
             conversations: extractorConversations,
             topic,
             topicId: topic.id,
           });
           const topicContext = await topicContextProvider.buildContext(extractionJob.userId);
 
-          resultRecorder = new LobeChatTopicResultRecorder({
+          resultRecorder = new FiTopicResultRecorder({
             currentMetadata: topic.metadata || {},
             database: db,
             lastMessageAt: (conversations?.at(-1)?.createdAt || topic.updatedAt).toISOString(),

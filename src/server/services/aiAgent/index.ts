@@ -1,30 +1,30 @@
-import type { AgentRuntimeContext, AgentState } from '@lobechat/agent-runtime';
-import { BUILTIN_AGENT_SLUGS, getAgentRuntimeConfig } from '@lobechat/builtin-agents';
-import { builtinSkills } from '@lobechat/builtin-skills';
-import { LobeAgentManifest } from '@lobechat/builtin-tool-lobe-agent';
-import { LocalSystemManifest } from '@lobechat/builtin-tool-local-system';
-import { MessageToolIdentifier } from '@lobechat/builtin-tool-message';
-import { PageAgentIdentifier } from '@lobechat/builtin-tool-page-agent';
-import type { DeviceAttachment } from '@lobechat/builtin-tool-remote-device';
-import { generateSystemPrompt, RemoteDeviceManifest } from '@lobechat/builtin-tool-remote-device';
+import type { AgentRuntimeContext, AgentState } from '@ficlouds/agent-runtime';
+import { BUILTIN_AGENT_SLUGS, getAgentRuntimeConfig } from '@ficlouds/builtin-agents';
+import { builtinSkills } from '@ficlouds/builtin-skills';
+import { FiAgentManifest } from '@ficlouds/builtin-tool-fi-agent';
+import { LocalSystemManifest } from '@ficlouds/builtin-tool-local-system';
+import { MessageToolIdentifier } from '@ficlouds/builtin-tool-message';
+import { PageAgentIdentifier } from '@ficlouds/builtin-tool-page-agent';
+import type { DeviceAttachment } from '@ficlouds/builtin-tool-remote-device';
+import { generateSystemPrompt, RemoteDeviceManifest } from '@ficlouds/builtin-tool-remote-device';
 import {
   injectSelfFeedbackIntentTool,
   shouldExposeSelfFeedbackIntentTool,
-} from '@lobechat/builtin-tool-self-iteration';
-import { TaskIdentifier } from '@lobechat/builtin-tool-task';
-import { builtinTools, manualModeExcludeToolIds } from '@lobechat/builtin-tools';
-import { LOADING_FLAT } from '@lobechat/const';
+} from '@ficlouds/builtin-tool-self-iteration';
+import { TaskIdentifier } from '@ficlouds/builtin-tool-task';
+import { builtinTools, manualModeExcludeToolIds } from '@ficlouds/builtin-tools';
+import { LOADING_FLAT } from '@ficlouds/const';
 import type {
   AgentManagementContext,
   BotPlatformContext,
-  LobeToolManifest,
+  FiToolManifest,
   ToolExecutor,
   ToolSource,
-} from '@lobechat/context-engine';
-import { SkillEngine } from '@lobechat/context-engine';
-import type { LobeChatDatabase } from '@lobechat/database';
-import { isRemoteHeterogeneousType } from '@lobechat/heterogeneous-agents';
-import { buildTaskManagerDefaultsPrompt } from '@lobechat/prompts';
+} from '@ficlouds/context-engine';
+import { SkillEngine } from '@ficlouds/context-engine';
+import type { FiDatabase } from '@ficlouds/database';
+import { isRemoteHeterogeneousType } from '@ficlouds/heterogeneous-agents';
+import { buildTaskManagerDefaultsPrompt } from '@ficlouds/prompts';
 import type {
   ChatFileItem,
   ChatTopicBotContext,
@@ -37,9 +37,9 @@ import type {
   ExecSubAgentTaskResult,
   MessagePluginItem,
   UserInterventionConfig,
-} from '@lobechat/types';
-import { RequestTrigger, ThreadStatus, ThreadType } from '@lobechat/types';
-import { nanoid } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { RequestTrigger, ThreadStatus, ThreadType } from '@ficlouds/types';
+import { nanoid } from '@ficlouds/utils';
 import debug from 'debug';
 
 import { AgentModel } from '@/database/models/agent';
@@ -238,7 +238,7 @@ interface InternalExecAgentParams extends ExecAgentParams {
  */
 export class AiAgentService {
   private readonly userId: string;
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly agentDocumentsService: AgentDocumentsService;
   private readonly agentModel: AgentModel;
   private readonly agentService: AgentService;
@@ -252,7 +252,7 @@ export class AiAgentService {
   private readonly klavisService: KlavisService;
 
   constructor(
-    db: LobeChatDatabase,
+    db: FiDatabase,
     userId: string,
     options?: { runtimeOptions?: AgentRuntimeServiceOptions },
   ) {
@@ -717,7 +717,7 @@ export class AiAgentService {
 
       // Resolve GitHub OAuth token for the sandbox. Always attempt so CC can use
       // git / gh CLI even when no repos are pre-selected. Falls back to the
-      // standard 'github' key (LobeHub OAuth connector default); agent config can
+      // standard 'github' key (Fi OAuth connector default); agent config can
       // override via GITHUB_CRED_KEY.
       let githubToken: string | undefined;
       const githubCredKey =
@@ -1069,8 +1069,8 @@ export class AiAgentService {
     );
 
     // These are needed outside the tools block (for agent management context, skill engine, etc.)
-    let lobehubSkillManifests: LobeToolManifest[] = [];
-    let klavisManifests: LobeToolManifest[] = [];
+    let fiSkillManifests: FiToolManifest[] = [];
+    let klavisManifests: FiToolManifest[] = [];
     let agentPlugins: string[] = [...(agentConfig?.plugins ?? []), ...(additionalPluginIds || [])];
 
     // Model metadata is needed both for tool support checks and agent-management context.
@@ -1124,13 +1124,13 @@ export class AiAgentService {
         return info?.abilities?.functionCall ?? true;
       };
 
-      // 5c. Fetch LobeHub Skills manifests
+      // 5c. Fetch Fi Skills manifests
       try {
-        lobehubSkillManifests = await this.marketService.getLobehubSkillManifests();
+        fiSkillManifests = await this.marketService.getFiSkillManifests();
       } catch (error) {
-        log('execAgent: failed to fetch lobehub skill manifests: %O', error);
+        log('execAgent: failed to fetch fi skill manifests: %O', error);
       }
-      log('execAgent: got %d lobehub skill manifests', lobehubSkillManifests.length);
+      log('execAgent: got %d fi skill manifests', fiSkillManifests.length);
 
       // 5d. Fetch Klavis tool manifests from database
       try {
@@ -1213,7 +1213,7 @@ export class AiAgentService {
         ...agentPlugins,
         ...(hasTopicReference ? ['lobe-topic-reference'] : []),
         ...(isBotConversation ? [MessageToolIdentifier] : []),
-        ...(shouldEnableVisualUnderstanding ? [LobeAgentManifest.identifier] : []),
+        ...(shouldEnableVisualUnderstanding ? [FiAgentManifest.identifier] : []),
       ];
 
       // Derive activeDeviceId from device context. Gated on `canUseDevice`
@@ -1252,7 +1252,7 @@ export class AiAgentService {
               : undefined;
 
       const toolsEngine = createServerAgentToolsEngine(toolsContext, {
-        additionalManifests: [...lobehubSkillManifests, ...klavisManifests],
+        additionalManifests: [...fiSkillManifests, ...klavisManifests],
         agentConfig: {
           chatConfig: agentConfig.chatConfig ?? undefined,
           plugins: agentPlugins,
@@ -1281,8 +1281,8 @@ export class AiAgentService {
           ...agentPlugins,
           ...(disableLocalSystem ? [] : [LocalSystemManifest.identifier]),
           RemoteDeviceManifest.identifier,
-          // Include LobeHub Skills and Klavis tools so they are passed to generateToolsDetailed
-          ...lobehubSkillManifests.map((m) => m.identifier),
+          // Include Fi Skills and Klavis tools so they are passed to generateToolsDetailed
+          ...fiSkillManifests.map((m) => m.identifier),
           ...klavisManifests.map((m) => m.identifier),
         ]),
       ];
@@ -1302,7 +1302,7 @@ export class AiAgentService {
 
       // Single guard for every `toolManifestMap[id] = ...` ingest below.
       // Mirrors the post-merge filter in `createServerToolsEngine`: an
-      // installed plugin, a LobeHub Skill, or a Klavis manifest declaring
+      // installed plugin, a Fi Skill, or a Klavis manifest declaring
       // `identifier: 'lobe-remote-device'` would otherwise reach the
       // activator-discovery map and let an external bot sender enable it
       // (). Centralising the check at the ingest layer means
@@ -1327,12 +1327,12 @@ export class AiAgentService {
       });
       for (const tool of allowedBuiltinTools) {
         if (tool.discoverable !== false && !toolManifestMap[tool.identifier]) {
-          toolManifestMap[tool.identifier] = tool.manifest as LobeToolManifest;
+          toolManifestMap[tool.identifier] = tool.manifest as FiToolManifest;
         }
       }
 
-      // Include lobehub skill and klavis manifests for activator discovery
-      for (const manifest of lobehubSkillManifests) {
+      // Include fi skill and klavis manifests for activator discovery
+      for (const manifest of fiSkillManifests) {
         if (!isManifestIngestAllowed(manifest.identifier)) continue;
         if (!toolManifestMap[manifest.identifier]) {
           toolManifestMap[manifest.identifier] = manifest;
@@ -1345,9 +1345,9 @@ export class AiAgentService {
         }
       }
 
-      for (const manifest of lobehubSkillManifests) {
+      for (const manifest of fiSkillManifests) {
         if (!isManifestIngestAllowed(manifest.identifier)) continue;
-        toolSourceMap[manifest.identifier] = 'lobehubSkill';
+        toolSourceMap[manifest.identifier] = 'fiSkill';
       }
       for (const manifest of klavisManifests) {
         if (!isManifestIngestAllowed(manifest.identifier)) continue;
@@ -1378,9 +1378,9 @@ export class AiAgentService {
       }
 
       log(
-        'execAgent: generated %d tools, %d lobehub skills, %d klavis tools',
+        'execAgent: generated %d tools, %d fi skills, %d klavis tools',
         tools?.length ?? 0,
-        lobehubSkillManifests.length,
+        fiSkillManifests.length,
         klavisManifests.length,
       );
 
@@ -1601,7 +1601,7 @@ export class AiAgentService {
             type: 'builtin' as const,
           })),
         // Lobehub Skills
-        ...lobehubSkillManifests.map((manifest) => ({
+        ...fiSkillManifests.map((manifest) => ({
           description: manifest.meta?.description,
           identifier: manifest.identifier,
           name: manifest.meta?.title || manifest.identifier,
@@ -2803,7 +2803,7 @@ export class AiAgentService {
 
   /**
    * Calculate total tokens from AgentState usage object
-   * AgentState.usage is of type Usage from @lobechat/agent-runtime
+   * AgentState.usage is of type Usage from @ficlouds/agent-runtime
    */
   private calculateTotalTokens(usage?: AgentState['usage']): number | undefined {
     if (!usage) return undefined;

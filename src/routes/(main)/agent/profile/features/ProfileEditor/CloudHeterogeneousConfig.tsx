@@ -1,6 +1,6 @@
 'use client';
 
-import { type HeterogeneousProviderConfig, type UserCredSummary } from '@lobechat/types';
+import { type HeterogeneousProviderConfig, type UserCredSummary } from '@ficlouds/types';
 import { Github } from '@lobehub/icons';
 import { Flexbox } from '@lobehub/ui';
 import { Avatar, Button, Input, Select, Spin, Tag, Typography } from 'antd';

@@ -1,4 +1,4 @@
-import type { MockCase } from '@lobechat/agent-mock';
+import type { MockCase } from '@ficlouds/agent-mock';
 import { act, renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -11,7 +11,7 @@ const { executeMockStream, getChatStoreState, lastDisplayMessageId } = vi.hoiste
   lastDisplayMessageId: vi.fn(),
 }));
 
-vi.mock('@lobechat/agent-mock', () => ({
+vi.mock('@ficlouds/agent-mock', () => ({
   executeMockStream,
 }));
 

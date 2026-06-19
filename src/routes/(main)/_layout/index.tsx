@@ -1,7 +1,7 @@
 'use client';
 
-import { HotkeyScopeEnum } from '@lobechat/const/hotkeys';
-import { TITLE_BAR_HEIGHT } from '@lobechat/desktop-bridge';
+import { HotkeyScopeEnum } from '@ficlouds/const/hotkeys';
+import { TITLE_BAR_HEIGHT } from '@ficlouds/desktop-bridge';
 import { Flexbox } from '@lobehub/ui';
 import { cx } from 'antd-style';
 import { type FC } from 'react';

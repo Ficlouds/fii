@@ -1,8 +1,8 @@
 // @vitest-environment node
-import type { SourceEventClientRuntimeStart } from '@lobechat/agent-signal/source';
-import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
-import { messages, topics, users } from '@lobechat/database/schemas';
-import { getTestDB } from '@lobechat/database/test-utils';
+import type { SourceEventClientRuntimeStart } from '@ficlouds/agent-signal/source';
+import { AGENT_SIGNAL_SOURCE_TYPES } from '@ficlouds/agent-signal/source';
+import { messages, topics, users } from '@ficlouds/database/schemas';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { describe, expect, it } from 'vitest';
 
 import { uuid } from '@/utils/uuid';

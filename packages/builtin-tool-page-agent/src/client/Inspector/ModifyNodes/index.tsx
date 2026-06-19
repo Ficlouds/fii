@@ -1,7 +1,7 @@
 'use client';
 
-import type { ModifyNodesArgs } from '@lobechat/editor-runtime';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import type { ModifyNodesArgs } from '@ficlouds/editor-runtime';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { Icon, Text } from '@lobehub/ui';
 import { createStaticStyles, cssVar, cx } from 'antd-style';
 import { DiffIcon, Minus, Plus } from 'lucide-react';

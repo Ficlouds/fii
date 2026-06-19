@@ -1,4 +1,4 @@
-import type { ModelUsage } from '@lobechat/types';
+import type { ModelUsage } from '@ficlouds/types';
 
 /**
  * Token usage tracking for different types of operations

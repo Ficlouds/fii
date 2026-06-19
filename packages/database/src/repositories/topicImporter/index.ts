@@ -1,7 +1,7 @@
-import type { ExportedTopic, ImportedMessage } from '@lobechat/types';
+import type { ExportedTopic, ImportedMessage } from '@ficlouds/types';
 
 import { messagePlugins, messages, topics } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { idGenerator } from '../../utils/idGenerator';
 
 export interface ImportTopicParams {
@@ -50,9 +50,9 @@ interface PreparedMessagePlugin {
 
 export class TopicImporterRepo {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

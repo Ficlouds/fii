@@ -4,11 +4,11 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { getTestDB } from '../../core/getTestDB';
 import { taskTopics, topics, users } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { TaskModel } from '../task';
 import { TaskTopicModel } from '../taskTopic';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'task-topic-test-user-id';
 const userId2 = 'task-topic-test-user-id-2';

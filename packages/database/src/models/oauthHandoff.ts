@@ -2,12 +2,12 @@ import { and, eq, lt, sql } from 'drizzle-orm';
 
 import type { NewOAuthHandoff, OAuthHandoffItem } from '../schemas';
 import { oauthHandoffs } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export class OAuthHandoffModel {
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase) {
+  constructor(db: FiDatabase) {
     this.db = db;
   }
 

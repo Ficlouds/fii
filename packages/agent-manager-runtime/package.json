@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/agent-manager-runtime",
+  "name": "@ficlouds/agent-manager-runtime",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -7,8 +7,8 @@
   },
   "main": "./src/index.ts",
   "dependencies": {
-    "@lobechat/const": "workspace:*",
-    "@lobechat/prompts": "workspace:*",
-    "@lobechat/types": "workspace:*"
+    "@ficlouds/const": "workspace:*",
+    "@ficlouds/prompts": "workspace:*",
+    "@ficlouds/types": "workspace:*"
   }
 }

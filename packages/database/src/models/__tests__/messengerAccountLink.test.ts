@@ -3,14 +3,14 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { getTestDB } from '../../core/getTestDB';
 import { agents, messengerAccountLinks, users } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import {
   MessengerAccountLinkConflictError,
   MessengerAccountLinkModel,
   MessengerAccountLinkRelinkRequiredError,
 } from '../messengerAccountLink';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userA = 'msg-link-user-a';
 const userB = 'msg-link-user-b';
@@ -143,8 +143,8 @@ describe('MessengerAccountLinkModel', () => {
 
   describe('findByPlatformUser (static)', () => {
     it('finds the right row when two users share the same Slack user id under different tenants', async () => {
-      // Same Slack user id — but in different workspaces, bound to different LobeHub users.
-      // (Could happen if two LobeHub accounts both happen to be `U_SHARED` in different workspaces.)
+      // Same Slack user id — but in different workspaces, bound to different Fi users.
+      // (Could happen if two Fi accounts both happen to be `U_SHARED` in different workspaces.)
       await new MessengerAccountLinkModel(serverDB, userA).upsertForPlatform({
         activeAgentId: agentA,
         platform: 'slack',

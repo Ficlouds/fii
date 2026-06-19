@@ -57,13 +57,13 @@ vi.mock('@/business/server/image-generation/chargeBeforeGenerate', () => ({
   chargeBeforeGenerate: (params: any) => mockChargeBeforeGenerate(params),
 }));
 
-vi.mock('@lobechat/business-model-runtime', async (importOriginal) => ({
+vi.mock('@ficlouds/business-model-runtime', async (importOriginal) => ({
   ...((await importOriginal()) as any),
   resolveBusinessModelMapping: (...args: [string, string]) =>
     mockResolveBusinessModelMapping(...args),
 }));
 
-vi.mock('@lobechat/business-model-bank/model-config', () => ({
+vi.mock('@ficlouds/business-model-bank/model-config', () => ({
   loadModels: mockLoadModels,
 }));
 

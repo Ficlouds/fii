@@ -1,0 +1,31 @@
+{
+  "name": "@ficlouds/builtin-tool-fi-agent",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client/index.ts"
+  },
+  "main": "./src/index.ts",
+  "scripts": {
+    "test": "vitest",
+    "test:coverage": "vitest --coverage --silent='passed-only'",
+    "test:update": "vitest -u"
+  },
+  "dependencies": {
+    "@ficlouds/const": "workspace:*",
+    "@ficlouds/prompts": "workspace:*",
+    "@ficlouds/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@ficlouds/types": "workspace:*"
+  },
+  "peerDependencies": {
+    "@ficlouds/editor": "^4",
+    "@ficlouds/ui": "^5",
+    "antd": "^6",
+    "antd-style": "*",
+    "lucide-react": "*",
+    "react": "*"
+  }
+}

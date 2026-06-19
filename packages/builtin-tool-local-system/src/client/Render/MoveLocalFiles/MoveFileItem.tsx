@@ -1,4 +1,4 @@
-import { useToolRenderCapabilities } from '@lobechat/shared-tool-ui';
+import { useToolRenderCapabilities } from '@ficlouds/shared-tool-ui';
 import { Flexbox, Icon, Text } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { ArrowRight } from 'lucide-react';

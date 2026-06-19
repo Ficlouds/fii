@@ -1,11 +1,11 @@
-import { DEFAULT_AGENT_CONFIG, DEFAULT_INBOX_AVATAR, INBOX_SESSION_ID } from '@lobechat/const';
+import { DEFAULT_AGENT_CONFIG, DEFAULT_INBOX_AVATAR, INBOX_SESSION_ID } from '@ficlouds/const';
 import type {
   ChatSessionList,
-  LobeAgentConfig,
-  LobeAgentSession,
+  FiAgentConfig,
+  FiAgentSession,
   LobeGroupSession,
   SessionRankItem,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { and, asc, count, desc, eq, gt, inArray, isNull, not, or, sql } from 'drizzle-orm';
 import type { PartialDeep } from 'type-fest';
 
@@ -13,16 +13,16 @@ import { merge } from '@/utils/merge';
 
 import type { AgentItem, NewAgent, NewSession, SessionItem } from '../schemas';
 import { agents, agentsToSessions, sessionGroups, sessions, topics } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 import { sanitizeBm25Query } from '../utils/bm25';
 import { genEndDateWhere, genRangeWhere, genStartDateWhere, genWhere } from '../utils/genWhere';
 import { idGenerator } from '../utils/idGenerator';
 
 export class SessionModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }
@@ -246,7 +246,7 @@ export class SessionModel {
         tags = [],
         avatar,
         backgroundColor,
-        // LobeAgentConfig fields
+        // FiAgentConfig fields
         model,
         params,
         systemRole,
@@ -332,7 +332,7 @@ export class SessionModel {
     });
   };
 
-  createInbox = async (defaultAgentConfig: PartialDeep<LobeAgentConfig>) => {
+  createInbox = async (defaultAgentConfig: PartialDeep<FiAgentConfig>) => {
     const item = await this.db.query.sessions.findFirst({
       where: and(eq(sessions.userId, this.userId), eq(sessions.slug, INBOX_SESSION_ID)),
     });
@@ -570,7 +570,7 @@ export class SessionModel {
     type,
     ...res
   }: SessionItem & { agentsToSessions?: { agent: AgentItem }[] }):
-    | LobeAgentSession
+    | FiAgentSession
     | LobeGroupSession => {
     const meta = {
       avatar: avatar ?? undefined,
@@ -626,7 +626,7 @@ export class SessionModel {
       },
       model: agent?.model || '',
       type: 'agent',
-    } as LobeAgentSession;
+    } as FiAgentSession;
   };
 
   findSessionsByKeywords = async (params: {

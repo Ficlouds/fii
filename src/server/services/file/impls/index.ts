@@ -1,4 +1,4 @@
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 
 import { type FileServiceImpl } from './type';
 
@@ -6,7 +6,7 @@ import { type FileServiceImpl } from './type';
  * Create file service module
  * Returns S3 file implementation for cloud storage, or a no-op when S3 is disabled.
  */
-export const createFileServiceModule = (db: LobeChatDatabase): FileServiceImpl => {
+export const createFileServiceModule = (db: FiDatabase): FileServiceImpl => {
   const s3Enabled = process.env.S3_ENABLED === '1' || process.env.S3_ENABLED === 'true';
   if (!s3Enabled) {
     // Return a no-op implementation when S3 is not configured

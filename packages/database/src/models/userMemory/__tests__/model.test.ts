@@ -7,7 +7,7 @@ import {
   RelationshipEnum,
   TypesEnum,
   UserMemoryContextObjectType,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { eq } from 'drizzle-orm';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -21,14 +21,14 @@ import {
   userMemoriesPreferences,
   users,
 } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import { UserMemoryModel } from '../model';
 
 const userId = 'memory-model-test-user';
 const otherUserId = 'other-memory-model-user';
 
 let memoryModel: UserMemoryModel;
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 beforeEach(async () => {
   await serverDB.delete(userMemoriesActivities);

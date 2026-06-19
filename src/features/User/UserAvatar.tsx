@@ -1,6 +1,6 @@
 'use client';
 
-import { BRANDING_NAME } from '@lobechat/business-const';
+import { BRANDING_NAME } from '@ficlouds/business-const';
 import { type AvatarProps } from '@lobehub/ui';
 import { Avatar } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';

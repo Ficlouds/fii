@@ -1,6 +1,6 @@
 'use client';
 
-import { createGrepContentInspector } from '@lobechat/shared-tool-ui/inspectors';
+import { createGrepContentInspector } from '@ficlouds/shared-tool-ui/inspectors';
 
 export const GrepContentInspector = createGrepContentInspector({
   noResultsKey: 'builtins.lobe-cloud-sandbox.inspector.noResults',

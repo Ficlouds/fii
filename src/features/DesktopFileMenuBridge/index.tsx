@@ -1,7 +1,7 @@
 'use client';
 
-import { SESSION_CHAT_URL } from '@lobechat/const';
-import { useWatchBroadcast } from '@lobechat/electron-client-ipc';
+import { SESSION_CHAT_URL } from '@ficlouds/const';
+import { useWatchBroadcast } from '@ficlouds/electron-client-ipc';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 

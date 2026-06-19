@@ -1,7 +1,7 @@
 'use client';
 
-import { isDesktop } from '@lobechat/const';
-import { isRemoteHeterogeneousType } from '@lobechat/heterogeneous-agents';
+import { isDesktop } from '@ficlouds/const';
+import { isRemoteHeterogeneousType } from '@ficlouds/heterogeneous-agents';
 import { Flexbox } from '@lobehub/ui';
 import { Divider, Tabs } from 'antd';
 import isEqual from 'fast-deep-equal';

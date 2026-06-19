@@ -6,14 +6,14 @@ import type {
   PreferenceMemoryItemSchema,
   RemoveIdentityActionSchema,
   UpdateIdentityActionSchema,
-} from '@lobechat/memory-user-memory/schemas';
+} from '@ficlouds/memory-user-memory/schemas';
 import type {
   BuiltinToolContext,
   BuiltinToolResult,
   QueryTaxonomyOptionsParams,
   SearchMemoryParams,
-} from '@lobechat/types';
-import { BaseExecutor } from '@lobechat/types';
+} from '@ficlouds/types';
+import { BaseExecutor } from '@ficlouds/types';
 import type { z } from 'zod';
 
 import { userMemoryService } from '@/services/userMemory';

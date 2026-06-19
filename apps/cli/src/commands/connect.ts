@@ -6,8 +6,8 @@ import type {
   DeviceSystemInfo,
   SystemInfoRequestMessage,
   ToolCallRequestMessage,
-} from '@lobechat/device-gateway-client';
-import { GatewayClient } from '@lobechat/device-gateway-client';
+} from '@ficlouds/device-gateway-client';
+import { GatewayClient } from '@ficlouds/device-gateway-client';
 import type { Command } from 'commander';
 
 import { getValidToken } from '../auth/refresh';
@@ -213,7 +213,7 @@ async function runConnect(options: ConnectOptions, isDaemonChild: boolean) {
   };
 
   // Print device info
-  info('─── LobeHub CLI ───');
+  info('─── Fi CLI ───');
   info(`  Device ID : ${client.currentDeviceId}`);
   info(`  Hostname  : ${os.hostname()}`);
   info(`  Platform  : ${process.platform}`);

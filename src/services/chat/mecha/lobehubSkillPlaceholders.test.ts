@@ -1,19 +1,19 @@
-import { builtinSkills, LobeHubIdentifier } from '@lobechat/builtin-skills';
-import { renderPlaceholderTemplate } from '@lobechat/context-engine';
+import { builtinSkills, FiIdentifier } from '@ficlouds/builtin-skills';
+import { renderPlaceholderTemplate } from '@ficlouds/context-engine';
 import { describe, expect, it } from 'vitest';
 
-const LobeHubSkill = builtinSkills.find((s) => s.identifier === LobeHubIdentifier);
-if (!LobeHubSkill) {
-  throw new Error(`LobeHubSkill not found in builtinSkills (looking for "${LobeHubIdentifier}")`);
+const FiSkill = builtinSkills.find((s) => s.identifier === FiIdentifier);
+if (!FiSkill) {
+  throw new Error(`FiSkill not found in builtinSkills (looking for "${FiIdentifier}")`);
 }
-const lobeHubContent = LobeHubSkill.content;
+const lobeHubContent = FiSkill.content;
 
 /**
  * Regression for .
  *
  * Instead of building a dedicated AgentIdentityContextInjector, we wire current
  * agent / topic identity through the existing PlaceholderVariablesProcessor —
- * the LobeHub builtin skill content references `{{agent_id}}`, `{{topic_id}}`,
+ * the Fi builtin skill content references `{{agent_id}}`, `{{topic_id}}`,
  * etc., and `contextEngineering.ts` provides the matching variable generators.
  *
  * This test pins the contract from BOTH ends:
@@ -24,7 +24,7 @@ const lobeHubContent = LobeHubSkill.content;
  * vice versa), this test fails before users see a broken `lh agent run -a {{agent_id}}`
  * literal in their prompts.
  */
-describe('LobeHub skill identity placeholders ()', () => {
+describe('Fi skill identity placeholders ()', () => {
   const PLACEHOLDER_KEYS = [
     'agent_id',
     'agent_title',

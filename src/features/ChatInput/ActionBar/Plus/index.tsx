@@ -1,6 +1,6 @@
 'use client';
 
-import { validateVideoFileSize } from '@lobechat/utils/client';
+import { validateVideoFileSize } from '@ficlouds/utils/client';
 import type { IconProps } from '@lobehub/ui';
 import { Icon, Popover } from '@lobehub/ui';
 import { BrainOffIcon, GlobeOffIcon, SkillsIcon } from '@lobehub/ui/icons';

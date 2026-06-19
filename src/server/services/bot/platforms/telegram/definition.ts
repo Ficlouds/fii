@@ -9,7 +9,7 @@ export const telegram: PlatformDefinition = {
   description: 'Connect a Telegram bot',
   documentation: {
     portalUrl: 'https://t.me/BotFather',
-    setupGuideUrl: 'https://lobehub.com/docs/usage/channels/telegram',
+    setupGuideUrl: 'https://ficlouds.com/docs/usage/channels/telegram',
   },
   schema,
   clientFactory: new TelegramClientFactory(),

@@ -1,6 +1,6 @@
 'use client';
 
-import { type NetworkProxySettings } from '@lobechat/electron-client-ipc';
+import { type NetworkProxySettings } from '@ficlouds/electron-client-ipc';
 import { type FormGroupItemType } from '@lobehub/ui';
 import { Form, Skeleton, toast } from '@lobehub/ui';
 import { Button, Form as AntdForm, Input, Radio, Space, Switch } from 'antd';

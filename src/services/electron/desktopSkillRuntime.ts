@@ -1,4 +1,4 @@
-import type { ExecScriptActivatedSkill } from '@lobechat/builtin-tool-skills';
+import type { ExecScriptActivatedSkill } from '@ficlouds/builtin-tool-skills';
 
 import { agentSkillService } from '@/services/skill';
 

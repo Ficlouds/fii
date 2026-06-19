@@ -1,7 +1,7 @@
-import { DEFAULT_AGENT_CONFIG, DEFAULT_CHAT_GROUP_CHAT_CONFIG } from '@lobechat/const';
-import { type LobeChatDatabase } from '@lobechat/database';
-import { type LobeAgentConfig } from '@lobechat/types';
-import { cleanObject, merge } from '@lobechat/utils';
+import { DEFAULT_AGENT_CONFIG, DEFAULT_CHAT_GROUP_CHAT_CONFIG } from '@ficlouds/const';
+import { type FiDatabase } from '@ficlouds/database';
+import { type FiAgentConfig } from '@ficlouds/types';
+import { cleanObject, merge } from '@ficlouds/utils';
 import { type PartialDeep } from 'type-fest';
 
 import { AgentModel } from '@/database/models/agent';
@@ -24,7 +24,7 @@ export class AgentGroupService {
   private readonly chatGroupModel: ChatGroupModel;
   private readonly agentGroupRepo: AgentGroupRepository;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.agentModel = new AgentModel(db, userId);
     this.chatGroupModel = new ChatGroupModel(db, userId);
     this.agentGroupRepo = new AgentGroupRepository(db, userId);
@@ -109,7 +109,7 @@ export class AgentGroupService {
     agents: T[],
   ) {
     const userDefaultAgentConfig =
-      (defaultAgentConfig as { config?: PartialDeep<LobeAgentConfig> })?.config || {};
+      (defaultAgentConfig as { config?: PartialDeep<FiAgentConfig> })?.config || {};
 
     const serverDefaultAgentConfig = getServerDefaultAgentConfig();
     const baseConfig = merge(DEFAULT_AGENT_CONFIG, serverDefaultAgentConfig);

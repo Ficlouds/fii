@@ -1,4 +1,4 @@
-import type { TaskDetailActivity } from '@lobechat/types';
+import type { TaskDetailActivity } from '@ficlouds/types';
 import { Editor, useEditor } from '@lobehub/editor/react';
 import {
   ActionIcon,

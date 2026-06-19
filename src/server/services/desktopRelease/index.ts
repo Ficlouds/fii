@@ -123,7 +123,7 @@ export const getLatestDesktopReleaseFromGithub = async (options?: {
     headers: {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       'Accept': 'application/vnd.github+json',
-      'User-Agent': 'lobehub-server',
+      'User-Agent': 'fi-server',
     },
     next: { revalidate: 300, tags: [FetchCacheTag.DesktopRelease] },
   });

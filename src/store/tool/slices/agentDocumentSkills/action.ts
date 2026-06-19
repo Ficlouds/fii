@@ -1,4 +1,4 @@
-import { buildAgentSkillIdentifier } from '@lobechat/const';
+import { buildAgentSkillIdentifier } from '@ficlouds/const';
 import useSWR, { type SWRResponse } from 'swr';
 
 import { agentDocumentService, agentDocumentSWRKeys } from '@/services/agentDocument';

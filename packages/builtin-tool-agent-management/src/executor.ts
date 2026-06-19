@@ -5,13 +5,13 @@
  * deleting, searching, and calling AI agents.
  * Delegates to AgentManagerRuntime for actual implementation.
  */
-import { AgentManagerRuntime } from '@lobechat/agent-manager-runtime';
+import { AgentManagerRuntime } from '@ficlouds/agent-manager-runtime';
 import {
   BaseExecutor,
   type BuiltinToolContext,
   type BuiltinToolResult,
   type ConversationContext,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 import { agentService } from '@/services/agent';
 import { discoverService } from '@/services/discover';

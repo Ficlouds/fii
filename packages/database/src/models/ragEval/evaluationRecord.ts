@@ -2,13 +2,13 @@ import { and, eq } from 'drizzle-orm';
 
 import type {NewEvaluationRecordsItem } from '../../schemas';
 import { evaluationRecords } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 
 export class EvaluationRecordModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

@@ -1,4 +1,4 @@
-import { type LobeAgentConfig } from '@lobechat/types';
+import { type FiAgentConfig } from '@ficlouds/types';
 import { type PartialDeep } from 'type-fest';
 
 import { chatGroupService } from '@/services/chatGroup';
@@ -47,7 +47,7 @@ export class ChatGroupMemberAction {
   updateMemberAgentConfig = async (
     groupId: string,
     agentId: string,
-    config: PartialDeep<LobeAgentConfig>,
+    config: PartialDeep<FiAgentConfig>,
   ) => {
     // 1. Persist to database via agentStore
     const agentStore = getAgentStoreState();

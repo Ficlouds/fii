@@ -14,10 +14,10 @@ import {
   knowledgeBases,
   users,
 } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { KnowledgeBaseModel } from '../knowledgeBase';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'session-group-model-test-user-id';
 const knowledgeBaseModel = new KnowledgeBaseModel(serverDB, userId);

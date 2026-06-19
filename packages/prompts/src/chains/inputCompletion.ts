@@ -1,4 +1,4 @@
-import type { OpenAIChatMessage } from '@lobechat/types';
+import type { OpenAIChatMessage } from '@ficlouds/types';
 
 /**
  * Bump when editing the autocomplete system prompt or schema below. Plumbed

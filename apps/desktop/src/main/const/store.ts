@@ -1,8 +1,8 @@
 /**
  * Application settings storage related constants
  */
-import { DEFAULT_ELECTRON_DESKTOP_SHORTCUTS } from '@lobechat/const/desktopGlobalShortcuts';
-import type { NetworkProxySettings } from '@lobechat/electron-client-ipc';
+import { DEFAULT_ELECTRON_DESKTOP_SHORTCUTS } from '@ficlouds/const/desktopGlobalShortcuts';
+import type { NetworkProxySettings } from '@ficlouds/electron-client-ipc';
 
 import { appStorageDir } from '@/const/dir';
 import { UPDATE_CHANNEL } from '@/modules/updater/configs';
@@ -33,7 +33,7 @@ export const STORE_DEFAULTS: ElectronMainStore = {
   gatewayDeviceId: '',
   gatewayDeviceName: '',
   gatewayEnabled: true,
-  gatewayUrl: 'https://device-gateway.lobehub.com',
+  gatewayUrl: 'https://device-gateway.ficlouds.com',
   imessageBridgeConfigs: [],
   locale: 'auto',
   localFileWorkspaceRoots: [],

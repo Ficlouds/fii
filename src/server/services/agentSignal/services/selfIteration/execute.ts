@@ -1,20 +1,20 @@
-import type { AgentRuntimeContext, AgentState } from '@lobechat/agent-runtime';
-import { AgentRuntime, GeneralChatAgent } from '@lobechat/agent-runtime';
-import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@lobechat/const';
-import type { LobeToolManifest } from '@lobechat/context-engine';
-import { generateToolsFromManifest, ToolNameResolver } from '@lobechat/context-engine';
-import type { ChatStreamPayload, ModelRuntime } from '@lobechat/model-runtime';
-import { consumeStreamUntilDone } from '@lobechat/model-runtime';
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
-import { tracer } from '@lobechat/observability-otel/modules/agent-signal';
+import type { AgentRuntimeContext, AgentState } from '@ficlouds/agent-runtime';
+import { AgentRuntime, GeneralChatAgent } from '@ficlouds/agent-runtime';
+import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@ficlouds/const';
+import type { FiToolManifest } from '@ficlouds/context-engine';
+import { generateToolsFromManifest, ToolNameResolver } from '@ficlouds/context-engine';
+import type { ChatStreamPayload, ModelRuntime } from '@ficlouds/model-runtime';
+import { consumeStreamUntilDone } from '@ficlouds/model-runtime';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
+import { tracer } from '@ficlouds/observability-otel/modules/agent-signal';
 import {
   createAgentSignalSelfIterationPrompt,
   createAgentSignalSelfIterationSystemRole,
   createAgentSignalSelfIterationToolSystemRole,
-} from '@lobechat/prompts';
-import type { ChatToolPayload, MessageToolCall, ModelUsage } from '@lobechat/types';
-import { RequestTrigger } from '@lobechat/types';
-import { isTrimmedNonEmptyString, toRecord } from '@lobechat/utils';
+} from '@ficlouds/prompts';
+import type { ChatToolPayload, MessageToolCall, ModelUsage } from '@ficlouds/types';
+import { RequestTrigger } from '@ficlouds/types';
+import { isTrimmedNonEmptyString, toRecord } from '@ficlouds/utils';
 
 import type { NightlyReviewContext } from './review/collect';
 import type { SelfReviewIdea, SelfReviewProposalBaseSnapshot } from './review/proposal';
@@ -258,7 +258,7 @@ const intentSchema = createObjectSchema(
 /**
  * Tool manifest used to expose current safe read/write tools to the model.
  */
-const createToolManifest = (mode: IterationMode): LobeToolManifest => {
+const createToolManifest = (mode: IterationMode): FiToolManifest => {
   const resourceTools = [
     {
       description: 'List managed skills visible in the reviewed agent scope.',
@@ -635,7 +635,7 @@ const resolveToolCalls = ({
   rawToolCalls,
   toolNameResolver,
 }: {
-  manifestMap: Record<string, LobeToolManifest>;
+  manifestMap: Record<string, FiToolManifest>;
   offeredToolNames: string[];
   rawToolCalls: MessageToolCall[];
   toolNameResolver: ToolNameResolver;
@@ -939,7 +939,7 @@ const createInitialState = ({
   runtimeTools,
 }: {
   input: ExecuteSelfIterationInput;
-  manifestMap: Record<string, LobeToolManifest>;
+  manifestMap: Record<string, FiToolManifest>;
   runtimeTools: ReturnType<typeof generateToolsFromManifest>;
 }): AgentState => {
   const createdAt = new Date().toISOString();

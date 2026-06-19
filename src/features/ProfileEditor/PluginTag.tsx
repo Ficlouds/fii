@@ -1,7 +1,7 @@
 'use client';
 
-import { type KlavisServerType, type LobehubSkillProviderType } from '@lobechat/const';
-import { KLAVIS_SERVER_TYPES, LOBEHUB_SKILL_PROVIDERS } from '@lobechat/const';
+import { type KlavisServerType, type FiSkillProviderType } from '@ficlouds/const';
+import { KLAVIS_SERVER_TYPES, LOBEHUB_SKILL_PROVIDERS } from '@ficlouds/const';
 import { Avatar, Icon, Tag } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import isEqual from 'fast-deep-equal';
@@ -17,10 +17,10 @@ import { useToolStore } from '@/store/tool';
 import {
   builtinToolSelectors,
   klavisStoreSelectors,
-  lobehubSkillStoreSelectors,
+  fiSkillStoreSelectors,
   pluginSelectors,
 } from '@/store/tool/selectors';
-import { type LobeToolMetaWithAvailability } from '@/store/tool/slices/builtin/selectors';
+import { type FiToolMetaWithAvailability } from '@/store/tool/slices/builtin/selectors';
 
 /**
  * Klavis server icon component
@@ -34,9 +34,9 @@ const KlavisIcon = memo<Pick<KlavisServerType, 'icon' | 'label'>>(({ icon, label
 });
 
 /**
- * LobeHub Skill Provider icon component
+ * Fi Skill Provider icon component
  */
-const LobehubSkillIcon = memo<Pick<LobehubSkillProviderType, 'icon' | 'label'>>(
+const FiSkillIcon = memo<Pick<FiSkillProviderType, 'icon' | 'label'>>(
   ({ icon, label }) => {
     if (typeof icon === 'string') {
       return <img alt={label} height={16} src={icon} style={{ flexShrink: 0 }} width={16} />;
@@ -110,14 +110,14 @@ const PluginTag = memo<PluginTagProps>(
     const allKlavisServers = useToolStore(klavisStoreSelectors.getServers, isEqual);
     const isKlavisEnabledInEnv = useServerConfigStore(serverConfigSelectors.enableKlavis);
 
-    // LobeHub Skill-related state
-    const allLobehubSkillServers = useToolStore(lobehubSkillStoreSelectors.getServers, isEqual);
-    const isLobehubSkillEnabled = useServerConfigStore(serverConfigSelectors.enableLobehubSkill);
+    // Fi Skill-related state
+    const allFiSkillServers = useToolStore(fiSkillStoreSelectors.getServers, isEqual);
+    const isFiSkillEnabled = useServerConfigStore(serverConfigSelectors.enableFiSkill);
 
     // Check if plugin is installed
     const isInstalled = useToolStore(pluginSelectors.isPluginInstalled(identifier));
 
-    // Try to find in local lists first (including Klavis and LobehubSkill)
+    // Try to find in local lists first (including Klavis and FiSkill)
     const localMeta = useMemo(() => {
       // Check if it's a Klavis server type
       if (isKlavisEnabledInEnv) {
@@ -136,18 +136,18 @@ const PluginTag = memo<PluginTagProps>(
         }
       }
 
-      // Check if it's a LobeHub Skill provider
-      if (isLobehubSkillEnabled) {
-        const lobehubSkillProvider = LOBEHUB_SKILL_PROVIDERS.find((p) => p.id === identifier);
-        if (lobehubSkillProvider) {
-          // Check if this LobehubSkill provider is connected
-          const connectedServer = allLobehubSkillServers.find((s) => s.identifier === identifier);
+      // Check if it's a Fi Skill provider
+      if (isFiSkillEnabled) {
+        const fiSkillProvider = LOBEHUB_SKILL_PROVIDERS.find((p) => p.id === identifier);
+        if (fiSkillProvider) {
+          // Check if this FiSkill provider is connected
+          const connectedServer = allFiSkillServers.find((s) => s.identifier === identifier);
           return {
             availableInWeb: true,
-            icon: lobehubSkillProvider.icon,
+            icon: fiSkillProvider.icon,
             isInstalled: !!connectedServer,
-            label: lobehubSkillProvider.label,
-            title: lobehubSkillProvider.label,
+            label: fiSkillProvider.label,
+            title: fiSkillProvider.label,
             type: 'lobehub-skill' as const,
           };
         }
@@ -158,7 +158,7 @@ const PluginTag = memo<PluginTagProps>(
         // availableInWeb is only present when using allMetaList
         const availableInWeb =
           useAllMetaList && 'availableInWeb' in builtinMeta
-            ? (builtinMeta as LobeToolMetaWithAvailability).availableInWeb
+            ? (builtinMeta as FiToolMetaWithAvailability).availableInWeb
             : true;
         return {
           availableInWeb,
@@ -187,8 +187,8 @@ const PluginTag = memo<PluginTagProps>(
       installedPluginList,
       isKlavisEnabledInEnv,
       allKlavisServers,
-      isLobehubSkillEnabled,
-      allLobehubSkillServers,
+      isFiSkillEnabled,
+      allFiSkillServers,
     ]);
 
     // Fetch from remote if not found locally
@@ -228,9 +228,9 @@ const PluginTag = memo<PluginTagProps>(
         return <KlavisIcon icon={meta.icon} label={meta.label} />;
       }
 
-      // LobeHub Skill type has icon property
+      // Fi Skill type has icon property
       if (meta.type === 'lobehub-skill' && 'icon' in meta && 'label' in meta) {
-        return <LobehubSkillIcon icon={meta.icon} label={meta.label} />;
+        return <FiSkillIcon icon={meta.icon} label={meta.label} />;
       }
 
       // Builtin type has avatar

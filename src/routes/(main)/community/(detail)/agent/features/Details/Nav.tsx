@@ -1,6 +1,6 @@
 'use client';
 
-import { SOCIAL_URL } from '@lobechat/business-const';
+import { SOCIAL_URL } from '@ficlouds/business-const';
 import { Flexbox, Icon, Tabs, Tag } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { BookOpenIcon, HistoryIcon, LayersIcon, ListIcon, SquareUserIcon } from 'lucide-react';

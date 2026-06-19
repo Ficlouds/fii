@@ -1,6 +1,6 @@
-import { TaskIdentifier } from '@lobechat/builtin-tool-task';
-import { DEFAULT_PROVIDER } from '@lobechat/business-const';
-import { DEFAULT_MODEL } from '@lobechat/const';
+import { TaskIdentifier } from '@ficlouds/builtin-tool-task';
+import { DEFAULT_PROVIDER } from '@ficlouds/business-const';
+import { DEFAULT_MODEL } from '@ficlouds/const';
 
 import type { BuiltinAgentDefinition } from '../../types';
 import { BUILTIN_AGENT_SLUGS } from '../../types';

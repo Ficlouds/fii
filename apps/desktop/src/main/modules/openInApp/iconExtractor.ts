@@ -3,7 +3,7 @@ import { access, mkdtemp, readFile, unlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-import type { OpenInAppId } from '@lobechat/electron-client-ipc';
+import type { OpenInAppId } from '@ficlouds/electron-client-ipc';
 
 import { createLogger } from '@/utils/logger';
 

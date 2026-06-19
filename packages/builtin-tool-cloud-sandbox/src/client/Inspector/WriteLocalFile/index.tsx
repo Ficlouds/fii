@@ -1,6 +1,6 @@
 'use client';
 
-import { createWriteLocalFileInspector } from '@lobechat/shared-tool-ui/inspectors';
+import { createWriteLocalFileInspector } from '@ficlouds/shared-tool-ui/inspectors';
 
 export const WriteLocalFileInspector = createWriteLocalFileInspector(
   'builtins.lobe-cloud-sandbox.apiName.writeLocalFile',

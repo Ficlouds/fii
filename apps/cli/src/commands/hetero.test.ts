@@ -14,7 +14,7 @@ const { mockGetTrpcClient, mockHeteroFinishMutate, mockHeteroIngestMutate } = vi
   mockHeteroIngestMutate: vi.fn(),
 }));
 
-vi.mock('@lobechat/heterogeneous-agents/spawn', () => ({
+vi.mock('@ficlouds/heterogeneous-agents/spawn', () => ({
   spawnAgent: mockSpawnAgent,
 }));
 

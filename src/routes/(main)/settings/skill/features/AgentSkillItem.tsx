@@ -1,6 +1,6 @@
 'use client';
 
-import { type BuiltinSkill, type SkillListItem } from '@lobechat/types';
+import { type BuiltinSkill, type SkillListItem } from '@ficlouds/types';
 import {
   Avatar,
   Button,

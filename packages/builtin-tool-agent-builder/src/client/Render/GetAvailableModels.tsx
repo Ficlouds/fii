@@ -1,4 +1,4 @@
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { Flexbox, Tag } from '@lobehub/ui';
 import { memo } from 'react';
 

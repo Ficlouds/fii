@@ -8,7 +8,7 @@ import type {
   TaskStatus,
   TaskTopicHandoff,
   WorkspaceData,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { TRPCError } from '@trpc/server';
 
 import { AgentModel } from '@/database/models/agent';
@@ -17,7 +17,7 @@ import { TaskModel } from '@/database/models/task';
 import { TaskTopicModel } from '@/database/models/taskTopic';
 import { TopicModel } from '@/database/models/topic';
 import { UserModel } from '@/database/models/user';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 
 import { AiAgentService } from '../aiAgent';
 import { BriefService } from '../brief';
@@ -64,13 +64,13 @@ export class TaskService {
   private agentModel: AgentModel;
   private briefModel: BriefModel;
   private briefService: BriefService;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private taskModel: TaskModel;
   private taskTopicModel: TaskTopicModel;
   private topicModel: TopicModel;
   private userId: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
     this.agentModel = new AgentModel(db, userId);

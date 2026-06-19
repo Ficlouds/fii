@@ -1,4 +1,4 @@
-import type { ChatTopic, GroupedTopic, TimeGroupId } from '@lobechat/types';
+import type { ChatTopic, GroupedTopic, TimeGroupId } from '@ficlouds/types';
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 import isYesterday from 'dayjs/plugin/isYesterday';

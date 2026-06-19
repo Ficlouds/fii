@@ -76,9 +76,9 @@ export default {
   'assistants.status.deprecated.subtitle': 'This Agent is currently unavailable. Possible reasons:',
   'assistants.status.deprecated.title': 'Agent unavailable',
   'assistants.status.support':
-    'For any questions, please copy the link and send it to <email>support@lobehub.com</email> for assistance.',
+    'For any questions, please copy the link and send it to <email>support@ficlouds.com</email> for assistance.',
   'assistants.status.unpublished.subtitle':
-    'This Agent is under review. To confirm its status, copy the link and email <email>support@lobehub.com</email>.',
+    'This Agent is under review. To confirm its status, copy the link and email <email>support@ficlouds.com</email>.',
   'assistants.status.unpublished.title': 'Agent Under Review',
   'assistants.suggestions': 'Similar Agents',
   'assistants.systemRole': 'Agent Profile',
@@ -338,7 +338,7 @@ export default {
     '- Navigate to **Settings**, then select Cursor settings\n- Choose **MCP** on the left\n- Click **Add New Global MCP Server** at the top right\n- Copy and paste the server configuration into the existing file, then save',
 
   'mcp.details.deployment.platform.steps.lobeChat':
-    '- Open the **LobeHub Desktop** app\n- Go to **Settings** - **Default Agent**\n- Then select **Skill Settings** - **Custom Skills**\n- Click **Quick Import JSON Configuration**\n- Copy and paste the server configuration into the text box, then install',
+    '- Open the **Fi Desktop** app\n- Go to **Settings** - **Default Agent**\n- Then select **Skill Settings** - **Custom Skills**\n- Click **Quick Import JSON Configuration**\n- Copy and paste the server configuration into the text box, then install',
 
   'mcp.details.deployment.platform.steps.openai':
     '- Open your **OpenAI app** or development environment\n- Configure MCP tools in the **Responses API**\n- Add MCP blocks to the **tools** array in API requests\n- Set **server_url** to your MCP server endpoint\n- Include required authentication headers (API key, token, etc.)\n- Use the `allowed_tools` parameter to restrict exposed tools\n- Set `require_approval` to control tool execution approval',
@@ -363,7 +363,7 @@ export default {
   'mcp.details.deployment.title': 'Installation Method',
 
   'mcp.details.githubBadge.desc':
-    'LobeHub regularly scans code repositories and documentation to: - Confirm MCP server operational status.\n- Extract server features such as tools, resources, prompts, and required parameters.\n- Our badge helps users quickly assess MCP server security, feature set, and installation instructions. Please copy the following code into your `README.md` file:',
+    'Fi regularly scans code repositories and documentation to: - Confirm MCP server operational status.\n- Extract server features such as tools, resources, prompts, and required parameters.\n- Our badge helps users quickly assess MCP server security, feature set, and installation instructions. Please copy the following code into your `README.md` file:',
 
   'mcp.details.nav.needHelp': 'Need Help?',
 
@@ -727,7 +727,7 @@ export default {
 
   'models.parameterList.type': 'Type',
 
-  'models.providerInfo.apiTooltip': 'LobeHub supports using a custom API key for this provider.',
+  'models.providerInfo.apiTooltip': 'Fi supports using a custom API key for this provider.',
 
   'models.providerInfo.input': 'Input Price',
 
@@ -742,7 +742,7 @@ export default {
 
   'models.providerInfo.maxOutputTooltip': 'Maximum number of tokens this endpoint can generate',
 
-  'models.providerInfo.officialTooltip': 'LobeHub Official Service',
+  'models.providerInfo.officialTooltip': 'Fi Official Service',
 
   'models.providerInfo.output': 'Output Price',
 
@@ -1047,7 +1047,7 @@ export default {
 
   'skills.details.sidebar.installCommand': 'Install Command',
 
-  'skills.details.sidebar.platform.layout.lobehub': 'Skills are managed by LobeHub automatically',
+  'skills.details.sidebar.platform.layout.lobehub': 'Skills are managed by Fi automatically',
 
   'skills.details.sidebar.platform.layout.resourcesHint': 'other resources',
 
@@ -1064,7 +1064,7 @@ export default {
     'Run the install command in your terminal to download and configure this skill for Cursor.',
 
   'skills.details.sidebar.platform.steps.lobehub':
-    'Install directly from the LobeHub marketplace with one click.',
+    'Install directly from the Fi marketplace with one click.',
 
   'skills.details.sidebar.platform.steps.vscode':
     'Run the install command in your terminal to download and configure this skill for VS Code.',

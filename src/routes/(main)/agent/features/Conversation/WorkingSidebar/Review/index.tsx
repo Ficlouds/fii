@@ -1,6 +1,6 @@
 'use client';
 
-import type { GitWorkingTreePatch } from '@lobechat/electron-client-ipc';
+import type { GitWorkingTreePatch } from '@ficlouds/electron-client-ipc';
 import { ActionIcon, Center, type DropdownItem, DropdownMenu, Empty, Flexbox } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import {

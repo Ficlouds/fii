@@ -1,6 +1,6 @@
 'use client';
 
-import { LOBE_CHAT_CLOUD, UTM_SOURCE } from '@lobechat/business-const';
+import { LOBE_CHAT_CLOUD, UTM_SOURCE } from '@ficlouds/business-const';
 import { Button, Center, Flexbox, Icon, lobeStaticStylish } from '@lobehub/ui';
 import { useSize } from 'ahooks';
 import { createStaticStyles, cx } from 'antd-style';

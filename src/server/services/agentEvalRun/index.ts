@@ -1,6 +1,6 @@
-import { LOADING_FLAT } from '@lobechat/const';
-import { type LobeChatDatabase } from '@lobechat/database';
-import { evaluate } from '@lobechat/eval-rubric';
+import { LOADING_FLAT } from '@ficlouds/const';
+import { type FiDatabase } from '@ficlouds/database';
+import { evaluate } from '@ficlouds/eval-rubric';
 import type {
   EvalBenchmarkRubric,
   EvalRunAgentSnapshot,
@@ -10,8 +10,8 @@ import type {
   EvalRunTopicResult,
   EvalThreadResult,
   RubricType,
-} from '@lobechat/types';
-import { RequestTrigger } from '@lobechat/types';
+} from '@ficlouds/types';
+import { RequestTrigger } from '@ficlouds/types';
 import debug from 'debug';
 
 import {
@@ -74,7 +74,7 @@ const resetResumedThreadResult = (thread: EvalThreadResult): EvalThreadResult =>
 });
 
 export class AgentEvalRunService {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly userId: string;
   private readonly runModel: AgentEvalRunModel;
   private readonly benchmarkModel: AgentEvalBenchmarkModel;
@@ -86,7 +86,7 @@ export class AgentEvalRunService {
   private readonly topicModel: TopicModel;
   private readonly agentService: AgentService;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
     this.runModel = new AgentEvalRunModel(db, userId);

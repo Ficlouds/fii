@@ -1,4 +1,4 @@
-import type { LobeChatDatabase } from '@lobechat/database';
+import type { FiDatabase } from '@ficlouds/database';
 import type * as ModelBankModule from 'model-bank';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -97,7 +97,7 @@ vi.mock('@/server/services/agentRuntime', () => ({
 
 vi.mock('@/server/services/market', () => ({
   MarketService: vi.fn().mockImplementation(() => ({
-    getLobehubSkillManifests: vi.fn().mockResolvedValue([]),
+    getFiSkillManifests: vi.fn().mockResolvedValue([]),
   })),
 }));
 
@@ -177,8 +177,8 @@ describe('AiAgentService.execAgent - resumeApproval', () => {
     mockUpdateToolMessage.mockResolvedValue(undefined);
     // `MessageModel` is fully mocked above, so the service never touches the
     // raw `db` arg — cast an empty stub through `unknown` to satisfy the
-    // `LobeChatDatabase` parameter type without dragging the real schema.
-    service = new AiAgentService({} as unknown as LobeChatDatabase, 'user-1');
+    // `FiDatabase` parameter type without dragging the real schema.
+    service = new AiAgentService({} as unknown as FiDatabase, 'user-1');
   });
 
   const baseParams = {

@@ -1,8 +1,8 @@
 'use client';
 
 import { CheckCircleFilled } from '@ant-design/icons';
-import { type ChatMessageError } from '@lobechat/types';
-import { TraceNameMap } from '@lobechat/types';
+import { type ChatMessageError } from '@ficlouds/types';
+import { TraceNameMap } from '@ficlouds/types';
 import { ModelIcon } from '@lobehub/icons';
 import { Alert, Button, Flexbox, Highlighter, Icon } from '@lobehub/ui';
 import { Select } from '@lobehub/ui/base-ui';

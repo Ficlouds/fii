@@ -2,8 +2,8 @@ import {
   applyMarkdownPatch,
   formatMarkdownPatchError,
   type MarkdownPatchHunk,
-} from '@lobechat/markdown-patch';
-import type { BuiltinServerRuntimeOutput, SaveUserQuestionInput } from '@lobechat/types';
+} from '@ficlouds/markdown-patch';
+import type { BuiltinServerRuntimeOutput, SaveUserQuestionInput } from '@ficlouds/types';
 
 import {
   AgentMarketplaceExecutionRuntime,

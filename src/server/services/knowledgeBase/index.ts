@@ -1,11 +1,11 @@
-import { DEFAULT_FILE_EMBEDDING_MODEL_ITEM } from '@lobechat/const';
-import { type LobeChatDatabase } from '@lobechat/database';
+import { DEFAULT_FILE_EMBEDDING_MODEL_ITEM } from '@ficlouds/const';
+import { type FiDatabase } from '@ficlouds/database';
 import {
   type ChatSemanticSearchChunk,
   type FileSearchResult,
   RequestTrigger,
   type SemanticSearchSchemaType,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { inArray } from 'drizzle-orm';
 import pMap from 'p-map';
 
@@ -81,7 +81,7 @@ const groupAndRankFiles = (chunks: ChatSemanticSearchChunk[], topK: number): Fil
  * place.
  */
 export class KnowledgeBaseSearchService {
-  private serverDB: LobeChatDatabase;
+  private serverDB: FiDatabase;
   private userId: string;
   private chunkModel: ChunkModel;
   private documentModel: DocumentModel;
@@ -89,7 +89,7 @@ export class KnowledgeBaseSearchService {
   private searchRepo: SearchRepo;
   private documentServiceInstance?: DocumentService;
 
-  constructor(serverDB: LobeChatDatabase, userId: string) {
+  constructor(serverDB: FiDatabase, userId: string) {
     this.serverDB = serverDB;
     this.userId = userId;
     this.chunkModel = new ChunkModel(serverDB, userId);

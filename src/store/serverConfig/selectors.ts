@@ -8,7 +8,7 @@ export const serverConfigSelectors = {
   enableEmailVerification: (s: ServerConfigStore) =>
     s.serverConfig.enableEmailVerification || false,
   enableKlavis: (s: ServerConfigStore) => s.serverConfig.enableKlavis || false,
-  enableLobehubSkill: (s: ServerConfigStore) => s.serverConfig.enableLobehubSkill || false,
+  enableFiSkill: (s: ServerConfigStore) => s.serverConfig.enableFiSkill || false,
   enableMagicLink: (s: ServerConfigStore) => s.serverConfig.enableMagicLink || false,
   enableMarketTrustedClient: (s: ServerConfigStore) =>
     s.serverConfig.enableMarketTrustedClient || false,

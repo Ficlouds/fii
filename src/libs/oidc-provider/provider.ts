@@ -1,4 +1,4 @@
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 import debug from 'debug';
 import { type Configuration, type KoaContextWithOIDC } from 'oidc-provider';
 import Provider, { errors } from 'oidc-provider';
@@ -35,7 +35,7 @@ const getCookieKeys = () => {
  * @param db - Database instance
  * @returns Configured OIDC Provider instance
  */
-export const createOIDCProvider = async (db: LobeChatDatabase): Promise<Provider> => {
+export const createOIDCProvider = async (db: FiDatabase): Promise<Provider> => {
   // Get JWKS
   const jwks = getJWKS();
 
@@ -278,10 +278,10 @@ export const createOIDCProvider = async (db: LobeChatDatabase): Promise<Provider
       ctx.body = `
         <html>
           <head>
-            <title>LobeHub OIDC Error</title>
+            <title>Fi OIDC Error</title>
           </head>
           <body>
-            <h1>LobeHub OIDC Error</h1>
+            <h1>Fi OIDC Error</h1>
             <p>${JSON.stringify(error, null, 2)}</p>
             <p>${JSON.stringify(out, null, 2)}</p>
           </body>

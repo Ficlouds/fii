@@ -1,12 +1,12 @@
-import type { ChatCompletionErrorPayload } from '@lobechat/model-runtime';
-import { AgentRuntimeError } from '@lobechat/model-runtime';
-import { context as otContext } from '@lobechat/observability-otel/api';
-import type { ClientSecretPayload } from '@lobechat/types';
-import { ChatErrorType } from '@lobechat/types';
+import type { ChatCompletionErrorPayload } from '@ficlouds/model-runtime';
+import { AgentRuntimeError } from '@ficlouds/model-runtime';
+import { context as otContext } from '@ficlouds/observability-otel/api';
+import type { ClientSecretPayload } from '@ficlouds/types';
+import { ChatErrorType } from '@ficlouds/types';
 
 import { auth } from '@/auth';
 import { getServerDB } from '@/database/core/db-adaptor';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { LOBE_CHAT_OIDC_AUTH_HEADER } from '@/envs/auth';
 import { extractTraceContext, injectActiveTraceHeaders } from '@/libs/observability/traceparent';
 import { assertOIDCUserActive } from '@/libs/oidc-provider/access-control';
@@ -19,7 +19,7 @@ export type RequestHandler = (
   req: Request,
   options: RequestOptions & {
     jwtPayload: ClientSecretPayload;
-    serverDB: LobeChatDatabase;
+    serverDB: FiDatabase;
     userId: string;
   },
 ) => Promise<Response>;

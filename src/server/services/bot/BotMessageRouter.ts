@@ -1,12 +1,12 @@
 import { createIoRedisState } from '@chat-adapter/state-ioredis';
-import { DEFAULT_BOT_DEBOUNCE_MS } from '@lobechat/const';
+import { DEFAULT_BOT_DEBOUNCE_MS } from '@ficlouds/const';
 import { Chat, ConsoleLogger, type Message, type MessageContext } from 'chat';
 import debug from 'debug';
 
 import { getServerDB } from '@/database/core/db-adaptor';
 import type { DecryptedBotProvider } from '@/database/models/agentBotProvider';
 import { AgentBotProviderModel } from '@/database/models/agentBotProvider';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { appEnv } from '@/envs/app';
 import { getAgentRuntimeRedisClient } from '@/server/modules/AgentRuntime/redis';
 import { KeyVaultsGateKeeper } from '@/server/modules/KeyVaultsEncrypt';
@@ -304,7 +304,7 @@ export class BotMessageRouter {
   private async createAndRegisterBot(
     entry: PlatformDefinition,
     provider: DecryptedBotProvider,
-    serverDB: LobeChatDatabase,
+    serverDB: FiDatabase,
   ): Promise<RegisteredBot> {
     const { agentId, userId, applicationId } = provider;
     const platform = entry.id;
@@ -448,7 +448,7 @@ export class BotMessageRouter {
       adapters,
       concurrency:
         concurrencyStrategy === 'debounce' ? { debounceMs, strategy: 'debounce' } : 'queue',
-      userName: `lobehub-bot-${label}`,
+      userName: `fi-bot-${label}`,
     };
 
     const redisClient = getAgentRuntimeRedisClient();
@@ -526,7 +526,7 @@ export class BotMessageRouter {
 
   private registerHandlers(
     bot: Chat<any>,
-    serverDB: LobeChatDatabase,
+    serverDB: FiDatabase,
     client: PlatformClient,
     commands: BotCommand[],
     info: ResolvedAgentInfo & {
@@ -1444,7 +1444,7 @@ export class BotMessageRouter {
    * needing every command entry threaded through CommandContext.
    */
   private buildCommands(
-    serverDB: LobeChatDatabase,
+    serverDB: FiDatabase,
     info: {
       agentId: string;
       applicationId: string;
@@ -1643,7 +1643,7 @@ export class BotMessageRouter {
         name: 'approve',
       },
       {
-        description: 'Send feedback directly to the LobeHub team (no AI reply)',
+        description: 'Send feedback directly to the Fi team (no AI reply)',
         // Declaring the argument so Discord/Slack surface a `/feedback <message>`
         // prompt instead of registering the command as zero-arg (see the
         // `options` comment on the BotCommand interface).

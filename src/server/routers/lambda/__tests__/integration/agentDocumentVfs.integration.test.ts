@@ -1,6 +1,6 @@
 // @vitest-environment node
-import type { LobeChatDatabase } from '@lobechat/database';
-import { getTestDB } from '@lobechat/database/test-utils';
+import type { FiDatabase } from '@ficlouds/database';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AgentDocumentModel } from '@/database/models/agentDocuments';
@@ -8,7 +8,7 @@ import { AgentDocumentModel } from '@/database/models/agentDocuments';
 import { agentDocumentRouter } from '../../agentDocument';
 import { cleanupTestUser, createTestAgent, createTestContext, createTestUser } from './setup';
 
-let testDB: LobeChatDatabase;
+let testDB: FiDatabase;
 vi.mock('@/database/core/db-adaptor', () => ({
   getServerDB: vi.fn(() => testDB),
 }));
@@ -24,7 +24,7 @@ vi.mock('@/server/services/skill/resource', () => ({
 describe('AgentDocument VFS Router Integration Tests', () => {
   let agentDocumentModel: AgentDocumentModel;
   let agentId: string;
-  let serverDB: LobeChatDatabase;
+  let serverDB: FiDatabase;
   let userId: string;
 
   beforeEach(async () => {

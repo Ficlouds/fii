@@ -3,8 +3,8 @@ import {
   mergeModelRuntimeHooks,
   ModelRuntime,
   type ModelRuntimeHooks,
-} from '@lobechat/model-runtime';
-import { LobeVertexAI } from '@lobechat/model-runtime/vertexai';
+} from '@ficlouds/model-runtime';
+import { LobeVertexAI } from '@ficlouds/model-runtime/vertexai';
 import {
   type AWSBedrockKeyVault,
   type AzureOpenAIKeyVault,
@@ -14,13 +14,13 @@ import {
   type GithubCopilotKeyVault,
   type OpenAICompatibleKeyVault,
   type VertexAIKeyVault,
-} from '@lobechat/types';
-import { safeParseJSON } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { safeParseJSON } from '@ficlouds/utils';
 import { ModelProvider } from 'model-bank';
 
 import { getBusinessModelRuntimeHooks } from '@/business/server/model-runtime';
 import { AiProviderModel } from '@/database/models/aiProvider';
-import { type LobeChatDatabase } from '@/database/type';
+import { type FiDatabase } from '@/database/type';
 import { getLLMConfig } from '@/envs/llm';
 import { createLLMGenerationTracingHook } from '@/server/services/llmGenerationTracing/hook';
 
@@ -170,7 +170,7 @@ const getParamsFromPayload = (provider: string, payload: ClientSecretPayload) =>
   const llmConfig = getLLMConfig() as Record<string, any>;
 
   switch (provider) {
-    case ModelProvider.LobeHub: {
+    case ModelProvider.Fi: {
       return { apikey: payload.apiKey, baseURL: payload.baseURL, ...payload };
     }
 
@@ -401,7 +401,7 @@ export const initModelRuntimeWithUserPayload = (
  * ```
  */
 export const initModelRuntimeFromDB = async (
-  db: LobeChatDatabase,
+  db: FiDatabase,
   userId: string,
   provider: string,
 ): Promise<ModelRuntime> => {

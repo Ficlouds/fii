@@ -15,7 +15,7 @@ import { calculatorRuntime } from './calculator';
 import { cloudSandboxRuntime } from './cloudSandbox';
 import { credsRuntime } from './creds';
 import { knowledgeBaseRuntime } from './knowledgeBase';
-import { lobeAgentRuntime } from './lobeAgent';
+import { fiAgentRuntime } from './fiAgent';
 import { localSystemRuntime } from './localSystem';
 import { memoryRuntime } from './memory';
 import { messageRuntime } from './message';
@@ -69,7 +69,7 @@ registerRuntimes([
   credsRuntime,
   knowledgeBaseRuntime,
   webOnboardingRuntime,
-  lobeAgentRuntime,
+  fiAgentRuntime,
   selfFeedbackIntentRuntime,
 ]);
 

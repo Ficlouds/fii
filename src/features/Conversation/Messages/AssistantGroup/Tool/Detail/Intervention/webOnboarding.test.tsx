@@ -42,8 +42,8 @@ describe('web onboarding intervention registry', () => {
 
   beforeEach(async () => {
     const { WebOnboardingInterventions } =
-      await import('@lobechat/builtin-tool-web-onboarding/client');
-    const { WebOnboardingApiName } = await import('@lobechat/builtin-tool-web-onboarding');
+      await import('@ficlouds/builtin-tool-web-onboarding/client');
+    const { WebOnboardingApiName } = await import('@ficlouds/builtin-tool-web-onboarding');
     Component = WebOnboardingInterventions[WebOnboardingApiName.saveUserQuestion];
     expect(Component).toBeDefined();
   });

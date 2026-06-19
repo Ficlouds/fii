@@ -1,6 +1,6 @@
-import { KLAVIS_SERVER_TYPES } from '@lobechat/const';
-import type { LobeToolManifest } from '@lobechat/context-engine';
-import type { LobeChatDatabase } from '@lobechat/database';
+import { KLAVIS_SERVER_TYPES } from '@ficlouds/const';
+import type { FiToolManifest } from '@ficlouds/context-engine';
+import type { FiDatabase } from '@ficlouds/database';
 import debug from 'debug';
 
 import { PluginModel } from '@/database/models/plugin';
@@ -19,7 +19,7 @@ export interface KlavisToolExecuteParams {
 }
 
 export interface KlavisServiceOptions {
-  db?: LobeChatDatabase;
+  db?: FiDatabase;
   userId?: string;
 }
 
@@ -40,7 +40,7 @@ export interface KlavisServiceOptions {
  * ```
  */
 export class KlavisService {
-  private db?: LobeChatDatabase;
+  private db?: FiDatabase;
   private userId?: string;
   private pluginModel?: PluginModel;
 
@@ -181,7 +181,7 @@ export class KlavisService {
    *
    * @returns Array of tool manifests for connected Klavis servers
    */
-  async getKlavisManifests(): Promise<LobeToolManifest[]> {
+  async getKlavisManifests(): Promise<FiToolManifest[]> {
     if (!this.pluginModel) {
       log('getKlavisManifests: pluginModel not available, returning empty array');
       return [];
@@ -200,8 +200,8 @@ export class KlavisService {
 
       log('getKlavisManifests: found %d authenticated Klavis plugins', klavisPlugins.length);
 
-      // Convert to LobeToolManifest format
-      const manifests: LobeToolManifest[] = klavisPlugins
+      // Convert to FiToolManifest format
+      const manifests: FiToolManifest[] = klavisPlugins
         .map((plugin) => {
           if (!plugin.manifest) return null;
 
@@ -220,7 +220,7 @@ export class KlavisService {
             version: '1.0.0',
           };
         })
-        .filter(Boolean) as LobeToolManifest[];
+        .filter(Boolean) as FiToolManifest[];
 
       log('getKlavisManifests: returning %d manifests', manifests.length);
 

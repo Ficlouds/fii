@@ -5,7 +5,7 @@ import type {
   BlueBubblesOutboundAttachment,
   BlueBubblesQueryResult,
   BlueBubblesSendOptions,
-} from '@lobechat/chat-adapter-imessage';
+} from '@ficlouds/chat-adapter-imessage';
 
 import { deviceProxy } from '@/server/services/toolExecution/deviceProxy';
 

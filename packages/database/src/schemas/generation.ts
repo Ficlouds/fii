@@ -1,4 +1,4 @@
-import type { GenerationAsset } from '@lobechat/types';
+import type { GenerationAsset } from '@ficlouds/types';
 import { index, integer, jsonb, pgTable, text, uuid, varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
 

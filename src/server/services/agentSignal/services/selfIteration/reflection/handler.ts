@@ -1,7 +1,7 @@
-import type { SourceAgentSelfReflectionRequested } from '@lobechat/agent-signal/source';
-import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
-import type { ModelRuntime } from '@lobechat/model-runtime';
-import { isNonEmptyString } from '@lobechat/utils';
+import type { SourceAgentSelfReflectionRequested } from '@ficlouds/agent-signal/source';
+import { AGENT_SIGNAL_SOURCE_TYPES } from '@ficlouds/agent-signal/source';
+import type { ModelRuntime } from '@ficlouds/model-runtime';
+import { isNonEmptyString } from '@ficlouds/utils';
 
 import { defineSourceHandler } from '../../../runtime/middleware';
 import type { AgentSignalReceipt } from '../../receiptService';

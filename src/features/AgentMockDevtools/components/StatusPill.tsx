@@ -1,4 +1,4 @@
-import type { PlaybackState } from '@lobechat/agent-mock';
+import type { PlaybackState } from '@ficlouds/agent-mock';
 import { Flexbox } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { memo, useMemo } from 'react';

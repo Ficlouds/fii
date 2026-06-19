@@ -1,10 +1,10 @@
-import type { CompressionGroupMetadata } from '@lobechat/types';
-import { MessageGroupType } from '@lobechat/types';
+import type { CompressionGroupMetadata } from '@ficlouds/types';
+import { MessageGroupType } from '@ficlouds/types';
 import { and, eq, inArray, isNull } from 'drizzle-orm';
 
 import type { MessageGroupItem } from '../../schemas';
 import { messageGroups, messages } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 
 export interface CreateCompressionGroupParams {
   content: string;
@@ -30,9 +30,9 @@ export interface CompressionGroupResult {
  */
 export class CompressionRepository {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

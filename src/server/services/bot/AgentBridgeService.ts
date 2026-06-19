@@ -1,5 +1,5 @@
-import type { ChatTopicBotContext, ExecAgentResult } from '@lobechat/types';
-import { RequestTrigger } from '@lobechat/types';
+import type { ChatTopicBotContext, ExecAgentResult } from '@ficlouds/types';
+import { RequestTrigger } from '@ficlouds/types';
 import type { Message, SentMessage, Thread } from 'chat';
 import debug from 'debug';
 
@@ -7,7 +7,7 @@ import type { MessengerPlatform } from '@/config/messenger';
 import { AgentBotProviderModel } from '@/database/models/agentBotProvider';
 import { TopicModel } from '@/database/models/topic';
 import { UserModel } from '@/database/models/user';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { createAbortError, isAbortError } from '@/server/services/agentRuntime/abort';
 import { AiAgentService } from '@/server/services/aiAgent';
 import { GatewayService } from '@/server/services/gateway';
@@ -178,7 +178,7 @@ interface ActiveReaction {
  * Provides real-time feedback via emoji reactions and editable progress messages.
  */
 export class AgentBridgeService {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly userId: string;
 
   private timezone: string | undefined;
@@ -351,7 +351,7 @@ export class AgentBridgeService {
     }
   }
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

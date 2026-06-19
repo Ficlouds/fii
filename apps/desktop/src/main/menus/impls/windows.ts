@@ -201,7 +201,7 @@ export class WindowsMenu extends BaseMenuPlatform implements IMenuPlatform {
         submenu: [
           {
             click: async () => {
-              await shell.openExternal('https://lobehub.com');
+              await shell.openExternal('https://ficlouds.com');
             },
             label: t('help.visitWebsite'),
           },

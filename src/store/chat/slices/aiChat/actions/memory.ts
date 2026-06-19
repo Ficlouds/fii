@@ -1,6 +1,6 @@
-import { chainSummaryHistory } from '@lobechat/prompts';
-import { type UIChatMessage } from '@lobechat/types';
-import { TraceNameMap } from '@lobechat/types';
+import { chainSummaryHistory } from '@ficlouds/prompts';
+import { type UIChatMessage } from '@ficlouds/types';
+import { TraceNameMap } from '@ficlouds/types';
 
 import { chatService } from '@/services/chat';
 import { topicService } from '@/services/topic';

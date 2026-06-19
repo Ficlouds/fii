@@ -1,7 +1,7 @@
 import {
   AGENT_SIGNAL_CLIENT_SOURCE_TYPES,
   type AgentSignalSourceEventInput,
-} from '@lobechat/agent-signal/source';
+} from '@ficlouds/agent-signal/source';
 import debug from 'debug';
 import { z } from 'zod';
 

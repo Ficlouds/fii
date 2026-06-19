@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
  * Manual E2E coverage for `lh agent space fs` against a real backend.
  *
  * Run when:
- * - A local or remote LobeHub backend is reachable by the CLI
+ * - A local or remote Fi backend is reachable by the CLI
  * - `AGENT_FS_E2E_AGENT_ID` points at an agent with document access
  *
  * Expects:

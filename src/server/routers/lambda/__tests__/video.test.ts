@@ -53,12 +53,12 @@ vi.mock('@/business/server/video-generation/chargeBeforeGenerate', () => ({
 vi.mock('@/business/server/video-generation/chargeAfterGenerate', () => ({
   chargeAfterGenerate: vi.fn().mockResolvedValue(undefined),
 }));
-vi.mock('@lobechat/business-model-runtime', async (importOriginal) => ({
+vi.mock('@ficlouds/business-model-runtime', async (importOriginal) => ({
   ...((await importOriginal()) as any),
   resolveBusinessModelMapping: (...args: [string, string]) =>
     mockResolveBusinessModelMapping(...args),
 }));
-vi.mock('@lobechat/business-model-bank/model-config', () => ({
+vi.mock('@ficlouds/business-model-bank/model-config', () => ({
   loadModels: mockLoadModels,
 }));
 vi.mock('@/business/server/video-generation/getVideoFreeQuota', () => ({

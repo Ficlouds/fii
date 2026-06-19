@@ -1,6 +1,6 @@
-import { AgentManagementIdentifier } from '@lobechat/builtin-tool-agent-management';
-import { LOADING_FLAT } from '@lobechat/const';
-import type { ConversationContext, HeterogeneousProviderConfig } from '@lobechat/types';
+import { AgentManagementIdentifier } from '@ficlouds/builtin-tool-agent-management';
+import { LOADING_FLAT } from '@ficlouds/const';
+import type { ConversationContext, HeterogeneousProviderConfig } from '@ficlouds/types';
 import { t } from 'i18next';
 import { type StateCreator } from 'zustand';
 

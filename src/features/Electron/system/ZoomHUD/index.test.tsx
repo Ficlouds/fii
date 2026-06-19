@@ -7,7 +7,7 @@ type Handler = (payload: { factor: number; level: number }) => void;
 
 let registeredHandler: Handler | null = null;
 
-vi.mock('@lobechat/electron-client-ipc', () => ({
+vi.mock('@ficlouds/electron-client-ipc', () => ({
   useWatchBroadcast: (_event: string, handler: Handler) => {
     registeredHandler = handler;
   },

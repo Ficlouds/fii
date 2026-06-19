@@ -1,14 +1,14 @@
 // @vitest-environment node
-import type { AgentStreamEvent } from '@lobechat/agent-gateway-client';
-import { type LobeChatDatabase } from '@lobechat/database';
-import { getTestDB } from '@lobechat/database/test-utils';
+import type { AgentStreamEvent } from '@ficlouds/agent-gateway-client';
+import { type FiDatabase } from '@ficlouds/database';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { aiAgentRouter } from '../aiAgent';
 import { cleanupTestUser, createTestUser } from './integration/setup';
 
 // Mock getServerDB to return our test database instance
-let testDB: LobeChatDatabase;
+let testDB: FiDatabase;
 vi.mock('@/database/core/db-adaptor', () => ({
   getServerDB: vi.fn(() => testDB),
 }));
@@ -43,7 +43,7 @@ const buildEvent = (type: AgentStreamEvent['type'], stepIndex: number): AgentStr
 });
 
 describe('aiAgentRouter.heteroIngest / heteroFinish', () => {
-  let serverDB: LobeChatDatabase;
+  let serverDB: FiDatabase;
   let userId: string;
 
   beforeEach(async () => {

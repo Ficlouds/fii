@@ -5,7 +5,7 @@ import type {
   WorkspaceData,
   WorkspaceDocNode,
   WorkspaceTreeNode,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { and, desc, eq, gte, inArray, isNotNull, isNull, ne, notInArray, sql } from 'drizzle-orm';
 
 import { merge } from '@/utils/merge';
@@ -13,13 +13,13 @@ import { merge } from '@/utils/merge';
 import { documents } from '../schemas/file';
 import type { NewTaskComment, TaskCommentItem } from '../schemas/task';
 import { taskComments, taskDependencies, taskDocuments, tasks } from '../schemas/task';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export class TaskModel {
   private readonly userId: string;
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }
@@ -482,7 +482,7 @@ export class TaskModel {
   // Tasks eligible for cron-based dispatch.
   // Excludes terminal/paused/running — `paused` requires user attention,
   // `running` is already in flight (and `runTask` would CONFLICT anyway).
-  static async getScheduledTasks(db: LobeChatDatabase): Promise<TaskItem[]> {
+  static async getScheduledTasks(db: FiDatabase): Promise<TaskItem[]> {
     return db
       .select()
       .from(tasks)
@@ -497,7 +497,7 @@ export class TaskModel {
 
   // Find stuck tasks (running but heartbeat timed out)
   // Only checks tasks that have both lastHeartbeatAt and heartbeatTimeout set
-  static async findStuckTasks(db: LobeChatDatabase): Promise<TaskItem[]> {
+  static async findStuckTasks(db: FiDatabase): Promise<TaskItem[]> {
     return db
       .select()
       .from(tasks)

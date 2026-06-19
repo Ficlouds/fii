@@ -1,6 +1,6 @@
-import { getBuiltinStreaming } from '@lobechat/builtin-tools/streamings';
-import { type ChatToolResult, type ToolIntervention } from '@lobechat/types';
-import { safeParsePartialJSON } from '@lobechat/utils';
+import { getBuiltinStreaming } from '@ficlouds/builtin-tools/streamings';
+import { type ChatToolResult, type ToolIntervention } from '@ficlouds/types';
+import { safeParsePartialJSON } from '@ficlouds/utils';
 import { Flexbox } from '@lobehub/ui';
 import { memo, Suspense } from 'react';
 

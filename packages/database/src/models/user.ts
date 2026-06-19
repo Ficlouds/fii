@@ -5,7 +5,7 @@ import type {
   UserKeyVaults,
   UserPreference,
   UserSettings,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { TRPCError } from '@trpc/server';
 import dayjs from 'dayjs';
 import { and, asc, eq, gt, inArray, or, sql } from 'drizzle-orm';
@@ -16,7 +16,7 @@ import { today } from '@/utils/time';
 
 import type { NewUser, UserItem, UserSettingsItem } from '../schemas';
 import { messages, nextauthAccounts, topics, users, userSettings } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 type DecryptUserKeyVaults = (
   encryptKeyVaultsStr: string | null,
@@ -54,9 +54,9 @@ interface LastActiveAtTransition {
 
 export class UserModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }
@@ -306,11 +306,11 @@ export class UserModel {
   };
 
   // Static method
-  static makeSureUserExist = async (db: LobeChatDatabase, userId: string) => {
+  static makeSureUserExist = async (db: FiDatabase, userId: string) => {
     await db.insert(users).values({ id: userId }).onConflictDoNothing();
   };
 
-  static createUser = async (db: LobeChatDatabase, params: NewUser) => {
+  static createUser = async (db: FiDatabase, params: NewUser) => {
     // if user already exists, skip creation
     if (params.id) {
       const user = await db.query.users.findFirst({ where: eq(users.id, params.id) });
@@ -323,32 +323,32 @@ export class UserModel {
     return { duplicate: false, user };
   };
 
-  static deleteUser = async (db: LobeChatDatabase, id: string) => {
+  static deleteUser = async (db: FiDatabase, id: string) => {
     return db.delete(users).where(eq(users.id, id));
   };
 
-  static findById = async (db: LobeChatDatabase, id: string) => {
+  static findById = async (db: FiDatabase, id: string) => {
     return db.query.users.findFirst({ where: eq(users.id, id) });
   };
 
-  static findByUsername = async (db: LobeChatDatabase, username: string) => {
+  static findByUsername = async (db: FiDatabase, username: string) => {
     const normalizedUsername = username.trim();
     if (!normalizedUsername) return null;
 
     return db.query.users.findFirst({ where: eq(users.username, normalizedUsername) });
   };
 
-  static findByEmail = async (db: LobeChatDatabase, email: string) => {
+  static findByEmail = async (db: FiDatabase, email: string) => {
     return db.query.users.findFirst({ where: eq(users.email, email) });
   };
 
-  static findByIds = async (db: LobeChatDatabase, ids: string[]) => {
+  static findByIds = async (db: FiDatabase, ids: string[]) => {
     if (ids.length === 0) return [];
     return db.query.users.findMany({ where: inArray(users.id, ids) });
   };
 
   static getUserApiKeys = async (
-    db: LobeChatDatabase,
+    db: FiDatabase,
     id: string,
     decryptor: DecryptUserKeyVaults,
   ) => {
@@ -370,7 +370,7 @@ export class UserModel {
   };
 
   static listUsersForMemoryExtractor = (
-    db: LobeChatDatabase,
+    db: FiDatabase,
     options: ListUsersForMemoryExtractorOptions = {},
   ) => {
     const cursorCondition = options.cursor
@@ -396,7 +396,7 @@ export class UserModel {
   };
 
   static listUsersForHourlyMemoryExtractor = (
-    db: LobeChatDatabase,
+    db: FiDatabase,
     options: ListUsersForHourlyMemoryExtractorOptions = {},
   ) => {
     const cursorCondition = options.cursor
@@ -445,7 +445,7 @@ export class UserModel {
    * Get user info for AI generation (name and language preference)
    */
   static getInfoForAIGeneration = async (
-    db: LobeChatDatabase,
+    db: FiDatabase,
     userId: string,
   ): Promise<UserInfoForAIGeneration> => {
     const result = await db

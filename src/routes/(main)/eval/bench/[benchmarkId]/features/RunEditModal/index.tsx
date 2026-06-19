@@ -1,7 +1,7 @@
 'use client';
 
-import { AGENT_PROFILE_URL, DEFAULT_INBOX_AVATAR, INBOX_SESSION_ID } from '@lobechat/const';
-import type { AgentEvalRunStatus, EvalRunInputConfig } from '@lobechat/types';
+import { AGENT_PROFILE_URL, DEFAULT_INBOX_AVATAR, INBOX_SESSION_ID } from '@ficlouds/const';
+import type { AgentEvalRunStatus, EvalRunInputConfig } from '@ficlouds/types';
 import { Accordion, AccordionItem, ActionIcon, Avatar, Flexbox } from '@lobehub/ui';
 import { App, Form, Input, InputNumber, Modal, Select, Space } from 'antd';
 import { createStaticStyles } from 'antd-style';

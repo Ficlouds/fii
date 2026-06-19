@@ -8,15 +8,15 @@ import type {
   EvalContext,
   FileContent,
   KnowledgeBaseInfo,
-  LobeToolManifest,
+  FiToolManifest,
   OnboardingContext,
   SkillMeta,
   ToolDiscoveryConfig,
   TopicReferenceItem,
   UserMemoryData,
-} from '@lobechat/context-engine';
-import type { PageContentContext } from '@lobechat/prompts';
-import type { RuntimeInitialContext, UIChatMessage } from '@lobechat/types';
+} from '@ficlouds/context-engine';
+import type { PageContentContext } from '@ficlouds/prompts';
+import type { RuntimeInitialContext, UIChatMessage } from '@ficlouds/types';
 
 /**
  * Model capability checker functions for server-side
@@ -47,7 +47,7 @@ export interface ServerToolsConfig {
   /** Tool identifiers that must be removed from historical tool calls in this runtime scope */
   disabledToolIdentifiers?: string[];
   /** Tool manifests with systemRole and API definitions */
-  manifests?: LobeToolManifest[];
+  manifests?: FiToolManifest[];
   /** Enabled tool IDs (kept for compatibility) */
   tools?: string[];
 }
@@ -166,5 +166,5 @@ export {
   type KnowledgeBaseInfo,
   type TopicReferenceItem,
   type UserMemoryData,
-} from '@lobechat/context-engine';
-export type { PageContentContext } from '@lobechat/prompts';
+} from '@ficlouds/context-engine';
+export type { PageContentContext } from '@ficlouds/prompts';

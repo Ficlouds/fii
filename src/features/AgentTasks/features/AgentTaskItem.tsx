@@ -1,4 +1,4 @@
-import type { TaskStatus } from '@lobechat/types';
+import type { TaskStatus } from '@ficlouds/types';
 import { Block, ContextMenuTrigger, Flexbox, Text } from '@lobehub/ui';
 import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';

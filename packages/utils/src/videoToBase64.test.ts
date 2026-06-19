@@ -2,9 +2,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { videoUrlToBase64 } from './videoToBase64';
 
-// Mock @lobechat/ssrf-safe-fetch module
+// Mock @ficlouds/ssrf-safe-fetch module
 const mockSsrfSafeFetch = vi.fn();
-vi.mock('@lobechat/ssrf-safe-fetch', () => ({
+vi.mock('@ficlouds/ssrf-safe-fetch', () => ({
   ssrfSafeFetch: mockSsrfSafeFetch,
 }));
 

@@ -1,4 +1,4 @@
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { Flexbox } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { CheckCircle, FileText } from 'lucide-react';

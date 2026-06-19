@@ -1,4 +1,4 @@
-import type { LobeChatDatabase } from '@lobechat/database';
+import type { FiDatabase } from '@ficlouds/database';
 
 import { TopicDocumentModel } from '@/database/models/topicDocument';
 import { AgentDocumentVfsService } from '@/server/services/agentDocumentVfs';
@@ -24,7 +24,7 @@ interface ArchiveToolResultParams {
   content: string;
   identifier?: string;
   limit?: number;
-  serverDB?: LobeChatDatabase;
+  serverDB?: FiDatabase;
   toolCallId?: string;
   topicId?: string | null;
   userId?: string;

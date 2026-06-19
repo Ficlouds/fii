@@ -1,7 +1,7 @@
 'use client';
 
-import type { RenameLocalFileParams } from '@lobechat/electron-client-ipc';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import type { RenameLocalFileParams } from '@ficlouds/electron-client-ipc';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { MaterialFileTypeIcon } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
 import path from 'path-browserify-esm';

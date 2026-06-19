@@ -1,4 +1,4 @@
-import { INBOX_SESSION_ID } from '@lobechat/const';
+import { INBOX_SESSION_ID } from '@ficlouds/const';
 import {
   and,
   asc,
@@ -15,7 +15,7 @@ import {
 } from 'drizzle-orm';
 
 import { agents, messagePlugins, messages, topics, users, userSettings } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 
 /**
  * Normalizes database aggregate timestamps.
@@ -104,9 +104,9 @@ export interface AgentSignalNightlyReviewTarget {
  * - Candidate users and active agent targets without emitting source events
  */
 export class AgentSignalNightlyReviewModel {
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase) {
+  constructor(db: FiDatabase) {
     this.db = db;
   }
 

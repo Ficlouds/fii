@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinInterventionProps } from '@lobechat/types';
+import type { BuiltinInterventionProps } from '@ficlouds/types';
 import { Avatar, Button, Flexbox, Text } from '@lobehub/ui';
 import { cx } from 'antd-style';
 import type { KeyboardEvent } from 'react';

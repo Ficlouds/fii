@@ -1,6 +1,6 @@
 'use client';
 
-import type { MarkdownPatchHunk } from '@lobechat/markdown-patch';
+import type { MarkdownPatchHunk } from '@ficlouds/markdown-patch';
 import { createStaticStyles } from 'antd-style';
 import type { ReactNode } from 'react';
 import { memo } from 'react';

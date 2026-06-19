@@ -1,4 +1,4 @@
-import { KLAVIS_SERVER_TYPES } from '@lobechat/const';
+import { KLAVIS_SERVER_TYPES } from '@ficlouds/const';
 import { produce } from 'immer';
 import { type SWRResponse } from 'swr';
 import useSWR from 'swr';
@@ -345,7 +345,7 @@ export class KlavisStoreActionImpl {
         // Filter plugins with klavis params
         const validPlugins = klavisPlugins.filter((plugin) => plugin.customParams?.klavis);
 
-        // Clean up deprecated Klavis servers (e.g., 'github' moved to LobeHub Skill)
+        // Clean up deprecated Klavis servers (e.g., 'github' moved to Fi Skill)
         const deprecatedPlugins = validPlugins.filter(
           (plugin) => !VALID_KLAVIS_IDENTIFIERS.has(plugin.identifier),
         );

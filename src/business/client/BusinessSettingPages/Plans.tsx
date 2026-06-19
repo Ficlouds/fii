@@ -1,6 +1,6 @@
 'use client';
 
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { memo } from 'react';
 
 import { SubscriptionIframeWrapper } from './SubscriptionIframeWrapper';

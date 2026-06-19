@@ -1,4 +1,4 @@
-import type { TaskDetailSubtask } from '@lobechat/types';
+import type { TaskDetailSubtask } from '@ficlouds/types';
 import { type DropdownMenuProps } from '@lobehub/ui';
 import { Block, DropdownMenu, Flexbox, Text } from '@lobehub/ui';
 import { Progress } from 'antd';

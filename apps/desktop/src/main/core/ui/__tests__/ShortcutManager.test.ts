@@ -1,4 +1,4 @@
-import { DEFAULT_ELECTRON_DESKTOP_SHORTCUTS } from '@lobechat/const/desktopGlobalShortcuts';
+import { DEFAULT_ELECTRON_DESKTOP_SHORTCUTS } from '@ficlouds/const/desktopGlobalShortcuts';
 import { globalShortcut } from 'electron';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -26,7 +26,7 @@ vi.mock('@/utils/logger', () => ({
 }));
 
 // Mock desktop global shortcut defaults
-vi.mock('@lobechat/const/desktopGlobalShortcuts', () => ({
+vi.mock('@ficlouds/const/desktopGlobalShortcuts', () => ({
   DEFAULT_ELECTRON_DESKTOP_SHORTCUTS: {
     quickComposer: 'Alt+Shift+Space',
     showApp: '',

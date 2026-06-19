@@ -1,6 +1,6 @@
-import { type AgentState, type ExecutorResult } from '@lobechat/agent-runtime';
-import { GroupOrchestrationRuntime, GroupOrchestrationSupervisor } from '@lobechat/agent-runtime';
-import { type TaskStatusResult } from '@lobechat/types';
+import { type AgentState, type ExecutorResult } from '@ficlouds/agent-runtime';
+import { GroupOrchestrationRuntime, GroupOrchestrationSupervisor } from '@ficlouds/agent-runtime';
+import { type TaskStatusResult } from '@ficlouds/types';
 import debug from 'debug';
 import { type SWRResponse } from 'swr';
 

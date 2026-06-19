@@ -1,6 +1,6 @@
 import { type SessionStore } from '@/store/session';
-import { type LobeAgentSession } from '@/types/session';
-import { LobeSessionType } from '@/types/session';
+import { type FiAgentSession } from '@/types/session';
+import { FiSessionType } from '@/types/session';
 
 import { sessionSelectors } from './list';
 
@@ -15,8 +15,8 @@ describe('currentSession', () => {
           params: {},
           systemRole: 'system-role',
         },
-        type: LobeSessionType.Agent,
-      } as LobeAgentSession,
+        type: FiSessionType.Agent,
+      } as FiAgentSession,
       {
         id: '2',
         config: {
@@ -24,8 +24,8 @@ describe('currentSession', () => {
           params: {},
           systemRole: 'system-role',
         },
-        type: LobeSessionType.Agent,
-      } as LobeAgentSession,
+        type: FiSessionType.Agent,
+      } as FiAgentSession,
     ],
   } as unknown as SessionStore;
 
@@ -49,8 +49,8 @@ describe('getSessionById', () => {
           params: {},
           systemRole: 'system-role',
         },
-        type: LobeSessionType.Agent,
-      } as LobeAgentSession,
+        type: FiSessionType.Agent,
+      } as FiAgentSession,
       {
         id: '2',
         config: {
@@ -58,8 +58,8 @@ describe('getSessionById', () => {
           params: {},
           systemRole: 'system-role',
         },
-        type: LobeSessionType.Agent,
-      } as LobeAgentSession,
+        type: FiSessionType.Agent,
+      } as FiAgentSession,
     ],
   } as unknown as SessionStore;
 

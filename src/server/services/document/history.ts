@@ -1,5 +1,5 @@
-import type { DocumentItem } from '@lobechat/database/schemas';
-import { documentHistories, documents } from '@lobechat/database/schemas';
+import type { DocumentItem } from '@ficlouds/database/schemas';
+import { documentHistories, documents } from '@ficlouds/database/schemas';
 import { and, desc, eq, gte, inArray, lt, or } from 'drizzle-orm';
 
 import {

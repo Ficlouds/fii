@@ -1,4 +1,4 @@
-import { type AssistantContentBlock, type UIChatMessage } from '@lobechat/types';
+import { type AssistantContentBlock, type UIChatMessage } from '@ficlouds/types';
 import { Flexbox } from '@lobehub/ui';
 import { memo, useMemo } from 'react';
 

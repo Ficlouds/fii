@@ -1,4 +1,4 @@
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 import { TRPCError } from '@trpc/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -13,7 +13,7 @@ vi.mock('@/database/models/document');
 vi.mock('@/database/models/file');
 vi.mock('../../file');
 vi.mock('../history');
-vi.mock('@lobechat/file-loaders', () => ({
+vi.mock('@ficlouds/file-loaders', () => ({
   loadFile: vi.fn(),
   UnsupportedFileTypeError: class UnsupportedFileTypeError extends Error {
     fileType: string;
@@ -29,7 +29,7 @@ vi.mock('debug', () => ({
   default: () => vi.fn(),
 }));
 
-const { loadFile, UnsupportedFileTypeError } = await import('@lobechat/file-loaders');
+const { loadFile, UnsupportedFileTypeError } = await import('@ficlouds/file-loaders');
 
 const createEditorDataWithDiffNode = () => ({
   root: {
@@ -69,7 +69,7 @@ const normalizedEditorDataFromDiffNode = {
 
 describe('DocumentService', () => {
   let service: DocumentService;
-  let mockDb: LobeChatDatabase;
+  let mockDb: FiDatabase;
   let mockDocumentModel: any;
   let mockDocumentHistoryService: any;
   let mockFileModel: any;
@@ -86,7 +86,7 @@ describe('DocumentService', () => {
           findMany: vi.fn().mockResolvedValue([]),
         },
       },
-      transaction: vi.fn(async (callback: (tx: LobeChatDatabase) => Promise<unknown>) =>
+      transaction: vi.fn(async (callback: (tx: FiDatabase) => Promise<unknown>) =>
         callback(mockDb),
       ),
     } as any;

@@ -1,4 +1,4 @@
-import type { ChatTopicMetadata } from '@lobechat/types';
+import type { ChatTopicMetadata } from '@ficlouds/types';
 import { describe, expect, it } from 'vitest';
 
 import { resolveHeteroResume } from '../heteroResume';

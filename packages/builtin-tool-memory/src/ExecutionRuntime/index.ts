@@ -6,8 +6,8 @@ import type {
   PreferenceMemoryItemSchema,
   RemoveIdentityActionSchema,
   UpdateIdentityActionSchema,
-} from '@lobechat/memory-user-memory/schemas';
-import { formatMemorySearchResults } from '@lobechat/prompts';
+} from '@ficlouds/memory-user-memory/schemas';
+import { formatMemorySearchResults } from '@ficlouds/prompts';
 import type {
   AddActivityMemoryResult,
   AddContextMemoryResult,
@@ -21,7 +21,7 @@ import type {
   SearchMemoryParams,
   SearchMemoryResult,
   UpdateIdentityMemoryResult,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import type { z } from 'zod';
 
 export interface MemoryRuntimeService {

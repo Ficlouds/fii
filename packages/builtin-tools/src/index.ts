@@ -1,31 +1,31 @@
-import { LobeActivatorManifest } from '@lobechat/builtin-tool-activator';
-import { AgentBuilderManifest } from '@lobechat/builtin-tool-agent-builder';
-import { AgentDocumentsManifest } from '@lobechat/builtin-tool-agent-documents';
-import { AgentManagementManifest } from '@lobechat/builtin-tool-agent-management';
-import { BriefManifest } from '@lobechat/builtin-tool-brief';
-import { CalculatorManifest } from '@lobechat/builtin-tool-calculator';
-import { CloudSandboxManifest } from '@lobechat/builtin-tool-cloud-sandbox';
-import { CredsManifest } from '@lobechat/builtin-tool-creds';
-import { GroupAgentBuilderManifest } from '@lobechat/builtin-tool-group-agent-builder';
-import { GroupManagementManifest } from '@lobechat/builtin-tool-group-management';
-import { KnowledgeBaseManifest } from '@lobechat/builtin-tool-knowledge-base';
-import { LobeAgentManifest } from '@lobechat/builtin-tool-lobe-agent';
-import { LocalSystemManifest } from '@lobechat/builtin-tool-local-system';
-import { MemoryManifest } from '@lobechat/builtin-tool-memory';
-import { MessageManifest } from '@lobechat/builtin-tool-message';
-import { PageAgentManifest } from '@lobechat/builtin-tool-page-agent';
-import { RemoteDeviceManifest } from '@lobechat/builtin-tool-remote-device';
-import { selfFeedbackIntentManifest } from '@lobechat/builtin-tool-self-iteration';
-import { SkillMaintainerManifest } from '@lobechat/builtin-tool-skill-maintainer';
-import { SkillStoreManifest } from '@lobechat/builtin-tool-skill-store';
-import { SkillsManifest } from '@lobechat/builtin-tool-skills';
-import { TaskManifest } from '@lobechat/builtin-tool-task';
-import { TopicReferenceManifest } from '@lobechat/builtin-tool-topic-reference';
-import { UserInteractionManifest } from '@lobechat/builtin-tool-user-interaction';
-import { WebBrowsingManifest } from '@lobechat/builtin-tool-web-browsing';
-import { WebOnboardingManifest } from '@lobechat/builtin-tool-web-onboarding';
-import { isDesktop, RECOMMENDED_SKILLS, RecommendedSkillType } from '@lobechat/const';
-import { type LobeBuiltinTool } from '@lobechat/types';
+import { LobeActivatorManifest } from '@ficlouds/builtin-tool-activator';
+import { AgentBuilderManifest } from '@ficlouds/builtin-tool-agent-builder';
+import { AgentDocumentsManifest } from '@ficlouds/builtin-tool-agent-documents';
+import { AgentManagementManifest } from '@ficlouds/builtin-tool-agent-management';
+import { BriefManifest } from '@ficlouds/builtin-tool-brief';
+import { CalculatorManifest } from '@ficlouds/builtin-tool-calculator';
+import { CloudSandboxManifest } from '@ficlouds/builtin-tool-cloud-sandbox';
+import { CredsManifest } from '@ficlouds/builtin-tool-creds';
+import { GroupAgentBuilderManifest } from '@ficlouds/builtin-tool-group-agent-builder';
+import { GroupManagementManifest } from '@ficlouds/builtin-tool-group-management';
+import { KnowledgeBaseManifest } from '@ficlouds/builtin-tool-knowledge-base';
+import { FiAgentManifest } from '@ficlouds/builtin-tool-fi-agent';
+import { LocalSystemManifest } from '@ficlouds/builtin-tool-local-system';
+import { MemoryManifest } from '@ficlouds/builtin-tool-memory';
+import { MessageManifest } from '@ficlouds/builtin-tool-message';
+import { PageAgentManifest } from '@ficlouds/builtin-tool-page-agent';
+import { RemoteDeviceManifest } from '@ficlouds/builtin-tool-remote-device';
+import { selfFeedbackIntentManifest } from '@ficlouds/builtin-tool-self-iteration';
+import { SkillMaintainerManifest } from '@ficlouds/builtin-tool-skill-maintainer';
+import { SkillStoreManifest } from '@ficlouds/builtin-tool-skill-store';
+import { SkillsManifest } from '@ficlouds/builtin-tool-skills';
+import { TaskManifest } from '@ficlouds/builtin-tool-task';
+import { TopicReferenceManifest } from '@ficlouds/builtin-tool-topic-reference';
+import { UserInteractionManifest } from '@ficlouds/builtin-tool-user-interaction';
+import { WebBrowsingManifest } from '@ficlouds/builtin-tool-web-browsing';
+import { WebOnboardingManifest } from '@ficlouds/builtin-tool-web-onboarding';
+import { isDesktop, RECOMMENDED_SKILLS, RecommendedSkillType } from '@ficlouds/const';
+import { type LobeBuiltinTool } from '@ficlouds/types';
 
 /**
  * Default tool IDs that will always be added to the tools list.
@@ -43,7 +43,7 @@ export const defaultToolIds = [
   TopicReferenceManifest.identifier,
   AgentDocumentsManifest.identifier,
   TaskManifest.identifier,
-  LobeAgentManifest.identifier,
+  FiAgentManifest.identifier,
 ];
 
 /**
@@ -104,7 +104,7 @@ export const runtimeManagedToolIds = [
   LocalSystemManifest.identifier,
   MemoryManifest.identifier,
   RemoteDeviceManifest.identifier,
-  LobeAgentManifest.identifier,
+  FiAgentManifest.identifier,
   WebBrowsingManifest.identifier,
 ];
 
@@ -269,8 +269,8 @@ export const builtinTools: LobeBuiltinTool[] = [
   },
   {
     hidden: true,
-    identifier: LobeAgentManifest.identifier,
-    manifest: LobeAgentManifest,
+    identifier: FiAgentManifest.identifier,
+    manifest: FiAgentManifest,
     type: 'builtin',
   },
 ];

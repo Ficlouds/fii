@@ -1,4 +1,4 @@
-import type { AssistantContentBlock, ChatToolPayloadWithResult } from '@lobechat/types';
+import type { AssistantContentBlock, ChatToolPayloadWithResult } from '@ficlouds/types';
 
 import type { Message, MessageGroupMetadata } from '../types';
 import type { BranchResolver } from './BranchResolver';

@@ -1,4 +1,4 @@
-import { type LobeToolManifest } from '@lobechat/context-engine';
+import { type FiToolManifest } from '@ficlouds/context-engine';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -8,7 +8,7 @@ import {
   resolveToolTimeoutMs,
 } from '../resolveToolTimeout';
 
-const makeManifest = (api: LobeToolManifest['api']): LobeToolManifest => ({
+const makeManifest = (api: FiToolManifest['api']): FiToolManifest => ({
   api,
   identifier: 'lobe-local-system',
   meta: {},

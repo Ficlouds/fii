@@ -1,7 +1,7 @@
 'use client';
 
-import { AGENT_ONBOARDING_ENABLED } from '@lobechat/business-const';
-import { isDesktop } from '@lobechat/const';
+import { AGENT_ONBOARDING_ENABLED } from '@ficlouds/business-const';
+import { isDesktop } from '@ficlouds/const';
 import { ActionIcon, Flexbox, Segmented, Text } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
 import { ChevronLeft, ChevronRight } from 'lucide-react';

@@ -1,4 +1,4 @@
-import type { PageContentContext } from '@lobechat/prompts';
+import type { PageContentContext } from '@ficlouds/prompts';
 import type { IEditor } from '@lobehub/editor';
 import { LITEXML_APPLY_COMMAND, LITEXML_MODIFY_COMMAND } from '@lobehub/editor';
 import debug from 'debug';

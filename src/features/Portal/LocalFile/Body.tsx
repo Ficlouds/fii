@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { Center, Empty, Flexbox, Highlighter, Icon, Markdown, Segmented, Text } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { CodeIcon, EyeIcon } from 'lucide-react';

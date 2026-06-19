@@ -1,9 +1,9 @@
-import { type KlavisServerType } from '@lobechat/const';
-import { KLAVIS_SERVER_TYPES } from '@lobechat/const';
-import { ToolNameResolver } from '@lobechat/context-engine';
-import { type API } from '@lobechat/prompts';
-import { apiPrompt, toolPrompt } from '@lobechat/prompts';
-import { type ToolManifest } from '@lobechat/types';
+import { type KlavisServerType } from '@ficlouds/const';
+import { KLAVIS_SERVER_TYPES } from '@ficlouds/const';
+import { ToolNameResolver } from '@ficlouds/context-engine';
+import { type API } from '@ficlouds/prompts';
+import { apiPrompt, toolPrompt } from '@ficlouds/prompts';
+import { type ToolManifest } from '@ficlouds/types';
 import { type IEditor } from '@lobehub/editor';
 import { INSERT_MENTION_COMMAND } from '@lobehub/editor';
 import { Icon, Image } from '@lobehub/ui';

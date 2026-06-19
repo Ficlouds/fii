@@ -1,5 +1,5 @@
-import type { BriefAction } from '@lobechat/types';
-import { isTrimmedNonEmptyString } from '@lobechat/utils';
+import type { BriefAction } from '@ficlouds/types';
+import { isTrimmedNonEmptyString } from '@ficlouds/utils';
 import { z } from 'zod';
 
 import type {

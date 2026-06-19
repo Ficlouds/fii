@@ -1,7 +1,7 @@
 // @vitest-environment node
-import type { LobeChatDatabase } from '@lobechat/database';
-import { agentSkills, files, globalFiles, users } from '@lobechat/database/schemas';
-import { getTestDB } from '@lobechat/database/test-utils';
+import type { FiDatabase } from '@ficlouds/database';
+import { agentSkills, files, globalFiles, users } from '@ficlouds/database/schemas';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { and, eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -81,7 +81,7 @@ vi.mock('node:fs/promises', () => ({
 }));
 
 describe('SkillImporter', () => {
-  let db: LobeChatDatabase;
+  let db: FiDatabase;
   let userId: string;
   let importer: SkillImporter;
 

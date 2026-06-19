@@ -1,4 +1,4 @@
-import type { TaskTemplate } from '@lobechat/const';
+import type { TaskTemplate } from '@ficlouds/const';
 import { App } from 'antd';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

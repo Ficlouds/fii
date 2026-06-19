@@ -1,4 +1,4 @@
-import type { LobeChatDatabase } from '@lobechat/database';
+import type { FiDatabase } from '@ficlouds/database';
 import { sha256 } from 'js-sha256';
 
 import { AgentDocumentModel, PolicyLoad } from '@/database/models/agentDocuments';
@@ -97,7 +97,7 @@ export class SkillManagementDocumentService {
   private documentService: Pick<DocumentService, 'trySaveCurrentDocumentHistory'>;
 
   constructor(
-    private db: LobeChatDatabase,
+    private db: FiDatabase,
     userId: string,
     deps?: SkillManagementDocumentServiceDeps,
   ) {

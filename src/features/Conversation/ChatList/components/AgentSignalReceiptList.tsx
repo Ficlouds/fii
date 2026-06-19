@@ -1,6 +1,6 @@
 'use client';
 
-import { LayersEnum } from '@lobechat/types';
+import { LayersEnum } from '@ficlouds/types';
 import { Icon } from '@lobehub/ui';
 import { SkillsIcon } from '@lobehub/ui/icons';
 import { createStaticStyles } from 'antd-style';

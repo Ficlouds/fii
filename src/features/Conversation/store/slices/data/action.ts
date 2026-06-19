@@ -1,5 +1,5 @@
-import { parse } from '@lobechat/conversation-flow';
-import { type ConversationContext, type UIChatMessage } from '@lobechat/types';
+import { parse } from '@ficlouds/conversation-flow';
+import { type ConversationContext, type UIChatMessage } from '@ficlouds/types';
 import debug from 'debug';
 import { type SWRResponse } from 'swr';
 import { type StateCreator } from 'zustand/vanilla';

@@ -1,5 +1,5 @@
-import type { RAGEvalEvaluationItem } from '@lobechat/types';
-import { EvalEvaluationStatus } from '@lobechat/types';
+import type { RAGEvalEvaluationItem } from '@ficlouds/types';
+import { EvalEvaluationStatus } from '@ficlouds/types';
 import type { SQL } from 'drizzle-orm';
 import { and, count, desc, eq, inArray } from 'drizzle-orm';
 
@@ -10,13 +10,13 @@ import {
   evalEvaluation,
   evaluationRecords
 } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 
 export class EvalEvaluationModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

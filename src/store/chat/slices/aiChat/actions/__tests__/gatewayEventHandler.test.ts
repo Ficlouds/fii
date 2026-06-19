@@ -1,4 +1,4 @@
-import type { AgentStreamEvent } from '@lobechat/agent-gateway-client';
+import type { AgentStreamEvent } from '@ficlouds/agent-gateway-client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { messageService } from '@/services/message';

@@ -1,4 +1,4 @@
-import type { MockEvent } from '@lobechat/agent-mock';
+import type { MockEvent } from '@ficlouds/agent-mock';
 import { Center, Text } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { memo, useCallback, useMemo } from 'react';

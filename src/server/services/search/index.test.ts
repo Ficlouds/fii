@@ -1,4 +1,4 @@
-import { Crawler } from '@lobechat/web-crawler';
+import { Crawler } from '@ficlouds/web-crawler';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { toolsEnv } from '@/envs/tools';
@@ -7,7 +7,7 @@ import { createSearchServiceImpl, SearchImplType } from './impls';
 import { SearchService } from './index';
 
 // Mock dependencies
-vi.mock('@lobechat/web-crawler');
+vi.mock('@ficlouds/web-crawler');
 vi.mock('./impls');
 vi.mock('@/envs/tools', () => ({
   toolsEnv: {

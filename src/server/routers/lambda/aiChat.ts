@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto';
 
-import type { CreateMessageParams, SendMessageServerResponse } from '@lobechat/types';
-import { AiSendMessageServerSchema, RequestTrigger, StructureOutputSchema } from '@lobechat/types';
-import { createTimingHelpers, createTimingRequestId } from '@lobechat/utils';
+import type { CreateMessageParams, SendMessageServerResponse } from '@ficlouds/types';
+import { AiSendMessageServerSchema, RequestTrigger, StructureOutputSchema } from '@ficlouds/types';
+import { createTimingHelpers, createTimingRequestId } from '@ficlouds/utils';
 import debug from 'debug';
 import { z } from 'zod';
 
@@ -21,7 +21,7 @@ import { archiveToolResultIfNeeded } from '@/server/services/toolExecution/archi
 
 const log = debug('lobe-lambda-router:ai-chat');
 const { createPrefixedTimingContext, logTiming, runTimedStage } = createTimingHelpers(
-  'lobe-server:chat:lobehub:timing',
+  'lobe-server:chat:fi:timing',
 );
 
 const aiChatProcedure = authedProcedure.use(serverDatabase).use(async (opts) => {

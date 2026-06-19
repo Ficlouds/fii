@@ -1,12 +1,12 @@
-import { type DeviceAttachment } from '@lobechat/builtin-tool-remote-device';
+import { type DeviceAttachment } from '@ficlouds/builtin-tool-remote-device';
 import {
   type DeviceMessageApiResult,
   type DeviceStatusResult,
   type DeviceSystemInfo,
   type DeviceToolCallResult,
   GatewayHttpClient,
-} from '@lobechat/device-gateway-client';
-import type { HeterogeneousAgentType } from '@lobechat/heterogeneous-agents';
+} from '@ficlouds/device-gateway-client';
+import type { HeterogeneousAgentType } from '@ficlouds/heterogeneous-agents';
 import debug from 'debug';
 
 import { gatewayEnv } from '@/envs/gateway';

@@ -12,9 +12,9 @@ import {
   type MessagePluginItem,
   type ModelReasoning,
   type UpdateMessageRAGParams,
-} from '@lobechat/types';
-import { ChatErrorType } from '@lobechat/types';
-import { merge, nanoid, safeParseJSON } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { ChatErrorType } from '@ficlouds/types';
+import { merge, nanoid, safeParseJSON } from '@ficlouds/utils';
 import isEqual from 'fast-deep-equal';
 import { type StateCreator } from 'zustand';
 

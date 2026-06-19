@@ -1,5 +1,5 @@
-import { type AgentState } from '@lobechat/agent-runtime';
-import { consumeStreamUntilDone } from '@lobechat/model-runtime';
+import { type AgentState } from '@ficlouds/agent-runtime';
+import { consumeStreamUntilDone } from '@ficlouds/model-runtime';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import * as ContextEngineering from '@/server/modules/Mecha/ContextEngineering';
@@ -41,9 +41,9 @@ vi.mock('@/server/services/message', () => ({
   })),
 }));
 
-// @lobechat/model-runtime resolves to @cloud/business-model-runtime which has
+// @ficlouds/model-runtime resolves to @cloud/business-model-runtime which has
 // cloud-specific dependencies that are unavailable in the test environment
-vi.mock('@lobechat/model-runtime', () => ({
+vi.mock('@ficlouds/model-runtime', () => ({
   consumeStreamUntilDone: vi.fn().mockResolvedValue(undefined),
   // `llmErrorClassification.ts` reads these at module-load time; an empty
   // spec map is fine here because this suite never exercises the runtime
@@ -3444,7 +3444,7 @@ describe('RuntimeExecutors', () => {
     it('should retry and eventually throw when LLM stream contains error events from provider', async () => {
       vi.useFakeTimers();
 
-      // Import real implementations directly from source (bypassing the @lobechat/model-runtime mock)
+      // Import real implementations directly from source (bypassing the @ficlouds/model-runtime mock)
       const { consumeStreamUntilDone: realConsume } =
         await import('../../../../../packages/model-runtime/src/utils/consumeStream');
       const { createCallbacksTransformer } =

@@ -1,10 +1,10 @@
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
-import { tracer } from '@lobechat/observability-otel/modules/agent-signal';
-import type { BriefArtifactDocument, BriefMetadata } from '@lobechat/types';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
+import { tracer } from '@ficlouds/observability-otel/modules/agent-signal';
+import type { BriefArtifactDocument, BriefMetadata } from '@ficlouds/types';
 
 import { BriefModel } from '@/database/models/brief';
 import type { BriefItem, NewBrief } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 
 import type { EvidenceRef, RunResult } from '../types';
 import { ActionStatus, ReviewRunStatus } from '../types';
@@ -557,7 +557,7 @@ export const createBriefSelfReviewService = () => ({
  * Returns:
  * - A writer whose `writeDailyBrief` method creates or refreshes proposal briefs
  */
-export const createServerSelfReviewBriefWriter = (db: LobeChatDatabase, userId: string) => {
+export const createServerSelfReviewBriefWriter = (db: FiDatabase, userId: string) => {
   const model = new BriefModel(db, userId);
 
   return {

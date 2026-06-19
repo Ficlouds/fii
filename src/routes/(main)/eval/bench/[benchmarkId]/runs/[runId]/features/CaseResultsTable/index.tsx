@@ -1,7 +1,7 @@
 'use client';
 
-import type { EvalThreadResult } from '@lobechat/types';
-import { formatCost, formatShortenNumber } from '@lobechat/utils';
+import type { EvalThreadResult } from '@ficlouds/types';
+import { formatCost, formatShortenNumber } from '@ficlouds/utils';
 import { ActionIcon, Flexbox, Icon, Tag } from '@lobehub/ui';
 import { Select } from '@lobehub/ui/base-ui';
 import { Badge, Input, Table, Tooltip } from 'antd';

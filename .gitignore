@@ -155,3 +155,5 @@ docs/superpowers/
 
 # Kagura agent runtime
 .kagura/
+garak-config/
+.venvs/

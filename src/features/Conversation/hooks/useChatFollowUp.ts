@@ -1,4 +1,4 @@
-import { type LobeAgentChatConfig } from '@lobechat/types';
+import { type FiAgentChatConfig } from '@ficlouds/types';
 import { useMemo } from 'react';
 
 import { useFollowUpActionStore } from '@/store/followUpAction';
@@ -8,7 +8,7 @@ import { systemAgentSelectors } from '@/store/user/slices/settings/selectors/sys
 import { type ConversationHooks } from '../types';
 
 interface UseChatFollowUpParams {
-  agentChatConfig: LobeAgentChatConfig | undefined;
+  agentChatConfig: FiAgentChatConfig | undefined;
   conversationKey: string | undefined;
   threadId?: string;
   topicId: string | undefined;

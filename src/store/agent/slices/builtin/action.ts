@@ -1,4 +1,4 @@
-import { type AgentItem, type LobeAgentConfig } from '@lobechat/types';
+import { type AgentItem, type FiAgentConfig } from '@ficlouds/types';
 import { type SWRResponse } from 'swr';
 import { type PartialDeep } from 'type-fest';
 
@@ -38,7 +38,7 @@ export class BuiltinAgentSliceActionImpl {
   refreshBuiltinAgent = async (slug: string): Promise<void> => {
     const data = await agentService.getBuiltinAgent(slug);
     if (data?.id) {
-      this.#get().internal_dispatchAgentMap(data.id, data as PartialDeep<LobeAgentConfig>);
+      this.#get().internal_dispatchAgentMap(data.id, data as PartialDeep<FiAgentConfig>);
       // Mirror useInitBuiltinAgent's onSuccess: keep builtinAgentIdMap in sync
       // so callers can rely on this as a real "ensure" path instead of just a
       // post-init refresh.
@@ -66,8 +66,8 @@ export class BuiltinAgentSliceActionImpl {
           if (data?.id) {
             // Update builtinAgentIdMap with the agent id
             // Update agentMap with the agent config
-            // AgentItem contains all fields needed for LobeAgentConfig
-            this.#get().internal_dispatchAgentMap(data.id, data as PartialDeep<LobeAgentConfig>);
+            // AgentItem contains all fields needed for FiAgentConfig
+            this.#get().internal_dispatchAgentMap(data.id, data as PartialDeep<FiAgentConfig>);
 
             this.#set(
               { builtinAgentIdMap: { ...this.#get().builtinAgentIdMap, [slug]: data.id } },

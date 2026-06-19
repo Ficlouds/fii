@@ -1,4 +1,4 @@
-import type { LobeAgentChatConfig } from '@lobechat/types';
+import type { FiAgentChatConfig } from '@ficlouds/types';
 import { z } from 'zod';
 
 import type { AgentItem } from '@/database/schemas';
@@ -12,7 +12,7 @@ import type { IPaginationQuery, PaginationQueryResponse } from './common.type';
  */
 export interface CreateAgentRequest {
   avatar?: string;
-  chatConfig?: LobeAgentChatConfig;
+  chatConfig?: FiAgentChatConfig;
   description?: string;
   model?: string;
   params?: Record<string, unknown>;

@@ -1,12 +1,12 @@
 // @vitest-environment node
-import { KnowledgeBaseManifest } from '@lobechat/builtin-tool-knowledge-base';
-import { LobeAgentManifest } from '@lobechat/builtin-tool-lobe-agent';
-import { LocalSystemManifest } from '@lobechat/builtin-tool-local-system';
-import { MemoryManifest } from '@lobechat/builtin-tool-memory';
-import { RemoteDeviceManifest } from '@lobechat/builtin-tool-remote-device';
-import { WebBrowsingManifest } from '@lobechat/builtin-tool-web-browsing';
-import { builtinTools } from '@lobechat/builtin-tools';
-import { ToolsEngine } from '@lobechat/context-engine';
+import { KnowledgeBaseManifest } from '@ficlouds/builtin-tool-knowledge-base';
+import { FiAgentManifest } from '@ficlouds/builtin-tool-fi-agent';
+import { LocalSystemManifest } from '@ficlouds/builtin-tool-local-system';
+import { MemoryManifest } from '@ficlouds/builtin-tool-memory';
+import { RemoteDeviceManifest } from '@ficlouds/builtin-tool-remote-device';
+import { WebBrowsingManifest } from '@ficlouds/builtin-tool-web-browsing';
+import { builtinTools } from '@ficlouds/builtin-tools';
+import { ToolsEngine } from '@ficlouds/context-engine';
 import { describe, expect, it } from 'vitest';
 
 import { createServerAgentToolsEngine, createServerToolsEngine } from '../index';
@@ -255,7 +255,7 @@ describe('createServerAgentToolsEngine', () => {
   it('should enable VisualUnderstanding when injected into runtime plugins', () => {
     const context = createMockContext();
     const engine = createServerAgentToolsEngine(context, {
-      agentConfig: { plugins: [LobeAgentManifest.identifier] },
+      agentConfig: { plugins: [FiAgentManifest.identifier] },
       model: 'deepseek-chat',
       provider: 'deepseek',
     });
@@ -263,10 +263,10 @@ describe('createServerAgentToolsEngine', () => {
     const result = engine.generateToolsDetailed({
       model: 'deepseek-chat',
       provider: 'deepseek',
-      toolIds: [LobeAgentManifest.identifier],
+      toolIds: [FiAgentManifest.identifier],
     });
 
-    expect(result.enabledToolIds).toContain(LobeAgentManifest.identifier);
+    expect(result.enabledToolIds).toContain(FiAgentManifest.identifier);
   });
 
   it('should not enable VisualUnderstanding by default', () => {
@@ -283,7 +283,7 @@ describe('createServerAgentToolsEngine', () => {
       toolIds: [],
     });
 
-    expect(result.enabledToolIds).not.toContain(LobeAgentManifest.identifier);
+    expect(result.enabledToolIds).not.toContain(FiAgentManifest.identifier);
   });
 
   it('should enable KnowledgeBase when hasEnabledKnowledgeBases is true', () => {

@@ -1,11 +1,11 @@
-import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@lobechat/const';
-import type { GenerateObjectPayload, GenerateObjectSchema } from '@lobechat/model-runtime';
-import { chainAgentSignalAnalyzeIntentRoute } from '@lobechat/prompts';
-import { RequestTrigger } from '@lobechat/types';
+import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@ficlouds/const';
+import type { GenerateObjectPayload, GenerateObjectSchema } from '@ficlouds/model-runtime';
+import { chainAgentSignalAnalyzeIntentRoute } from '@ficlouds/prompts';
+import { RequestTrigger } from '@ficlouds/types';
 import debug from 'debug';
 import { z } from 'zod';
 
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 
 import type {
@@ -154,12 +154,12 @@ export interface JudgeFeedbackDomainsParams {
  * - One validated set of domain targets suitable for domain signal fan-out
  */
 export class FeedbackDomainJudgeAgentService {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly modelConfig: FeedbackDomainJudgeAgentModelConfig;
   private readonly userId: string;
 
   constructor(
-    db: LobeChatDatabase,
+    db: FiDatabase,
     userId: string,
     modelConfig: Partial<FeedbackDomainJudgeAgentModelConfig> = {},
   ) {

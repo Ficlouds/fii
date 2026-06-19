@@ -100,7 +100,7 @@ vi.mock('@/const/dir', () => ({
   LOCAL_STORAGE_URL_PREFIX: '/lobe-desktop-file',
 }));
 
-vi.mock('@lobechat/electron-server-ipc', () => ({
+vi.mock('@ficlouds/electron-server-ipc', () => ({
   ElectronIPCServer: vi.fn().mockImplementation(() => ({
     start: vi.fn().mockResolvedValue(undefined),
   })),

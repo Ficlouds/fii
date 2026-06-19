@@ -9,7 +9,7 @@ import { type App } from '@/core/App';
 
 import LocalFileCtr from '../LocalFileCtr';
 
-// Real fs + real @lobechat/file-loaders end-to-end. We only mock the
+// Real fs + real @ficlouds/file-loaders end-to-end. We only mock the
 // boundaries we genuinely cannot run in a test process: electron IPC,
 // execa shell-outs, logger, net fetch.
 vi.mock('electron', () => ({

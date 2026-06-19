@@ -1,6 +1,6 @@
 'use client';
 
-import { getKlavisServerByServerIdentifier, getLobehubSkillProviderById } from '@lobechat/const';
+import { getKlavisServerByServerIdentifier, getFiSkillProviderById } from '@ficlouds/const';
 import { ActionIcon, Flexbox, Icon } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { Blocks, X } from 'lucide-react';
@@ -82,17 +82,17 @@ const BANNER_SKILL_IDS = [
 const SkillInstallBanner = memo(() => {
   const { t } = useTranslation('plugin');
 
-  const isLobehubSkillEnabled = useServerConfigStore(serverConfigSelectors.enableLobehubSkill);
+  const isFiSkillEnabled = useServerConfigStore(serverConfigSelectors.enableFiSkill);
   const isKlavisEnabled = useServerConfigStore(serverConfigSelectors.enableKlavis);
 
   const updateSystemStatus = useGlobalStore((s) => s.updateSystemStatus);
 
   // Prefetch skill connections data so SkillStore opens faster
-  const [useFetchLobehubSkillConnections, useFetchUserKlavisServers] = useToolStore((s) => [
-    s.useFetchLobehubSkillConnections,
+  const [useFetchFiSkillConnections, useFetchUserKlavisServers] = useToolStore((s) => [
+    s.useFetchFiSkillConnections,
     s.useFetchUserKlavisServers,
   ]);
-  useFetchLobehubSkillConnections(isLobehubSkillEnabled);
+  useFetchFiSkillConnections(isFiSkillEnabled);
   useFetchUserKlavisServers(isKlavisEnabled);
 
   const skillIcons = useMemo(() => {
@@ -100,7 +100,7 @@ const SkillInstallBanner = memo(() => {
 
     for (const skill of BANNER_SKILL_IDS) {
       if (skill.type === 'lobehub') {
-        const provider = getLobehubSkillProviderById(skill.id);
+        const provider = getFiSkillProviderById(skill.id);
         if (provider) {
           icons.push({ icon: provider.icon, key: provider.id });
         }

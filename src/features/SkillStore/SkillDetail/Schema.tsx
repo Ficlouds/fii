@@ -1,6 +1,6 @@
 'use client';
 
-import { type SkillItem } from '@lobechat/types';
+import { type SkillItem } from '@ficlouds/types';
 import { Flexbox, Segmented, Skeleton, Tag } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { memo, useMemo, useState } from 'react';

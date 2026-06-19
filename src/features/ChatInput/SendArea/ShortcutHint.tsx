@@ -1,4 +1,4 @@
-import { KeyEnum } from '@lobechat/const/hotkeys';
+import { KeyEnum } from '@ficlouds/const/hotkeys';
 import { combineKeys, Flexbox, Hotkey, Text } from '@lobehub/ui';
 import { cssVar } from 'antd-style';
 import { memo } from 'react';

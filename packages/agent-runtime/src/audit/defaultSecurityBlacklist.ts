@@ -1,4 +1,4 @@
-import { type SecurityBlacklistConfig } from '@lobechat/types';
+import { type SecurityBlacklistConfig } from '@ficlouds/types';
 
 /**
  * Default Security Blacklist

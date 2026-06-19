@@ -1,5 +1,5 @@
-import { formatSearchResults, promptFileContents, promptNoSearchResults } from '@lobechat/prompts';
-import type { BuiltinServerRuntimeOutput } from '@lobechat/types';
+import { formatSearchResults, promptFileContents, promptNoSearchResults } from '@ficlouds/prompts';
+import type { BuiltinServerRuntimeOutput } from '@ficlouds/types';
 
 import type {
   AddFilesArgs,

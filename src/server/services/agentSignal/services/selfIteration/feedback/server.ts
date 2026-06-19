@@ -1,8 +1,8 @@
-import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
-import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@lobechat/const';
+import { AGENT_SIGNAL_SOURCE_TYPES } from '@ficlouds/agent-signal/source';
+import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@ficlouds/const';
 
 import { AgentSignalReviewContextModel } from '@/database/models/agentSignal/reviewContext';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 import { AGENT_SIGNAL_DEFAULTS } from '@/server/services/agentSignal/constants';
 import { runMemoryActionAgent } from '@/server/services/agentSignal/policies/analyzeIntent/actions/userMemory';
@@ -187,7 +187,7 @@ const createIntentRuntimeTools = ({
   userId,
 }: {
   agentId: string;
-  db: LobeChatDatabase;
+  db: FiDatabase;
   enrichment: SelfFeedbackIntentEvidenceEnrichment;
   payload: Parameters<SelfFeedbackIntentRuntimeFactory['createRuntime']>[0]['payload'];
   skillDocumentService: SkillManagementDocumentService;
@@ -402,7 +402,7 @@ const createIntentRuntimeTools = ({
 export class SelfFeedbackIntentServerRuntimeFactory implements SelfFeedbackIntentRuntimeFactory {
   constructor(
     private readonly input: {
-      db: LobeChatDatabase;
+      db: FiDatabase;
       skillDocumentService: SkillManagementDocumentService;
       userId: string;
     },

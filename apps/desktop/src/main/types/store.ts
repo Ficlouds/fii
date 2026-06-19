@@ -3,7 +3,7 @@ import type {
   ImessageBridgeConfig,
   NetworkProxySettings,
   UpdateChannel,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 
 export interface ElectronMainStore {
   appTrayVisible: boolean;

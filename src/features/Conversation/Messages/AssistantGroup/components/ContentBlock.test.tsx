@@ -1,7 +1,7 @@
 /**
  * @vitest-environment happy-dom
  */
-import { HeterogeneousAgentSessionErrorCode } from '@lobechat/electron-client-ipc';
+import { HeterogeneousAgentSessionErrorCode } from '@ficlouds/electron-client-ipc';
 import { render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';

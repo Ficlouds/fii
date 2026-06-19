@@ -8,7 +8,7 @@ vi.mock('../auth/refresh', () => ({
 }));
 vi.mock('../auth/resolveToken', () => ({
   resolveToken: vi.fn().mockResolvedValue({
-    serverUrl: 'https://app.lobehub.com',
+    serverUrl: 'https://app.ficlouds.com',
     token: 'test-token',
     tokenType: 'jwt',
     userId: 'test-user',
@@ -72,7 +72,7 @@ let clientOptions: any = {};
 let connectCalled = false;
 let lastSentToolResponse: any = null;
 let lastSentSystemInfoResponse: any = null;
-vi.mock('@lobechat/device-gateway-client', () => ({
+vi.mock('@ficlouds/device-gateway-client', () => ({
   GatewayClient: vi.fn().mockImplementation((opts: any) => {
     clientOptions = opts;
     clientEventHandlers = {};
@@ -101,7 +101,7 @@ vi.mock('@lobechat/device-gateway-client', () => ({
 }));
 
 // eslint-disable-next-line import-x/first
-import { GatewayClient } from '@lobechat/device-gateway-client';
+import { GatewayClient } from '@ficlouds/device-gateway-client';
 
 // eslint-disable-next-line import-x/first
 import { resolveToken } from '../auth/resolveToken';
@@ -175,7 +175,7 @@ describe('connect command', () => {
     await program.parseAsync(['node', 'test', 'connect']);
 
     expect(connectCalled).toBe(true);
-    expect(log.info).toHaveBeenCalledWith(expect.stringContaining('LobeHub CLI'));
+    expect(log.info).toHaveBeenCalledWith(expect.stringContaining('Fi CLI'));
   });
 
   it('should require explicit gateway for custom login server', async () => {
@@ -211,7 +211,7 @@ describe('connect command', () => {
     const program = createProgram();
     await program.parseAsync(['node', 'test', 'connect']);
 
-    expect(clientOptions.serverUrl).toBe('https://app.lobehub.com');
+    expect(clientOptions.serverUrl).toBe('https://app.ficlouds.com');
   });
 
   it('should handle tool call requests', async () => {
@@ -261,7 +261,7 @@ describe('connect command', () => {
 
   it('should retry auth_failed with token refresh when new token available', async () => {
     vi.mocked(resolveToken).mockResolvedValueOnce({
-      serverUrl: 'https://app.lobehub.com',
+      serverUrl: 'https://app.ficlouds.com',
       token: 'refreshed-token',
       tokenType: 'jwt',
       userId: 'test-user',
@@ -281,7 +281,7 @@ describe('connect command', () => {
 
   it('should handle auth_expired', async () => {
     vi.mocked(resolveToken).mockResolvedValueOnce({
-      serverUrl: 'https://app.lobehub.com',
+      serverUrl: 'https://app.ficlouds.com',
       token: 'new-tok',
       tokenType: 'jwt',
       userId: 'user',

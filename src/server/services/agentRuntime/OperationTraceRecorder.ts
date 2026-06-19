@@ -1,5 +1,5 @@
-import type { ISnapshotStore, StepSnapshot } from '@lobechat/agent-tracing';
-import type { ChatMessageErrorAttribution, ChatMessageErrorSeverity } from '@lobechat/types';
+import type { ISnapshotStore, StepSnapshot } from '@ficlouds/agent-tracing';
+import type { ChatMessageErrorAttribution, ChatMessageErrorSeverity } from '@ficlouds/types';
 import debug from 'debug';
 
 import type { StepCompletionReason, StepPresentationData } from './types';

@@ -89,7 +89,7 @@ vi.mock('@/config/db', () => ({
 
 vi.mock('@/envs/app', () => ({
   appEnv: {
-    APP_URL: 'https://lobehub.com',
+    APP_URL: 'https://ficlouds.com',
   },
 }));
 
@@ -291,7 +291,7 @@ describe('fileRouter', () => {
 
       expect(result).toEqual({
         id: 'new-file-id',
-        url: 'https://lobehub.com/f/new-file-id',
+        url: 'https://ficlouds.com/f/new-file-id',
       });
     });
 
@@ -436,7 +436,7 @@ describe('fileRouter', () => {
 
       expect(result).toEqual({
         id: 'new-file-id',
-        url: 'https://lobehub.com/f/new-file-id',
+        url: 'https://ficlouds.com/f/new-file-id',
       });
 
       // Verify create was called with input size as fallback
@@ -524,7 +524,7 @@ describe('fileRouter', () => {
 
       const result = await caller.findById({ id: 'test-id' });
 
-      expect(result.url).toBe('https://lobehub.com/f/test-id');
+      expect(result.url).toBe('https://ficlouds.com/f/test-id');
     });
   });
 
@@ -540,7 +540,7 @@ describe('fileRouter', () => {
 
       const result = await caller.getFileItemById({ id: 'test-id' });
 
-      expect(result?.url).toBe('https://lobehub.com/f/test-id');
+      expect(result?.url).toBe('https://ficlouds.com/f/test-id');
     });
   });
 
@@ -565,8 +565,8 @@ describe('fileRouter', () => {
       const result = await caller.getFiles({});
 
       expect(result).toHaveLength(2);
-      expect(result[0].url).toBe('https://lobehub.com/f/file-1');
-      expect(result[1].url).toBe('https://lobehub.com/f/file-2');
+      expect(result[0].url).toBe('https://ficlouds.com/f/file-1');
+      expect(result[1].url).toBe('https://ficlouds.com/f/file-2');
     });
   });
 
@@ -606,7 +606,7 @@ describe('fileRouter', () => {
         finishEmbedding: true,
         id: 'file-1',
         sourceType: 'file',
-        url: 'https://lobehub.com/f/file-1',
+        url: 'https://ficlouds.com/f/file-1',
       });
       expect(result.items[1]).toMatchObject({
         chunkCount: null,

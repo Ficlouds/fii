@@ -11,7 +11,7 @@ import { useAgentStore } from '@/store/agent';
 import { useToolStore } from '@/store/tool';
 import { mcpStoreSelectors } from '@/store/tool/selectors';
 import { type McpConnectionParams } from '@/types/plugins';
-import { type LobeToolCustomPlugin } from '@/types/tool/plugin';
+import { type FiToolCustomPlugin } from '@/types/tool/plugin';
 
 import ConfigDisplay from './ConfigDisplay';
 import { type McpInstallRequest, type TrustedMarketplaceId } from './types';
@@ -90,7 +90,7 @@ const CustomPluginInstallModal = memo<CustomPluginInstallModalProps>(
 
         // Third-party marketplace and custom plugins: build custom plugin data
         // Use the real manifest obtained from connection testing
-        const customPlugin: LobeToolCustomPlugin = {
+        const customPlugin: FiToolCustomPlugin = {
           customParams: {
             avatar: schema.icon,
             description: schema.description,

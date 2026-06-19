@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { type DropdownItem } from '@lobehub/ui';
 import { Icon } from '@lobehub/ui';
 import { App } from 'antd';

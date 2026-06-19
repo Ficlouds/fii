@@ -1,7 +1,7 @@
 'use client';
 
-import type { MarkdownPatchHunk } from '@lobechat/markdown-patch';
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { MarkdownPatchHunk } from '@ficlouds/markdown-patch';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { Flexbox } from '@lobehub/ui';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';

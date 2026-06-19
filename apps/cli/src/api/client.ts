@@ -40,7 +40,7 @@ async function getAuthAndServer() {
   const result = await getValidToken();
   if (!result) {
     log.error(
-      `No authentication found. Run 'lh login' (or 'npx -y @lobehub/cli login') first, or set ${CLI_API_KEY_ENV}.`,
+      `No authentication found. Run 'lh login' (or 'npx -y @ficlouds/cli login') first, or set ${CLI_API_KEY_ENV}.`,
     );
     process.exit(1);
   }

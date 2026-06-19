@@ -1,5 +1,5 @@
-import type { QueryFileListParams } from '@lobechat/types';
-import { FilesTabs, SortType } from '@lobechat/types';
+import type { QueryFileListParams } from '@ficlouds/types';
+import { FilesTabs, SortType } from '@ficlouds/types';
 import { and, asc, count, desc, eq, ilike, inArray, like, notExists, or, sum } from 'drizzle-orm';
 import type { PgTransaction } from 'drizzle-orm/pg-core';
 
@@ -15,13 +15,13 @@ import {
   globalFiles,
   knowledgeBaseFiles,
 } from '../schemas';
-import type { LobeChatDatabase, Transaction } from '../type';
+import type { FiDatabase, Transaction } from '../type';
 
 export class FileModel {
   private readonly userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }
@@ -34,7 +34,7 @@ export class FileModel {
    * @param id - File ID
    * @returns File record or undefined
    */
-  static async getFileById(db: LobeChatDatabase, id: string): Promise<FileItem | undefined> {
+  static async getFileById(db: FiDatabase, id: string): Promise<FileItem | undefined> {
     return db.query.files.findFirst({
       where: eq(files.id, id),
     });

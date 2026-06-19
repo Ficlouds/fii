@@ -1,5 +1,5 @@
-import { countContextTokens, DEFAULT_DRIFT_MULTIPLIER } from '@lobechat/context-engine';
-import type { UIChatMessage } from '@lobechat/types';
+import { countContextTokens, DEFAULT_DRIFT_MULTIPLIER } from '@ficlouds/context-engine';
+import type { UIChatMessage } from '@ficlouds/types';
 
 /**
  * Options for token counting and compression threshold calculation

@@ -1,4 +1,4 @@
-import type { TaskStatus } from '@lobechat/types';
+import type { TaskStatus } from '@ficlouds/types';
 import { z } from 'zod';
 
 import { SESSION_CHAT_TOPIC_URL } from '@/const/url';

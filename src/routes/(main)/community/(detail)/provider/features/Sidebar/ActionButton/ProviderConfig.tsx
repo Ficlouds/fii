@@ -1,6 +1,6 @@
 'use client';
 
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { Button, Icon } from '@lobehub/ui';
 import { Dropdown } from 'antd';
 import { createStaticStyles } from 'antd-style';

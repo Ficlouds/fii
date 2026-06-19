@@ -1,6 +1,6 @@
 'use client';
 
-import { type SidebarAgentItem } from '@lobechat/types';
+import { type SidebarAgentItem } from '@ficlouds/types';
 import { Avatar, Block, Flexbox, Text } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { memo, useMemo } from 'react';

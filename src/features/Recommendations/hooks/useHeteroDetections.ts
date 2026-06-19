@@ -1,6 +1,6 @@
-import { isDesktop } from '@lobechat/const';
-import type { ToolStatus } from '@lobechat/electron-client-ipc';
-import { HETEROGENEOUS_AGENT_CLIENT_CONFIGS } from '@lobechat/heterogeneous-agents/client';
+import { isDesktop } from '@ficlouds/const';
+import type { ToolStatus } from '@ficlouds/electron-client-ipc';
+import { HETEROGENEOUS_AGENT_CLIENT_CONFIGS } from '@ficlouds/heterogeneous-agents/client';
 import useSWR from 'swr';
 
 import { toolDetectorService } from '@/services/electron/toolDetector';

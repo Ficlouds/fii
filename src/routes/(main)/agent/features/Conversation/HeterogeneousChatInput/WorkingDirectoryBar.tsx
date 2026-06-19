@@ -1,6 +1,6 @@
 'use client';
 
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { Github } from '@lobehub/icons';
 import { Flexbox, Icon, Popover, Skeleton, Tooltip } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';

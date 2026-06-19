@@ -1,4 +1,4 @@
-import { SessionDefaultGroup } from '@lobechat/types';
+import { SessionDefaultGroup } from '@ficlouds/types';
 import { type MenuProps } from '@lobehub/ui';
 import { Icon } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';

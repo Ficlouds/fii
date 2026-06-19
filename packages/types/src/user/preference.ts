@@ -7,7 +7,7 @@ import type { UserAgentOnboarding } from './agentOnboarding';
 import type { UserOnboarding } from './onboarding';
 import type { UserSettings } from './settings';
 
-export interface LobeUser {
+export interface FiUser {
   avatar?: string;
   email?: string | null;
   firstName?: string | null;

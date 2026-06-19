@@ -1,4 +1,4 @@
-import { type DocumentItem } from '@lobechat/database/schemas';
+import { type DocumentItem } from '@ficlouds/database/schemas';
 
 import { lambdaClient } from '@/libs/trpc/client';
 import type {

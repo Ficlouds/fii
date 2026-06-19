@@ -12,7 +12,7 @@ import {
   type UpdateMessageParams,
   type UpdateMessageRAGParams,
   type UpdateMessageResult,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { type HeatmapsProps } from '@lobehub/charts';
 
 import { lambdaClient } from '@/libs/trpc/client';

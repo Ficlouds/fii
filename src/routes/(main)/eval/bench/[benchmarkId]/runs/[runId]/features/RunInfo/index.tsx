@@ -1,6 +1,6 @@
 'use client';
 
-import { AGENT_PROFILE_URL } from '@lobechat/const';
+import { AGENT_PROFILE_URL } from '@ficlouds/const';
 import { Avatar, Button, Flexbox } from '@lobehub/ui';
 import { Descriptions, Tag, Typography } from 'antd';
 import { memo } from 'react';

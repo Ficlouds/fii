@@ -1,4 +1,4 @@
-import { AgentRuntimeErrorType } from '@lobechat/types';
+import { AgentRuntimeErrorType } from '@ficlouds/types';
 import { describe, expect, it } from 'vitest';
 
 import { refineErrorCode } from './refine';

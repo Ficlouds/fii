@@ -1,4 +1,4 @@
-import { ThreadStatus, ThreadType } from '@lobechat/types';
+import { ThreadStatus, ThreadType } from '@ficlouds/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AiAgentService } from '../index';
@@ -77,7 +77,7 @@ vi.mock('@/server/services/agentRuntime', () => ({
 // Mock MarketService
 vi.mock('@/server/services/market', () => ({
   MarketService: vi.fn().mockImplementation(() => ({
-    getLobehubSkillManifests: vi.fn().mockResolvedValue([]),
+    getFiSkillManifests: vi.fn().mockResolvedValue([]),
   })),
 }));
 

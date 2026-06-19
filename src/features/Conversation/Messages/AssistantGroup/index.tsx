@@ -1,6 +1,6 @@
 'use client';
 
-import type { AssistantContentBlock, EmojiReaction, UISignalCallbacksBlock } from '@lobechat/types';
+import type { AssistantContentBlock, EmojiReaction, UISignalCallbacksBlock } from '@ficlouds/types';
 import { Flexbox } from '@lobehub/ui';
 import isEqual from 'fast-deep-equal';
 import type { MouseEventHandler, ReactNode } from 'react';

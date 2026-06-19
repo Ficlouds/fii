@@ -1,5 +1,5 @@
-import type { MessageItem, WechatApiClient } from '@lobechat/chat-adapter-wechat';
-import { MessageItemType, WechatUploadMediaType } from '@lobechat/chat-adapter-wechat';
+import type { MessageItem, WechatApiClient } from '@ficlouds/chat-adapter-wechat';
+import { MessageItemType, WechatUploadMediaType } from '@ficlouds/chat-adapter-wechat';
 import debug from 'debug';
 
 const log = debug('bot-platform:wechat:send-attachments');
@@ -10,7 +10,7 @@ const log = debug('bot-platform:wechat:send-attachments');
  * set; `fetchUrl` is preferred so we don't blow up webhook payloads.
  *
  * Kept in sync with `BotMessageAttachment` (bot/platforms/types.ts) and
- * `SendMessageAttachment` (@lobechat/builtin-tool-message); both flow into
+ * `SendMessageAttachment` (@ficlouds/builtin-tool-message); both flow into
  * this helper through different entry points (agent reply callback vs. the
  * Messager `sendMessage` tool / TRPC / CLI).
  */

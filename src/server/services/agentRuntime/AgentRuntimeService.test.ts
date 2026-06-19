@@ -1,7 +1,7 @@
 /**
  * @vitest-environment node
  */
-import { getModelPropertyWithFallback } from '@lobechat/model-runtime';
+import { getModelPropertyWithFallback } from '@ficlouds/model-runtime';
 import type * as ModelBankModule from 'model-bank';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -13,7 +13,7 @@ import {
   type StartExecutionParams,
 } from './types';
 
-vi.mock('@lobechat/model-runtime', () => ({
+vi.mock('@ficlouds/model-runtime', () => ({
   getModelPropertyWithFallback: vi.fn(),
   // `llmErrorClassification.ts` reads these at module-load time; an empty
   // spec map is fine here because this suite never exercises the runtime
@@ -96,7 +96,7 @@ vi.mock('@/server/modules/AgentRuntime', async (importOriginal) => {
   };
 });
 
-vi.mock('@lobechat/agent-runtime', () => ({
+vi.mock('@ficlouds/agent-runtime', () => ({
   AgentRuntime: vi.fn().mockImplementation((_agent, _options) => ({
     step: vi.fn(),
   })),

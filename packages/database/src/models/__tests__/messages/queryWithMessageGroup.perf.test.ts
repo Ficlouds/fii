@@ -1,18 +1,18 @@
 // @vitest-environment node
-import { MessageGroupType } from '@lobechat/types';
+import { MessageGroupType } from '@ficlouds/types';
 import { inArray } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { getTestDB } from '../../../core/getTestDB';
 import { messageGroups, messages, topics, users } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import { MessageModel } from '../../message';
 
 const userId = 'message-query-perf-test-user';
 const topicId = 'perf-test-topic-1';
 
 let messageModel: MessageModel;
-let serverDB: LobeChatDatabase;
+let serverDB: FiDatabase;
 
 beforeEach(async () => {
   serverDB = await getTestDB();

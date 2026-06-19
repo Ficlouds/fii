@@ -1,7 +1,7 @@
 'use client';
 
-import { FilePathDisplay, ToolResultCard } from '@lobechat/shared-tool-ui/components';
-import type { BuiltinRenderProps } from '@lobechat/types';
+import { FilePathDisplay, ToolResultCard } from '@ficlouds/shared-tool-ui/components';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { Flexbox, Icon, Text } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
 import { Files, FileText } from 'lucide-react';

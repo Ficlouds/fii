@@ -1,5 +1,5 @@
-import { isDesktop } from '@lobechat/const';
-import { HETEROGENEOUS_AGENT_CLIENT_CONFIGS } from '@lobechat/heterogeneous-agents/client';
+import { isDesktop } from '@ficlouds/const';
+import { HETEROGENEOUS_AGENT_CLIENT_CONFIGS } from '@ficlouds/heterogeneous-agents/client';
 import { Icon } from '@lobehub/ui';
 import { GroupBotSquareIcon } from '@lobehub/ui/icons';
 import { App } from 'antd';

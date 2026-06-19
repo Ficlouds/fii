@@ -1,5 +1,5 @@
 import type { UIChatMessage } from './message';
-import type { LobeSessions, SessionGroupItem } from './session';
+import type { FiSessions, SessionGroupItem } from './session';
 import type { ChatTopic } from './topic';
 import type { UserSettings } from './user/settings';
 
@@ -46,7 +46,7 @@ export interface ConfigModelMap {
 export interface ConfigStateSessions {
   messages: UIChatMessage[];
   sessionGroups: SessionGroupItem[];
-  sessions: LobeSessions;
+  sessions: FiSessions;
   topics: ChatTopic[];
 }
 
@@ -55,7 +55,7 @@ export interface ConfigStateSessions {
  */
 export interface ConfigStateSingleSession {
   messages: UIChatMessage[];
-  sessions: LobeSessions;
+  sessions: FiSessions;
   topics: ChatTopic[];
 }
 
@@ -64,7 +64,7 @@ export interface ConfigStateSingleSession {
  */
 export interface ConfigStateAgents {
   sessionGroups: SessionGroupItem[];
-  sessions: LobeSessions;
+  sessions: FiSessions;
 }
 
 /**

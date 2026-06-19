@@ -1,12 +1,12 @@
-import type { LobeSessions } from './agentSession';
-import type { LobeSessionGroups, SessionGroupId } from './sessionGroup';
+import type { FiSessions } from './agentSession';
+import type { FiSessionGroups, SessionGroupId } from './sessionGroup';
 
 export * from './agentSession';
 export * from './sessionGroup';
 
 export interface ChatSessionList {
-  sessionGroups: LobeSessionGroups;
-  sessions: LobeSessions;
+  sessionGroups: FiSessionGroups;
+  sessions: FiSessions;
 }
 
 export interface UpdateSessionParams {

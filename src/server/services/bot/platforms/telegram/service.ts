@@ -33,7 +33,7 @@ import type {
   SendMessageState,
   UnpinMessageParams,
   UnpinMessageState,
-} from '@lobechat/builtin-tool-message/executionRuntime';
+} from '@ficlouds/builtin-tool-message/executionRuntime';
 
 import type { MessageRuntimeService } from '@/server/services/toolExecution/serverRuntimes/message/adapters/types';
 import { PlatformUnsupportedError } from '@/server/services/toolExecution/serverRuntimes/message/PlatformUnsupportedError';

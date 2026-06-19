@@ -1,4 +1,4 @@
-import type { BuiltinIntervention } from '@lobechat/types';
+import type { BuiltinIntervention } from '@ficlouds/types';
 
 import { UserInteractionApiName } from '../../types';
 import AskUserQuestionIntervention from './AskUserQuestion';

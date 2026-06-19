@@ -2,8 +2,8 @@ import type {
   GenerateObjectPayload,
   ModelRuntime,
   OpenAIChatMessage,
-} from '@lobechat/model-runtime';
-import type { LayersEnum, MemorySourceType } from '@lobechat/types';
+} from '@ficlouds/model-runtime';
+import type { LayersEnum, MemorySourceType } from '@ficlouds/types';
 
 import type {
   ActivityExtractor,

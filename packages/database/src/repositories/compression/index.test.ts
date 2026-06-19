@@ -1,12 +1,12 @@
 // @vitest-environment node
-import { MessageGroupType } from '@lobechat/types';
+import { MessageGroupType } from '@ficlouds/types';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { getTestDB } from '../../core/getTestDB';
 import { messageGroups, messages } from '../../schemas/message';
 import { topics } from '../../schemas/topic';
 import { users } from '../../schemas/user';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { CompressionRepository } from './index';
 
 const userId = 'compression-test-user';
@@ -14,7 +14,7 @@ const topicId = 'test-topic-1';
 
 let compressionRepo: CompressionRepository;
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 beforeEach(async () => {
   // Clean up

@@ -1,9 +1,9 @@
-import type { TaskTemplate, TaskTemplateSkillSource } from '@lobechat/const';
+import type { TaskTemplate, TaskTemplateSkillSource } from '@ficlouds/const';
 import {
   TASK_TEMPLATE_FALLBACK_CATEGORIES,
   TASK_TEMPLATE_RECOMMEND_COUNT,
   taskTemplates,
-} from '@lobechat/const';
+} from '@ficlouds/const';
 
 import { klavisEnv } from '@/config/klavis';
 import { appEnv } from '@/envs/app';

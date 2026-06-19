@@ -1,6 +1,6 @@
-import { LocalSystemManifest } from '@lobechat/builtin-tool-local-system';
-import { RemoteDeviceManifest } from '@lobechat/builtin-tool-remote-device';
-import { builtinTools } from '@lobechat/builtin-tools';
+import { LocalSystemManifest } from '@ficlouds/builtin-tool-local-system';
+import { RemoteDeviceManifest } from '@ficlouds/builtin-tool-remote-device';
+import { builtinTools } from '@ficlouds/builtin-tools';
 import { describe, expect, it } from 'vitest';
 
 import {

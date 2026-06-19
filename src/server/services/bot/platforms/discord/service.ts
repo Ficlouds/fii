@@ -36,8 +36,8 @@ import type {
   SendMessageState,
   UnpinMessageParams,
   UnpinMessageState,
-} from '@lobechat/builtin-tool-message/executionRuntime';
-import { DEFAULT_BOT_HISTORY_LIMIT } from '@lobechat/const';
+} from '@ficlouds/builtin-tool-message/executionRuntime';
+import { DEFAULT_BOT_HISTORY_LIMIT } from '@ficlouds/const';
 
 import type { MessageRuntimeService } from '@/server/services/toolExecution/serverRuntimes/message/adapters/types';
 

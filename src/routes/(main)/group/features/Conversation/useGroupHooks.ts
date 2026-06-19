@@ -1,6 +1,6 @@
 'use client';
 
-import { type ConversationContext, type SendMessageParams } from '@lobechat/types';
+import { type ConversationContext, type SendMessageParams } from '@ficlouds/types';
 import { useMemo } from 'react';
 
 import { type ConversationHooks } from '@/features/Conversation';

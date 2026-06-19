@@ -1,6 +1,6 @@
 'use client';
 
-import { type SkillItem } from '@lobechat/types';
+import { type SkillItem } from '@ficlouds/types';
 import { CopyButton, Highlighter, Markdown } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { memo } from 'react';

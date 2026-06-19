@@ -1,4 +1,4 @@
-import type { SkillItem, SkillListItem, SkillResourceMeta } from '@lobechat/types';
+import type { SkillItem, SkillListItem, SkillResourceMeta } from '@ficlouds/types';
 
 import type { AgentModel } from '@/database/models/agent';
 import { AgentDocumentVfsError } from '@/server/services/agentDocumentVfs/errors';

@@ -23,7 +23,7 @@ export type {
   ActivationSource,
   FunctionCallChecker,
   GenerateToolsParams,
-  LobeToolManifest,
+  FiToolManifest,
   OperationToolSet,
   PluginEnableChecker,
   ResolvedToolSet,

@@ -1,4 +1,4 @@
-import { useToolRenderCapabilities } from '@lobechat/shared-tool-ui';
+import { useToolRenderCapabilities } from '@ficlouds/shared-tool-ui';
 import { ActionIcon, Flexbox } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import dayjs from 'dayjs';

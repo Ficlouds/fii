@@ -1,4 +1,4 @@
-import type { ModelRuntimeHooks } from '@lobechat/model-runtime';
+import type { ModelRuntimeHooks } from '@ficlouds/model-runtime';
 
 export function getBusinessModelRuntimeHooks(
   _userId: string,

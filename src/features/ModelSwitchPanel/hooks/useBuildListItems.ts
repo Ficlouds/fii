@@ -20,7 +20,7 @@ export const useBuildListItems = (
       return text.toLowerCase().includes(keyword);
     };
 
-    // lobehub first, then others
+    // fi first, then others
     const sortedProviders = [...enabledList].sort((a, b) => {
       const aIsLobehub = a.id === 'lobehub';
       const bIsLobehub = b.id === 'lobehub';
@@ -58,7 +58,7 @@ export const useBuildListItems = (
         }
       }
 
-      // lobehub first
+      // fi first
       const modelArray = Array.from(modelMap.values());
       for (const model of modelArray) {
         model.providers.sort((a, b) => {

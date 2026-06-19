@@ -1,4 +1,4 @@
-import { getCachedTextInputUnitRate, getWriteCacheInputUnitRate } from '@lobechat/utils';
+import { getCachedTextInputUnitRate, getWriteCacheInputUnitRate } from '@ficlouds/utils';
 import { ModelIcon } from '@lobehub/icons';
 import { Flexbox, Icon, Segmented, Tooltip } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';

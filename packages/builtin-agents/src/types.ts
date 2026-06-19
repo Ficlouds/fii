@@ -1,4 +1,4 @@
-import type { LobeAgentChatConfig, LobeAgentConfig } from '@lobechat/types';
+import type { FiAgentChatConfig, FiAgentConfig } from '@ficlouds/types';
 
 import type { GroupSupervisorContext } from './agents/group-supervisor/type';
 
@@ -23,7 +23,7 @@ export type BuiltinAgentSlug = (typeof BUILTIN_AGENT_SLUGS)[keyof typeof BUILTIN
  */
 export interface BuiltinAgentPersistConfig {
   /** Default chat configuration */
-  chatConfig?: Partial<LobeAgentChatConfig>;
+  chatConfig?: Partial<FiAgentChatConfig>;
   /** Default model */
   model?: string;
   /** Default provider */
@@ -35,7 +35,7 @@ export interface BuiltinAgentPersistConfig {
  */
 export interface BuiltinAgentRuntimeResult {
   /** Runtime chat configuration overrides */
-  chatConfig?: Partial<LobeAgentChatConfig>;
+  chatConfig?: Partial<FiAgentChatConfig>;
 
   /** Plugins to enable for the agent */
   plugins?: string[];
@@ -64,7 +64,7 @@ export interface RuntimeContext {
   plugins?: string[];
 
   /** Target agent config for AgentBuilder */
-  targetAgentConfig?: LobeAgentConfig;
+  targetAgentConfig?: FiAgentConfig;
 
   /** User's locale */
   userLocale?: string;

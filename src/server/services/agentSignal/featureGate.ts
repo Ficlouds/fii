@@ -1,6 +1,6 @@
-import { INBOX_SESSION_ID } from '@lobechat/const';
+import { INBOX_SESSION_ID } from '@ficlouds/const';
 
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { getServerFeatureFlagsStateFromRuntimeConfig } from '@/server/featureFlags';
 
 /**
@@ -90,7 +90,7 @@ export const isAgentSelfIterationFeatureEnabledForUser = async (userId: string) 
  * Returns:
  * - `true` only when the Agent Self-iteration feature flag is enabled for the user
  */
-export const isAgentSignalEnabledForUser = async (_db: LobeChatDatabase, userId: string) => {
+export const isAgentSignalEnabledForUser = async (_db: FiDatabase, userId: string) => {
   try {
     return await isAgentSelfIterationFeatureEnabledForUser(userId);
   } catch {

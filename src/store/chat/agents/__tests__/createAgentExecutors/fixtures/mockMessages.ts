@@ -1,5 +1,5 @@
-import { type UIChatMessage } from '@lobechat/types';
-import { nanoid } from '@lobechat/utils';
+import { type UIChatMessage } from '@ficlouds/types';
+import { nanoid } from '@ficlouds/utils';
 
 /**
  * Create a mock assistant message

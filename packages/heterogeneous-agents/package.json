@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/heterogeneous-agents",
+  "name": "@ficlouds/heterogeneous-agents",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -14,13 +14,13 @@
     "test:coverage": "vitest --coverage --silent='passed-only'"
   },
   "dependencies": {
-    "@lobechat/agent-gateway-client": "workspace:*",
-    "@lobehub/icons": "^5.4.0",
+    "@ficlouds/agent-gateway-client": "workspace:*",
+    "@ficlouds/icons": "^5.4.0",
     "@modelcontextprotocol/sdk": "^1.26.0",
     "diff": "^8.0.4",
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@lobechat/types": "workspace:*"
+    "@ficlouds/types": "workspace:*"
   }
 }

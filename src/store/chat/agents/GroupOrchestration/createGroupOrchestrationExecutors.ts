@@ -10,8 +10,8 @@ import {
   type SupervisorInstructionExecAsyncTask,
   type SupervisorInstructionExecClientAsyncTask,
   type SupervisorInstructionParallelCallAgents,
-} from '@lobechat/agent-runtime';
-import { type ConversationContext, type UIChatMessage } from '@lobechat/types';
+} from '@ficlouds/agent-runtime';
+import { type ConversationContext, type UIChatMessage } from '@ficlouds/types';
 import debug from 'debug';
 
 import { aiAgentService } from '@/services/aiAgent';

@@ -1,4 +1,4 @@
-import { EDITOR_DEBOUNCE_TIME, EDITOR_MAX_WAIT, isDesktop } from '@lobechat/const';
+import { EDITOR_DEBOUNCE_TIME, EDITOR_MAX_WAIT, isDesktop } from '@ficlouds/const';
 import { confirmModal } from '@lobehub/ui/base-ui';
 import debug from 'debug';
 import { debounce } from 'es-toolkit/compat';

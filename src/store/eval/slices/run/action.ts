@@ -1,4 +1,4 @@
-import type { EvalRunInputConfig } from '@lobechat/types';
+import type { EvalRunInputConfig } from '@ficlouds/types';
 import isEqual from 'fast-deep-equal';
 import type { SWRResponse } from 'swr';
 

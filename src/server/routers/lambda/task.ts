@@ -1,5 +1,5 @@
-import { TASK_STATUSES } from '@lobechat/builtin-tool-task';
-import type { TaskListItem, TaskParticipant } from '@lobechat/types';
+import { TASK_STATUSES } from '@ficlouds/builtin-tool-task';
+import type { TaskListItem, TaskParticipant } from '@ficlouds/types';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 

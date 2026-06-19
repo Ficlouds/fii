@@ -1,4 +1,4 @@
-import type { AgentSignalSource } from '@lobechat/agent-signal';
+import type { AgentSignalSource } from '@ficlouds/agent-signal';
 
 export interface EmitSourceEventInput {
   payload: Record<string, unknown>;

@@ -1,6 +1,6 @@
 'use client';
 
-import type { EvalThreadResult } from '@lobechat/types';
+import type { EvalThreadResult } from '@ficlouds/types';
 import { Flexbox, Tabs } from '@lobehub/ui';
 import { memo, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';

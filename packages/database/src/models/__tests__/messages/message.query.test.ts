@@ -1,4 +1,4 @@
-import { INBOX_SESSION_ID } from '@lobechat/const';
+import { INBOX_SESSION_ID } from '@ficlouds/const';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
@@ -25,11 +25,11 @@ import {
   topics,
   users,
 } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import { MessageModel } from '../../message';
 import { codeEmbedding } from '../fixtures/embedding';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'message-query-test';
 const otherUserId = 'message-query-test-other';

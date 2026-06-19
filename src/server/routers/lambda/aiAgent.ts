@@ -1,12 +1,12 @@
-import { type AgentStreamEvent } from '@lobechat/agent-gateway-client';
-import { parse } from '@lobechat/conversation-flow';
-import { type TaskCurrentActivity, type TaskStatusResult } from '@lobechat/types';
+import { type AgentStreamEvent } from '@ficlouds/agent-gateway-client';
+import { parse } from '@ficlouds/conversation-flow';
+import { type TaskCurrentActivity, type TaskStatusResult } from '@ficlouds/types';
 import {
   RequestTrigger,
   ThreadStatus,
   ThreadType,
   UserInterventionConfigSchema,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { TRPCError } from '@trpc/server';
 import debug from 'debug';
 import pMap from 'p-map';
@@ -346,7 +346,7 @@ const InterruptTaskSchema = z
 
 /**
  * Wire shape of an `AgentStreamEvent` produced by `lh hetero exec`. Mirrors
- * `AgentStreamEvent` in `@lobechat/agent-gateway-client` (kept here as a Zod
+ * `AgentStreamEvent` in `@ficlouds/agent-gateway-client` (kept here as a Zod
  * schema for tRPC input validation; tRPC's type inference takes care of the
  * client-side typing). Republished verbatim through `StreamEventManager` so
  * gateway WS subscribers see the same shape regardless of producer.

@@ -1,15 +1,15 @@
-import type { EvalDatasetRecordRefFile } from '@lobechat/types';
+import type { EvalDatasetRecordRefFile } from '@ficlouds/types';
 import { and, eq, inArray } from 'drizzle-orm';
 
 import type {NewEvalDatasetRecordsItem } from '../../schemas';
 import { evalDatasetRecords, files } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 
 export class EvalDatasetRecordModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

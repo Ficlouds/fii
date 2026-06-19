@@ -1,4 +1,4 @@
-import { getJinaReaderBaseUrl } from '@lobechat/utils';
+import { getJinaReaderBaseUrl } from '@ficlouds/utils';
 
 import type { CrawlImpl } from '../type';
 import { toFetchError } from '../utils/errorType';
@@ -18,7 +18,7 @@ export const jina: CrawlImpl<{ apiKey?: string }> = async (url, params) => {
           headers: {
             'Accept': 'application/json',
             'Authorization': token ? `Bearer ${token}` : '',
-            'x-send-from': 'LobeChat Community',
+            'x-send-from': 'Fi Community',
           },
           signal,
         }),

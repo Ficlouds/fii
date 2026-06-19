@@ -1,4 +1,4 @@
-import type { RuntimeStepContext, StepActivatedSkill, StepContextTodos } from '@lobechat/types';
+import type { RuntimeStepContext, StepActivatedSkill, StepContextTodos } from '@ficlouds/types';
 
 /**
  * Input parameters for computeStepContext

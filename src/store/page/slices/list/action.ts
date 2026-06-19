@@ -1,4 +1,4 @@
-import { type DocumentItem } from '@lobechat/database/schemas';
+import { type DocumentItem } from '@ficlouds/database/schemas';
 import { type SWRResponse } from 'swr';
 
 import { useClientDataSWRWithSync } from '@/libs/swr';

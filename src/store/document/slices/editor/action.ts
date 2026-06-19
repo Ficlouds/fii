@@ -1,7 +1,7 @@
 'use client';
 
 import type { IEditor } from '@lobehub/editor';
-import type { EditorState as LobehubEditorState } from '@lobehub/editor/react';
+import type { EditorState as FiEditorState } from '@lobehub/editor/react';
 import isEqual from 'fast-deep-equal';
 
 import { EMPTY_EDITOR_STATE } from '@/libs/editor/constants';
@@ -311,7 +311,7 @@ export class EditorActionImpl {
     }
   };
 
-  setEditorState = (editorState: LobehubEditorState | undefined): void => {
+  setEditorState = (editorState: FiEditorState | undefined): void => {
     this.#set({ editorState }, false, n('setEditorState'));
   };
 }

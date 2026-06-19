@@ -1,7 +1,7 @@
 'use client';
 
-import type { EvalRunMetrics } from '@lobechat/types';
-import { formatCost, formatShortenNumber } from '@lobechat/utils';
+import type { EvalRunMetrics } from '@ficlouds/types';
+import { formatCost, formatShortenNumber } from '@ficlouds/utils';
 import { Flexbox, Icon } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { CheckCircle2, Clock, DollarSign, Hash } from 'lucide-react';

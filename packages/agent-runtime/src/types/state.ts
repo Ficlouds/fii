@@ -4,12 +4,12 @@ import type {
   OperationToolSet,
   ToolExecutor,
   ToolSource,
-} from '@lobechat/context-engine';
+} from '@ficlouds/context-engine';
 import type {
   ChatToolPayload,
   SecurityBlacklistConfig,
   UserInterventionConfig,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 import type { Cost, CostLimit, Usage } from './usage';
 

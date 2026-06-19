@@ -2,7 +2,7 @@ import { and, count, desc, eq, ilike, or } from 'drizzle-orm';
 
 import type { PermissionItem } from '@/database/schemas/rbac';
 import { permissions, rolePermissions } from '@/database/schemas/rbac';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 
 import { BaseService } from '../common/base.service';
 import { processPaginationConditions } from '../helpers/pagination';
@@ -15,7 +15,7 @@ import type {
 } from '../types/permission.type';
 
 export class PermissionService extends BaseService {
-  constructor(db: LobeChatDatabase, userId: string | null) {
+  constructor(db: FiDatabase, userId: string | null) {
     super(db, userId);
   }
 

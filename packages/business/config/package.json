@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/business-config",
+  "name": "@ficlouds/business-config",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -8,11 +8,11 @@
   },
   "main": "./src/index.ts",
   "dependencies": {
-    "@lobechat/business-const": "workspace:*",
-    "@lobechat/const": "workspace:*",
+    "@ficlouds/business-const": "workspace:*",
+    "@ficlouds/const": "workspace:*",
     "model-bank": "workspace:*"
   },
   "devDependencies": {
-    "@lobechat/types": "workspace:*"
+    "@ficlouds/types": "workspace:*"
   }
 }

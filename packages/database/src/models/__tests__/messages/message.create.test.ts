@@ -1,4 +1,4 @@
-import type { DBMessageItem } from '@lobechat/types';
+import type { DBMessageItem } from '@ficlouds/types';
 import { asc, eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
@@ -19,11 +19,11 @@ import {
   topics,
   users,
 } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import { MessageModel } from '../../message';
 import { codeEmbedding } from '../fixtures/embedding';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'message-create-test';
 const otherUserId = 'message-create-test-other';

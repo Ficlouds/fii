@@ -1,10 +1,10 @@
-import type { UIChatMessage } from '@lobechat/types';
+import type { UIChatMessage } from '@ficlouds/types';
 
 /**
  * Consumer-side metadata extensions for PipelineContext.metadata.
  *
  * Example:
- * declare module '@lobechat/context-engine' {
+ * declare module '@ficlouds/context-engine' {
  *   interface PipelineContextMetadataOverrides {
  *     myCustomFlag?: boolean;
  *   }
@@ -54,7 +54,7 @@ export interface Message {
 /**
  * Metadata shared across pipeline processors.
  * Consumers can extend this through declaration merging on
- * `LobeChatContextEngine.PipelineContextMetadataOverrides`.
+ * `FiContextEngine.PipelineContextMetadataOverrides`.
  */
 export interface PipelineContextMetadata extends PipelineContextMetadataOverrides {
   [key: `${string}InjectedCount`]: number | undefined;
@@ -259,4 +259,4 @@ export class PipelineError extends Error {
   }
 }
 
-export type { UIChatMessage } from '@lobechat/types';
+export type { UIChatMessage } from '@ficlouds/types';

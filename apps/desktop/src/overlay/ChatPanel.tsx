@@ -4,7 +4,7 @@ import type {
   ScreenCaptureAgentOption,
   ScreenCaptureModelOption,
   ScreenCaptureOverlayTheme,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 import { ModelIcon } from '@lobehub/icons';
 import { AlertCircleIcon, CheckIcon, ChevronDownIcon, Loader2Icon, XIcon } from 'lucide-react';
 import type {

@@ -1,4 +1,4 @@
-import { type NotebookDocument } from '@lobechat/types';
+import { type NotebookDocument } from '@ficlouds/types';
 import { ActionIcon, Flexbox, Text } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';
 import { createStaticStyles } from 'antd-style';

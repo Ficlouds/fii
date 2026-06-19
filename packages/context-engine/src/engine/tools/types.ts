@@ -1,6 +1,6 @@
 import type { ExtendedHumanInterventionConfig } from '@/types/index';
 
-export interface LobeChatPluginApi {
+export interface FiPluginApi {
   /**
    * Default execution timeout in milliseconds for this API.
    * Falls back to the global default (120_000 ms) when omitted.
@@ -26,8 +26,8 @@ export interface LobeChatPluginApi {
   url?: string;
 }
 
-export interface LobeToolManifest {
-  api: LobeChatPluginApi[];
+export interface FiToolManifest {
+  api: FiPluginApi[];
   identifier: string;
   meta: any;
   systemRole?: string;
@@ -57,7 +57,7 @@ export interface ToolsGenerationContext {
  */
 export type PluginEnableChecker = (params: {
   context?: ToolsGenerationContext;
-  manifest: LobeToolManifest;
+  manifest: FiToolManifest;
   model: string;
   pluginId: string;
   provider: string;
@@ -112,7 +112,7 @@ export interface ToolsEngineOptions {
   /** Optional tool name generator function */
   generateToolName?: ToolNameGenerator;
   /** Statically injected manifest schemas */
-  manifestSchemas: LobeToolManifest[];
+  manifestSchemas: FiToolManifest[];
 }
 
 /**
@@ -120,7 +120,7 @@ export interface ToolsEngineOptions {
  */
 export interface ToolsGenerationResult {
   /** List of enabled manifests with systemRole and other metadata */
-  enabledManifests: LobeToolManifest[];
+  enabledManifests: FiToolManifest[];
   /** List of enabled tool IDs */
   enabledToolIds: string[];
   /** Filtered plugins and their reasons */
@@ -166,7 +166,7 @@ export interface UniformTool {
 
 // ---- Tool Lifecycle Types ----
 
-export type ToolSource = 'builtin' | 'client' | 'mcp' | 'klavis' | 'lobehubSkill';
+export type ToolSource = 'builtin' | 'client' | 'mcp' | 'klavis' | 'fiSkill';
 
 /**
  * Where the tool is executed for a given invocation.
@@ -185,7 +185,7 @@ export type ActivationSource = 'active_tools' | 'mention' | 'device' | 'discover
 export interface OperationToolSet {
   enabledToolIds: string[];
   executorMap?: Record<string, ToolExecutor>;
-  manifestMap: Record<string, LobeToolManifest>;
+  manifestMap: Record<string, FiToolManifest>;
   sourceMap: Record<string, ToolSource>;
   tools: UniformTool[];
 }
@@ -196,7 +196,7 @@ export interface OperationToolSet {
 export interface ActivatedStepTool {
   activatedAtStep: number;
   id: string;
-  manifest?: LobeToolManifest;
+  manifest?: FiToolManifest;
   source: ActivationSource;
 }
 
@@ -207,7 +207,7 @@ export interface ActivatedStepTool {
 export interface StepToolDelta {
   activatedTools: Array<{
     id: string;
-    manifest?: LobeToolManifest;
+    manifest?: FiToolManifest;
     source: ActivationSource;
   }>;
   deactivatedToolIds?: string[];
@@ -219,7 +219,7 @@ export interface StepToolDelta {
 export interface ResolvedToolSet {
   enabledToolIds: string[];
   executorMap?: Record<string, ToolExecutor>;
-  manifestMap: Record<string, LobeToolManifest>;
+  manifestMap: Record<string, FiToolManifest>;
   sourceMap: Record<string, ToolSource>;
   tools: UniformTool[];
 }

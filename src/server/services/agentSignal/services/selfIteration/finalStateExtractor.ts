@@ -1,4 +1,4 @@
-import type { AgentState } from '@lobechat/agent-runtime';
+import type { AgentState } from '@ficlouds/agent-runtime';
 
 /**
  * Tool result kind discriminator.

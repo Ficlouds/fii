@@ -1,6 +1,6 @@
-import { type LobeChatDatabase } from '@lobechat/database';
-import { type ChatToolPayload } from '@lobechat/types';
-import { detectTruncatedJSON, safeParseJSON } from '@lobechat/utils';
+import { type FiDatabase } from '@ficlouds/database';
+import { type ChatToolPayload } from '@ficlouds/types';
+import { detectTruncatedJSON, safeParseJSON } from '@ficlouds/utils';
 import debug from 'debug';
 
 import { KlavisService } from '@/server/services/klavis';
@@ -15,7 +15,7 @@ export class BuiltinToolsExecutor implements IToolExecutor {
   private marketService: MarketService;
   private klavisService: KlavisService;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.marketService = new MarketService({ userInfo: { userId } });
     this.klavisService = new KlavisService({ db, userId });
   }
@@ -66,9 +66,9 @@ export class BuiltinToolsExecutor implements IToolExecutor {
       args,
     );
 
-    // Route LobeHub Skills to MarketService
-    if (source === 'lobehubSkill') {
-      return this.marketService.executeLobehubSkill({
+    // Route Fi Skills to MarketService
+    if (source === 'fiSkill') {
+      return this.marketService.executeFiSkill({
         args,
         context: {
           topicId: context.topicId,

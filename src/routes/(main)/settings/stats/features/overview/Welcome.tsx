@@ -1,4 +1,4 @@
-import { BRANDING_NAME } from '@lobechat/business-const';
+import { BRANDING_NAME } from '@ficlouds/business-const';
 import { Flexbox, Skeleton } from '@lobehub/ui';
 import { Clock3Icon, ClockArrowUp } from 'lucide-react';
 import { memo } from 'react';

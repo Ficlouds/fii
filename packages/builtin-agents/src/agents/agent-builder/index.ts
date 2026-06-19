@@ -1,6 +1,6 @@
-import { AgentBuilderIdentifier } from '@lobechat/builtin-tool-agent-builder';
-import { DEFAULT_PROVIDER } from '@lobechat/business-const';
-import { DEFAULT_MODEL } from '@lobechat/const';
+import { AgentBuilderIdentifier } from '@ficlouds/builtin-tool-agent-builder';
+import { DEFAULT_PROVIDER } from '@ficlouds/business-const';
+import { DEFAULT_MODEL } from '@ficlouds/const';
 
 import type { BuiltinAgentDefinition } from '../../types';
 import { BUILTIN_AGENT_SLUGS } from '../../types';

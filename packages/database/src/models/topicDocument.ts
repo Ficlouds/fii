@@ -2,7 +2,7 @@ import { and, desc, eq } from 'drizzle-orm';
 
 import type { DocumentItem, NewTopicDocument } from '../schemas';
 import { documents, topicDocuments } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export interface TopicDocumentWithDetails extends DocumentItem {
   associatedAt: Date;
@@ -10,9 +10,9 @@ export interface TopicDocumentWithDetails extends DocumentItem {
 
 export class TopicDocumentModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

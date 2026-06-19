@@ -1,4 +1,4 @@
-import type { BuiltinToolManifest } from '@lobechat/types';
+import type { BuiltinToolManifest } from '@ficlouds/types';
 
 import { isDesktop } from './const';
 import { systemPrompt } from './systemRole';

@@ -2,10 +2,10 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { getTestDB } from '../../core/getTestDB';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { DrizzleMigrationModel } from '../drizzleMigration';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const drizzleMigrationModel = new DrizzleMigrationModel(serverDB);
 

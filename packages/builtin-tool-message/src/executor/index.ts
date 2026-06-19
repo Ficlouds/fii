@@ -1,5 +1,5 @@
-import type { BuiltinToolContext, BuiltinToolResult } from '@lobechat/types';
-import { BaseExecutor } from '@lobechat/types';
+import type { BuiltinToolContext, BuiltinToolResult } from '@ficlouds/types';
+import { BaseExecutor } from '@ficlouds/types';
 
 import type { MessageExecutionRuntime } from '../ExecutionRuntime';
 import type {

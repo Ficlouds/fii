@@ -1,5 +1,5 @@
-import { ASYNC_TASK_TIMEOUT } from '@lobechat/business-config/server';
-import { RequestTrigger } from '@lobechat/types';
+import { ASYNC_TASK_TIMEOUT } from '@ficlouds/business-config/server';
+import { RequestTrigger } from '@ficlouds/types';
 import { TRPCError } from '@trpc/server';
 import { chunk } from 'es-toolkit/compat';
 import pMap from 'p-map';

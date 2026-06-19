@@ -79,7 +79,7 @@ export const klavisStoreSelectors = {
   },
 
   /**
-   * Get all Klavis tools as LobeTool format for agent use
+   * Get all Klavis tools as FiTool format for agent use
    * Converts Klavis tools into the format expected by ToolNameResolver
    */
   klavisAsLobeTools: (s: ToolStore) => {
@@ -107,7 +107,7 @@ export const klavisStoreSelectors = {
             identifier: server.identifier,
             meta: {
               avatar: '☁️',
-              description: `LobeHub Mcp Server: ${server.serverName}`,
+              description: `Fi Mcp Server: ${server.serverName}`,
               tags: ['klavis', 'mcp'],
               title: server.serverName,
             },

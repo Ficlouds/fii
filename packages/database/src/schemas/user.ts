@@ -1,10 +1,10 @@
-import { DEFAULT_PREFERENCE } from '@lobechat/const';
+import { DEFAULT_PREFERENCE } from '@ficlouds/const';
 import type {
   CustomPluginParams,
   ToolManifest,
   UserAgentOnboarding,
   UserOnboarding,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { sql } from 'drizzle-orm';
 import { boolean, index, jsonb, pgTable, primaryKey, text, varchar } from 'drizzle-orm/pg-core';
 

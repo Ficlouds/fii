@@ -9,12 +9,12 @@ import { useTranslation } from 'react-i18next';
 import GroupInfo from '@/features/GroupInfo';
 import { useAgentGroupStore } from '@/store/agentGroup';
 import { agentGroupSelectors } from '@/store/agentGroup/selectors';
-import { type LobeSession } from '@/types/session';
+import { type FiSession } from '@/types/session';
 
 import { styles } from './style';
 
 interface GroupRoleProps {
-  currentSession?: LobeSession;
+  currentSession?: FiSession;
   editing: boolean;
   editorModalOpen: boolean;
   setEditing: (editing: boolean) => void;

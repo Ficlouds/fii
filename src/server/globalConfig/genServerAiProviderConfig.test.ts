@@ -183,7 +183,7 @@ describe('genServerAiProvidersConfig', () => {
     });
   });
 
-  it('should allow LobeHub models to come from the async model bank loader', async () => {
+  it('should allow Fi models to come from the async model bank loader', async () => {
     const result = await genServerAiProvidersConfig({});
 
     expect(result).toHaveProperty('lobehub');
@@ -193,13 +193,13 @@ describe('genServerAiProvidersConfig', () => {
 });
 
 describe('genServerAiProvidersConfig Error Handling', () => {
-  it('should throw error when a non-LobeHub provider is not found in aiModels', async () => {
+  it('should throw error when a non-Fi provider is not found in aiModels', async () => {
     vi.resetModules();
 
     vi.doMock('model-bank', () => ({
       ModelProvider: {
         Anthropic: 'anthropic',
-        LobeHub: 'lobehub',
+        Fi: 'lobehub',
         OpenAI: 'openai',
       },
       anthropic: [

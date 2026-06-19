@@ -1,9 +1,9 @@
-import { BRANDING_NAME } from '@lobechat/business-const';
+import { BRANDING_NAME } from '@ficlouds/business-const';
 import {
   getElectronIpc,
   type UpdaterState,
   useWatchBroadcast,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 import { Block, Button, Flexbox, Tag } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { memo, useEffect, useMemo, useState } from 'react';

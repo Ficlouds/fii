@@ -1,9 +1,9 @@
-import type { HeterogeneousAgentSessionError } from '@lobechat/electron-client-ipc';
-import { HeterogeneousAgentSessionErrorCode } from '@lobechat/electron-client-ipc';
-import { type ILobeAgentRuntimeErrorType } from '@lobechat/model-runtime';
-import { AgentRuntimeErrorType } from '@lobechat/model-runtime';
-import { type ChatMessageError, type ErrorType, type IToolErrorType } from '@lobechat/types';
-import { ChatErrorType } from '@lobechat/types';
+import type { HeterogeneousAgentSessionError } from '@ficlouds/electron-client-ipc';
+import { HeterogeneousAgentSessionErrorCode } from '@ficlouds/electron-client-ipc';
+import { type ILobeAgentRuntimeErrorType } from '@ficlouds/model-runtime';
+import { AgentRuntimeErrorType } from '@ficlouds/model-runtime';
+import { type ChatMessageError, type ErrorType, type IToolErrorType } from '@ficlouds/types';
+import { ChatErrorType } from '@ficlouds/types';
 import { type AlertProps } from '@lobehub/ui';
 import { Block, Highlighter, Skeleton } from '@lobehub/ui';
 import { memo, useCallback, useMemo } from 'react';

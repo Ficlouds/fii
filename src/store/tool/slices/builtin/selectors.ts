@@ -1,5 +1,5 @@
-import { runtimeManagedToolIds } from '@lobechat/builtin-tools';
-import { type BuiltinSkill, type LobeToolMeta } from '@lobechat/types';
+import { runtimeManagedToolIds } from '@ficlouds/builtin-tools';
+import { type BuiltinSkill, type FiToolMeta } from '@ficlouds/types';
 
 import {
   isBuiltinSkillAvailableInCurrentEnv,
@@ -10,7 +10,7 @@ import { type ToolStoreState } from '../../initialState';
 import { agentSkillsSelectors } from '../agentSkills/selectors';
 import { KlavisServerStatus } from '../klavisStore';
 
-export interface LobeToolMetaWithAvailability extends LobeToolMeta {
+export interface FiToolMetaWithAvailability extends FiToolMeta {
   /**
    * Whether the tool is available in web environment
    * e.g., LocalSystem is desktop-only, so availableInWeb is false
@@ -18,8 +18,8 @@ export interface LobeToolMetaWithAvailability extends LobeToolMeta {
   availableInWeb: boolean;
 }
 
-const toBuiltinMeta = (t: ToolStoreState['builtinTools'][number]): LobeToolMeta => ({
-  author: 'LobeHub',
+const toBuiltinMeta = (t: ToolStoreState['builtinTools'][number]): FiToolMeta => ({
+  author: 'Fi',
   identifier: t.identifier,
   meta: t.manifest.meta,
   type: 'builtin' as const,
@@ -27,13 +27,13 @@ const toBuiltinMeta = (t: ToolStoreState['builtinTools'][number]): LobeToolMeta 
 
 const toBuiltinMetaWithAvailability = (
   t: ToolStoreState['builtinTools'][number],
-): LobeToolMetaWithAvailability => ({
+): FiToolMetaWithAvailability => ({
   ...toBuiltinMeta(t),
   availableInWeb: isBuiltinToolAvailableInCurrentEnv(t.identifier),
 });
 
-const toSkillMeta = (s: BuiltinSkill): LobeToolMeta => ({
-  author: 'LobeHub',
+const toSkillMeta = (s: BuiltinSkill): FiToolMeta => ({
+  author: 'Fi',
   identifier: s.identifier,
   meta: {
     avatar: s.avatar,
@@ -43,12 +43,12 @@ const toSkillMeta = (s: BuiltinSkill): LobeToolMeta => ({
   type: 'builtin' as const,
 });
 
-const toSkillMetaWithAvailability = (s: BuiltinSkill): LobeToolMetaWithAvailability => ({
+const toSkillMetaWithAvailability = (s: BuiltinSkill): FiToolMetaWithAvailability => ({
   ...toSkillMeta(s),
   availableInWeb: isBuiltinSkillAvailableInCurrentEnv(s.identifier),
 });
 
-const getKlavisMetas = (s: ToolStoreState): LobeToolMeta[] =>
+const getKlavisMetas = (s: ToolStoreState): FiToolMeta[] =>
   (s.servers || [])
     .filter((server) => server.status === KlavisServerStatus.CONNECTED && server.tools?.length)
     .map((server) => ({
@@ -57,7 +57,7 @@ const getKlavisMetas = (s: ToolStoreState): LobeToolMeta[] =>
       identifier: server.identifier,
       meta: {
         avatar: '☁️',
-        description: `LobeHub Mcp Server: ${server.serverName}`,
+        description: `Fi Mcp Server: ${server.serverName}`,
         tags: ['klavis', 'mcp'],
         // title still uses serverName to display friendly name
         title: server.serverName,
@@ -65,7 +65,7 @@ const getKlavisMetas = (s: ToolStoreState): LobeToolMeta[] =>
       type: 'builtin' as const,
     }));
 
-const getKlavisMetasWithAvailability = (s: ToolStoreState): LobeToolMetaWithAvailability[] =>
+const getKlavisMetasWithAvailability = (s: ToolStoreState): FiToolMetaWithAvailability[] =>
   getKlavisMetas(s).map((meta) => ({ ...meta, availableInWeb: true }));
 
 // Set form for O(1) lookup inside the filter loop.
@@ -89,7 +89,7 @@ const RUNTIME_MANAGED_TOOL_IDS = new Set(runtimeManagedToolIds);
 const buildVisibleMetaList = (
   s: ToolStoreState,
   { includeHidden }: { includeHidden: boolean },
-): LobeToolMeta[] => {
+): FiToolMeta[] => {
   const { uninstalledBuiltinTools } = s;
 
   const builtinMetas = s.builtinTools
@@ -133,7 +133,7 @@ const buildVisibleMetaList = (
  * Used for general tool display in chat input bar
  * Only returns tools that are not in the uninstalledBuiltinTools list
  */
-const metaList = (s: ToolStoreState): LobeToolMeta[] =>
+const metaList = (s: ToolStoreState): FiToolMeta[] =>
   buildVisibleMetaList(s, { includeHidden: false });
 
 /**
@@ -145,7 +145,7 @@ const metaList = (s: ToolStoreState): LobeToolMeta[] =>
  * Pure infrastructure tools (the activator itself, agent-builder helpers, etc.)
  * are still excluded — they are never user-toggleable.
  */
-const metaListIncludingHidden = (s: ToolStoreState): LobeToolMeta[] =>
+const metaListIncludingHidden = (s: ToolStoreState): FiToolMeta[] =>
   buildVisibleMetaList(s, { includeHidden: true });
 
 // Tools that should never be exposed in agent profile configuration
@@ -161,7 +161,7 @@ const EXCLUDED_TOOLS = new Set([
  * Used for agent profile tool configuration where all tools should be configurable
  * Returns availability info so UI can show hints for unavailable tools
  */
-const allMetaList = (s: ToolStoreState): LobeToolMetaWithAvailability[] => {
+const allMetaList = (s: ToolStoreState): FiToolMetaWithAvailability[] => {
   const builtinMetas = s.builtinTools
     .filter((item) => {
       // Exclude internal tools that should not be user-configurable
@@ -184,7 +184,7 @@ const allMetaList = (s: ToolStoreState): LobeToolMetaWithAvailability[] => {
  * Excludes only tools with `discoverable: false` (pure infrastructure / internal).
  * Includes hidden and runtime-managed tools (web-browsing, memory, cloud-sandbox, etc.).
  */
-const discoverableMetaList = (s: ToolStoreState): LobeToolMeta[] => {
+const discoverableMetaList = (s: ToolStoreState): FiToolMeta[] => {
   const { uninstalledBuiltinTools } = s;
 
   const skillMetas = (s.builtinSkills || [])
@@ -213,7 +213,7 @@ const discoverableMetaList = (s: ToolStoreState): LobeToolMeta[] => {
  * Get installed builtin tools meta list (excludes uninstalled, includes hidden and platform-specific)
  * Used for agent profile tool configuration where only installed tools should be shown
  */
-const installedAllMetaList = (s: ToolStoreState): LobeToolMetaWithAvailability[] => {
+const installedAllMetaList = (s: ToolStoreState): FiToolMetaWithAvailability[] => {
   const { uninstalledBuiltinTools } = s;
 
   const builtinMetas = s.builtinTools

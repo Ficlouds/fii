@@ -1,4 +1,4 @@
-import { AssociatedObjectSchema } from '@lobechat/memory-user-memory';
+import { AssociatedObjectSchema } from '@ficlouds/memory-user-memory';
 import type {
   MergeStrategyEnum,
   Optional,
@@ -15,14 +15,14 @@ import type {
   UserMemoryItemSimple,
   UserMemoryPreferenceWithoutVectors,
   UserMemoryWithoutVectors,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import {
   ActivityTypeEnum,
   IdentityTypeEnum,
   LayersEnum,
   MemorySourceType,
   RelationshipEnum,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import type { AnyColumn, SQL } from 'drizzle-orm';
 import { and, asc, cosineDistance, desc, eq, inArray, isNotNull, ne, or, sql } from 'drizzle-orm';
 
@@ -45,7 +45,7 @@ import {
   userMemoriesIdentities,
   userMemoriesPreferences,
 } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { normalizeBm25MatchQuery, SAFE_BM25_QUERY_OPTIONS } from '../../utils/bm25';
 import { selectNonVectorColumns } from '../../utils/columns';
 import { TopicModel } from '../topic';
@@ -93,7 +93,7 @@ const buildContainsCondition = (column: unknown, q?: string) => {
   return sql<boolean>`${column} ILIKE ${`%${escapeLikePattern(normalized)}%`} ESCAPE '\\'`;
 };
 
-const isPGliteDatabase = (db: LobeChatDatabase) => {
+const isPGliteDatabase = (db: FiDatabase) => {
   const client = (
     db as unknown as {
       $client?: {
@@ -544,11 +544,11 @@ export class UserMemoryModel {
   }
 
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private topicModel: TopicModel;
   private queryModel: UserMemoryQueryModel;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
     this.queryModel = new UserMemoryQueryModel(db, userId);

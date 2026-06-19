@@ -11,9 +11,9 @@
  */
 import path from 'node:path';
 
-import { HeterogeneousAgentSessionErrorCode } from '@lobechat/electron-client-ipc';
-import type { AgentEventAdapter } from '@lobechat/heterogeneous-agents';
-import { createAdapter } from '@lobechat/heterogeneous-agents';
+import { HeterogeneousAgentSessionErrorCode } from '@ficlouds/electron-client-ipc';
+import type { AgentEventAdapter } from '@ficlouds/heterogeneous-agents';
+import { createAdapter } from '@ficlouds/heterogeneous-agents';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { createGatewayEventHandler } from '../gatewayEventHandler';

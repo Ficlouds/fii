@@ -1,4 +1,4 @@
-import { AgentRuntimeErrorType, ChatErrorType } from '@lobechat/types';
+import { AgentRuntimeErrorType, ChatErrorType } from '@ficlouds/types';
 import { describe, expect, it } from 'vitest';
 
 import { isUserSideError, matchErrorPattern } from './match';
@@ -194,7 +194,7 @@ describe('numericId contract', () => {
     for (const code of [
       ChatErrorType.FreePlanLimit,
       ChatErrorType.InsufficientBudgetForModel,
-      ChatErrorType.LobeHubModelDeprecated,
+      ChatErrorType.FiModelDeprecated,
     ]) {
       const spec = ERROR_CODE_SPECS[code];
       expect(spec, code).toBeDefined();

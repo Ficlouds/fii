@@ -11,7 +11,7 @@ import { messages } from '../../schemas/message';
 import type { NewTopic } from '../../schemas/topic';
 import { topics } from '../../schemas/topic';
 import { users } from '../../schemas/user';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { SearchRepo } from './index';
 
 const userId = 'search-test-user';
@@ -19,7 +19,7 @@ const otherUserId = 'other-search-user';
 
 let searchRepo: SearchRepo;
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 beforeEach(async () => {
   // Clean up

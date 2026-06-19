@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/shared-tool-ui",
+  "name": "@ficlouds/shared-tool-ui",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -11,13 +11,13 @@
     "./styles": "./src/styles.ts"
   },
   "dependencies": {
-    "@lobechat/tool-runtime": "workspace:*"
+    "@ficlouds/tool-runtime": "workspace:*"
   },
   "devDependencies": {
-    "@lobechat/types": "workspace:*"
+    "@ficlouds/types": "workspace:*"
   },
   "peerDependencies": {
-    "@lobehub/ui": "^5",
+    "@ficlouds/ui": "^5",
     "antd-style": "*",
     "lucide-react": "*",
     "path-browserify-esm": "*",

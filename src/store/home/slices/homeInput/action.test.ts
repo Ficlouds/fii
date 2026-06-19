@@ -38,7 +38,7 @@ const agentState = vi.hoisted(() => ({
   updateAgentConfigById: updateAgentConfigByIdMock,
 }));
 
-vi.mock('@lobechat/builtin-agents', () => ({
+vi.mock('@ficlouds/builtin-agents', () => ({
   BUILTIN_AGENT_SLUGS: {
     agentBuilder: 'agent-builder',
     groupAgentBuilder: 'group-agent-builder',

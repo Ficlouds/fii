@@ -1,4 +1,4 @@
-import type { BuiltinStreaming } from '@lobechat/types';
+import type { BuiltinStreaming } from '@ficlouds/types';
 
 import { AgentBuilderApiName } from '../../types';
 import { UpdatePromptStreaming } from './UpdatePrompt';

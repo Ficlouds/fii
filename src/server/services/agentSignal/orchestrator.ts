@@ -6,9 +6,9 @@ import type {
   ExecutorResult,
   GeneratedSourceEventResult,
   SignalPlan,
-} from '@lobechat/agent-signal';
-import type { AgentSignalSourceType } from '@lobechat/agent-signal/source';
-import { createSourceEvent } from '@lobechat/agent-signal/source';
+} from '@ficlouds/agent-signal';
+import type { AgentSignalSourceType } from '@ficlouds/agent-signal/source';
+import { createSourceEvent } from '@ficlouds/agent-signal/source';
 
 import type {
   AgentSignalEmitOptions,

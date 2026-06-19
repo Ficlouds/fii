@@ -2,15 +2,15 @@
 
 import {
   getKlavisServerByServerIdentifier,
-  getLobehubSkillProviderById,
+  getFiSkillProviderById,
   KLAVIS_SERVER_TYPES,
   type KlavisServerType,
   LOBEHUB_SKILL_PROVIDERS,
-  type LobehubSkillProviderType,
+  type FiSkillProviderType,
   RECOMMENDED_SKILLS,
   RecommendedSkillType,
-} from '@lobechat/const';
-import { type BuiltinSkill, type LobeBuiltinTool } from '@lobechat/types';
+} from '@ficlouds/const';
+import { type BuiltinSkill, type LobeBuiltinTool } from '@ficlouds/types';
 import { Center, Empty } from '@lobehub/ui';
 import { SkillsIcon } from '@lobehub/ui/icons';
 import { Divider } from 'antd';
@@ -27,17 +27,17 @@ import {
   agentSkillsSelectors,
   builtinToolSelectors,
   klavisStoreSelectors,
-  lobehubSkillStoreSelectors,
+  fiSkillStoreSelectors,
   pluginSelectors,
 } from '@/store/tool/selectors';
 import { KlavisServerStatus } from '@/store/tool/slices/klavisStore';
-import { LobehubSkillStatus } from '@/store/tool/slices/lobehubSkillStore/types';
-import { type LobeToolType } from '@/types/tool/tool';
+import { FiSkillStatus } from '@/store/tool/slices/fiSkillStore/types';
+import { type FiToolType } from '@/types/tool/tool';
 
 import AgentSkillItem from './AgentSkillItem';
 import BuiltinSkillItem from './BuiltinSkillItem';
 import KlavisSkillItem from './KlavisSkillItem';
-import LobehubSkillItem from './LobehubSkillItem';
+import FiSkillItem from './FiSkillItem';
 import McpSkillItem from './McpSkillItem';
 
 const styles = createStaticStyles(({ css, cssVar }) => ({
@@ -60,9 +60,9 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
 const SkillList = memo(() => {
   const { t } = useTranslation('setting');
 
-  const isLobehubSkillEnabled = useServerConfigStore(serverConfigSelectors.enableLobehubSkill);
+  const isFiSkillEnabled = useServerConfigStore(serverConfigSelectors.enableFiSkill);
   const isKlavisEnabled = useServerConfigStore(serverConfigSelectors.enableKlavis);
-  const allLobehubSkillServers = useToolStore(lobehubSkillStoreSelectors.getServers, isEqual);
+  const allFiSkillServers = useToolStore(fiSkillStoreSelectors.getServers, isEqual);
   const allKlavisServers = useToolStore(klavisStoreSelectors.getServers, isEqual);
   const installedPluginList = useToolStore(pluginSelectors.installedPluginMetaList, isEqual);
   const marketAgentSkills = useToolStore(agentSkillsSelectors.getMarketAgentSkills, isEqual);
@@ -75,25 +75,25 @@ const SkillList = memo(() => {
   );
 
   const [
-    useFetchLobehubSkillConnections,
+    useFetchFiSkillConnections,
     useFetchUserKlavisServers,
     useFetchAgentSkills,
     useFetchUninstalledBuiltinTools,
   ] = useToolStore((s) => [
-    s.useFetchLobehubSkillConnections,
+    s.useFetchFiSkillConnections,
     s.useFetchUserKlavisServers,
     s.useFetchAgentSkills,
     s.useFetchUninstalledBuiltinTools,
   ]);
 
   useFetchInstalledPlugins();
-  useFetchLobehubSkillConnections(isLobehubSkillEnabled);
+  useFetchFiSkillConnections(isFiSkillEnabled);
   useFetchUserKlavisServers(isKlavisEnabled);
   useFetchAgentSkills(true);
   useFetchUninstalledBuiltinTools(true);
 
-  const getLobehubSkillServerByProvider = (providerId: string) => {
-    return allLobehubSkillServers.find((server) => server.identifier === providerId);
+  const getFiSkillServerByProvider = (providerId: string) => {
+    return allFiSkillServers.find((server) => server.identifier === providerId);
   };
 
   const getKlavisServerByIdentifier = (identifier: string) => {
@@ -109,14 +109,14 @@ const SkillList = memo(() => {
   };
 
   // Separate skills into three categories:
-  // 1. Integrations (Builtin, LobeHub and Klavis skills)
+  // 1. Integrations (Builtin, Fi and Klavis skills)
   // 2. Community MCP Tools (type === 'plugin')
   // 3. Custom MCP Tools (type === 'customPlugin')
   const { integrations, communityMCPs, customMCPs } = useMemo(() => {
     type IntegrationItem =
       | { builtinAgentSkill: BuiltinSkill; type: 'builtinAgent' }
       | { builtinTool: LobeBuiltinTool; type: 'builtin' }
-      | { provider: LobehubSkillProviderType; type: 'lobehub' }
+      | { provider: FiSkillProviderType; type: 'lobehub' }
       | { serverType: KlavisServerType; type: 'klavis' };
 
     let integrationItems: IntegrationItem[] = [];
@@ -139,8 +139,8 @@ const SkillList = memo(() => {
             integrationItems.push({ builtinTool, type: 'builtin' });
             addedBuiltinIds.add(skill.id);
           }
-        } else if (skill.type === RecommendedSkillType.Lobehub && isLobehubSkillEnabled) {
-          const provider = getLobehubSkillProviderById(skill.id);
+        } else if (skill.type === RecommendedSkillType.Lobehub && isFiSkillEnabled) {
+          const provider = getFiSkillProviderById(skill.id);
           if (provider) {
             integrationItems.push({ provider, type: 'lobehub' });
             addedLobehubIds.add(skill.id);
@@ -166,13 +166,13 @@ const SkillList = memo(() => {
       }
 
       // Also add connected Lobehub skills that are not in RECOMMENDED_SKILLS
-      if (isLobehubSkillEnabled) {
-        for (const server of allLobehubSkillServers) {
+      if (isFiSkillEnabled) {
+        for (const server of allFiSkillServers) {
           if (
-            server.status === LobehubSkillStatus.CONNECTED &&
+            server.status === FiSkillStatus.CONNECTED &&
             !addedLobehubIds.has(server.identifier)
           ) {
-            const provider = getLobehubSkillProviderById(server.identifier);
+            const provider = getFiSkillProviderById(server.identifier);
             if (provider) {
               integrationItems.push({ provider, type: 'lobehub' });
             }
@@ -203,7 +203,7 @@ const SkillList = memo(() => {
       }
 
       // Add lobehub skills
-      if (isLobehubSkillEnabled) {
+      if (isFiSkillEnabled) {
         for (const provider of LOBEHUB_SKILL_PROVIDERS) {
           integrationItems.push({ provider, type: 'lobehub' });
         }
@@ -239,8 +239,8 @@ const SkillList = memo(() => {
         }
         case 'lobehub': {
           return (
-            getLobehubSkillServerByProvider(item.provider.id)?.status ===
-            LobehubSkillStatus.CONNECTED
+            getFiSkillServerByProvider(item.provider.id)?.status ===
+            FiSkillStatus.CONNECTED
           );
         }
         case 'klavis': {
@@ -271,9 +271,9 @@ const SkillList = memo(() => {
     };
   }, [
     installedPluginList,
-    isLobehubSkillEnabled,
+    isFiSkillEnabled,
     isKlavisEnabled,
-    allLobehubSkillServers,
+    allFiSkillServers,
     allKlavisServers,
     allBuiltinTools,
     uninstalledBuiltinTools,
@@ -319,10 +319,10 @@ const SkillList = memo(() => {
       }
       if (item.type === 'lobehub') {
         return (
-          <LobehubSkillItem
+          <FiSkillItem
             key={item.provider.id}
             provider={item.provider}
-            server={getLobehubSkillServerByProvider(item.provider.id)}
+            server={getFiSkillServerByProvider(item.provider.id)}
           />
         );
       }
@@ -350,7 +350,7 @@ const SkillList = memo(() => {
         key={plugin.identifier}
         runtimeType={plugin.runtimeType}
         title={plugin.title || plugin.identifier}
-        type={plugin.type as LobeToolType}
+        type={plugin.type as FiToolType}
       />
     ));
 
@@ -363,7 +363,7 @@ const SkillList = memo(() => {
         key={plugin.identifier}
         runtimeType={plugin.runtimeType}
         title={plugin.title || plugin.identifier}
-        type={plugin.type as LobeToolType}
+        type={plugin.type as FiToolType}
       />
     ));
 

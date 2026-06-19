@@ -1,4 +1,4 @@
-import type { OnboardingPhase } from '@lobechat/types';
+import type { OnboardingPhase } from '@ficlouds/types';
 
 const PHASE_TIPS: Record<OnboardingPhase, string> = {
   agent_identity: 'Suggestions can be candidate agent names, emojis, or a deferral chip ("You pick one", "Let me think").',

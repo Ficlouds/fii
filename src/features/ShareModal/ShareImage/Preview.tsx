@@ -1,4 +1,4 @@
-import { type ConversationContext, type UIChatMessage } from '@lobechat/types';
+import { type ConversationContext, type UIChatMessage } from '@ficlouds/types';
 import { ModelTag } from '@lobehub/icons';
 import { Avatar, Flexbox, Markdown, Text } from '@lobehub/ui';
 import { cx } from 'antd-style';

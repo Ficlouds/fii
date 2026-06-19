@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { LayersEnum, MemorySourceType, MergeStrategyEnum, TypesEnum } from '@lobechat/types';
+import { LayersEnum, MemorySourceType, MergeStrategyEnum, TypesEnum } from '@ficlouds/types';
 import { eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -15,7 +15,7 @@ import {
   userMemoriesPreferences,
   users,
 } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import type {
   BaseCreateUserMemoryParams,
   CreateUserMemoryContextParams,
@@ -25,7 +25,7 @@ import type {
 } from '../userMemory';
 import { UserMemoryModel } from '../userMemory';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = idGenerator('user');
 const userId2 = idGenerator('user');

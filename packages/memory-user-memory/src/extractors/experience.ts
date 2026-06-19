@@ -1,4 +1,4 @@
-import { renderPlaceholderTemplate } from '@lobechat/context-engine';
+import { renderPlaceholderTemplate } from '@ficlouds/context-engine';
 
 import { experiencePrompt } from '../prompts';
 import type { ExperienceMemory } from '../schemas';

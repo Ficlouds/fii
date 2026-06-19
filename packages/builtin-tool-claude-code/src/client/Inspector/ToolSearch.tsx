@@ -4,8 +4,8 @@ import {
   highlightTextStyles,
   inspectorTextStyles,
   shinyTextStyles,
-} from '@lobechat/shared-tool-ui/styles';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+} from '@ficlouds/shared-tool-ui/styles';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { createStaticStyles, cx } from 'antd-style';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';

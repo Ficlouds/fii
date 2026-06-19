@@ -1,7 +1,7 @@
 import {
   type AgentSignalSourceVariants,
   isAgentUserMessageSource,
-} from '@lobechat/agent-signal/source';
+} from '@ficlouds/agent-signal/source';
 
 import {
   AGENT_SIGNAL_POLICY_SIGNAL_TYPES,

@@ -1,4 +1,4 @@
-import type { ILobeAgentRuntimeErrorType } from '@lobechat/types';
+import type { ILobeAgentRuntimeErrorType } from '@ficlouds/types';
 
 import { ERROR_PATTERNS, type ErrorPattern } from './patterns';
 import { getErrorCodeSpec } from './specs';

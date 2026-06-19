@@ -62,7 +62,7 @@ describe('generate command', () => {
         'Content-Type': 'application/json',
         'Oidc-Auth': 'test-token',
       },
-      serverUrl: 'https://app.lobehub.com',
+      serverUrl: 'https://app.ficlouds.com',
     });
     for (const router of Object.values(mockTrpcClient)) {
       for (const method of Object.values(router)) {
@@ -177,7 +177,7 @@ describe('generate command', () => {
       ]);
 
       expect(fetch).toHaveBeenCalledWith(
-        'https://app.lobehub.com/webapi/chat/anthropic',
+        'https://app.ficlouds.com/webapi/chat/anthropic',
         expect.any(Object),
       );
     });
@@ -337,7 +337,7 @@ describe('generate command', () => {
       ]);
 
       expect(fetch).toHaveBeenCalledWith(
-        'https://app.lobehub.com/webapi/tts/openai',
+        'https://app.ficlouds.com/webapi/tts/openai',
         expect.objectContaining({ method: 'POST' }),
       );
       expect(mockWriteFileSync).toHaveBeenCalledWith('/tmp/test.mp3', expect.any(Buffer));

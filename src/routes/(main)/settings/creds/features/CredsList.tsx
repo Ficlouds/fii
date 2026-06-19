@@ -1,6 +1,6 @@
 'use client';
 
-import { type UserCredSummary } from '@lobechat/types';
+import { type UserCredSummary } from '@ficlouds/types';
 import { Button, Flexbox } from '@lobehub/ui';
 import { useMutation } from '@tanstack/react-query';
 import { Empty, Spin } from 'antd';

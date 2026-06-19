@@ -1,7 +1,7 @@
-import { TaskIdentifier as TaskSkillIdentifier } from '@lobechat/builtin-skills';
-import { BriefIdentifier } from '@lobechat/builtin-tool-brief';
-import { INBOX_SESSION_ID } from '@lobechat/const';
-import type { ExecAgentResult, TaskItem } from '@lobechat/types';
+import { TaskIdentifier as TaskSkillIdentifier } from '@ficlouds/builtin-skills';
+import { BriefIdentifier } from '@ficlouds/builtin-tool-brief';
+import { INBOX_SESSION_ID } from '@ficlouds/const';
+import type { ExecAgentResult, TaskItem } from '@ficlouds/types';
 import { TRPCError } from '@trpc/server';
 import debug from 'debug';
 
@@ -10,7 +10,7 @@ import { AgentModel } from '@/database/models/agent';
 import { BriefModel } from '@/database/models/brief';
 import { TaskModel } from '@/database/models/task';
 import { TaskTopicModel } from '@/database/models/taskTopic';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { AiAgentService } from '@/server/services/aiAgent';
 import { TaskLifecycleService } from '@/server/services/taskLifecycle';
 
@@ -39,13 +39,13 @@ export interface RunTaskResult extends ExecAgentResult {
 export class TaskRunnerService {
   private agentModel: AgentModel;
   private briefModel: BriefModel;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private taskLifecycle: TaskLifecycleService;
   private taskModel: TaskModel;
   private taskTopicModel: TaskTopicModel;
   private userId: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
     this.agentModel = new AgentModel(db, userId);

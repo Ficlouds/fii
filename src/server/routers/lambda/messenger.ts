@@ -1,4 +1,4 @@
-import { DEFAULT_INBOX_AVATAR, INBOX_SESSION_ID } from '@lobechat/const';
+import { DEFAULT_INBOX_AVATAR, INBOX_SESSION_ID } from '@ficlouds/const';
 import { TRPCError } from '@trpc/server';
 import { and, desc, eq, ne, or } from 'drizzle-orm';
 import { z } from 'zod';
@@ -19,7 +19,7 @@ import {
 import type { DecryptedMessengerInstallation } from '@/database/models/messengerInstallation';
 import { MessengerInstallationModel } from '@/database/models/messengerInstallation';
 import { agents, users } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { authedProcedure, publicProcedure, router } from '@/libs/trpc/lambda';
 import { serverDatabase } from '@/libs/trpc/lambda/middleware';
 import { KeyVaultsGateKeeper } from '@/server/modules/KeyVaultsEncrypt';
@@ -55,7 +55,7 @@ const extractSlackAuthErrorCode = (error: unknown): string | null => {
 };
 
 const reconcileSlackInstallation = async (
-  serverDB: LobeChatDatabase,
+  serverDB: FiDatabase,
   row: DecryptedMessengerInstallation,
 ): Promise<DecryptedMessengerInstallation | null> => {
   if (row.platform !== 'slack') return row;
@@ -152,7 +152,7 @@ export const messengerRouter = router({
    * before the user confirms. Does NOT consume the token.
    *
    * Also surfaces `linkedToEmail` when the IM identity is already bound to
-   * a LobeHub account — the page uses it to warn the user before they create
+   * a Fi account — the page uses it to warn the user before they create
    * a duplicate that would either fail the unique index or shadow another
    * account's binding. Email is partially masked for privacy.
    *
@@ -203,7 +203,7 @@ export const messengerRouter = router({
       }
 
       return {
-        // Set when the IM identity is already linked to some LobeHub account.
+        // Set when the IM identity is already linked to some Fi account.
         // The verify-im page compares against the current session email and
         // shows a warning when they don't match.
         linkedToEmail,
@@ -245,7 +245,7 @@ export const messengerRouter = router({
       }
 
       // Cross-user conflict: the (platform, tenant, platformUserId) tuple is
-      // already bound to a different LobeHub account. The DB unique index
+      // already bound to a different Fi account. The DB unique index
       // would surface this as an opaque "duplicate key" — replace with a
       // user-facing 409 carrying the masked email of the existing owner.
       const existingLink = await MessengerAccountLinkModel.findByPlatformUser(
@@ -311,7 +311,7 @@ export const messengerRouter = router({
           tenantId: payload.tenantId ?? '',
         });
       } catch (error) {
-        // Race backstop: the IM identity got bound to another LobeHub user
+        // Race backstop: the IM identity got bound to another Fi user
         // between the pre-check above and the upsert. Re-surface as the same
         // friendly 409 the verify-im UI already knows how to render.
         if (error instanceof MessengerAccountLinkConflictError) {
@@ -460,7 +460,7 @@ export const messengerRouter = router({
     }),
 
   /**
-   * List the Slack workspaces this LobeHub user has installed the bot into.
+   * List the Slack workspaces this Fi user has installed the bot into.
    * Used by the messenger settings page to render the "Connections" panel
    * (Manus's `manus.im/app#settings/integrations/slack` analogue). Returns
    * the safe metadata only — never the encrypted credentials.
@@ -525,7 +525,7 @@ export const messengerRouter = router({
         });
       }
       // Authorization: only the user who initiated the install can disconnect
-      // it. Workspace admins who installed via a different LobeHub account
+      // it. Workspace admins who installed via a different Fi account
       // can disconnect through their own settings page.
       if (row.installedByUserId !== ctx.userId) {
         throw new TRPCError({

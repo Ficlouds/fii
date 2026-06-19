@@ -17,7 +17,7 @@ vi.mock('electron', () => ({
       setMenu: vi.fn(),
     },
     getAppPath: vi.fn(() => '/mock/app/path'),
-    getName: vi.fn(() => 'LobeChat'),
+    getName: vi.fn(() => 'Fi'),
     getPath: vi.fn((type: string) => {
       if (type === 'logs') return '/path/to/logs';
       if (type === 'userData') return '/path/to/userData';
@@ -253,7 +253,7 @@ describe('MacOSMenu', () => {
 
       expect(visitWebsiteItem).toBeDefined();
       await visitWebsiteItem.click();
-      expect(shell.openExternal).toHaveBeenCalledWith('https://lobehub.com');
+      expect(shell.openExternal).toHaveBeenCalledWith('https://ficlouds.com');
     });
 
     it('should handle github repo click', async () => {
@@ -484,7 +484,7 @@ describe('MacOSMenu', () => {
       const appMenu = template[0];
 
       expect(app.getName).toHaveBeenCalled();
-      expect(appMenu.label).toBe('LobeChat');
+      expect(appMenu.label).toBe('Fi');
     });
   });
 });

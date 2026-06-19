@@ -1,8 +1,8 @@
 // @vitest-environment node
-import { RequestTrigger } from '@lobechat/types';
+import { RequestTrigger } from '@ficlouds/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 
 import {
@@ -286,7 +286,7 @@ describe('skillIntent classifier', () => {
       route: 'direct_decision',
     });
 
-    const service = new SkillIntentClassifierAgentService({} as LobeChatDatabase, 'user_1', {
+    const service = new SkillIntentClassifierAgentService({} as FiDatabase, 'user_1', {
       model: 'gpt-test',
       provider: 'openai',
     });
@@ -296,7 +296,7 @@ describe('skillIntent classifier', () => {
       topicLabel: 'login-debugging',
     });
 
-    expect(initModelRuntimeFromDB).toHaveBeenCalledWith({} as LobeChatDatabase, 'user_1', 'openai');
+    expect(initModelRuntimeFromDB).toHaveBeenCalledWith({} as FiDatabase, 'user_1', 'openai');
     expect(mockGenerateObject).toHaveBeenCalledWith(
       expect.objectContaining({
         messages: [

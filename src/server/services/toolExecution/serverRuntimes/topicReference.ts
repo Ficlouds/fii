@@ -1,6 +1,6 @@
-import { TopicReferenceIdentifier } from '@lobechat/builtin-tool-topic-reference';
-import type { LobeChatDatabase } from '@lobechat/database';
-import type { BuiltinServerRuntimeOutput } from '@lobechat/types';
+import { TopicReferenceIdentifier } from '@ficlouds/builtin-tool-topic-reference';
+import type { FiDatabase } from '@ficlouds/database';
+import type { BuiltinServerRuntimeOutput } from '@ficlouds/types';
 
 import { MessageModel } from '@/database/models/message';
 import { TopicModel } from '@/database/models/topic';
@@ -14,10 +14,10 @@ interface GetTopicContextParams {
 }
 
 class TopicReferenceExecutionRuntime {
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private userId: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

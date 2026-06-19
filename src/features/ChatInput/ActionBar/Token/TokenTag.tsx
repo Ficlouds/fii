@@ -1,5 +1,5 @@
-import { ToolNameResolver } from '@lobechat/context-engine';
-import { pluginPrompts } from '@lobechat/prompts';
+import { ToolNameResolver } from '@ficlouds/context-engine';
+import { pluginPrompts } from '@ficlouds/prompts';
 import { Center, Flexbox, Tooltip } from '@lobehub/ui';
 import { TokenTag } from '@lobehub/ui/chat';
 import { cssVar } from 'antd-style';

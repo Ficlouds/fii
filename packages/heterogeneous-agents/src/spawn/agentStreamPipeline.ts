@@ -1,4 +1,4 @@
-import type { AgentStreamEvent } from '@lobechat/agent-gateway-client';
+import type { AgentStreamEvent } from '@ficlouds/agent-gateway-client';
 
 import { createAdapter } from '../registry';
 import type { AgentEventAdapter } from '../types';

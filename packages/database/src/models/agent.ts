@@ -1,5 +1,5 @@
-import { getAgentPersistConfig } from '@lobechat/builtin-agents';
-import { DEFAULT_INBOX_AVATAR, INBOX_SESSION_ID } from '@lobechat/const';
+import { getAgentPersistConfig } from '@ficlouds/builtin-agents';
+import { DEFAULT_INBOX_AVATAR, INBOX_SESSION_ID } from '@ficlouds/const';
 import { and, desc, eq, ilike, inArray, isNull, or, sql } from 'drizzle-orm';
 import type { PartialDeep } from 'type-fest';
 
@@ -16,13 +16,13 @@ import {
   knowledgeBases,
   sessions,
 } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export class AgentModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

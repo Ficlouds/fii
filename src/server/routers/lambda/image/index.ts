@@ -1,7 +1,7 @@
-import { BRANDING_PROVIDER } from '@lobechat/business-const';
-import { loadModels } from '@lobechat/business-model-bank/model-config';
-import { resolveBusinessModelMapping } from '@lobechat/business-model-runtime';
-import { ChatErrorType } from '@lobechat/types';
+import { BRANDING_PROVIDER } from '@ficlouds/business-const';
+import { loadModels } from '@ficlouds/business-model-bank/model-config';
+import { resolveBusinessModelMapping } from '@ficlouds/business-model-runtime';
+import { ChatErrorType } from '@ficlouds/types';
 import { TRPCError } from '@trpc/server';
 import debug from 'debug';
 import { and, eq } from 'drizzle-orm';
@@ -77,7 +77,7 @@ export const imageRouter = router({
       throw new TRPCError({
         cause: { data: { modelType: 'image', requestedModel: model } },
         code: 'BAD_REQUEST',
-        message: ChatErrorType.LobeHubModelDeprecated,
+        message: ChatErrorType.FiModelDeprecated,
       });
     }
 

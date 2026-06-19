@@ -1,7 +1,7 @@
 import type {
   DesktopNotificationResult,
   ShowDesktopNotificationParams,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 import { app, Notification } from 'electron';
 import * as electronIs from 'electron-is';
 
@@ -56,7 +56,7 @@ export default class NotificationCtr extends ControllerModule {
     }
 
     const notification = new Notification({
-      body: 'LobeHub can now send you notifications.',
+      body: 'Fi can now send you notifications.',
       title: 'Notification Permission',
     });
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { HotkeyGroupEnum } from '@lobechat/const/hotkeys';
+import { HotkeyGroupEnum } from '@ficlouds/const/hotkeys';
 import { Grid, Icon, Modal, Segmented } from '@lobehub/ui';
 import { MessageSquare, Settings2 } from 'lucide-react';
 import { memo, useState } from 'react';

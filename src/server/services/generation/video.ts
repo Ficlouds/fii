@@ -7,7 +7,7 @@ import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 import { promisify } from 'node:util';
 
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 import debug from 'debug';
 import { nanoid } from 'nanoid';
 import sharp from 'sharp';
@@ -48,7 +48,7 @@ export interface VideoProcessResult {
 export class VideoGenerationService {
   private fileService: FileService;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.fileService = new FileService(db, userId);
   }
 

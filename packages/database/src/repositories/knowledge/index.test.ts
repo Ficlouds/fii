@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { FilesTabs } from '@lobechat/types';
+import { FilesTabs } from '@ficlouds/types';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { getTestDB } from '../../core/getTestDB';
@@ -8,7 +8,7 @@ import { documents, files } from '../../schemas/file';
 import { chunks, embeddings } from '../../schemas/rag';
 import { fileChunks } from '../../schemas/relations';
 import { users } from '../../schemas/user';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { KnowledgeRepo } from './index';
 
 const userId = 'knowledge-test-user';
@@ -22,7 +22,7 @@ const deleteNestedFolderFileChunkId = '55555555-5555-4555-8555-555555555555';
 let knowledgeRepo: KnowledgeRepo;
 const testEmbedding = Array.from({ length: 1024 }, () => 0.1);
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 beforeEach(async () => {
   // Clean up

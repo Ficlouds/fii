@@ -1,6 +1,6 @@
 'use client';
 
-import type { GitFileDiffStatus } from '@lobechat/electron-client-ipc';
+import type { GitFileDiffStatus } from '@ficlouds/electron-client-ipc';
 import { ActionIcon, copyToClipboard, Flexbox, PatchDiff } from '@lobehub/ui';
 import { Popconfirm } from 'antd';
 import { createStaticStyles } from 'antd-style';

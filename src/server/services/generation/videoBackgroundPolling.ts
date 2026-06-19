@@ -1,11 +1,11 @@
-import { RequestTrigger } from '@lobechat/types';
+import { RequestTrigger } from '@ficlouds/types';
 import debug from 'debug';
 
 import { getProviderContentPolicyErrorMessage } from '@/business/server/getProviderContentPolicyErrorMessage';
 import { trackProviderContentPolicyViolation } from '@/business/server/trackProviderContentPolicyViolation';
 import { AsyncTaskModel } from '@/database/models/asyncTask';
 import { GenerationModel } from '@/database/models/generation';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 import { VideoGenerationService } from '@/server/services/generation/video';
 import { AsyncTaskError, AsyncTaskErrorType, AsyncTaskStatus } from '@/types/asyncTask';
@@ -29,7 +29,7 @@ interface BackgroundPollingParams {
 }
 
 export async function processBackgroundVideoPolling(
-  db: LobeChatDatabase,
+  db: FiDatabase,
   params: BackgroundPollingParams,
 ): Promise<void> {
   const {

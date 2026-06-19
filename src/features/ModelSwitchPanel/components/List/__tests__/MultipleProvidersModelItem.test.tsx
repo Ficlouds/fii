@@ -83,7 +83,7 @@ describe('MultipleProvidersModelItem', () => {
             id: 'gpt-5.4',
           } as any,
           providers: [
-            { id: 'lobehub', name: 'LobeHub' },
+            { id: 'lobehub', name: 'Fi' },
             { id: 'openai', name: 'OpenAI' },
           ],
         }}
@@ -115,7 +115,7 @@ describe('MultipleProvidersModelItem', () => {
             id: 'claude-opus-4-7',
           } as any,
           providers: [
-            { id: 'lobehub', name: 'LobeHub' },
+            { id: 'lobehub', name: 'Fi' },
             { id: 'anthropic', name: 'Anthropic' },
           ],
         }}

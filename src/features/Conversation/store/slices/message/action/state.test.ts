@@ -1,4 +1,4 @@
-import { type UIChatMessage } from '@lobechat/types';
+import { type UIChatMessage } from '@ficlouds/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { messageService } from '@/services/message';
@@ -12,7 +12,7 @@ const { chatStoreMock } = vi.hoisted(() => ({
 }));
 
 // Mock conversation-flow parse function
-vi.mock('@lobechat/conversation-flow', () => ({
+vi.mock('@ficlouds/conversation-flow', () => ({
   parse: (messages: UIChatMessage[]) => {
     const messageMap: Record<string, UIChatMessage> = {};
     for (const msg of messages) {

@@ -1,8 +1,8 @@
 import {
   ClaudeCodeIdentifier,
   ClaudeCodeRenderDisplayControls,
-} from '@lobechat/builtin-tool-claude-code/client';
-import { type RenderDisplayControl } from '@lobechat/types';
+} from '@ficlouds/builtin-tool-claude-code/client';
+import { type RenderDisplayControl } from '@ficlouds/types';
 
 import { CodexRenderDisplayControls } from './codex';
 

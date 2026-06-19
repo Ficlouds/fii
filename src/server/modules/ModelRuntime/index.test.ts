@@ -20,9 +20,9 @@ import {
   LobeZeroOneAI,
   LobeZhipuAI,
   ModelRuntime,
-} from '@lobechat/model-runtime';
-import { LobeVertexAI } from '@lobechat/model-runtime/vertexai';
-import { type ClientSecretPayload } from '@lobechat/types';
+} from '@ficlouds/model-runtime';
+import { LobeVertexAI } from '@ficlouds/model-runtime/vertexai';
+import { type ClientSecretPayload } from '@ficlouds/types';
 import { ModelProvider } from 'model-bank';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -60,7 +60,7 @@ vi.mock('@/envs/llm', () => ({
 
 /**
  * Test cases for function initModelRuntimeWithUserPayload
- * this method will use ModelRuntime from `@lobechat/model-runtime`
+ * this method will use ModelRuntime from `@ficlouds/model-runtime`
  * and method `getLlmOptionsFromPayload` to initialize runtime
  * with user payload. Test case below will test both the methods
  */

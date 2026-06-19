@@ -10,7 +10,7 @@ describe('chat helper', () => {
     useAiInfraStore.setState({ enabledAiModels: [] });
   });
 
-  it('should resolve LobeHub routed model abilities by model id fallback', () => {
+  it('should resolve Fi routed model abilities by model id fallback', () => {
     useAiInfraStore.setState({
       enabledAiModels: [
         {
@@ -22,11 +22,11 @@ describe('chat helper', () => {
       ],
     });
 
-    expect(isCanUseVision('gemini-3.1-flash-lite-preview', ModelProvider.LobeHub)).toBe(true);
-    expect(isCanUseVideo('gemini-3.1-flash-lite-preview', ModelProvider.LobeHub)).toBe(true);
+    expect(isCanUseVision('gemini-3.1-flash-lite-preview', ModelProvider.Fi)).toBe(true);
+    expect(isCanUseVideo('gemini-3.1-flash-lite-preview', ModelProvider.Fi)).toBe(true);
   });
 
-  it('should not fallback across non-LobeHub providers', () => {
+  it('should not fallback across non-Fi providers', () => {
     useAiInfraStore.setState({
       enabledAiModels: [
         {

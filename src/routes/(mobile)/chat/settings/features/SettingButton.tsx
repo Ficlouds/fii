@@ -1,6 +1,6 @@
 'use client';
 
-import { HotkeyEnum } from '@lobechat/const/hotkeys';
+import { HotkeyEnum } from '@ficlouds/const/hotkeys';
 import { ActionIcon } from '@lobehub/ui';
 import { AlignJustify } from 'lucide-react';
 import { memo } from 'react';

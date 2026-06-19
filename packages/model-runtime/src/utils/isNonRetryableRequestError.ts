@@ -1,4 +1,4 @@
-import { toRecord } from '@lobechat/utils';
+import { toRecord } from '@ficlouds/utils';
 
 import { AgentRuntimeErrorType } from '../types/error';
 

@@ -1,11 +1,11 @@
-import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@lobechat/const';
-import type { GenerateObjectSchema } from '@lobechat/model-runtime';
-import { createAgentSignalAnalyzeIntentSkillIntentMessages } from '@lobechat/prompts';
-import { RequestTrigger } from '@lobechat/types';
+import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@ficlouds/const';
+import type { GenerateObjectSchema } from '@ficlouds/model-runtime';
+import { createAgentSignalAnalyzeIntentSkillIntentMessages } from '@ficlouds/prompts';
+import { RequestTrigger } from '@ficlouds/types';
 import debug from 'debug';
 import { z } from 'zod';
 
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 
 import type {
@@ -270,12 +270,12 @@ export interface SkillIntentClassifierAgentModelConfig {
  * - One parsed skill-intent classification
  */
 export class SkillIntentClassifierAgentService implements SkillIntentClassifierService {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly modelConfig: SkillIntentClassifierAgentModelConfig;
   private readonly userId: string;
 
   constructor(
-    db: LobeChatDatabase,
+    db: FiDatabase,
     userId: string,
     modelConfig: Partial<SkillIntentClassifierAgentModelConfig> = {},
   ) {

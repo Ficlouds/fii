@@ -23,7 +23,7 @@ vi.mock('@/server/services/memory/userMemory/extract', () => ({
   },
 }));
 
-vi.mock('@lobechat/memory-user-memory', () => ({
+vi.mock('@ficlouds/memory-user-memory', () => ({
   BenchmarkLocomoContextProvider: vi.fn().mockImplementation((params) => params),
 }));
 

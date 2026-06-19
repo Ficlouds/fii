@@ -1,4 +1,4 @@
-import { type ToolManifest } from '@lobechat/types';
+import { type ToolManifest } from '@ficlouds/types';
 import { Block, Button, Flexbox, Icon, Text } from '@lobehub/ui';
 import { type FormInstance } from 'antd';
 import { Form as AForm } from 'antd';

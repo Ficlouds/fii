@@ -1,5 +1,5 @@
-import { getBuiltinIntervention } from '@lobechat/builtin-tools/interventions';
-import { safeParseJSON } from '@lobechat/utils';
+import { getBuiltinIntervention } from '@ficlouds/builtin-tools/interventions';
+import { safeParseJSON } from '@ficlouds/utils';
 import { Flexbox } from '@lobehub/ui';
 import { memo, Suspense, useCallback, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';

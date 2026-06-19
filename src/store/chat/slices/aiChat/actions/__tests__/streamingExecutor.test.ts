@@ -1,6 +1,6 @@
-import type { AgentState } from '@lobechat/agent-runtime';
-import * as agentRuntime from '@lobechat/agent-runtime';
-import { type UIChatMessage } from '@lobechat/types';
+import type { AgentState } from '@ficlouds/agent-runtime';
+import * as agentRuntime from '@ficlouds/agent-runtime';
+import { type UIChatMessage } from '@ficlouds/types';
 import { act, renderHook } from '@testing-library/react';
 import { type EnabledAiModel, ModelProvider } from 'model-bank';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -1219,7 +1219,7 @@ describe('StreamingExecutor actions', () => {
       );
     });
 
-    it('should not enable visual understanding when the active LobeHub model supports visual media natively', () => {
+    it('should not enable visual understanding when the active Fi model supports visual media natively', () => {
       act(() => {
         useChatStore.setState({ executeClientAgent: realExecAgentRuntime });
       });
@@ -1262,7 +1262,7 @@ describe('StreamingExecutor actions', () => {
       vi.spyOn(agentConfigResolver, 'resolveAgentConfig').mockReturnValue({
         agentConfig: createMockAgentConfig({
           model: 'gemini-3.1-flash-lite-preview',
-          provider: ModelProvider.LobeHub,
+          provider: ModelProvider.Fi,
         }),
         chatConfig: createMockChatConfig(),
         isBuiltinAgent: false,

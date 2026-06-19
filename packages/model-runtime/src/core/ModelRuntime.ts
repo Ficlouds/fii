@@ -1,5 +1,5 @@
-import type { ModelPerformance, ModelUsage, TracePayload } from '@lobechat/types';
-import { createTimingHelpers, getDurationMs } from '@lobechat/utils';
+import type { ModelPerformance, ModelUsage, TracePayload } from '@ficlouds/types';
+import { createTimingHelpers, getDurationMs } from '@ficlouds/utils';
 import type { ClientOptions } from 'openai';
 
 import type { LobeBedrockAIParams } from '../providers/bedrock';
@@ -35,7 +35,7 @@ import type { LobeRuntimeAI } from './BaseAI';
 
 const { logger: timing } = createTimingHelpers('lobe-server:chat:lobehub:timing');
 
-const getLobeHubTimingMetadata = (options?: {
+const getFiTimingMetadata = (options?: {
   metadata?: Record<string, unknown>;
 }): Record<string, unknown> | undefined =>
   options?.metadata?.provider === 'lobehub' ? options.metadata : undefined;
@@ -167,7 +167,7 @@ export class ModelRuntime {
    * ```
    */
   async chat(payload: ChatStreamPayload, options?: ChatMethodOptions) {
-    const metadata = getLobeHubTimingMetadata(options);
+    const metadata = getFiTimingMetadata(options);
     const startedAt = Date.now();
     if (metadata) {
       timing(
@@ -241,7 +241,7 @@ export class ModelRuntime {
     payload: ChatStreamPayload,
     options?: ChatMethodOptions,
   ): Promise<ChatMethodOptions | undefined> {
-    const metadata = getLobeHubTimingMetadata(options);
+    const metadata = getFiTimingMetadata(options);
     const beforeChatStartedAt = Date.now();
     if (metadata) {
       timing(

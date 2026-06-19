@@ -1,7 +1,7 @@
 'use client';
 
-import type { GrepContentState } from '@lobechat/tool-runtime';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import type { GrepContentState } from '@ficlouds/tool-runtime';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { Text } from '@lobehub/ui';
 import { createStaticStyles, cssVar, cx } from 'antd-style';
 import { Fragment, memo } from 'react';

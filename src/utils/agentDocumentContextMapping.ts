@@ -2,7 +2,7 @@ import {
   AGENT_DOCUMENT_INJECTION_POSITIONS,
   type AgentContextDocument,
   type AgentDocumentInjectionPosition,
-} from '@lobechat/context-engine';
+} from '@ficlouds/context-engine';
 
 import type { AgentDocumentWithRules } from '@/database/models/agentDocuments';
 
@@ -24,7 +24,7 @@ export const normalizeAgentDocumentPosition = (
  * Map a database `AgentDocumentWithRules` row into the `AgentContextDocument`
  * shape consumed by the context-engine providers.
  *
- * Lives in the app layer (not in `@lobechat/database` nor `@lobechat/context-engine`)
+ * Lives in the app layer (not in `@ficlouds/database` nor `@ficlouds/context-engine`)
  * because it bridges two independent packages — adding a field here propagates
  * to every caller (client SWR fetch, server agent runtime) at once. Two
  * hand-rolled copies of this map previously diverged when `sourceType` was

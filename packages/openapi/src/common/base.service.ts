@@ -13,7 +13,7 @@ import {
   sessions,
   topics,
 } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { getScopePermissions } from '@/utils/rbac';
 
 import { getActionType, getResourceType } from '../helpers/permission';
@@ -31,10 +31,10 @@ const isNilOrEmptyObject = (value: unknown): boolean => {
  */
 export abstract class BaseService implements IBaseService {
   protected userId: string;
-  public db: LobeChatDatabase;
+  public db: FiDatabase;
   private rbacModel: RbacModel;
 
-  constructor(db: LobeChatDatabase, userId: string | null) {
+  constructor(db: FiDatabase, userId: string | null) {
     this.db = db;
     this.userId = userId || '';
     this.rbacModel = new RbacModel(db, this.userId);

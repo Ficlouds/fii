@@ -1,5 +1,5 @@
-import { isDesktop } from '@lobechat/const';
-import { type ListProjectSkillsResult, type ProjectSkillItem } from '@lobechat/electron-client-ipc';
+import { isDesktop } from '@ficlouds/const';
+import { type ListProjectSkillsResult, type ProjectSkillItem } from '@ficlouds/electron-client-ipc';
 import type { IEditor, SlashOptions } from '@lobehub/editor';
 import { SkillsIcon } from '@lobehub/ui/icons';
 import isEqual from 'fast-deep-equal';

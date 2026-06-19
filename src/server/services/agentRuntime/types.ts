@@ -1,12 +1,12 @@
-import { type AgentRuntimeContext, type AgentState } from '@lobechat/agent-runtime';
+import { type AgentRuntimeContext, type AgentState } from '@ficlouds/agent-runtime';
 import type {
   BotPlatformContext,
-  LobeToolManifest,
+  FiToolManifest,
   OperationSkillSet,
   ToolExecutor,
   ToolSource,
-} from '@lobechat/context-engine';
-import type { ChatTopicBotContext, UserInterventionConfig } from '@lobechat/types';
+} from '@ficlouds/context-engine';
+import type { ChatTopicBotContext, UserInterventionConfig } from '@ficlouds/types';
 
 import { type ServerUserMemoryConfig } from '@/server/modules/Mecha/ContextEngineering/types';
 import type { DeviceAccessReason } from '@/server/services/aiAgent/deviceAccessPolicy';
@@ -18,7 +18,7 @@ import { type AgentHook } from './hooks/types';
 export interface OperationToolSet {
   enabledToolIds?: string[];
   executorMap?: Record<string, ToolExecutor>;
-  manifestMap: Record<string, LobeToolManifest>;
+  manifestMap: Record<string, FiToolManifest>;
   sourceMap?: Record<string, ToolSource>;
   tools?: any[];
 }

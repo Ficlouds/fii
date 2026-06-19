@@ -1,16 +1,16 @@
 // @vitest-environment node
-import type { GenerationConfig } from '@lobechat/types';
-import { AsyncTaskStatus } from '@lobechat/types';
+import type { GenerationConfig } from '@ficlouds/types';
+import { AsyncTaskStatus } from '@ficlouds/types';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { getTestDB } from '../../core/getTestDB';
 import type { NewGenerationBatch } from '../../schemas';
 import { generationBatches, generations, generationTopics, users } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { GenerationBatchModel } from '../generationBatch';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 // Mock FileService
 const mockGetFullFileUrl = vi.fn();

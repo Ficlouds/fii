@@ -1,4 +1,4 @@
-import type { ImportPgDataStructure } from '@lobechat/types';
+import type { ImportPgDataStructure } from '@ficlouds/types';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 

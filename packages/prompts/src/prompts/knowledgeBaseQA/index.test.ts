@@ -1,5 +1,5 @@
-import type { ChatSemanticSearchChunk, KnowledgeItem } from '@lobechat/types';
-import { KnowledgeType } from '@lobechat/types';
+import type { ChatSemanticSearchChunk, KnowledgeItem } from '@ficlouds/types';
+import { KnowledgeType } from '@ficlouds/types';
 import { describe, expect, it } from 'vitest';
 
 import { knowledgeBaseQAPrompts } from './index';

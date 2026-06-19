@@ -6,12 +6,12 @@ import {
   type BlueBubblesOutboundAttachment,
   type BlueBubblesSendOptions,
   type BlueBubblesWebhookEvent,
-} from '@lobechat/chat-adapter-imessage';
+} from '@ficlouds/chat-adapter-imessage';
 import type {
   ImessageBridgeConfig,
   ImessageBridgePublicConfig,
   ImessageBridgeStatus,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 import { getPort } from 'get-port-please';
 
 import { createLogger } from '@/utils/logger';
@@ -375,9 +375,9 @@ export default class ImessageBridgeService extends ServiceModule {
       try {
         detail = await response.text();
       } catch (error) {
-        logger.warn('Failed to read LobeHub webhook error response:', error);
+        logger.warn('Failed to read Fi webhook error response:', error);
       }
-      throw new Error(detail || `LobeHub webhook failed with HTTP ${response.status}`);
+      throw new Error(detail || `Fi webhook failed with HTTP ${response.status}`);
     }
   }
 }

@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { useParams } from 'react-router-dom';
 import urlJoin from 'url-join';
 

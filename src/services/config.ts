@@ -1,5 +1,5 @@
-import { BRANDING_NAME } from '@lobechat/business-const';
-import { downloadFile, exportJSONFile } from '@lobechat/utils/client';
+import { BRANDING_NAME } from '@ficlouds/business-const';
+import { downloadFile, exportJSONFile } from '@ficlouds/utils/client';
 import dayjs from 'dayjs';
 
 import { type ImportPgDataStructure } from '@/types/export';

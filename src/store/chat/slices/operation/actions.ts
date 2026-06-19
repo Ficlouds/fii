@@ -1,4 +1,4 @@
-import { nanoid } from '@lobechat/utils';
+import { nanoid } from '@ficlouds/utils';
 import debug from 'debug';
 import { produce } from 'immer';
 

@@ -1,6 +1,6 @@
 export type TTSServer = 'openai' | 'edge' | 'microsoft';
 
-export interface LobeAgentTTSConfig {
+export interface FiAgentTTSConfig {
   showAllLocaleVoice?: boolean;
   sttLocale: 'auto' | string;
   ttsService: TTSServer;

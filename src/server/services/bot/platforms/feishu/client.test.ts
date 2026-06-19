@@ -4,7 +4,7 @@ const mockCreateLarkAdapter = vi.hoisted(() => vi.fn());
 const mockDownloadMediaFromRawMessage = vi.hoisted(() => vi.fn());
 const mockGetTenantAccessToken = vi.hoisted(() => vi.fn().mockResolvedValue('tok'));
 
-vi.mock('@lobechat/chat-adapter-feishu', () => ({
+vi.mock('@ficlouds/chat-adapter-feishu', () => ({
   createLarkAdapter: mockCreateLarkAdapter,
   downloadMediaFromRawMessage: mockDownloadMediaFromRawMessage,
   LarkApiClient: vi.fn().mockImplementation(() => ({
@@ -141,7 +141,7 @@ describe('FeishuWebhookClient.extractFiles', () => {
   });
 
   it('caches LarkApiClient across multiple extractFiles calls (token cache hot)', async () => {
-    const { LarkApiClient } = await import('@lobechat/chat-adapter-feishu');
+    const { LarkApiClient } = await import('@ficlouds/chat-adapter-feishu');
     const ctorSpy = vi.mocked(LarkApiClient);
     const ctorCallCountBefore = ctorSpy.mock.calls.length;
 

@@ -3,8 +3,8 @@
 import {
   HETEROGENEOUS_TYPE_LABELS,
   type RemoteHeterogeneousAgentType,
-} from '@lobechat/heterogeneous-agents';
-import type { HeterogeneousProviderConfig } from '@lobechat/types';
+} from '@ficlouds/heterogeneous-agents';
+import type { HeterogeneousProviderConfig } from '@ficlouds/types';
 import { ActionIcon, Flexbox, Icon, Text, Tooltip } from '@lobehub/ui';
 import { Select } from '@lobehub/ui/base-ui';
 import { Button, Modal, Tag } from 'antd';

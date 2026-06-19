@@ -1,5 +1,5 @@
-import { type UserMemoryData } from '@lobechat/prompts';
-import { promptUserMemory } from '@lobechat/prompts';
+import { type UserMemoryData } from '@ficlouds/prompts';
+import { promptUserMemory } from '@ficlouds/prompts';
 import debug from 'debug';
 
 import { BaseFirstUserContentProvider } from '../base/BaseFirstUserContentProvider';

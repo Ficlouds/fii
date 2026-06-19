@@ -1,12 +1,12 @@
-import { ClaudeCodeIdentifier } from '@lobechat/builtin-tool-claude-code';
-import { UserInteractionIdentifier } from '@lobechat/builtin-tool-user-interaction';
+import { ClaudeCodeIdentifier } from '@ficlouds/builtin-tool-claude-code';
+import { UserInteractionIdentifier } from '@ficlouds/builtin-tool-user-interaction';
 import {
   WebOnboardingApiName,
   WebOnboardingIdentifier,
-} from '@lobechat/builtin-tool-web-onboarding';
-import { buildAgentMarketplaceToolResult } from '@lobechat/builtin-tool-web-onboarding/agentMarketplace';
-import type { OnboardingAgentMarketplacePickSnapshot } from '@lobechat/types';
-import { pickString } from '@lobechat/utils';
+} from '@ficlouds/builtin-tool-web-onboarding';
+import { buildAgentMarketplaceToolResult } from '@ficlouds/builtin-tool-web-onboarding/agentMarketplace';
+import type { OnboardingAgentMarketplacePickSnapshot } from '@ficlouds/types';
+import { pickString } from '@ficlouds/utils';
 
 import { installMarketplaceAgents } from '@/services/installMarketplaceAgents';
 import { topicService } from '@/services/topic';

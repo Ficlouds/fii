@@ -1,6 +1,6 @@
 'use client';
 
-import { formatCost, formatShortenNumber } from '@lobechat/utils';
+import { formatCost, formatShortenNumber } from '@ficlouds/utils';
 import { Flexbox, Tag } from '@lobehub/ui';
 import { Divider, Tooltip } from 'antd';
 import { createStaticStyles, useTheme } from 'antd-style';

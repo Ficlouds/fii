@@ -2,7 +2,7 @@ import { and, desc, eq } from 'drizzle-orm';
 
 import type { AgentBotProviderItem, NewAgentBotProvider } from '../schemas';
 import { agentBotProviders } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 interface GateKeeper {
   decrypt: (ciphertext: string) => Promise<{ plaintext: string }>;
@@ -15,10 +15,10 @@ export interface DecryptedBotProvider extends Omit<AgentBotProviderItem, 'creden
 
 export class AgentBotProviderModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private gateKeeper?: GateKeeper;
 
-  constructor(db: LobeChatDatabase, userId: string, gateKeeper?: GateKeeper) {
+  constructor(db: FiDatabase, userId: string, gateKeeper?: GateKeeper) {
     this.userId = userId;
     this.db = db;
     this.gateKeeper = gateKeeper;
@@ -110,7 +110,7 @@ export class AgentBotProviderModel {
   // --------------- System-wide static methods ---------------
 
   static findByPlatformAndAppId = async (
-    db: LobeChatDatabase,
+    db: FiDatabase,
     platform: string,
     applicationId: string,
   ) => {
@@ -153,7 +153,7 @@ export class AgentBotProviderModel {
   // --------------- System-wide static methods ---------------
 
   static findEnabledByPlatform = async (
-    db: LobeChatDatabase,
+    db: FiDatabase,
     platform: string,
     gateKeeper?: GateKeeper,
   ): Promise<DecryptedBotProvider[]> => {

@@ -1,4 +1,4 @@
-import type { ChatTopicMetadata } from '@lobechat/types';
+import type { ChatTopicMetadata } from '@ficlouds/types';
 import { z } from 'zod';
 
 import type { TopicItem, UserItem } from '@/database/schemas';

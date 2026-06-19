@@ -1,5 +1,5 @@
-import { isDesktop } from '@lobechat/const';
-import type { GitLinkedPullRequest } from '@lobechat/electron-client-ipc';
+import { isDesktop } from '@ficlouds/const';
+import type { GitLinkedPullRequest } from '@ficlouds/electron-client-ipc';
 
 import { useClientDataSWR } from '@/libs/swr';
 import { electronGitService } from '@/services/electron/git';

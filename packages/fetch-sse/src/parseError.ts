@@ -1,4 +1,4 @@
-import type { ChatMessageError, ErrorResponse, ErrorType } from '@lobechat/types';
+import type { ChatMessageError, ErrorResponse, ErrorType } from '@ficlouds/types';
 import { t } from 'i18next';
 
 export const getMessageError = async (response: Response): Promise<ChatMessageError> => {

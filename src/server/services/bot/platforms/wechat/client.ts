@@ -1,11 +1,11 @@
-import type { WechatRawMessage } from '@lobechat/chat-adapter-wechat';
+import type { WechatRawMessage } from '@ficlouds/chat-adapter-wechat';
 import {
   createWechatAdapter,
   downloadMediaFromRawMessage,
   MessageState,
   MessageType,
   WechatApiClient,
-} from '@lobechat/chat-adapter-wechat';
+} from '@ficlouds/chat-adapter-wechat';
 import type { Message } from 'chat';
 import debug from 'debug';
 

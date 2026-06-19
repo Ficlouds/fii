@@ -1,4 +1,4 @@
-import type { BuiltinStreaming } from '@lobechat/types';
+import type { BuiltinStreaming } from '@ficlouds/types';
 
 import { DocumentApiName } from '../../types';
 import { InitPageStreaming } from './InitPage';

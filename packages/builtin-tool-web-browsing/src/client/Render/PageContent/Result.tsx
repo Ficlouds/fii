@@ -1,6 +1,6 @@
 'use client';
 
-import type { CrawlErrorResult, CrawlSuccessResult } from '@lobechat/web-crawler';
+import type { CrawlErrorResult, CrawlSuccessResult } from '@ficlouds/web-crawler';
 import { ActionIcon, Alert, Block, Flexbox, stopPropagation, Text } from '@lobehub/ui';
 import { Descriptions } from 'antd';
 import { createStaticStyles } from 'antd-style';

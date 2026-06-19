@@ -53,13 +53,13 @@ export interface AiHubMixModelCard {
 }
 
 /**
- * Maps AiHubMix `types` field values to LobeHub AiModelType.
+ * Maps AiHubMix `types` field values to Fi AiModelType.
  * Both current identifiers and legacy aliases are included; the platform
  * auto-maps them server-side, but we handle both defensively on the client.
  * See https://docs.aihubmix.com/cn/api/Models-API
  *
  * Note: `rerank` / `reranking` are intentionally omitted — they are not part of
- * LobeHub's AiModelType and are filtered out before model list processing to
+ * Fi's AiModelType and are filtered out before model list processing to
  * prevent rerank models from silently falling back to `chat` and failing at
  * inference time.
  */
@@ -78,14 +78,14 @@ const TYPE_MAP: Record<string, string> = {
 };
 
 /**
- * AiHubMix `types` values that have no corresponding LobeHub AiModelType.
+ * AiHubMix `types` values that have no corresponding Fi AiModelType.
  * Models with these types are filtered out before processing to prevent them
  * from incorrectly appearing as chat models in the UI.
  */
 const UNSUPPORTED_AIHUBMIX_TYPES = new Set(['rerank', 'reranking']);
 
 /**
- * Map AiHubMix full-catalog API response fields to LobeHub model card fields.
+ * Map AiHubMix full-catalog API response fields to Fi model card fields.
  * The new endpoint returns its own schema (model_id, desc, types, features, etc.)
  * which must be normalized before being passed to processMultiProviderModelList.
  */
@@ -130,7 +130,7 @@ const mapAiHubMixModel = (m: any): { [key: string]: any; id: string } => {
     // Map `features` capabilities only when the field is present; when absent,
     // processMultiProviderModelList falls back to keyword-based detection.
     // Known features values: thinking | tools | function_calling | web | structured_outputs
-    // `structured_outputs` has no corresponding LobeHub model card field and is intentionally omitted.
+    // `structured_outputs` has no corresponding Fi model card field and is intentionally omitted.
     ...(featureSet && {
       functionCall: featureSet.has('tools') || featureSet.has('function_calling'),
       reasoning: featureSet.has('thinking'),
@@ -147,7 +147,7 @@ export const params: CreateRouterRuntimeOptions = {
     chatCompletion: () => process.env.DEBUG_AIHUBMIX_CHAT_COMPLETION === '1',
   },
   defaultHeaders: {
-    'APP-Code': 'LobeHub',
+    'APP-Code': 'Fi',
   },
   id: ModelProvider.AiHubMix,
   models: async ({ client }) => {
@@ -165,7 +165,7 @@ export const params: CreateRouterRuntimeOptions = {
       const response = await fetch('https://aihubmix.com/api/v1/models', {
         headers: {
           'Authorization': `Bearer ${apiKey}`,
-          'APP-Code': 'LobeHub',
+          'APP-Code': 'Fi',
         },
         signal: controller.signal,
       });

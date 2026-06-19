@@ -1,5 +1,5 @@
-import { AgentRuntimeError } from '@lobechat/model-runtime';
-import { ChatErrorType } from '@lobechat/types';
+import { AgentRuntimeError } from '@ficlouds/model-runtime';
+import { ChatErrorType } from '@ficlouds/types';
 
 interface CheckAuthParams {
   betterAuthAuthorized?: boolean;

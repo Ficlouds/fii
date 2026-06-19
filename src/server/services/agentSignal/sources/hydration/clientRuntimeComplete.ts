@@ -1,11 +1,11 @@
 import type {
   AgentSignalSourceEvent,
   SourceEventAgentUserMessage,
-} from '@lobechat/agent-signal/source';
-import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
+} from '@ficlouds/agent-signal/source';
+import { AGENT_SIGNAL_SOURCE_TYPES } from '@ficlouds/agent-signal/source';
 
 import { MessageModel } from '@/database/models/message';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 
 /** Reason a `client.runtime.complete` event could not become a feedback source. */
 export type ClientRuntimeCompleteHydrationSkipReason =
@@ -78,7 +78,7 @@ const getTrustedScopeKey = (
  */
 export const resolveClientRuntimeCompleteFeedbackSource = async (
   sourceEvent: AgentSignalSourceEvent<typeof AGENT_SIGNAL_SOURCE_TYPES.clientRuntimeComplete>,
-  input: { db: LobeChatDatabase; userId: string },
+  input: { db: FiDatabase; userId: string },
 ): Promise<ClientRuntimeCompleteHydrationResult> => {
   if (sourceEvent.payload.status !== 'completed') {
     return skipped('non-completed-status');

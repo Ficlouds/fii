@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/eval-rubric",
+  "name": "@ficlouds/eval-rubric",
   "version": "1.0.0",
   "private": true,
   "description": "Rubric evaluator engine for agent evaluation benchmarks",
@@ -18,7 +18,7 @@
     "type": "git",
     "url": "https://github.com/lobehub/lobehub.git"
   },
-  "author": "LobeHub <i@lobehub.com>",
+  "author": "Fi <i@ficlouds.com>",
   "sideEffects": false,
   "main": "./src/index.ts",
   "scripts": {
@@ -26,7 +26,7 @@
     "test:coverage": "vitest --coverage --silent='passed-only'"
   },
   "dependencies": {
-    "@lobechat/types": "workspace:*",
+    "@ficlouds/types": "workspace:*",
     "ajv": "^8.17.1"
   },
   "devDependencies": {

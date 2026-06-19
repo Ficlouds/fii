@@ -1,5 +1,5 @@
-import { RunCommandRender } from '@lobechat/shared-tool-ui/renders';
-import type { BuiltinStreaming } from '@lobechat/types';
+import { RunCommandRender } from '@ficlouds/shared-tool-ui/renders';
+import type { BuiltinStreaming } from '@ficlouds/types';
 
 import { ClaudeCodeApiName } from '../../types';
 import EditRender from '../Render/Edit';

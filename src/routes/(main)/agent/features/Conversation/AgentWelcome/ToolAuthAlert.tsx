@@ -1,7 +1,7 @@
 'use client';
 
-import { type KlavisServerType } from '@lobechat/const';
-import { KLAVIS_SERVER_TYPES } from '@lobechat/const';
+import { type KlavisServerType } from '@ficlouds/const';
+import { KLAVIS_SERVER_TYPES } from '@ficlouds/const';
 import { Alert, Avatar, Button, Flexbox, Icon, Text } from '@lobehub/ui';
 import { Divider } from 'antd';
 import { cssVar } from 'antd-style';

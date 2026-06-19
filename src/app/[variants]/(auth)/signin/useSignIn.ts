@@ -1,4 +1,4 @@
-import { ENABLE_BUSINESS_FEATURES } from '@lobechat/business-const';
+import { ENABLE_BUSINESS_FEATURES } from '@ficlouds/business-const';
 import { Form } from 'antd';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';

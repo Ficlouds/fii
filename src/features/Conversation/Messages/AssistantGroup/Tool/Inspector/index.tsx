@@ -1,8 +1,8 @@
-import type { ActivateToolsState } from '@lobechat/builtin-tool-activator';
-import { ActivatorApiName, LobeActivatorIdentifier } from '@lobechat/builtin-tool-activator';
-import { getBuiltinInspector } from '@lobechat/builtin-tools/inspectors';
-import type { ToolIntervention } from '@lobechat/types';
-import { safeParseJSON, safeParsePartialJSON } from '@lobechat/utils';
+import type { ActivateToolsState } from '@ficlouds/builtin-tool-activator';
+import { ActivatorApiName, LobeActivatorIdentifier } from '@ficlouds/builtin-tool-activator';
+import { getBuiltinInspector } from '@ficlouds/builtin-tools/inspectors';
+import type { ToolIntervention } from '@ficlouds/types';
+import { safeParseJSON, safeParsePartialJSON } from '@ficlouds/utils';
 import { Flexbox } from '@lobehub/ui';
 import { memo } from 'react';
 

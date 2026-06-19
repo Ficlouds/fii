@@ -6,7 +6,7 @@ import {
   agentSkillsSelectors,
   builtinToolSelectors,
   klavisStoreSelectors,
-  lobehubSkillStoreSelectors,
+  fiSkillStoreSelectors,
   pluginSelectors,
 } from '@/store/tool/selectors';
 
@@ -14,14 +14,14 @@ import type { ActionTagData } from './types';
 
 /**
  * Collects all installed skills and tools, returning them as ActionTagData[].
- * Skills: builtinSkills, lobehubSkillServers, marketAgentSkills, userAgentSkills
+ * Skills: builtinSkills, fiSkillServers, marketAgentSkills, userAgentSkills
  * Tools:  installedPlugins (excluding skill-type entries), klavisServers
  */
 export const useInstalledSkillsAndTools = (): ActionTagData[] => {
   const builtinSkills = useToolStore(builtinToolSelectors.installedBuiltinSkills, isEqual);
   const installedPlugins = useToolStore(pluginSelectors.installedPluginMetaList, isEqual);
   const klavisServers = useToolStore(klavisStoreSelectors.getServers, isEqual);
-  const lobehubSkillServers = useToolStore(lobehubSkillStoreSelectors.getServers, isEqual);
+  const fiSkillServers = useToolStore(fiSkillStoreSelectors.getServers, isEqual);
   const marketAgentSkills = useToolStore(agentSkillsSelectors.getMarketAgentSkills, isEqual);
   const userAgentSkills = useToolStore(agentSkillsSelectors.getUserAgentSkills, isEqual);
 
@@ -34,7 +34,7 @@ export const useInstalledSkillsAndTools = (): ActionTagData[] => {
     for (const item of builtinSkills) {
       skillMap.set(item.identifier, { icon: item.avatar, label: item.name || item.identifier });
     }
-    for (const item of lobehubSkillServers) {
+    for (const item of fiSkillServers) {
       if (!skillMap.has(item.identifier)) {
         skillMap.set(item.identifier, { icon: item.icon, label: item.name || item.identifier });
       }
@@ -83,7 +83,7 @@ export const useInstalledSkillsAndTools = (): ActionTagData[] => {
     builtinSkills,
     installedPlugins,
     klavisServers,
-    lobehubSkillServers,
+    fiSkillServers,
     marketAgentSkills,
     userAgentSkills,
   ]);

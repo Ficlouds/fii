@@ -1,4 +1,4 @@
-import { ChatErrorType } from '@lobechat/types';
+import { ChatErrorType } from '@ficlouds/types';
 import type OpenAI from 'openai';
 
 import { getOpenAIAuthFromRequest } from '@/const/fetch';

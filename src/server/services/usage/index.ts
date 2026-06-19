@@ -3,7 +3,7 @@ import debug from 'debug';
 import { desc, eq } from 'drizzle-orm';
 
 import { messages } from '@/database/schemas';
-import { type LobeChatDatabase } from '@/database/type';
+import { type FiDatabase } from '@/database/type';
 import { genRangeWhere, genWhere } from '@/database/utils/genWhere';
 import { type MessageMetadata } from '@/types/message';
 import { type UsageLog, type UsageRecordItem } from '@/types/usage/usageRecord';
@@ -13,8 +13,8 @@ const log = debug('lobe-usage:service');
 
 export class UsageRecordService {
   private userId: string;
-  private db: LobeChatDatabase;
-  constructor(db: LobeChatDatabase, userId: string) {
+  private db: FiDatabase;
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

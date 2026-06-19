@@ -1,8 +1,8 @@
 'use client';
 
-import { AGENT_ONBOARDING_ENABLED } from '@lobechat/business-const';
-import { isDesktop } from '@lobechat/const';
-import { MAX_ONBOARDING_STEPS } from '@lobechat/types';
+import { AGENT_ONBOARDING_ENABLED } from '@ficlouds/business-const';
+import { isDesktop } from '@ficlouds/const';
+import { MAX_ONBOARDING_STEPS } from '@ficlouds/types';
 import { Center, Flexbox, Text } from '@lobehub/ui';
 import { Divider } from 'antd';
 import { cx, useTheme } from 'antd-style';

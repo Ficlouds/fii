@@ -1,4 +1,4 @@
-import { nanoid } from '@lobechat/utils';
+import { nanoid } from '@ficlouds/utils';
 import { vi } from 'vitest';
 
 import { type ChatStore } from '@/store/chat/store';

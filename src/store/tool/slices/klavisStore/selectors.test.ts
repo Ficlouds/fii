@@ -305,7 +305,7 @@ describe('klavisStoreSelectors', () => {
   });
 
   describe('klavisAsLobeTools', () => {
-    it('should convert Klavis servers to LobeTool format', () => {
+    it('should convert Klavis servers to FiTool format', () => {
       const servers = [
         {
           identifier: 'gmail',

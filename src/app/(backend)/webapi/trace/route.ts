@@ -1,4 +1,4 @@
-import { TraceEventType } from '@lobechat/types';
+import { TraceEventType } from '@ficlouds/types';
 import { after } from 'next/server';
 
 import { TraceClient } from '@/libs/traces';

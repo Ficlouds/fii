@@ -1,6 +1,6 @@
-import { type SSOProvider } from '@lobechat/types';
+import { type SSOProvider } from '@ficlouds/types';
 
-import { type LobeUser } from '@/types/user';
+import { type FiUser } from '@/types/user';
 
 export interface UserAuthState {
   authProviders?: SSOProvider[];
@@ -13,7 +13,7 @@ export interface UserAuthState {
 
   isSignedIn?: boolean;
   oAuthSSOProviders?: string[];
-  user?: LobeUser;
+  user?: FiUser;
 }
 
 export const initialAuthState: UserAuthState = {};

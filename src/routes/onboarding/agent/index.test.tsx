@@ -20,10 +20,10 @@ const renderAgentRoute = async ({
   serverConfigInit = true,
 }: RenderAgentRouteOptions) => {
   vi.resetModules();
-  vi.doMock('@lobechat/business-const', () => ({
+  vi.doMock('@ficlouds/business-const', () => ({
     AGENT_ONBOARDING_ENABLED,
   }));
-  vi.doMock('@lobechat/const', () => ({
+  vi.doMock('@ficlouds/const', () => ({
     isDesktop: desktop,
   }));
   vi.doMock('@/components/Loading/BrandTextLoading', () => ({
@@ -72,8 +72,8 @@ const renderAgentRoute = async ({
 };
 
 afterEach(() => {
-  vi.doUnmock('@lobechat/business-const');
-  vi.doUnmock('@lobechat/const');
+  vi.doUnmock('@ficlouds/business-const');
+  vi.doUnmock('@ficlouds/const');
   vi.doUnmock('@/components/Loading/BrandTextLoading');
   vi.doUnmock('@/features/Onboarding/Agent');
   vi.doUnmock('@/store/serverConfig');

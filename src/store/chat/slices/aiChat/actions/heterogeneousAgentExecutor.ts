@@ -2,15 +2,15 @@ import type {
   AgentInterventionRequestData,
   AgentInterventionResponseData,
   AgentStreamEvent,
-} from '@lobechat/agent-gateway-client';
-import { isDesktop } from '@lobechat/const';
+} from '@ficlouds/agent-gateway-client';
+import { isDesktop } from '@ficlouds/const';
 import {
   CLAUDE_CODE_CLI_INSTALL_DOCS_URL,
   CODEX_CLI_INSTALL_DOCS_URL,
   type HeterogeneousAgentSessionError,
   HeterogeneousAgentSessionErrorCode,
-} from '@lobechat/electron-client-ipc';
-import type { SubagentEventContext, ToolCallPayload } from '@lobechat/heterogeneous-agents';
+} from '@ficlouds/electron-client-ipc';
+import type { SubagentEventContext, ToolCallPayload } from '@ficlouds/heterogeneous-agents';
 import type {
   ChatMessageError,
   ChatToolPayload,
@@ -19,9 +19,9 @@ import type {
   HeterogeneousProviderConfig,
   MessageMapScope,
   UIChatMessage,
-} from '@lobechat/types';
-import { AgentRuntimeErrorType, ThreadStatus, ThreadType } from '@lobechat/types';
-import { createNanoId } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { AgentRuntimeErrorType, ThreadStatus, ThreadType } from '@ficlouds/types';
+import { createNanoId } from '@ficlouds/utils';
 import { t } from 'i18next';
 
 import { message as antdMessage } from '@/components/AntdStaticMethods';
@@ -220,7 +220,7 @@ const resolveAdapterType = (config: HeterogeneousProviderConfig): string => {
 /**
  * Subscribe to Electron IPC broadcasts. As of phase 0, the main
  * process runs JSONL framing + adapter conversion + `toStreamEvent` itself
- * (`AgentStreamPipeline` from `@lobechat/heterogeneous-agents/spawn`), so the
+ * (`AgentStreamPipeline` from `@ficlouds/heterogeneous-agents/spawn`), so the
  * renderer receives ready-made `AgentStreamEvent`s with no per-event adapter
  * step. Returns unsubscribe function.
  */
@@ -305,7 +305,7 @@ interface SubagentStoreDispatcher {
  * Same ordering guarantee in both scopes:
  *
  *   1. Pre-register tools[] on the assistant (no result_msg_id yet), so
- *      LobeHub's conversation-flow parser finds matching ids the moment
+ *      Fi's conversation-flow parser finds matching ids the moment
  *      tool messages land in DB — no orphan window.
  *   2. Create `role:'tool'` messages, one per fresh tool_use. `threadId`
  *      is only set for subagent scope (so the tool messages stay inside

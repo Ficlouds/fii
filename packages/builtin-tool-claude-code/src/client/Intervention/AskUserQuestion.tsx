@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinInterventionProps } from '@lobechat/types';
+import type { BuiltinInterventionProps } from '@ficlouds/types';
 import { Button, Flexbox, Icon, Tabs, Text, TextArea } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
 import { ArrowLeft, Check, PenLine, Send, X } from 'lucide-react';

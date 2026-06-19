@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 
 import { useClientDataSWR } from '@/libs/swr';
 import { electronGitService } from '@/services/electron/git';

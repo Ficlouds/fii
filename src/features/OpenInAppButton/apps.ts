@@ -1,4 +1,4 @@
-import type { OpenInAppId } from '@lobechat/electron-client-ipc';
+import type { OpenInAppId } from '@ficlouds/electron-client-ipc';
 import { Cursor } from '@lobehub/icons';
 import {
   AppleIcon,

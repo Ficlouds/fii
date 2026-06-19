@@ -1,4 +1,4 @@
-import type { LobeToolMeta, SkillItem, SkillListItem } from '@lobechat/types';
+import type { FiToolMeta, SkillItem, SkillListItem } from '@ficlouds/types';
 
 import type { ToolStoreState } from '../../initialState';
 
@@ -25,7 +25,7 @@ const isAgentSkill =
   (s: ToolStoreState): boolean =>
     (s.agentSkills || []).some((skill) => skill.identifier === identifier);
 
-const agentSkillMetaList = (s: ToolStoreState): LobeToolMeta[] =>
+const agentSkillMetaList = (s: ToolStoreState): FiToolMeta[] =>
   (s.agentSkills || []).map((skill) => {
     const author = skill.manifest?.author;
     const authorName = typeof author === 'string' ? author : author?.name || 'User';

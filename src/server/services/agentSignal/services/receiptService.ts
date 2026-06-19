@@ -1,5 +1,5 @@
-import type { AgentSignalSource, BaseAction, ExecutorResult } from '@lobechat/agent-signal';
-import { LayersEnum } from '@lobechat/types';
+import type { AgentSignalSource, BaseAction, ExecutorResult } from '@ficlouds/agent-signal';
+import { LayersEnum } from '@ficlouds/types';
 
 import { AGENT_SIGNAL_DEFAULTS } from '../constants';
 import { AGENT_SIGNAL_POLICY_ACTION_TYPES } from '../policies/types';

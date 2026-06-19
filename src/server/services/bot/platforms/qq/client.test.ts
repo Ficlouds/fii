@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('@lobechat/chat-adapter-qq', () => ({
+vi.mock('@ficlouds/chat-adapter-qq', () => ({
   createQQAdapter: vi.fn(),
   QQApiClient: vi.fn().mockImplementation(() => ({})),
 }));

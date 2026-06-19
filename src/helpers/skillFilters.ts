@@ -1,6 +1,6 @@
-import { AgentBrowserIdentifier } from '@lobechat/builtin-skills';
-import { isDesktop } from '@lobechat/const';
-import { type BuiltinSkill } from '@lobechat/types';
+import { AgentBrowserIdentifier } from '@ficlouds/builtin-skills';
+import { isDesktop } from '@ficlouds/const';
+import { type BuiltinSkill } from '@ficlouds/types';
 
 export interface BuiltinSkillFilterContext {
   isDesktop: boolean;

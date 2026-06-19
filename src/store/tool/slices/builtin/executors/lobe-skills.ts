@@ -4,9 +4,9 @@
  * Creates and exports the SkillsExecutor instance for registration.
  * Injects agentSkillService as dependency.
  */
-import { builtinSkills } from '@lobechat/builtin-skills';
-import { SkillsExecutionRuntime } from '@lobechat/builtin-tool-skills/executionRuntime';
-import { SkillsExecutor } from '@lobechat/builtin-tool-skills/executor';
+import { builtinSkills } from '@ficlouds/builtin-skills';
+import { SkillsExecutionRuntime } from '@ficlouds/builtin-tool-skills/executionRuntime';
+import { SkillsExecutor } from '@ficlouds/builtin-tool-skills/executor';
 
 import { filterBuiltinSkills } from '@/helpers/skillFilters';
 import { cloudSandboxService } from '@/services/cloudSandbox';

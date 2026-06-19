@@ -87,7 +87,7 @@ const resolveCodexImagePaths = async (
   const materializeDir =
     options.imageMaterializeDir ||
     options.cacheDir ||
-    path.join(tmpdir(), 'lobehub-hetero-agent-images');
+    path.join(tmpdir(), 'fi-hetero-agent-images');
 
   const normalized: NormalizedImage[] = await Promise.all(
     imageBlocks.map((b) => normalizeImage(b.source, options)),

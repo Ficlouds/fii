@@ -1,4 +1,4 @@
-import { AgentRuntimeErrorType, RequestTrigger } from '@lobechat/types';
+import { AgentRuntimeErrorType, RequestTrigger } from '@ficlouds/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { LobeRuntimeAI } from '../BaseAI';

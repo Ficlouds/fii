@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinInterventionProps, SaveUserQuestionInput } from '@lobechat/types';
+import type { BuiltinInterventionProps, SaveUserQuestionInput } from '@ficlouds/types';
 import { EmojiPicker, Flexbox, Text } from '@lobehub/ui';
 import type { CSSProperties } from 'react';
 import { memo, useEffect, useMemo, useState } from 'react';

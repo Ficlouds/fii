@@ -1,4 +1,4 @@
-import type { ChatToolPayload } from '@lobechat/types';
+import type { ChatToolPayload } from '@ficlouds/types';
 
 import type { AgentState, ToolsCalling } from './state';
 

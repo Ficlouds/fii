@@ -1,4 +1,4 @@
-import { escapeXml } from '@lobechat/prompts';
+import { escapeXml } from '@ficlouds/prompts';
 import debug from 'debug';
 
 import { BaseFirstUserContentProvider } from '../base/BaseFirstUserContentProvider';
@@ -42,7 +42,7 @@ export interface GroupOfficialToolItem {
   installed?: boolean;
   /** Tool display name */
   name: string;
-  /** Tool type: 'builtin' for built-in tools, 'klavis' for LobeHub Mcp servers, 'lobehub-skill' for LobeHub Skill providers */
+  /** Tool type: 'builtin' for built-in tools, 'klavis' for Fi Mcp servers, 'lobehub-skill' for Fi Skill providers */
   type: 'builtin' | 'klavis' | 'lobehub-skill';
 }
 
@@ -190,7 +190,7 @@ const defaultFormatGroupContext = (context: GroupAgentBuilderContext): string =>
   if (context.officialTools && context.officialTools.length > 0) {
     const builtinTools = context.officialTools.filter((t) => t.type === 'builtin');
     const klavisTools = context.officialTools.filter((t) => t.type === 'klavis');
-    const lobehubSkillTools = context.officialTools.filter((t) => t.type === 'lobehub-skill');
+    const fiSkillTools = context.officialTools.filter((t) => t.type === 'lobehub-skill');
 
     const toolsSections: string[] = [];
 
@@ -222,8 +222,8 @@ const defaultFormatGroupContext = (context: GroupAgentBuilderContext): string =>
       toolsSections.push(`  <klavis_tools>\n${klavisItems}\n  </klavis_tools>`);
     }
 
-    if (lobehubSkillTools.length > 0) {
-      const lobehubSkillItems = lobehubSkillTools
+    if (fiSkillTools.length > 0) {
+      const fiSkillItems = fiSkillTools
         .map((t) => {
           const attrs = [
             `id="${t.identifier}"`,
@@ -234,7 +234,7 @@ const defaultFormatGroupContext = (context: GroupAgentBuilderContext): string =>
           return `    <tool ${attrs}>${escapeXml(t.name)}${desc}</tool>`;
         })
         .join('\n');
-      toolsSections.push(`  <lobehub_skill_tools>\n${lobehubSkillItems}\n  </lobehub_skill_tools>`);
+      toolsSections.push(`  <fi_skill_tools>\n${fiSkillItems}\n  </fi_skill_tools>`);
     }
 
     if (toolsSections.length > 0) {

@@ -6,9 +6,9 @@
  * Note: AgentStateManager and StreamEventManager will automatically use
  * InMemory implementations when Redis is not available (test environment).
  */
-import { type LobeChatDatabase } from '@lobechat/database';
-import { agents, chatGroups, messages, topics } from '@lobechat/database/schemas';
-import { getTestDB } from '@lobechat/database/test-utils';
+import { type FiDatabase } from '@ficlouds/database';
+import { agents, chatGroups, messages, topics } from '@ficlouds/database/schemas';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { and, eq } from 'drizzle-orm';
 import OpenAI from 'openai';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -24,7 +24,7 @@ import { createMockResponsesAPIStream } from './helpers';
 process.env.OPENAI_API_KEY = 'sk-test-fake-api-key-for-testing';
 
 // Local testDB variable for mock closure
-let testDB: LobeChatDatabase;
+let testDB: FiDatabase;
 
 // Setup mocks at module level (vi.mock is hoisted)
 vi.mock('@/database/core/db-adaptor', () => ({
@@ -41,11 +41,11 @@ vi.mock('@/server/services/file', () => ({
 // Mock MarketService to prevent real HTTP requests to market API
 vi.mock('@/server/services/market', () => ({
   MarketService: vi.fn().mockImplementation(() => ({
-    getLobehubSkillManifests: vi.fn().mockResolvedValue([]),
+    getFiSkillManifests: vi.fn().mockResolvedValue([]),
   })),
 }));
 
-let serverDB: LobeChatDatabase;
+let serverDB: FiDatabase;
 let userId: string;
 let testAgentId: string;
 let testGroupId: string;

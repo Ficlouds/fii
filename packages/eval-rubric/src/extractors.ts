@@ -1,4 +1,4 @@
-import type { AnswerExtractor } from '@lobechat/types';
+import type { AnswerExtractor } from '@ficlouds/types';
 
 /**
  * Extract answer from raw agent output using the configured extractor

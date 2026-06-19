@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { BUILTIN_AGENT_SLUGS } from '@lobechat/builtin-agents';
+import { BUILTIN_AGENT_SLUGS } from '@ficlouds/builtin-agents';
 import { describe, expect, it } from 'vitest';
 
 import { shouldSuppressSignal } from '../suppressSignal';

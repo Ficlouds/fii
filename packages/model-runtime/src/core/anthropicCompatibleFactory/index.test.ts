@@ -13,7 +13,7 @@ vi.mock('@anthropic-ai/sdk', () => {
   return { default: MockAnthropic };
 });
 
-vi.mock('@lobechat/const', () => ({
+vi.mock('@ficlouds/const', () => ({
   CURRENT_VERSION: '1.0.0-test',
 }));
 

@@ -1,10 +1,10 @@
-import { type LobeToolManifest, type PluginEnableChecker } from '@lobechat/context-engine';
-import { type LobeBuiltinTool, type LobeTool, type RuntimeEnvConfig } from '@lobechat/types';
+import { type FiToolManifest, type PluginEnableChecker } from '@ficlouds/context-engine';
+import { type LobeBuiltinTool, type FiTool, type RuntimeEnvConfig } from '@ficlouds/types';
 
 /**
  * Installed plugin with manifest
  */
-export type InstalledPlugin = LobeTool;
+export type InstalledPlugin = FiTool;
 
 /**
  * Context for server-side tools engine
@@ -21,11 +21,11 @@ export interface ServerAgentToolsContext {
  */
 export interface ServerAgentToolsEngineConfig {
   /** Additional manifests to include (e.g., Klavis tools) */
-  additionalManifests?: LobeToolManifest[];
+  additionalManifests?: FiToolManifest[];
   /**
    * Override the list of builtin tools fed into the engine's
    * `manifestSchemas`. Defaults to the full `builtinTools` array from
-   * `@lobechat/builtin-tools`. Callers gating device tools per-turn pass
+   * `@ficlouds/builtin-tools`. Callers gating device tools per-turn pass
    * `buildAllowedBuiltinTools(...)` here so an external bot sender cannot
    * resolve `lobe-remote-device` via the activator ().
    */
@@ -48,8 +48,8 @@ export interface ServerAgentToolsEngineConfig {
  * Parameters for createServerAgentToolsEngine
  */
 export interface ServerCreateAgentToolsEngineParams {
-  /** Additional manifests to include (e.g., LobeHub Skills) */
-  additionalManifests?: LobeToolManifest[];
+  /** Additional manifests to include (e.g., Fi Skills) */
+  additionalManifests?: FiToolManifest[];
   /** Agent configuration containing plugins array */
   agentConfig: {
     /** Optional agent chat config */

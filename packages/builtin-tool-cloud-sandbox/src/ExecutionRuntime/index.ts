@@ -1,5 +1,5 @@
-import { ComputerRuntime } from '@lobechat/tool-runtime';
-import type { BuiltinServerRuntimeOutput } from '@lobechat/types';
+import { ComputerRuntime } from '@ficlouds/tool-runtime';
+import type { BuiltinServerRuntimeOutput } from '@ficlouds/types';
 
 import type {
   ExecuteCodeParams,

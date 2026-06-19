@@ -1,5 +1,5 @@
-import { isDesktop } from '@lobechat/const';
-import { type ChatToolPayload } from '@lobechat/types';
+import { isDesktop } from '@ficlouds/const';
+import { type ChatToolPayload } from '@ficlouds/types';
 import debug from 'debug';
 import i18n from 'i18next';
 

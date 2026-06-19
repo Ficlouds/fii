@@ -1,4 +1,4 @@
-import { InsertChatGroupSchema } from '@lobechat/types';
+import { InsertChatGroupSchema } from '@ficlouds/types';
 import { z } from 'zod';
 
 import { AgentModel } from '@/database/models/agent';

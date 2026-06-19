@@ -9,7 +9,7 @@
  *   desktop; uses `command`, `args`, `env`, `systemContext`.
  *
  * - **Remote device** (`openclaw` | `hermes` | `amp` | `opencode`): dispatched to a machine
- *   connected via `lh connect`; device is identified by `LobeAgentAgencyConfig.boundDeviceId`.
+ *   connected via `lh connect`; device is identified by `FiAgentAgencyConfig.boundDeviceId`.
  *   `platformAgentId` selects the named agent on the remote platform (defaults to `'main'`).
  */
 export interface HeterogeneousProviderConfig {
@@ -50,7 +50,7 @@ export type HeteroExecutionTarget = 'device' | 'local' | 'sandbox';
  * Agent agency configuration.
  * Contains settings for agent execution modes and device binding.
  */
-export interface LobeAgentAgencyConfig {
+export interface FiAgentAgencyConfig {
   /**
    * Device ID of the machine connected via `lh connect`.
    * Required when `executionTarget === 'device'` (and always set for remote

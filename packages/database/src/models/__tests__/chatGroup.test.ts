@@ -1,9 +1,9 @@
 // @vitest-environment node
-import { CHAT_GROUP_SESSION_ID_PREFIX } from '@lobechat/types';
+import { CHAT_GROUP_SESSION_ID_PREFIX } from '@ficlouds/types';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 
 import { getTestDB } from '../../core/getTestDB';
 import type { NewChatGroup } from '../../schemas';
@@ -13,7 +13,7 @@ import { ChatGroupModel } from '../chatGroup';
 const userId = 'test-user';
 const otherUserId = 'other-user';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 type RelationAgent = {
   agentId: string;

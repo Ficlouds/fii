@@ -1,7 +1,7 @@
 'use client';
 
-import { createWriteLocalFileInspector } from '@lobechat/shared-tool-ui/inspectors';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import { createWriteLocalFileInspector } from '@ficlouds/shared-tool-ui/inspectors';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { memo } from 'react';
 
 import { ClaudeCodeApiName } from '../../types';

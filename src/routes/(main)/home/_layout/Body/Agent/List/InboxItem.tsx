@@ -1,6 +1,6 @@
 'use client';
 
-import { DEFAULT_INBOX_AVATAR } from '@lobechat/const';
+import { DEFAULT_INBOX_AVATAR } from '@ficlouds/const';
 import { Avatar, Icon } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { Loader2 } from 'lucide-react';

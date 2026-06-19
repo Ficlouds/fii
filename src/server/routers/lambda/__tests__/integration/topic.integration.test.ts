@@ -1,7 +1,7 @@
 // @vitest-environment node
-import { type LobeChatDatabase } from '@lobechat/database';
-import { sessions, topics } from '@lobechat/database/schemas';
-import { getTestDB } from '@lobechat/database/test-utils';
+import { type FiDatabase } from '@ficlouds/database';
+import { sessions, topics } from '@ficlouds/database/schemas';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -9,7 +9,7 @@ import { topicRouter } from '../../topic';
 import { cleanupTestUser, createTestContext, createTestUser } from './setup';
 
 // We need to mock getServerDB to return our test database instance
-let testDB: LobeChatDatabase;
+let testDB: FiDatabase;
 vi.mock('@/database/core/db-adaptor', () => ({
   getServerDB: vi.fn(() => testDB),
 }));
@@ -28,7 +28,7 @@ vi.mock('next/server', () => ({
  * 3. Verify database constraints and associations
  */
 describe('Topic Router Integration Tests', () => {
-  let serverDB: LobeChatDatabase;
+  let serverDB: FiDatabase;
   let userId: string;
   let testSessionId: string;
   let testAgentId: string;

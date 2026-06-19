@@ -1,7 +1,7 @@
 import type {
   AgentSignalSourceEventInput,
   AgentSignalSourceType,
-} from '@lobechat/agent-signal/source';
+} from '@ficlouds/agent-signal/source';
 
 import { lambdaClient } from '@/libs/trpc/client';
 

@@ -11,7 +11,7 @@ export * from './interests';
 export * from './klavis';
 export * from './layoutTokens';
 export * from './llmGenerationTracing';
-export * from './lobehubSkill';
+export * from './fiSkill';
 export * from './message';
 export * from './meta';
 export * from './plugin';

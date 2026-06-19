@@ -1,4 +1,4 @@
-import type { RubricConfig } from '@lobechat/types';
+import type { RubricConfig } from '@ficlouds/types';
 
 import type { MatchResult } from './types';
 

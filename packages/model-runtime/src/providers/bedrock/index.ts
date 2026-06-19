@@ -4,7 +4,7 @@ import {
   InvokeModelCommand,
   InvokeModelWithResponseStreamCommand,
 } from '@aws-sdk/client-bedrock-runtime';
-import { cloudModelIdMapping } from '@lobechat/business-const';
+import { cloudModelIdMapping } from '@ficlouds/business-const';
 import { ModelProvider } from 'model-bank';
 
 import { shouldDropUnsupportedClaudeAssistantPrefill } from '../../const/models';
@@ -314,7 +314,7 @@ export class LobeBedrockAI implements LobeRuntimeAI {
       };
     } else {
       // Resolve temperature/top_p: Claude 4+ on Bedrock doesn't allow both simultaneously.
-      // normalizeTemperature divides by 2 to map LobeChat's 0-2 range to Anthropic's 0-1 range.
+      // normalizeTemperature divides by 2 to map Fi's 0-2 range to Anthropic's 0-1 range.
       const resolvedSamplingParams = resolveModelSamplingParameters(
         model,
         { temperature, top_p },

@@ -1,9 +1,9 @@
-import { type LobeTool } from '@lobechat/types';
+import { type FiTool } from '@ficlouds/types';
 
 export type PluginsSettings = Record<string, any>;
 
 export interface PluginState {
-  installedPlugins: LobeTool[];
+  installedPlugins: FiTool[];
   loadingInstallPlugins: boolean;
   pluginInstallLoading: Record<string, boolean | undefined>;
   pluginsSettings: PluginsSettings;

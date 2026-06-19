@@ -1,4 +1,4 @@
-import { type ChatToolPayload, type ToolManifest } from '@lobechat/types';
+import { type ChatToolPayload, type ToolManifest } from '@ficlouds/types';
 import superjson from 'superjson';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -14,12 +14,12 @@ const mockElectronIpc = {
 };
 
 // Mock dependencies
-vi.mock('@lobechat/const', () => ({
+vi.mock('@ficlouds/const', () => ({
   CURRENT_VERSION: '1.0.0',
   isDesktop: false,
 }));
 
-vi.mock('@lobechat/utils', () => ({
+vi.mock('@ficlouds/utils', () => ({
   isLocalOrPrivateUrl: vi.fn((url: string) => {
     return url.includes('127.0.0.1') || url.includes('localhost') || url.includes('192.168.');
   }),

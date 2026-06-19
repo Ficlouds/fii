@@ -1,4 +1,4 @@
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 import {
   oidcAccessTokens,
   oidcAuthorizationCodes,
@@ -8,7 +8,7 @@ import {
   oidcInteractions,
   oidcRefreshTokens,
   oidcSessions,
-} from '@lobechat/database/schemas';
+} from '@ficlouds/database/schemas';
 import debug from 'debug';
 import { eq, sql } from 'drizzle-orm';
 
@@ -30,10 +30,10 @@ const log = debug('lobe-oidc:adapter');
 const REFRESH_TOKEN_GRACE_PERIOD_SECONDS = 180;
 
 class OIDCAdapter {
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private name: string;
 
-  constructor(name: string, db: LobeChatDatabase) {
+  constructor(name: string, db: FiDatabase) {
     log('[%s] Constructor called with name: %s', name, name);
 
     this.name = name;
@@ -177,7 +177,7 @@ class OIDCAdapter {
       log('[%s] Setting userId: %s', this.name, payload.accountId);
     } else {
       try {
-        const { getUserAuth } = await import('@lobechat/utils/server');
+        const { getUserAuth } = await import('@ficlouds/utils/server');
         try {
           const { userId } = await getUserAuth();
           if (userId) {
@@ -577,7 +577,7 @@ class OIDCAdapter {
   /**
    * Create adapter factory
    */
-  static createAdapterFactory = (db: LobeChatDatabase) => {
+  static createAdapterFactory = (db: FiDatabase) => {
     log('Creating adapter factory with database instance');
     return (name: string) => new OIDCAdapter(name, db);
   };

@@ -3,7 +3,7 @@ import { defineConfig } from 'tsdown';
 export default defineConfig({
   clean: true,
   deps: {
-    alwaysBundle: ['@lobechat/business-const'],
+    alwaysBundle: ['@ficlouds/business-const'],
   },
   dts: true,
   entry: [

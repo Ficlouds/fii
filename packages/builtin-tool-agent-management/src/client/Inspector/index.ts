@@ -1,4 +1,4 @@
-import { type BuiltinInspector } from '@lobechat/types';
+import { type BuiltinInspector } from '@ficlouds/types';
 
 import { AgentManagementApiName } from '../../types';
 import { CallAgentInspector } from './CallAgent';

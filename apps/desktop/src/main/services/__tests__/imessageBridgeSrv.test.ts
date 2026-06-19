@@ -31,7 +31,7 @@ const { MockBlueBubblesApiClient, getPortMock } = vi.hoisted(() => {
   };
 });
 
-vi.mock('@lobechat/chat-adapter-imessage', () => ({
+vi.mock('@ficlouds/chat-adapter-imessage', () => ({
   BlueBubblesApiClient: MockBlueBubblesApiClient,
 }));
 
@@ -182,7 +182,7 @@ describe('ImessageBridgeService', () => {
     await service.stop();
   });
 
-  it('receives BlueBubbles webhook locally and forwards the enriched event to LobeHub', async () => {
+  it('receives BlueBubbles webhook locally and forwards the enriched event to Fi', async () => {
     const { service } = createService();
     await service.upsertConfig(config);
 

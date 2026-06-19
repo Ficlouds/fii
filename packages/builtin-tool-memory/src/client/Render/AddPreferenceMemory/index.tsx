@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { memo } from 'react';
 
 import type { AddPreferenceMemoryParams, AddPreferenceMemoryState } from '../../../types';

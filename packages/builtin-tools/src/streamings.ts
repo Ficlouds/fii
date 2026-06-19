@@ -1,40 +1,40 @@
 import {
   AgentBuilderManifest,
   AgentBuilderStreamings,
-} from '@lobechat/builtin-tool-agent-builder/client';
+} from '@ficlouds/builtin-tool-agent-builder/client';
 import {
   AgentDocumentsManifest,
   AgentDocumentsStreamings,
-} from '@lobechat/builtin-tool-agent-documents/client';
+} from '@ficlouds/builtin-tool-agent-documents/client';
 import {
   AgentManagementManifest,
   AgentManagementStreamings,
-} from '@lobechat/builtin-tool-agent-management/client';
+} from '@ficlouds/builtin-tool-agent-management/client';
 import {
   ClaudeCodeIdentifier,
   ClaudeCodeStreamings,
-} from '@lobechat/builtin-tool-claude-code/client';
+} from '@ficlouds/builtin-tool-claude-code/client';
 import {
   CloudSandboxManifest,
   CloudSandboxStreamings,
-} from '@lobechat/builtin-tool-cloud-sandbox/client';
+} from '@ficlouds/builtin-tool-cloud-sandbox/client';
 import {
   GroupAgentBuilderManifest,
   GroupAgentBuilderStreamings,
-} from '@lobechat/builtin-tool-group-agent-builder/client';
+} from '@ficlouds/builtin-tool-group-agent-builder/client';
 import {
   GroupManagementManifest,
   GroupManagementStreamings,
-} from '@lobechat/builtin-tool-group-management/client';
-import { LobeAgentManifest, LobeAgentStreamings } from '@lobechat/builtin-tool-lobe-agent/client';
+} from '@ficlouds/builtin-tool-group-management/client';
+import { FiAgentManifest, FiAgentStreamings } from '@ficlouds/builtin-tool-fi-agent/client';
 import {
   LocalSystemManifest,
   LocalSystemStreamings,
-} from '@lobechat/builtin-tool-local-system/client';
-import { MemoryManifest, MemoryStreamings } from '@lobechat/builtin-tool-memory/client';
-import { MessageManifest, MessageStreamings } from '@lobechat/builtin-tool-message/client';
-import { PageAgentManifest, PageAgentStreamings } from '@lobechat/builtin-tool-page-agent/client';
-import { type BuiltinStreaming } from '@lobechat/types';
+} from '@ficlouds/builtin-tool-local-system/client';
+import { MemoryManifest, MemoryStreamings } from '@ficlouds/builtin-tool-memory/client';
+import { MessageManifest, MessageStreamings } from '@ficlouds/builtin-tool-message/client';
+import { PageAgentManifest, PageAgentStreamings } from '@ficlouds/builtin-tool-page-agent/client';
+import { type BuiltinStreaming } from '@ficlouds/types';
 
 /**
  * Builtin tools streaming renderer registry
@@ -61,7 +61,7 @@ const BuiltinToolStreamings: Record<string, Record<string, BuiltinStreaming>> = 
     string,
     BuiltinStreaming
   >,
-  [LobeAgentManifest.identifier]: LobeAgentStreamings as Record<string, BuiltinStreaming>,
+  [FiAgentManifest.identifier]: FiAgentStreamings as Record<string, BuiltinStreaming>,
   [LocalSystemManifest.identifier]: LocalSystemStreamings as Record<string, BuiltinStreaming>,
   [MemoryManifest.identifier]: MemoryStreamings as Record<string, BuiltinStreaming>,
   [MessageManifest.identifier]: MessageStreamings as Record<string, BuiltinStreaming>,

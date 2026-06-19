@@ -33,8 +33,8 @@ import type {
   SendMessageState,
   UnpinMessageParams,
   UnpinMessageState,
-} from '@lobechat/builtin-tool-message/executionRuntime';
-import type { QQApiClient } from '@lobechat/chat-adapter-qq';
+} from '@ficlouds/builtin-tool-message/executionRuntime';
+import type { QQApiClient } from '@ficlouds/chat-adapter-qq';
 
 import type { MessageRuntimeService } from '@/server/services/toolExecution/serverRuntimes/message/adapters/types';
 import { PlatformUnsupportedError } from '@/server/services/toolExecution/serverRuntimes/message/PlatformUnsupportedError';

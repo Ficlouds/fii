@@ -10,7 +10,8 @@ import {
   Skeleton,
   SliderWithInput,
 } from '@lobehub/ui';
-import { Select, Switch } from '@lobehub/ui/base-ui';
+import { Select } from '@lobehub/ui/base-ui';
+import { Switch } from 'antd';
 import isEqual from 'fast-deep-equal';
 import { Loader2Icon } from 'lucide-react';
 import { memo, useState } from 'react';

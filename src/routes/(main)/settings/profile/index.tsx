@@ -1,6 +1,6 @@
 'use client';
 
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { Flexbox, FormGroup, Skeleton } from '@lobehub/ui';
 import { Divider } from 'antd';
 import { useEffect } from 'react';

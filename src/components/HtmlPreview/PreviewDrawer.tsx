@@ -1,5 +1,5 @@
-import { TITLE_BAR_HEIGHT } from '@lobechat/desktop-bridge';
-import { exportFile } from '@lobechat/utils/client';
+import { TITLE_BAR_HEIGHT } from '@ficlouds/desktop-bridge';
+import { exportFile } from '@ficlouds/utils/client';
 import { Block, Button, Flexbox, Highlighter, HtmlPreview, Segmented } from '@lobehub/ui';
 import { Drawer } from 'antd';
 import { createStaticStyles } from 'antd-style';

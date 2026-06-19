@@ -1,4 +1,4 @@
-import type { LobeAgentChatConfig } from '@lobechat/types';
+import type { FiAgentChatConfig } from '@ficlouds/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import * as aiInfraStore from '@/store/aiInfra';
@@ -8,7 +8,7 @@ import { resolveModelExtendParams } from './modelParamsResolver';
 
 describe('resolveModelExtendParams', () => {
   const mockAiInfraStoreState = { someState: true };
-  const createChatConfig = (config: Partial<LobeAgentChatConfig> = {}): LobeAgentChatConfig => ({
+  const createChatConfig = (config: Partial<FiAgentChatConfig> = {}): FiAgentChatConfig => ({
     ...config,
   });
 

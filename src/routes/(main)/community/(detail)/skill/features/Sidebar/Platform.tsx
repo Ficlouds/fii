@@ -1,6 +1,6 @@
 'use client';
 
-import { DEFAULT_INBOX_AVATAR, SESSION_CHAT_URL } from '@lobechat/const';
+import { DEFAULT_INBOX_AVATAR, SESSION_CHAT_URL } from '@ficlouds/const';
 import { Claude, Cline, Cursor, OpenAI } from '@lobehub/icons';
 import {
   Avatar,
@@ -35,7 +35,7 @@ enum PlatformType {
   Cline = 'cline',
   Codex = 'codex',
   Cursor = 'cursor',
-  LobeHub = 'lobehub',
+  Fi = 'lobehub',
   VsCode = 'vscode',
 }
 
@@ -62,7 +62,7 @@ const genInstallCommand = (identifier?: string, platform?: PlatformType) => {
     [PlatformType.Claude]: 'claude-code',
     [PlatformType.Cline]: 'cline',
     [PlatformType.Cursor]: 'cursor',
-    [PlatformType.LobeHub]: 'lobehub',
+    [PlatformType.Fi]: 'lobehub',
     [PlatformType.Codex]: 'codex',
     [PlatformType.VsCode]: 'vscode',
   };
@@ -78,9 +78,9 @@ const genInstallCommand = (identifier?: string, platform?: PlatformType) => {
       return `npx -y @lobehub/market-cli skills install ${id} --agent ${agentMap[platform]}`;
     }
     default: {
-      return `# Recommended for LobeHub users:
+      return `# Recommended for Fi users:
 # Open the marketplace page and install with one click:
-# https://lobechat.com/community/skills/${id}`;
+# https://ficlouds.com/community/skills/${id}`;
     }
   }
 };
@@ -98,13 +98,13 @@ const genLayout = (
     [PlatformType.Claude]: `~/.claude/skills/${id}`,
     [PlatformType.Cline]: `~/.cline/skills/${id}`,
     [PlatformType.Cursor]: `~/.cursor/skills/${id}`,
-    [PlatformType.LobeHub]: `<managed-by-lobehub>`,
+    [PlatformType.Fi]: `<managed-by-fi>`,
     [PlatformType.Codex]: `~/.agents/skills/${id}`,
     [PlatformType.VsCode]: `./.vscode/skills/${id}`,
   };
   const basePath = basePathMap[platform];
 
-  if (platform === PlatformType.LobeHub) {
+  if (platform === PlatformType.Fi) {
     return i18nText.lobehub;
   }
 
@@ -152,9 +152,9 @@ const Platform = memo<PlatformProps>(
 
     const { platform, steps } = useMemo(() => {
       switch (active) {
-        case PlatformType.LobeHub: {
+        case PlatformType.Fi: {
           return {
-            platform: 'LobeHub',
+            platform: 'Fi',
             steps: t('skills.details.sidebar.platform.steps.lobehub'),
           };
         }
@@ -193,7 +193,7 @@ const Platform = memo<PlatformProps>(
 
     const command = genInstallCommand(identifier, active);
 
-    const agentPrompt = `Curl https://lobehub.com/skills/${identifier}/skill.md, then follow the instructions to set up LobeHub Skills Marketplace and install the skill. Once installed, read the SKILL.md file in the installed directory and follow its instructions to complete the task.`;
+    const agentPrompt = `Curl https://ficlouds.com/skills/${identifier}/skill.md, then follow the instructions to set up Fi Skills Marketplace and install the skill. Once installed, read the SKILL.md file in the installed directory and follow its instructions to complete the task.`;
 
     const handleUseOnLobeAI = useCallback(() => {
       if (!inboxAgentId) return;

@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { SEARCH_SEARXNG_NOT_CONFIG } from '@lobechat/types';
+import { SEARCH_SEARXNG_NOT_CONFIG } from '@ficlouds/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { toolsEnv } from '@/envs/tools';
@@ -9,7 +9,7 @@ import { searchRouter } from './search';
 
 // Mock removed: XOR payload is no longer used for authentication
 
-vi.mock('@lobechat/web-crawler', () => ({
+vi.mock('@ficlouds/web-crawler', () => ({
   Crawler: vi.fn().mockImplementation(() => ({
     crawl: vi.fn().mockResolvedValue({ content: 'test content' }),
   })),

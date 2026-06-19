@@ -2,8 +2,8 @@ import type {
   QueryTaxonomyOptionsParams,
   QueryTaxonomyOptionsResult,
   SearchMemoryParams,
-} from '@lobechat/types';
-import { LayersEnum } from '@lobechat/types';
+} from '@ficlouds/types';
+import { LayersEnum } from '@ficlouds/types';
 import type { AnyColumn, SQL } from 'drizzle-orm';
 import {
   and,
@@ -35,7 +35,7 @@ import {
   userMemoriesIdentities,
   userMemoriesPreferences,
 } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { normalizeBm25MatchQuery, SAFE_BM25_QUERY_OPTIONS } from '../../utils/bm25';
 
 const DEFAULT_HYBRID_SEARCH_LIMIT = 5;
@@ -660,7 +660,7 @@ export const scoreHybridCandidates = <T extends { id: string; tags?: string[] | 
 
 export class UserMemoryQueryModel {
   constructor(
-    private readonly db: LobeChatDatabase,
+    private readonly db: FiDatabase,
     private readonly userId: string,
   ) {}
 

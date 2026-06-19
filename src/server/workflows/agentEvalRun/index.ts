@@ -1,7 +1,7 @@
 import debug from 'debug';
 
 import { AgentEvalRunTopicModel } from '@/database/models/agentEval';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { workflowClient } from '@/libs/qstash';
 
 const log = debug('lobe-server:workflows:agent-eval-run');
@@ -234,7 +234,7 @@ export class AgentEvalRunWorkflow {
    * @returns Test case IDs that need execution
    */
   static async filterTestCasesNeedingExecution(
-    db: LobeChatDatabase,
+    db: FiDatabase,
     params: { runId: string; testCaseIds: string[]; userId: string },
   ): Promise<string[]> {
     const { runId, testCaseIds, userId } = params;

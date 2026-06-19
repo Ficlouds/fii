@@ -1,12 +1,12 @@
-import { BRANDING_PROVIDER } from '@lobechat/business-const';
-import { loadModels } from '@lobechat/business-model-bank/model-config';
+import { BRANDING_PROVIDER } from '@ficlouds/business-const';
+import { loadModels } from '@ficlouds/business-model-bank/model-config';
 import type {
   AiProviderDetailItem,
   AiProviderListItem,
   AiProviderRuntimeState,
   EnabledProvider,
   ProviderConfig,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { isEmpty } from 'es-toolkit/compat';
 import type { AIChatModelCard, AiProviderModelListItem, EnabledAiModel } from 'model-bank';
 import { AiModelSourceEnum, isAiModelVisible } from 'model-bank';
@@ -17,7 +17,7 @@ import { merge, mergeArrayById } from '@/utils/merge';
 
 import { AiModelModel } from '../../models/aiModel';
 import { AiProviderModel } from '../../models/aiProvider';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 
 type DecryptUserKeyVaults = (encryptKeyVaultsStr: string | null) => Promise<any>;
 
@@ -123,14 +123,14 @@ const injectSearchSettings = (providerId: string, item: any) => {
 
 export class AiInfraRepos {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   aiProviderModel: AiProviderModel;
   private readonly providerConfigs: Record<string, ProviderConfig>;
   aiModelModel: AiModelModel;
   private modelBankModelsPromise?: ReturnType<typeof loadModels>;
 
   constructor(
-    db: LobeChatDatabase,
+    db: FiDatabase,
     userId: string,
     providerConfigs: Record<string, ProviderConfig>,
   ) {

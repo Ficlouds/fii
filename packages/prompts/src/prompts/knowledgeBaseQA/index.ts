@@ -1,4 +1,4 @@
-import type { ChatSemanticSearchChunk, KnowledgeItem } from '@lobechat/types';
+import type { ChatSemanticSearchChunk, KnowledgeItem } from '@ficlouds/types';
 
 import { chunkPrompts } from './chunk';
 import { knowledgePrompts } from './knowledge';

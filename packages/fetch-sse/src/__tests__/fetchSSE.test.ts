@@ -1,8 +1,8 @@
-import { MESSAGE_CANCEL_FLAT } from '@lobechat/const';
-import type { ChatMessageError } from '@lobechat/types';
-import type { FetchEventSourceInit } from '@lobechat/utils/client/fetchEventSource/index';
-import { fetchEventSource } from '@lobechat/utils/client/fetchEventSource/index';
-import { sleep } from '@lobechat/utils/sleep';
+import { MESSAGE_CANCEL_FLAT } from '@ficlouds/const';
+import type { ChatMessageError } from '@ficlouds/types';
+import type { FetchEventSourceInit } from '@ficlouds/utils/client/fetchEventSource/index';
+import { fetchEventSource } from '@ficlouds/utils/client/fetchEventSource/index';
+import { sleep } from '@ficlouds/utils/sleep';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { fetchSSE } from '../fetchSSE';
@@ -12,7 +12,7 @@ vi.mock('i18next', () => ({
   t: vi.fn((key) => `translated_${key}`),
 }));
 
-vi.mock('@lobechat/utils/client/fetchEventSource/index', () => ({
+vi.mock('@ficlouds/utils/client/fetchEventSource/index', () => ({
   fetchEventSource: vi.fn(),
 }));
 

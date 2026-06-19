@@ -1,6 +1,6 @@
 import type { Meta } from './builtin';
 import type { ToolManifest, ToolManifestType } from './manifest';
-import type { LobeToolType } from './tool';
+import type { FiToolType } from './tool';
 
 export type PluginManifestMap = Record<string, ToolManifest>;
 
@@ -50,7 +50,7 @@ export interface CustomPluginParams {
   useProxy?: boolean;
 }
 
-export interface LobeToolCustomPlugin {
+export interface FiToolCustomPlugin {
   customParams?: CustomPluginParams;
   identifier: string;
   manifest?: ToolManifest;
@@ -64,7 +64,7 @@ export interface InstallPluginMeta extends Partial<Meta> {
   homepage?: string;
   identifier: string;
   runtimeType?: ToolManifestType;
-  type: LobeToolType;
+  type: FiToolType;
 }
 
 export interface PluginInstallError {

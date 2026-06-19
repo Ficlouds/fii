@@ -3,28 +3,28 @@ import type {
   AgentRuntimeContext,
   AgentState,
   GeneralAgentConfig,
-} from '@lobechat/agent-runtime';
-import { AgentRuntime, findInMessages, GeneralChatAgent } from '@lobechat/agent-runtime';
-import type { ISnapshotStore } from '@lobechat/agent-tracing';
-import { dynamicInterventionAudits } from '@lobechat/builtin-tools/dynamicInterventionAudits';
-import { getModelPropertyWithFallback } from '@lobechat/model-runtime';
+} from '@ficlouds/agent-runtime';
+import { AgentRuntime, findInMessages, GeneralChatAgent } from '@ficlouds/agent-runtime';
+import type { ISnapshotStore } from '@ficlouds/agent-tracing';
+import { dynamicInterventionAudits } from '@ficlouds/builtin-tools/dynamicInterventionAudits';
+import { getModelPropertyWithFallback } from '@ficlouds/model-runtime';
 import {
   context as otelContext,
   SpanStatusCode,
   trace as otelTrace,
-} from '@lobechat/observability-otel/api';
+} from '@ficlouds/observability-otel/api';
 import {
   buildInvokeAgentAttributes,
   buildInvokeAgentResultAttributes,
   invokeAgentSpanName,
   tracer as agentRuntimeTracer,
-} from '@lobechat/observability-otel/modules/agent-runtime';
-import { type ExecSubAgentTaskParams, type UIChatMessage } from '@lobechat/types';
+} from '@ficlouds/observability-otel/modules/agent-runtime';
+import { type ExecSubAgentTaskParams, type UIChatMessage } from '@ficlouds/types';
 import debug from 'debug';
 import urlJoin from 'url-join';
 
 import { MessageModel } from '@/database/models/message';
-import { type LobeChatDatabase } from '@/database/type';
+import { type FiDatabase } from '@/database/type';
 import { appEnv } from '@/envs/app';
 import { type AgentRuntimeCoordinatorOptions } from '@/server/modules/AgentRuntime';
 import { AgentRuntimeCoordinator, createStreamEventManager } from '@/server/modules/AgentRuntime';
@@ -150,7 +150,7 @@ export class AgentRuntimeService {
 
     return urlJoin(baseUrl, '/api/agent');
   }
-  private serverDB: LobeChatDatabase;
+  private serverDB: FiDatabase;
   private userId: string;
   private messageModel: MessageModel;
   // Lazily constructed because MessageService instantiates a FileService
@@ -165,7 +165,7 @@ export class AgentRuntimeService {
     return this.messageServiceInstance;
   }
 
-  constructor(db: LobeChatDatabase, userId: string, options?: AgentRuntimeServiceOptions) {
+  constructor(db: FiDatabase, userId: string, options?: AgentRuntimeServiceOptions) {
     // Use factory function to auto-select Redis or InMemory implementation
     this.streamManager =
       options?.streamEventManager ??
@@ -1325,7 +1325,7 @@ export class AgentRuntimeService {
       let executionContext = context;
       if (!executionContext) {
         // If no context provided, build default context from metadata
-        // Note: AgentRuntimeContext requires sessionId for compatibility with @lobechat/agent-runtime
+        // Note: AgentRuntimeContext requires sessionId for compatibility with @ficlouds/agent-runtime
         executionContext = {
           payload: {
             isFirstMessage: true,
@@ -1530,7 +1530,7 @@ export class AgentRuntimeService {
 
     if (process.env.NODE_ENV === 'development') {
       try {
-        const { FileSnapshotStore } = require('@lobechat/agent-tracing');
+        const { FileSnapshotStore } = require('@ficlouds/agent-tracing');
         return new FileSnapshotStore();
       } catch {
         // agent-tracing not available

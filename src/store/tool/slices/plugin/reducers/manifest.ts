@@ -1,4 +1,4 @@
-import { type ToolManifest } from '@lobechat/types';
+import { type ToolManifest } from '@ficlouds/types';
 import { produce } from 'immer';
 
 import { type PluginManifestMap } from '@/types/tool/plugin';
@@ -7,7 +7,7 @@ type AddManifestDispatch = { id: string; plugin: ToolManifest; type: 'addManifes
 type DeleteManifestDispatch = { id: string; type: 'deleteManifest' };
 // type UpdateManifestDispatch = {
 //   id: string;
-//   plugin: LobeChatPlugin;
+//   plugin: FiPlugin;
 //   type: 'updateManifest';
 //   version: string;
 // };

@@ -1,5 +1,5 @@
-import { type UIChatMessage } from '@lobechat/types';
-import { TraceEventType } from '@lobechat/types';
+import { type UIChatMessage } from '@ficlouds/types';
+import { TraceEventType } from '@ficlouds/types';
 import * as lobeUIModules from '@lobehub/ui';
 import { act, renderHook } from '@testing-library/react';
 import { type Mock } from 'vitest';

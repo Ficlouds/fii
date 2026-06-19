@@ -11,7 +11,7 @@ import { setupAllMocks } from '@/server/services/comfyui/__tests__/setup/unified
 import { buildSimpleSDWorkflow } from '@/server/services/comfyui/workflows/simple-sd';
 
 // Setup basic mocks
-vi.mock('@lobechat/utils', () => ({
+vi.mock('@ficlouds/utils', () => ({
   generateUniqueSeeds: vi.fn(() => ({ seed: 123456, noiseSeed: 654321 })),
 }));
 vi.mock('../utils/workflowUtils', () => ({
@@ -482,7 +482,7 @@ describe('buildSimpleSDWorkflow - Universal SD Support', () => {
     });
 
     it('should handle seed generation', async () => {
-      const { generateUniqueSeeds } = await import('@lobechat/utils');
+      const { generateUniqueSeeds } = await import('@ficlouds/utils');
       const params = {
         cfg: 7.5,
         height: 1024,

@@ -1,11 +1,11 @@
 /**
  * Agent Runtime Hooks — external lifecycle hook system
  *
- * Hook event types are defined in @lobechat/agent-runtime (shared).
+ * Hook event types are defined in @ficlouds/agent-runtime (shared).
  * Hook registration, webhook delivery, and serialization types are server-specific.
  */
 
-import type { AgentHookEvent, AgentHookType } from '@lobechat/agent-runtime';
+import type { AgentHookEvent, AgentHookType } from '@ficlouds/agent-runtime';
 
 export type {
   AfterCallAgentHookEvent,
@@ -24,7 +24,7 @@ export type {
   StopByHumanInterventionHookEvent,
   ToolCallErrorHookEvent,
   ToolCallHookEvent,
-} from '@lobechat/agent-runtime';
+} from '@ficlouds/agent-runtime';
 
 // ── Server-side Hook Types ───────────────────────────────
 

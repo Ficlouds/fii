@@ -1,9 +1,9 @@
 import { produce } from 'immer';
 
-import { type LobeSession, type LobeSessions } from '@/types/session';
+import { type FiSession, type FiSessions } from '@/types/session';
 
 interface AddSession {
-  session: LobeSession;
+  session: FiSession;
   type: 'addSession';
 }
 
@@ -15,12 +15,12 @@ interface RemoveSession {
 interface UpdateSession {
   id: string;
   type: 'updateSession';
-  value: Partial<LobeSession>;
+  value: Partial<FiSession>;
 }
 
 export type SessionDispatch = AddSession | RemoveSession | UpdateSession;
 
-export const sessionsReducer = (state: LobeSessions, payload: SessionDispatch): LobeSessions => {
+export const sessionsReducer = (state: FiSessions, payload: SessionDispatch): FiSessions => {
   switch (payload.type) {
     case 'addSession': {
       return produce(state, (draft) => {

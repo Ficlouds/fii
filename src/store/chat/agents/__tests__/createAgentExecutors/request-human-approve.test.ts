@@ -1,4 +1,4 @@
-import { type ChatToolPayload } from '@lobechat/types';
+import { type ChatToolPayload } from '@ficlouds/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import {

@@ -1,5 +1,5 @@
-import { type ToolExecuteData, type ToolResultMessage } from '@lobechat/agent-gateway-client';
-import { type BuiltinToolContext } from '@lobechat/types';
+import { type ToolExecuteData, type ToolResultMessage } from '@ficlouds/agent-gateway-client';
+import { type BuiltinToolContext } from '@ficlouds/types';
 import debug from 'debug';
 import { produce } from 'immer';
 

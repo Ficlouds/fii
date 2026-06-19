@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/builtin-tool-task",
+  "name": "@ficlouds/builtin-tool-task",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -8,13 +8,13 @@
   },
   "main": "./src/index.ts",
   "dependencies": {
-    "@lobechat/prompts": "workspace:*"
+    "@ficlouds/prompts": "workspace:*"
   },
   "devDependencies": {
-    "@lobechat/types": "workspace:*"
+    "@ficlouds/types": "workspace:*"
   },
   "peerDependencies": {
-    "@lobehub/ui": "^5",
+    "@ficlouds/ui": "^5",
     "antd-style": "*",
     "lucide-react": "*",
     "react": "*",

@@ -4,7 +4,7 @@ import type {
   Part,
   Tool as GoogleFunctionCallTool,
 } from '@google/genai';
-import { imageUrlToBase64, resolveImageMimeTypeFromBase64 } from '@lobechat/utils';
+import { imageUrlToBase64, resolveImageMimeTypeFromBase64 } from '@ficlouds/utils';
 
 import type { ChatCompletionTool, OpenAIChatMessage, UserMessageContentPart } from '../../types';
 import { safeParseJSON } from '../../utils/safeParseJSON';

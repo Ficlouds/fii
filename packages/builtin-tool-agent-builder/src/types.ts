@@ -1,4 +1,4 @@
-import type { LobeAgentConfig, MetaData } from '@lobechat/types';
+import type { FiAgentConfig, MetaData } from '@ficlouds/types';
 import type { PartialDeep } from 'type-fest';
 
 /**
@@ -32,7 +32,7 @@ export interface UpdateAgentConfigParams {
   /**
    * Partial agent configuration to update
    */
-  config?: PartialDeep<LobeAgentConfig>;
+  config?: PartialDeep<FiAgentConfig>;
   /**
    * Partial metadata to update
    */
@@ -164,7 +164,7 @@ export interface InstallPluginParams {
    */
   identifier: string;
   /**
-   * Plugin source type: 'market' for MCP marketplace, 'official' for builtin/klavis/lobehubSkill tools
+   * Plugin source type: 'market' for MCP marketplace, 'official' for builtin/klavis/fiSkill tools
    */
   source: 'market' | 'official';
 }
@@ -188,9 +188,9 @@ export interface InstallPluginState {
    */
   isKlavis?: boolean;
   /**
-   * Whether the plugin is a LobehubSkill provider that needs OAuth connection
+   * Whether the plugin is a FiSkill provider that needs OAuth connection
    */
-  isLobehubSkill?: boolean;
+  isFiSkill?: boolean;
   /**
    * Klavis OAuth URL if authorization is needed
    */
@@ -208,7 +208,7 @@ export interface InstallPluginState {
    */
   serverName?: string;
   /**
-   * Server status (for Klavis tools and LobehubSkill providers)
+   * Server status (for Klavis tools and FiSkill providers)
    */
   serverStatus?: 'connected' | 'pending_auth' | 'error' | 'not_connected';
   /**

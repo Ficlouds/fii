@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { type LobeChatDatabase } from '@/database/type';
+import { type FiDatabase } from '@/database/type';
 import { type MessageMetadata } from '@/types/message';
 
 import { UsageRecordService } from './index';
 
 describe('UsageRecordService', () => {
   let service: UsageRecordService;
-  let mockDb: LobeChatDatabase;
+  let mockDb: FiDatabase;
   const userId = 'test-user-id';
 
   // Helper function to setup query chain mock
@@ -28,7 +28,7 @@ describe('UsageRecordService', () => {
 
     mockDb = {
       select: mockSelect,
-    } as unknown as LobeChatDatabase;
+    } as unknown as FiDatabase;
 
     service = new UsageRecordService(mockDb, userId);
   });

@@ -1,8 +1,8 @@
 'use client';
 
-import { isDesktop } from '@lobechat/const';
-import { TITLE_BAR_HEIGHT } from '@lobechat/desktop-bridge';
-import { type SkillResourceTreeNode } from '@lobechat/types';
+import { isDesktop } from '@ficlouds/const';
+import { TITLE_BAR_HEIGHT } from '@ficlouds/desktop-bridge';
+import { type SkillResourceTreeNode } from '@ficlouds/types';
 import { Button, Drawer, Flexbox } from '@lobehub/ui';
 import { Alert, App, Form as AForm, Popconfirm, Skeleton } from 'antd';
 import { createStaticStyles } from 'antd-style';

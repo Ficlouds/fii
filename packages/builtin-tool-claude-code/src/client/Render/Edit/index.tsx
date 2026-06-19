@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { CodeDiff, Flexbox, Skeleton } from '@lobehub/ui';
 import path from 'path-browserify-esm';
 import { memo } from 'react';

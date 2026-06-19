@@ -1,11 +1,11 @@
 /* eslint-disable perfectionist/sort-interfaces */
-import type { FileContent, KnowledgeBaseInfo, PageContentContext } from '@lobechat/prompts';
+import type { FileContent, KnowledgeBaseInfo, PageContentContext } from '@ficlouds/prompts';
 import type {
   RuntimeInitialContext,
   RuntimeSelectedSkill,
   RuntimeSelectedTool,
   RuntimeStepContext,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 import type { OpenAIChatMessage, UIChatMessage } from '@/types/index';
 
@@ -25,7 +25,7 @@ import type { TodoList } from '../../providers/TodoInjector';
 import type { ToolDiscoveryMeta } from '../../providers/ToolDiscoveryProvider';
 import type { TopicReferenceItem } from '../../providers/TopicReferenceContextInjector';
 import type { PipelineContextMetadata } from '../../types';
-import type { LobeToolManifest } from '../tools/types';
+import type { FiToolManifest } from '../tools/types';
 
 /**
  * Model capability checker
@@ -57,7 +57,7 @@ export interface ToolsConfig {
   /** Tool identifiers that must be removed from historical tool calls in this runtime scope */
   disabledToolIdentifiers?: string[];
   /** Tool manifests with systemRole and API definitions */
-  manifests?: LobeToolManifest[];
+  manifests?: FiToolManifest[];
   /** Enabled tool IDs (kept for compatibility) */
   tools?: string[];
 }
@@ -145,7 +145,7 @@ export interface UserMemoryPersonaItem {
 
 /**
  * User memory data structure
- * Compatible with SearchMemoryResult from @lobechat/types
+ * Compatible with SearchMemoryResult from @ficlouds/types
  */
 export interface UserMemoryData {
   activities?: UserMemoryActivityItem[];
@@ -359,4 +359,4 @@ export { type TodoItem, type TodoList } from '../../providers/TodoInjector';
 export { type ToolDiscoveryMeta } from '../../providers/ToolDiscoveryProvider';
 export { type TopicReferenceItem } from '../../providers/TopicReferenceContextInjector';
 export { type OpenAIChatMessage, type UIChatMessage } from '@/types/index';
-export { type FileContent, type KnowledgeBaseInfo } from '@lobechat/prompts';
+export { type FileContent, type KnowledgeBaseInfo } from '@ficlouds/prompts';

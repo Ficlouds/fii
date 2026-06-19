@@ -15,11 +15,11 @@ import {
   sessions,
   users,
 } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import { MessageModel } from '../../message';
 import { codeEmbedding } from '../fixtures/embedding';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'message-update-test';
 const otherUserId = 'message-update-test-other';

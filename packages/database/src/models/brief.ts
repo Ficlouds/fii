@@ -3,7 +3,7 @@ import { and, desc, eq, isNull, notInArray, sql } from 'drizzle-orm';
 import { agents } from '../schemas/agent';
 import type { BriefItem, NewBrief } from '../schemas/task';
 import { briefs, tasks } from '../schemas/task';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export interface UnresolvedBriefRow {
   agentAvatar: string | null;
@@ -16,9 +16,9 @@ export interface UnresolvedBriefRow {
 
 export class BriefModel {
   private readonly userId: string;
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

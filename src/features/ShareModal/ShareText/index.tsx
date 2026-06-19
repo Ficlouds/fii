@@ -1,5 +1,5 @@
-import { FORM_STYLE } from '@lobechat/const';
-import { exportFile } from '@lobechat/utils/client';
+import { FORM_STYLE } from '@ficlouds/const';
+import { exportFile } from '@ficlouds/utils/client';
 import { type FormItemProps } from '@lobehub/ui';
 import { Button, copyToClipboard, Flexbox, Form } from '@lobehub/ui';
 import { App, Switch } from 'antd';

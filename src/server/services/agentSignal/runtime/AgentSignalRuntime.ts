@@ -1,4 +1,4 @@
-import type { AgentSignalSource, BaseAction, BaseSignal } from '@lobechat/agent-signal';
+import type { AgentSignalSource, BaseAction, BaseSignal } from '@ficlouds/agent-signal';
 
 import {
   AgentSignalScheduler,

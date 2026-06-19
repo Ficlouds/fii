@@ -1,5 +1,5 @@
 // @vitest-environment node
-import type { LobeChatDatabase } from '@lobechat/database';
+import type { FiDatabase } from '@ficlouds/database';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { TopicDocumentModel } from '@/database/models/topicDocument';
@@ -16,7 +16,7 @@ vi.mock('@/database/models/topicDocument', () => ({
 }));
 
 describe('archiveToolResultIfNeeded', () => {
-  const db = {} as LobeChatDatabase;
+  const db = {} as FiDatabase;
   const mockVfsService = {
     mkdir: vi.fn(),
     write: vi.fn(),

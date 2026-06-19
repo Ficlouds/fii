@@ -1,4 +1,4 @@
-import type { TaskDetailData, TaskDetailWorkspaceNode, TaskStatus } from '@lobechat/types';
+import type { TaskDetailData, TaskDetailWorkspaceNode, TaskStatus } from '@ficlouds/types';
 
 // ── Formatting helpers for Task tool responses ──
 
@@ -55,13 +55,13 @@ export interface TaskSummary {
   status: string;
 }
 
-// Re-export shared types from @lobechat/types for backward compatibility
+// Re-export shared types from @ficlouds/types for backward compatibility
 export type {
   TaskDetailActivity,
   TaskDetailData,
   TaskDetailSubtask,
   TaskDetailWorkspaceNode,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 /**
  * Format a single task as a one-line summary

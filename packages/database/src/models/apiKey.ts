@@ -1,15 +1,15 @@
-import { generateApiKey, isApiKeyExpired, validateApiKeyFormat } from '@lobechat/utils/apiKey';
-import { hashApiKey } from '@lobechat/utils/server';
+import { generateApiKey, isApiKeyExpired, validateApiKeyFormat } from '@ficlouds/utils/apiKey';
+import { hashApiKey } from '@ficlouds/utils/server';
 import { and, desc, eq } from 'drizzle-orm';
 
 import { KeyVaultsGateKeeper } from '@/server/modules/KeyVaultsEncrypt';
 
 import type { ApiKeyItem, NewApiKeyItem } from '../schemas';
 import { apiKeys } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export class ApiKeyModel {
-  static findByKey = async (db: LobeChatDatabase, key: string) => {
+  static findByKey = async (db: FiDatabase, key: string) => {
     if (!validateApiKeyFormat(key)) {
       return null;
     }
@@ -21,10 +21,10 @@ export class ApiKeyModel {
   };
 
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private gateKeeperPromise: Promise<KeyVaultsGateKeeper> | null = null;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

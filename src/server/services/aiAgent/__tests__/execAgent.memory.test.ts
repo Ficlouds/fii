@@ -5,9 +5,9 @@
  * Verifies that agent-level memory config takes priority over user-level setting,
  * and falls back to user setting when agent config is absent.
  */
-import type { LobeChatDatabase } from '@lobechat/database';
-import { agents, userSettings } from '@lobechat/database/schemas';
-import { getTestDB } from '@lobechat/database/test-utils';
+import type { FiDatabase } from '@ficlouds/database';
+import { agents, userSettings } from '@ficlouds/database/schemas';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { eq } from 'drizzle-orm';
 import OpenAI from 'openai';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -27,7 +27,7 @@ import { aiAgentRouter } from '../../../routers/lambda/aiAgent';
 
 process.env.OPENAI_API_KEY = 'sk-test-fake-api-key-for-testing';
 
-let testDB: LobeChatDatabase;
+let testDB: FiDatabase;
 vi.mock('@/database/core/db-adaptor', () => ({
   getServerDB: vi.fn(() => testDB),
 }));
@@ -39,7 +39,7 @@ vi.mock('@/server/services/file', () => ({
 }));
 
 let mockResponsesCreate: any;
-let serverDB: LobeChatDatabase;
+let serverDB: FiDatabase;
 let userId: string;
 
 const createTestContext = () => ({

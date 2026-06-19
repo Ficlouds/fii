@@ -1,4 +1,4 @@
-import type { AgentItem, LobeAgentConfig } from '../agent';
+import type { AgentItem, FiAgentConfig } from '../agent';
 import type { NewChatGroupAgent } from '../agentGroup';
 import type { MetaData } from '../meta';
 
@@ -7,7 +7,7 @@ export const CHAT_GROUP_SESSION_ID_PREFIX = 'cg_' as const;
 export const isChatGroupSessionId = (id?: string | null): id is string =>
   typeof id === 'string' && id.startsWith(CHAT_GROUP_SESSION_ID_PREFIX);
 
-export enum LobeSessionType {
+export enum FiSessionType {
   Agent = 'agent',
   Group = 'group',
 }
@@ -20,8 +20,8 @@ export type GroupMemberWithAgent = NewChatGroupAgent & AgentItem;
 /**
  * Lobe Agent Session
  */
-export interface LobeAgentSession {
-  config: LobeAgentConfig;
+export interface FiAgentSession {
+  config: FiAgentConfig;
   createdAt: Date;
   group?: string;
   id: string;
@@ -31,7 +31,7 @@ export interface LobeAgentSession {
   model: string;
   pinned?: boolean;
   tags?: string[];
-  type: LobeSessionType.Agent;
+  type: FiSessionType.Agent;
   updatedAt: Date;
 }
 
@@ -46,19 +46,19 @@ export interface LobeGroupSession {
   meta: MetaData;
   pinned?: boolean;
   tags?: string[];
-  type: LobeSessionType.Group;
+  type: FiSessionType.Group;
   updatedAt: Date;
 }
 
-export interface LobeAgentSettings {
+export interface FiAgentSettings {
   /**
    * Language model agent configuration
    */
-  config: LobeAgentConfig;
+  config: FiAgentConfig;
   meta: MetaData;
 }
 
 // Union type for all session types
-export type LobeSession = LobeAgentSession | LobeGroupSession;
+export type FiSession = FiAgentSession | LobeGroupSession;
 
-export type LobeSessions = LobeSession[];
+export type FiSessions = FiSession[];

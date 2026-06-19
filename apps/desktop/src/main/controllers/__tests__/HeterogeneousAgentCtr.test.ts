@@ -4,7 +4,7 @@ import * as os from 'node:os';
 import path from 'node:path';
 import { PassThrough } from 'node:stream';
 
-import { HeterogeneousAgentSessionErrorCode } from '@lobechat/electron-client-ipc';
+import { HeterogeneousAgentSessionErrorCode } from '@ficlouds/electron-client-ipc';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import HeterogeneousAgentCtr from '../HeterogeneousAgentCtr';
@@ -124,7 +124,7 @@ describe('HeterogeneousAgentCtr', () => {
   });
 
   describe('image cache (delegates to shared `normalizeImage`)', () => {
-    // Image fetch + cache moved to `@lobechat/heterogeneous-agents/spawn`'s
+    // Image fetch + cache moved to `@ficlouds/heterogeneous-agents/spawn`'s
     // `normalizeImage`. The desktop controller passes its own cacheDir so the
     // path-traversal invariant — id segments like `../../foo` MUST be hashed,
     // never used as path segments — is enforced by the shared helper. Verify
@@ -132,7 +132,7 @@ describe('HeterogeneousAgentCtr', () => {
     const fixtureCacheDir = (storage: string) => path.join(storage, 'heteroAgent/files');
     const importNormalize = async () => {
       const { mkdir } = await import('node:fs/promises');
-      const mod = await import('@lobechat/heterogeneous-agents/spawn');
+      const mod = await import('@ficlouds/heterogeneous-agents/spawn');
       return { mkdir, normalizeImage: mod.normalizeImage };
     };
 

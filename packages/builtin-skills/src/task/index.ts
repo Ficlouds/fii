@@ -1,4 +1,4 @@
-import type { BuiltinSkill } from '@lobechat/types';
+import type { BuiltinSkill } from '@ficlouds/types';
 
 import { toResourceMeta } from '../lobehub/helpers';
 import commands from './references/commands.md';

@@ -2,8 +2,8 @@ import type {
   UserAgentOnboarding,
   UserAgentOnboardingDraft,
   UserAgentOnboardingNode,
-} from '@lobechat/types';
-import { isRecord } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { isRecord } from '@ficlouds/utils';
 
 import { getScopedPatch, normalizeFromSchema } from './nodeSchema';
 

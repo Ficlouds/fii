@@ -11,8 +11,8 @@ import {
   formatMoveResults,
   formatRenameResult,
   formatWriteResult,
-} from '@lobechat/prompts';
-import type { BuiltinServerRuntimeOutput } from '@lobechat/types';
+} from '@ficlouds/prompts';
+import type { BuiltinServerRuntimeOutput } from '@ficlouds/types';
 
 import type {
   EditFileParams,
@@ -47,7 +47,7 @@ import type {
  *
  * Subclasses implement `callService` to delegate to their specific backend
  * (Electron IPC, cloud sandbox API, etc.). The base class handles:
- * - Normalizing raw results into formatted content via `@lobechat/prompts`
+ * - Normalizing raw results into formatted content via `@ficlouds/prompts`
  * - Building consistent state objects for UI rendering
  */
 export abstract class ComputerRuntime {

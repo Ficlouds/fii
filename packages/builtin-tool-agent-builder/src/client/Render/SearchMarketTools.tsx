@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { Avatar, Button, Flexbox, Tag } from '@lobehub/ui';
 import { CheckCircle, Download, Package, Search } from 'lucide-react';
 import { memo, useState } from 'react';

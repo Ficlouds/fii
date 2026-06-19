@@ -1,7 +1,7 @@
 import { AgentSignalReviewContextModel } from '@/database/models/agentSignal/reviewContext';
 import { BriefModel } from '@/database/models/brief';
 import type { BriefItem } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { AGENT_SIGNAL_DEFAULTS } from '@/server/services/agentSignal/constants';
 import { isAgentSignalEnabledForUser } from '@/server/services/agentSignal/featureGate';
 import { persistAgentSignalReceipts } from '@/server/services/agentSignal/services/receiptService';
@@ -128,12 +128,12 @@ const getToolReceiptStatus = (
 export class AgentSignalSelfReviewBriefService {
   private briefService: BriefService;
   private briefModel: BriefModel;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private selfReviewProposalResolver?: AgentSignalSelfReviewBriefServiceOptions['selfReviewProposalResolver'];
   private userId: string;
 
   constructor(
-    db: LobeChatDatabase,
+    db: FiDatabase,
     userId: string,
     options: AgentSignalSelfReviewBriefServiceOptions = {},
   ) {

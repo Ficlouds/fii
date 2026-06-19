@@ -1,6 +1,6 @@
 'use client';
 
-import { type ToolStatus } from '@lobechat/electron-client-ipc';
+import { type ToolStatus } from '@ficlouds/electron-client-ipc';
 import { type FormGroupItemType } from '@lobehub/ui';
 import { Button, CopyButton, Flexbox, Form, Icon, Tag, Text, Tooltip } from '@lobehub/ui';
 import { CheckCircle2, Loader2Icon, RefreshCw, XCircle } from 'lucide-react';

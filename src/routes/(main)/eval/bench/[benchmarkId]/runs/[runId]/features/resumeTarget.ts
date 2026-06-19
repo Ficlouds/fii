@@ -1,4 +1,4 @@
-import type { EvalRunTopicResult } from '@lobechat/types';
+import type { EvalRunTopicResult } from '@ficlouds/types';
 
 const RESUMABLE_STATUSES = new Set(['error', 'timeout']);
 

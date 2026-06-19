@@ -1,7 +1,7 @@
 'use client';
 
-import { createEditLocalFileInspector } from '@lobechat/shared-tool-ui/inspectors';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import { createEditLocalFileInspector } from '@ficlouds/shared-tool-ui/inspectors';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { memo, useMemo } from 'react';
 
 import { ClaudeCodeApiName } from '../../types';
@@ -13,7 +13,7 @@ interface CCEditArgs {
   replace_all?: boolean;
 }
 
-// Mirrors `EditFileState` from `@lobechat/tool-runtime` — duplicated locally to
+// Mirrors `EditFileState` from `@ficlouds/tool-runtime` — duplicated locally to
 // keep this package free of a tool-runtime dep (it only reads the two line
 // counts; the shared inspector accepts the shape via `any`).
 interface SynthesizedEditState {

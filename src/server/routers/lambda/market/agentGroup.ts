@@ -8,7 +8,7 @@ import { marketSDK, marketUserInfo, serverDatabase } from '@/libs/trpc/lambda/mi
 import { type TrustedClientUserInfo } from '@/libs/trusted-client';
 import { generateTrustedClientToken } from '@/libs/trusted-client';
 
-const MARKET_BASE_URL = process.env.MARKET_BASE_URL || 'https://market.lobehub.com';
+const MARKET_BASE_URL = process.env.MARKET_BASE_URL || 'https://market.ficlouds.com';
 
 interface MarketUserInfo {
   accountId: number;
@@ -34,7 +34,7 @@ interface FetchMarketUserInfoOptions {
 
 /**
  * Fetch Market user info using either trustedClientToken or accessToken
- * Returns the Market accountId which is different from LobeChat userId
+ * Returns the Market accountId which is different from Fi userId
  */
 const fetchMarketUserInfo = async (
   options: FetchMarketUserInfoOptions,
@@ -555,7 +555,7 @@ export const agentGroupRouter = router({
           category: group.category,
           createdAt: group.createdAt,
           description: group.description || '',
-          homepage: `https://lobehub.com/discover/group_agent/${group.identifier}`,
+          homepage: `https://ficlouds.com/discover/group_agent/${group.identifier}`,
           identifier: group.identifier,
           installCount: group.installCount || 0,
           isFeatured: group.isFeatured || false,

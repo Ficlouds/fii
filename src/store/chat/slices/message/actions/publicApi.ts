@@ -1,4 +1,4 @@
-import { TraceEventType } from '@lobechat/types';
+import { TraceEventType } from '@ficlouds/types';
 import { copyToClipboard } from '@lobehub/ui';
 import isEqual from 'fast-deep-equal';
 

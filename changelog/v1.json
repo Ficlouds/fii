@@ -808,7 +808,7 @@
   {
     "children": {
       "improvements": [
-        "Refactor all @/types in model runtime to @lobechat/types."
+        "Refactor all @/types in model runtime to @ficlouds/types."
       ]
     },
     "date": "2025-09-23",

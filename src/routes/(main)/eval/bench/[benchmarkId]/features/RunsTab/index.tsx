@@ -1,6 +1,6 @@
 'use client';
 
-import type { AgentEvalRunListItem } from '@lobechat/types';
+import type { AgentEvalRunListItem } from '@ficlouds/types';
 import { Button, Flexbox } from '@lobehub/ui';
 import { Select } from '@lobehub/ui/base-ui';
 import { Plus } from 'lucide-react';

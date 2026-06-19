@@ -1,5 +1,5 @@
-import { HETEROGENEOUS_TYPE_LABELS } from '@lobechat/heterogeneous-agents';
-import { type SidebarAgentItem } from '@lobechat/types';
+import { HETEROGENEOUS_TYPE_LABELS } from '@ficlouds/heterogeneous-agents';
+import { type SidebarAgentItem } from '@ficlouds/types';
 import { ActionIcon, Flexbox, Icon, Tag } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { Loader2, PinIcon } from 'lucide-react';

@@ -1,7 +1,7 @@
 'use client';
 
-import { LinearInspector } from '@lobechat/shared-tool-ui/inspectors';
-import type { BuiltinInspector } from '@lobechat/types';
+import { LinearInspector } from '@ficlouds/shared-tool-ui/inspectors';
+import type { BuiltinInspector } from '@ficlouds/types';
 
 import { LINEAR_MCP_PREFIX, LINEAR_MCP_TOOL_NAMES } from './linearMcpLabels';
 

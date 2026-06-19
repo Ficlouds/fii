@@ -3,7 +3,7 @@ import debug from 'debug';
 import type {
   FunctionCallChecker,
   GenerateToolsParams,
-  LobeToolManifest,
+  FiToolManifest,
   PluginEnableChecker,
   ToolsEngineOptions,
   ToolsGenerationContext,
@@ -18,7 +18,7 @@ const log = debug('context-engine:tools-engine');
  * Tools Engine - Unified processing of tools array construction and transformation
  */
 export class ToolsEngine {
-  private manifestSchemas: Map<string, LobeToolManifest>;
+  private manifestSchemas: Map<string, FiToolManifest>;
   private enableChecker?: PluginEnableChecker;
   private functionCallChecker?: FunctionCallChecker;
   private defaultToolIds: string[];
@@ -180,13 +180,13 @@ export class ToolsEngine {
     context?: ToolsGenerationContext,
     supportsFunctionCall?: boolean,
   ): {
-    enabledManifests: LobeToolManifest[];
+    enabledManifests: FiToolManifest[];
     filteredPlugins: Array<{
       id: string;
       reason: 'not_found' | 'disabled' | 'incompatible';
     }>;
   } {
-    const enabledManifests: LobeToolManifest[] = [];
+    const enabledManifests: FiToolManifest[] = [];
     const filteredPlugins: Array<{
       id: string;
       reason: 'not_found' | 'disabled' | 'incompatible';
@@ -258,7 +258,7 @@ export class ToolsEngine {
   /**
    * Convert manifests to UniformTool array
    */
-  private convertManifestsToTools(manifests: LobeToolManifest[]): UniformTool[] {
+  private convertManifestsToTools(manifests: FiToolManifest[]): UniformTool[] {
     log('Converting %d manifests to tools', manifests.length);
 
     // Use simplified conversion logic to avoid external package dependencies
@@ -308,14 +308,14 @@ export class ToolsEngine {
   /**
    * Get plugin manifest
    */
-  getPluginManifest(pluginId: string): LobeToolManifest | undefined {
+  getPluginManifest(pluginId: string): FiToolManifest | undefined {
     return this.manifestSchemas.get(pluginId);
   }
 
   /**
    * Update plugin manifest schemas (for dynamically adding plugins)
    */
-  updateManifestSchemas(manifestSchemas: LobeToolManifest[]): void {
+  updateManifestSchemas(manifestSchemas: FiToolManifest[]): void {
     this.manifestSchemas.clear();
     for (const schema of manifestSchemas) {
       this.manifestSchemas.set(schema.identifier, schema);
@@ -325,7 +325,7 @@ export class ToolsEngine {
   /**
    * Add a single plugin manifest
    */
-  addPluginManifest(manifest: LobeToolManifest): void {
+  addPluginManifest(manifest: FiToolManifest): void {
     this.manifestSchemas.set(manifest.identifier, manifest);
   }
 
@@ -339,13 +339,13 @@ export class ToolsEngine {
   /**
    * Get Manifest Map of all enabled plugins
    */
-  getEnabledPluginManifests(toolIds: string[] = []): Map<string, LobeToolManifest> {
+  getEnabledPluginManifests(toolIds: string[] = []): Map<string, FiToolManifest> {
     // Merge user-provided tool IDs with default tool IDs
     const allToolIds = [...toolIds, ...this.defaultToolIds];
 
     log('Getting enabled plugin manifests for pluginIds=%o', allToolIds);
 
-    const manifestMap = new Map<string, LobeToolManifest>();
+    const manifestMap = new Map<string, FiToolManifest>();
 
     for (const pluginId of allToolIds) {
       const manifest = this.manifestSchemas.get(pluginId);
@@ -361,7 +361,7 @@ export class ToolsEngine {
   /**
    * Get Manifest Map of all plugins
    */
-  getAllPluginManifests(): Map<string, LobeToolManifest> {
+  getAllPluginManifests(): Map<string, FiToolManifest> {
     return new Map(this.manifestSchemas);
   }
 }

@@ -1,10 +1,10 @@
-import type { ISnapshotStore } from '@lobechat/agent-tracing';
-import type { ChatMessageError } from '@lobechat/types';
-import { AgentRuntimeErrorType } from '@lobechat/types';
+import type { ISnapshotStore } from '@ficlouds/agent-tracing';
+import type { ChatMessageError } from '@ficlouds/types';
+import { AgentRuntimeErrorType } from '@ficlouds/types';
 import debug from 'debug';
 
 import { MessageModel } from '@/database/models/message';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 // Direct file import (not the barrel) to avoid pulling in RuntimeExecutors and
 // its workspace-package transitive deps in the unit-test environment.
 import { AgentRuntimeCoordinator } from '@/server/modules/AgentRuntime/AgentRuntimeCoordinator';
@@ -46,7 +46,7 @@ export class AbandonOperationService {
   private readonly traceRecorder: OperationTraceRecorder;
 
   constructor(
-    private readonly db: LobeChatDatabase,
+    private readonly db: FiDatabase,
     options?: AbandonOperationOptions,
   ) {
     this.coordinator = options?.coordinator ?? new AgentRuntimeCoordinator();
@@ -136,7 +136,7 @@ function createDefaultSnapshotStore(): ISnapshotStore | null {
 
   if (process.env.NODE_ENV === 'development') {
     try {
-      const { FileSnapshotStore } = require('@lobechat/agent-tracing');
+      const { FileSnapshotStore } = require('@ficlouds/agent-tracing');
       return new FileSnapshotStore();
     } catch {
       /* agent-tracing not available */

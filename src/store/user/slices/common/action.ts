@@ -1,5 +1,5 @@
-import { isDesktop } from '@lobechat/const';
-import type { UserGeneralConfig } from '@lobechat/types';
+import { isDesktop } from '@ficlouds/const';
+import type { UserGeneralConfig } from '@ficlouds/types';
 import { getSingletonAnalyticsOptional } from '@lobehub/analytics';
 import { type SWRResponse } from 'swr';
 import useSWR from 'swr';
@@ -11,7 +11,7 @@ import { userService } from '@/services/user';
 import { type StoreSetter } from '@/store/types';
 import { type UserStore } from '@/store/user';
 import { type GlobalServerConfig } from '@/types/serverConfig';
-import { type LobeUser, type UserInitializationState } from '@/types/user';
+import { type FiUser, type UserInitializationState } from '@/types/user';
 import { type UserSettings } from '@/types/user/settings';
 import { merge } from '@/utils/merge';
 import { setNamespace } from '@/utils/storeDebug';
@@ -132,7 +132,7 @@ export class CommonActionImpl {
                     interests: data.interests,
                     latestName: data.lastName,
                     username: data.username,
-                  } as LobeUser)
+                  } as FiUser)
                 : this.#get().user;
 
             this.#set(

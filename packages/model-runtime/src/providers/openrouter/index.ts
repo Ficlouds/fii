@@ -85,8 +85,8 @@ export const params = {
   },
   constructorOptions: {
     defaultHeaders: {
-      'HTTP-Referer': 'https://lobehub.com',
-      'X-Title': 'LobeHub',
+      'HTTP-Referer': 'https://ficlouds.com',
+      'X-Title': 'Fi',
     },
   },
   debug: {

@@ -1,6 +1,6 @@
 'use client';
 
-import { ThreadStatus } from '@lobechat/types';
+import { ThreadStatus } from '@ficlouds/types';
 import { Avatar, Block, Flexbox, Icon, Text } from '@lobehub/ui';
 import { cssVar } from 'antd-style';
 import { Footprints, ListChecksIcon, Wrench, XIcon } from 'lucide-react';

@@ -17,10 +17,10 @@ import {
   users,
   userSettings,
 } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { DATA_EXPORT_CONFIG, DataExporterRepos } from './index';
 
-let db: LobeChatDatabase;
+let db: FiDatabase;
 
 // Set up test data
 describe('DataExporterRepos', () => {

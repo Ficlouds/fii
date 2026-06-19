@@ -1,6 +1,6 @@
 'use client';
 
-import type { LobeAgentChatConfig } from '@lobechat/types';
+import type { FiAgentChatConfig } from '@ficlouds/types';
 import type { SliderSingleProps } from 'antd/es/slider';
 import type { CSSProperties } from 'react';
 import { memo } from 'react';
@@ -14,9 +14,9 @@ import LevelSlider from './LevelSlider';
 
 export interface LevelSliderConfig<T extends string> {
   /**
-   * The key in LobeAgentChatConfig to read/write
+   * The key in FiAgentChatConfig to read/write
    */
-  configKey: keyof LobeAgentChatConfig;
+  configKey: keyof FiAgentChatConfig;
   /**
    * Default value when no value is provided
    */

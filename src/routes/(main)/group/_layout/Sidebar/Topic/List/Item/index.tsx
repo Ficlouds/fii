@@ -1,4 +1,4 @@
-import type { ChatTopicStatus } from '@lobechat/types';
+import type { ChatTopicStatus } from '@ficlouds/types';
 import { Flexbox, Icon, Skeleton, Tag } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { CheckCircle2, Hand, HashIcon, Loader2Icon, MessageSquareDashed } from 'lucide-react';

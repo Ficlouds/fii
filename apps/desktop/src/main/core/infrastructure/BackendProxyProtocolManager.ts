@@ -1,4 +1,4 @@
-import { AUTH_REQUIRED_HEADER } from '@lobechat/desktop-bridge';
+import { AUTH_REQUIRED_HEADER } from '@ficlouds/desktop-bridge';
 import { BrowserWindow, type Session } from 'electron';
 
 import { isDev } from '@/const/env';

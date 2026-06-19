@@ -1,4 +1,4 @@
-import type { EvalBenchmarkRubric } from '@lobechat/types';
+import type { EvalBenchmarkRubric } from '@ficlouds/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { matchLLMRubric } from '../llmRubric';

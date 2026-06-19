@@ -1,16 +1,16 @@
-import type { KnowledgeBaseItem } from '@lobechat/types';
+import type { KnowledgeBaseItem } from '@ficlouds/types';
 import { and, count, desc, eq, inArray } from 'drizzle-orm';
 
 import type { NewKnowledgeBase } from '../schemas';
 import { documents, knowledgeBaseFiles, knowledgeBases } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 import { FileModel } from './file';
 
 export class KnowledgeBaseModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }
@@ -228,7 +228,7 @@ export class KnowledgeBaseModel {
     return { deletedFiles };
   };
 
-  static findById = async (db: LobeChatDatabase, id: string) =>
+  static findById = async (db: FiDatabase, id: string) =>
     db.query.knowledgeBases.findFirst({
       where: eq(knowledgeBases.id, id),
     });

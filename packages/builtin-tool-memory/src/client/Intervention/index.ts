@@ -1,4 +1,4 @@
-import type { BuiltinIntervention } from '@lobechat/types';
+import type { BuiltinIntervention } from '@ficlouds/types';
 
 import { MemoryApiName } from '../../types';
 import AddExperienceMemoryIntervention from './AddExperienceMemory';

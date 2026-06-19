@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { CURRENT_VERSION } from '@lobechat/const';
+import { CURRENT_VERSION } from '@ficlouds/const';
 import { type CallReportRequest } from '@lobehub/market-types';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 

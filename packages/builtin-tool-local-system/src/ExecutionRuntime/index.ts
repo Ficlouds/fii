@@ -1,6 +1,6 @@
-import type { ServiceResult } from '@lobechat/tool-runtime';
-import { ComputerRuntime } from '@lobechat/tool-runtime';
-import type { BuiltinServerRuntimeOutput } from '@lobechat/types';
+import type { ServiceResult } from '@ficlouds/tool-runtime';
+import { ComputerRuntime } from '@ficlouds/tool-runtime';
+import type { BuiltinServerRuntimeOutput } from '@ficlouds/types';
 
 /**
  * Service interface for local system operations.
@@ -147,7 +147,7 @@ export class LocalSystemExecutionRuntime extends ComputerRuntime {
    */
   async readFiles(params: any): Promise<BuiltinServerRuntimeOutput> {
     try {
-      const { formatMultipleFiles } = await import('@lobechat/prompts');
+      const { formatMultipleFiles } = await import('@ficlouds/prompts');
       const results = await this.service.readLocalFiles(params);
 
       return {

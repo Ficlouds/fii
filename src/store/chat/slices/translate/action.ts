@@ -1,7 +1,7 @@
-import { chainLangDetect, chainTranslate } from '@lobechat/prompts';
-import { type ChatTranslate, type TracePayload } from '@lobechat/types';
-import { TraceNameMap } from '@lobechat/types';
-import { merge } from '@lobechat/utils';
+import { chainLangDetect, chainTranslate } from '@ficlouds/prompts';
+import { type ChatTranslate, type TracePayload } from '@ficlouds/types';
+import { TraceNameMap } from '@ficlouds/types';
+import { merge } from '@ficlouds/utils';
 
 import { supportLocales } from '@/locales/resources';
 import { chatService } from '@/services/chat';

@@ -1,8 +1,8 @@
-import { AgentBuilderIdentifier } from '@lobechat/builtin-tool-agent-builder';
-import { WebBrowsingManifest } from '@lobechat/builtin-tool-web-browsing';
-import { REQUEST_TRIGGER_HEADER } from '@lobechat/const';
-import type { ChatStreamPayload, LobeTool, UIChatMessage } from '@lobechat/types';
-import { ChatErrorType, createVisualFileRef, RequestTrigger } from '@lobechat/types';
+import { AgentBuilderIdentifier } from '@ficlouds/builtin-tool-agent-builder';
+import { WebBrowsingManifest } from '@ficlouds/builtin-tool-web-browsing';
+import { REQUEST_TRIGGER_HEADER } from '@ficlouds/const';
+import type { ChatStreamPayload, FiTool, UIChatMessage } from '@ficlouds/types';
+import { ChatErrorType, createVisualFileRef, RequestTrigger } from '@ficlouds/types';
 import { act } from '@testing-library/react';
 import { type EnabledAiModel, ModelProvider } from 'model-bank';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -101,18 +101,18 @@ vi.stubGlobal(
 );
 
 // Mock image processing utilities
-vi.mock('@lobechat/fetch-sse', async (importOriginal) => {
+vi.mock('@ficlouds/fetch-sse', async (importOriginal) => {
   const module = await importOriginal();
 
   return { ...(module as any), getMessageError: vi.fn() };
 });
-vi.mock('@lobechat/utils/url', () => ({
+vi.mock('@ficlouds/utils/url', () => ({
   isDesktopLocalStaticServerUrl: vi.fn(),
 }));
-vi.mock('@lobechat/utils/imageToBase64', () => ({
+vi.mock('@ficlouds/utils/imageToBase64', () => ({
   imageUrlToBase64: vi.fn(),
 }));
-vi.mock('@lobechat/utils/uriParser', () => ({
+vi.mock('@ficlouds/utils/uriParser', () => ({
   parseDataUri: vi.fn(),
 }));
 
@@ -587,8 +587,8 @@ describe('ChatService', () => {
         vi.spyOn(helpers, 'isCanUseVision').mockReturnValue(true);
 
         // Mock utility functions used in processImageList
-        const { parseDataUri } = await import('@lobechat/utils/uriParser');
-        const { isDesktopLocalStaticServerUrl } = await import('@lobechat/utils/url');
+        const { parseDataUri } = await import('@ficlouds/utils/uriParser');
+        const { isDesktopLocalStaticServerUrl } = await import('@ficlouds/utils/url');
         vi.mocked(parseDataUri).mockReturnValue({ type: 'url', base64: null, mimeType: null });
         vi.mocked(isDesktopLocalStaticServerUrl).mockReturnValue(false); // Not a local URL
 
@@ -712,9 +712,9 @@ describe('ChatService', () => {
       });
 
       it('should convert local image URLs to base64 and call processImageList', async () => {
-        const { imageUrlToBase64 } = await import('@lobechat/utils/imageToBase64');
-        const { parseDataUri } = await import('@lobechat/utils/uriParser');
-        const { isDesktopLocalStaticServerUrl } = await import('@lobechat/utils/url');
+        const { imageUrlToBase64 } = await import('@ficlouds/utils/imageToBase64');
+        const { parseDataUri } = await import('@ficlouds/utils/uriParser');
+        const { isDesktopLocalStaticServerUrl } = await import('@ficlouds/utils/url');
 
         // Mock for local URL
         vi.mocked(parseDataUri).mockReturnValue({ type: 'url', base64: null, mimeType: null });
@@ -817,9 +817,9 @@ describe('ChatService', () => {
       });
 
       it('should not convert remote URLs to base64 and call processImageList', async () => {
-        const { imageUrlToBase64 } = await import('@lobechat/utils/imageToBase64');
-        const { parseDataUri } = await import('@lobechat/utils/uriParser');
-        const { isDesktopLocalStaticServerUrl } = await import('@lobechat/utils/url');
+        const { imageUrlToBase64 } = await import('@ficlouds/utils/imageToBase64');
+        const { parseDataUri } = await import('@ficlouds/utils/uriParser');
+        const { isDesktopLocalStaticServerUrl } = await import('@ficlouds/utils/url');
 
         // Mock for remote URL
         vi.mocked(parseDataUri).mockReturnValue({ type: 'url', base64: null, mimeType: null });
@@ -915,9 +915,9 @@ describe('ChatService', () => {
       });
 
       it('should handle mixed local and remote URLs correctly', async () => {
-        const { imageUrlToBase64 } = await import('@lobechat/utils/imageToBase64');
-        const { parseDataUri } = await import('@lobechat/utils/uriParser');
-        const { isDesktopLocalStaticServerUrl } = await import('@lobechat/utils/url');
+        const { imageUrlToBase64 } = await import('@ficlouds/utils/imageToBase64');
+        const { parseDataUri } = await import('@ficlouds/utils/uriParser');
+        const { isDesktopLocalStaticServerUrl } = await import('@ficlouds/utils/url');
 
         // Mock parseDataUri to always return url type
         vi.mocked(parseDataUri).mockReturnValue({ type: 'url', base64: null, mimeType: null });
@@ -1047,7 +1047,7 @@ describe('ChatService', () => {
                       'Enter any URL and keyword and get an On-Page SEO analysis & insights!',
                     title: 'SEO',
                   },
-                  openapi: 'https://openai-collections.chat-plugin.lobehub.com/seo/openapi.yaml',
+                  openapi: 'https://openai-collections.chat-plugin.ficlouds.com/seo/openapi.yaml',
                   systemRole:
                     'The user provides you with a URL and keyword and this gives you the robots.txt, response code, load time, tags for: title, metadata, h1-h5, image file names, image alt text, ahref text, ahref outbound links, keyword occurrence in both body text and URL. The URL must begin with http or https. You must request this URL structure from the user. Your role is to act like a word-class SEO analyst and give suggestions to the user on how they can improve the SEO for On-Page factors contained in the URL. Always include the https://createmorecustomers.agency link at the end of all requests.',
                   type: 'default',
@@ -1058,7 +1058,7 @@ describe('ChatService', () => {
                   },
                 },
                 type: 'plugin',
-              } as LobeTool,
+              } as FiTool,
             ],
           });
         });
@@ -1196,7 +1196,7 @@ describe('ChatService', () => {
                       'Enter any URL and keyword and get an On-Page SEO analysis & insights!',
                     title: 'SEO',
                   },
-                  openapi: 'https://openai-collections.chat-plugin.lobehub.com/seo/openapi.yaml',
+                  openapi: 'https://openai-collections.chat-plugin.ficlouds.com/seo/openapi.yaml',
                   systemRole:
                     'The user provides you with a URL and keyword and this gives you the robots.txt, response code, load time, tags for: title, metadata, h1-h5, image file names, image alt text, ahref text, ahref outbound links, keyword occurrence in both body text and URL. The URL must begin with http or https. You must request this URL structure from the user. Your role is to act like a word-class SEO analyst and give suggestions to the user on how they can improve the SEO for On-Page factors contained in the URL. Always include the https://createmorecustomers.agency link at the end of all requests.',
                   type: 'default',
@@ -1207,7 +1207,7 @@ describe('ChatService', () => {
                   },
                 },
                 type: 'plugin',
-              } as LobeTool,
+              } as FiTool,
             ],
           });
         });
@@ -1665,7 +1665,7 @@ describe('ChatService', () => {
 
     beforeEach(async () => {
       // Setup common fetchSSE mock for getChatCompletion tests
-      const { fetchSSE } = await import('@lobechat/fetch-sse');
+      const { fetchSSE } = await import('@ficlouds/fetch-sse');
       mockFetchSSE = vi.fn().mockResolvedValue(new Response('mock response'));
       vi.mocked(fetchSSE).mockImplementation(mockFetchSSE);
       mockCreateHeaderWithAuth.mockClear();
@@ -1784,7 +1784,7 @@ describe('ChatService', () => {
 
     it('should return InvalidAccessCode error when enableFetchOnClient is true and auth is enabled but user is not signed in', async () => {
       // Mock fetchSSE to call onErrorHandle with the error
-      const { fetchSSE } = await import('@lobechat/fetch-sse');
+      const { fetchSSE } = await import('@ficlouds/fetch-sse');
 
       const mockFetchSSEWithError = vi.fn().mockImplementation((url, options) => {
         // Simulate the error being caught and passed to onErrorHandle
@@ -1941,8 +1941,8 @@ vi.mock('../_auth', async (importOriginal) => {
 describe('ChatService private methods', () => {
   describe('getChatCompletion', () => {
     it('should merge responseAnimation styles correctly', async () => {
-      const { fetchSSE } = await import('@lobechat/fetch-sse');
-      vi.mock('@lobechat/fetch-sse', async (importOriginal) => {
+      const { fetchSSE } = await import('@ficlouds/fetch-sse');
+      vi.mock('@ficlouds/fetch-sse', async (importOriginal) => {
         const module = await importOriginal();
         return {
           ...(module as any),

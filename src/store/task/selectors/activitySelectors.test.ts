@@ -1,4 +1,4 @@
-import type { TaskDetailActivity, TaskDetailData } from '@lobechat/types';
+import type { TaskDetailActivity, TaskDetailData } from '@ficlouds/types';
 import { describe, expect, it } from 'vitest';
 
 import type { TaskStoreState } from '../initialState';

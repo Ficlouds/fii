@@ -1,9 +1,9 @@
-import * as builtinAgents from '@lobechat/builtin-agents';
-import { GroupManagementIdentifier } from '@lobechat/builtin-tool-group-management';
-import { LobeAgentIdentifier } from '@lobechat/builtin-tool-lobe-agent';
-import { NotebookIdentifier } from '@lobechat/builtin-tool-notebook';
-import { PageAgentIdentifier } from '@lobechat/builtin-tool-page-agent';
-import { TaskIdentifier } from '@lobechat/builtin-tool-task';
+import * as builtinAgents from '@ficlouds/builtin-agents';
+import { GroupManagementIdentifier } from '@ficlouds/builtin-tool-group-management';
+import { FiAgentIdentifier } from '@ficlouds/builtin-tool-fi-agent';
+import { NotebookIdentifier } from '@ficlouds/builtin-tool-notebook';
+import { PageAgentIdentifier } from '@ficlouds/builtin-tool-page-agent';
+import { TaskIdentifier } from '@ficlouds/builtin-tool-task';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import * as agentStore from '@/store/agent';
@@ -464,13 +464,13 @@ describe('resolveAgentConfig', () => {
 
       it('should include lobe-agent and Notebook tools in plugins', () => {
         vi.spyOn(builtinAgents, 'getAgentRuntimeConfig').mockReturnValue({
-          plugins: [LobeAgentIdentifier, NotebookIdentifier],
+          plugins: [FiAgentIdentifier, NotebookIdentifier],
           systemRole: 'Inbox system role',
         });
 
         const result = resolveAgentConfig({ agentId: 'inbox-agent' });
 
-        expect(result.plugins).toContain(LobeAgentIdentifier);
+        expect(result.plugins).toContain(FiAgentIdentifier);
         expect(result.plugins).toContain(NotebookIdentifier);
         expect(result.isBuiltinAgent).toBe(true);
         expect(result.slug).toBe('inbox');
@@ -478,7 +478,7 @@ describe('resolveAgentConfig', () => {
 
       it('should preserve user plugins while including lobe-agent and Notebook', () => {
         vi.spyOn(builtinAgents, 'getAgentRuntimeConfig').mockReturnValue({
-          plugins: [LobeAgentIdentifier, NotebookIdentifier, 'user-plugin'],
+          plugins: [FiAgentIdentifier, NotebookIdentifier, 'user-plugin'],
           systemRole: 'Inbox system role',
         });
 
@@ -487,7 +487,7 @@ describe('resolveAgentConfig', () => {
           plugins: ['user-plugin'],
         });
 
-        expect(result.plugins).toContain(LobeAgentIdentifier);
+        expect(result.plugins).toContain(FiAgentIdentifier);
         expect(result.plugins).toContain(NotebookIdentifier);
         expect(result.plugins).toContain('user-plugin');
       });
@@ -510,8 +510,8 @@ describe('resolveAgentConfig', () => {
         const getAgentRuntimeConfigSpy = vi
           .spyOn(builtinAgents, 'getAgentRuntimeConfig')
           .mockImplementation((slug, ctx) => ({
-            // This simulates the actual INBOX runtime: [LobeAgentIdentifier, NotebookIdentifier, ...(ctx.plugins || [])]
-            plugins: [LobeAgentIdentifier, NotebookIdentifier, ...(ctx.plugins || [])],
+            // This simulates the actual INBOX runtime: [FiAgentIdentifier, NotebookIdentifier, ...(ctx.plugins || [])]
+            plugins: [FiAgentIdentifier, NotebookIdentifier, ...(ctx.plugins || [])],
             systemRole: 'Inbox system role',
           }));
 
@@ -527,7 +527,7 @@ describe('resolveAgentConfig', () => {
         );
 
         // Verify final plugins include both builtin tools AND user-configured plugins
-        expect(result.plugins).toContain(LobeAgentIdentifier);
+        expect(result.plugins).toContain(FiAgentIdentifier);
         expect(result.plugins).toContain(NotebookIdentifier);
         expect(result.plugins).toContain('web-search');
         expect(result.plugins).toContain('memory');
@@ -853,7 +853,7 @@ describe('resolveAgentConfig', () => {
 
         vi.spyOn(builtinAgents, 'getAgentRuntimeConfig').mockReturnValue({
           chatConfig: { enableHistoryCount: false },
-          plugins: [GroupManagementIdentifier, LobeAgentIdentifier],
+          plugins: [GroupManagementIdentifier, FiAgentIdentifier],
           systemRole: 'You are a group supervisor...',
         });
 
@@ -888,7 +888,7 @@ describe('resolveAgentConfig', () => {
       // Mock: getAgentRuntimeConfig for supervisor agent
       vi.spyOn(builtinAgents, 'getAgentRuntimeConfig').mockReturnValue({
         chatConfig: { enableHistoryCount: false },
-        plugins: [GroupManagementIdentifier, LobeAgentIdentifier],
+        plugins: [GroupManagementIdentifier, FiAgentIdentifier],
         systemRole: 'You are a group supervisor...',
       });
 
@@ -901,7 +901,7 @@ describe('resolveAgentConfig', () => {
       expect(result.isBuiltinAgent).toBe(true);
       expect(result.slug).toBe('group-supervisor');
       expect(result.plugins).toContain(GroupManagementIdentifier);
-      expect(result.plugins).toContain(LobeAgentIdentifier);
+      expect(result.plugins).toContain(FiAgentIdentifier);
     });
 
     it('should pass groupSupervisorContext to getAgentRuntimeConfig', () => {
@@ -1022,7 +1022,7 @@ describe('resolveAgentConfig', () => {
 
       vi.spyOn(builtinAgents, 'getAgentRuntimeConfig').mockReturnValue({
         chatConfig: { enableHistoryCount: false },
-        plugins: [GroupManagementIdentifier, LobeAgentIdentifier],
+        plugins: [GroupManagementIdentifier, FiAgentIdentifier],
         systemRole: 'Supervisor system role',
       });
 

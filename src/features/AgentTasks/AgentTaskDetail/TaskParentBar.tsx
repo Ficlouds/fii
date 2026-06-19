@@ -1,4 +1,4 @@
-import type { TaskDetailData, TaskDetailSubtask } from '@lobechat/types';
+import type { TaskDetailData, TaskDetailSubtask } from '@ficlouds/types';
 import { Button, Flexbox, Text } from '@lobehub/ui';
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

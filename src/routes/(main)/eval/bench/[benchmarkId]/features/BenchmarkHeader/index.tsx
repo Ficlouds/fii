@@ -1,7 +1,7 @@
 'use client';
 
-import type { AgentEvalRunListItem } from '@lobechat/types';
-import { formatCost } from '@lobechat/utils';
+import type { AgentEvalRunListItem } from '@ficlouds/types';
+import { formatCost } from '@ficlouds/utils';
 import { Button, Flexbox, Icon } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';
 import { Badge, Dropdown } from 'antd';

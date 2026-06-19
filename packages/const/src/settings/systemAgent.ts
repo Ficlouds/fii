@@ -2,12 +2,12 @@ import {
   DEFAULT_EMBEDDING_PROVIDER,
   DEFAULT_MINI_PROVIDER,
   DEFAULT_PROVIDER,
-} from '@lobechat/business-const';
+} from '@ficlouds/business-const';
 import type {
   PromptRewriteSystemAgent,
   SystemAgentItem,
   UserServiceModelConfig,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 import { DEFAULT_EMBEDDING_MODEL, DEFAULT_MINI_MODEL, DEFAULT_MODEL } from './llm';
 

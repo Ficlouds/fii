@@ -1,4 +1,4 @@
-import { type UIChatMessage } from '@lobechat/types';
+import { type UIChatMessage } from '@ficlouds/types';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import * as isCanUseFCModule from '@/helpers/isCanUseFC';
@@ -49,7 +49,7 @@ vi.mock('@/services/agentDocument', () => ({
 // 默认设置 isServerMode 为 false
 let isServerMode = false;
 
-vi.mock('@lobechat/const', async (importOriginal) => {
+vi.mock('@ficlouds/const', async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...(actual as any),
@@ -605,13 +605,13 @@ describe('contextEngineering', () => {
             associatedSubjects: [],
             createdAt: new Date('2024-01-01T00:00:00.000Z'),
             currentStatus: 'active',
-            description: 'Weekly syncs for LobeHub',
+            description: 'Weekly syncs for Fi',
             id: 'ctx-1',
             metadata: {},
             scoreImpact: 0.8,
             scoreUrgency: 0.5,
             tags: ['project'],
-            title: 'LobeHub',
+            title: 'Fi',
             type: 'project',
             updatedAt: new Date('2024-01-02T00:00:00.000Z'),
             userMemoryIds: ['mem-1'],
@@ -645,7 +645,7 @@ describe('contextEngineering', () => {
       expect(injection!.role).toBe('user');
       expect(injection!.content).toContain('<user_memory>');
       expect(injection!.content).toContain('<contexts count="1">');
-      expect(injection!.content).toContain('<context id="ctx-1" title="LobeHub">');
+      expect(injection!.content).toContain('<context id="ctx-1" title="Fi">');
     });
 
     it('should handle missing placeholder variables gracefully', async () => {

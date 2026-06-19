@@ -1,9 +1,9 @@
 import type {
-  LobeAgentAgencyConfig,
-  LobeAgentChatConfig,
-  LobeAgentTTSConfig,
-} from '@lobechat/types';
-import { AgentChatConfigSchema } from '@lobechat/types';
+  FiAgentAgencyConfig,
+  FiAgentChatConfig,
+  FiAgentTTSConfig,
+} from '@ficlouds/types';
+import { AgentChatConfigSchema } from '@ficlouds/types';
 import {
   boolean,
   index,
@@ -51,15 +51,15 @@ export const agents = pgTable(
       .references(() => users.id, { onDelete: 'cascade' })
       .notNull(),
 
-    agencyConfig: jsonb('agency_config').$type<LobeAgentAgencyConfig>(),
-    chatConfig: jsonb('chat_config').$type<LobeAgentChatConfig>(),
+    agencyConfig: jsonb('agency_config').$type<FiAgentAgencyConfig>(),
+    chatConfig: jsonb('chat_config').$type<FiAgentChatConfig>(),
 
     fewShots: jsonb('few_shots'),
     model: text('model'),
     params: jsonb('params').default({}),
     provider: text('provider'),
     systemRole: text('system_role'),
-    tts: jsonb('tts').$type<LobeAgentTTSConfig>(),
+    tts: jsonb('tts').$type<FiAgentTTSConfig>(),
 
     virtual: boolean('virtual').default(false),
     pinned: boolean('pinned'),
@@ -83,9 +83,9 @@ export const agents = pgTable(
   ],
 );
 
-/** @deprecated Use CreateAgentSchema from @lobechat/types instead */
+/** @deprecated Use CreateAgentSchema from @ficlouds/types instead */
 export const insertAgentSchema = createInsertSchema(agents, {
-  agencyConfig: z.custom<LobeAgentAgencyConfig>().nullable().optional(),
+  agencyConfig: z.custom<FiAgentAgencyConfig>().nullable().optional(),
   // Override chatConfig type to use the proper schema
   chatConfig: AgentChatConfigSchema.nullable().optional(),
 });

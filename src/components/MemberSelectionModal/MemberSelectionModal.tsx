@@ -25,11 +25,11 @@ import AgentSelectionEmpty from '@/features/AgentSelectionEmpty';
 import ModelSelect from '@/features/ModelSelect';
 import { useEnabledChatModels } from '@/hooks/useEnabledChatModels';
 import { useSessionStore } from '@/store/session';
-import { type LobeAgentSession } from '@/types/session';
-import { LobeSessionType } from '@/types/session';
+import { type FiAgentSession } from '@/types/session';
+import { FiSessionType } from '@/types/session';
 
 const AvailableAgentItem = memo<{
-  agent: LobeAgentSession;
+  agent: FiAgentSession;
   cx: any;
   isSelected: boolean;
   onToggle: (_agentId: string) => void;
@@ -219,8 +219,8 @@ const MemberSelectionModal = memo<MemberSelectionModalProps>(
     const agentSessions = useSessionStore((s) => {
       const allSessions = s.sessions || [];
       return allSessions.filter(
-        (session): session is LobeAgentSession =>
-          session.type === LobeSessionType.Agent && !session.config?.virtual,
+        (session): session is FiAgentSession =>
+          session.type === FiSessionType.Agent && !session.config?.virtual,
       );
     });
 

@@ -5,7 +5,7 @@ const manifest = async (): Promise<MetadataRoute.Manifest> => {
   if (process.env.NODE_ENV === 'development') {
     return {
       background_color: '#000000',
-      description: 'LobeHub Development',
+      description: 'Fi Development',
       display: 'standalone',
       icons: [
         {
@@ -23,7 +23,7 @@ const manifest = async (): Promise<MetadataRoute.Manifest> => {
 
   const [{ BRANDING_LOGO_URL, BRANDING_NAME }, { kebabCase }, { manifestModule }] =
     await Promise.all([
-      import('@lobechat/business-const'),
+      import('@ficlouds/business-const'),
       import('es-toolkit/compat'),
       import('@/server/manifest'),
     ]);

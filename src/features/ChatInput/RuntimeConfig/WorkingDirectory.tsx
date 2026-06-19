@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { Github } from '@lobehub/icons';
 import { Flexbox, Icon } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';

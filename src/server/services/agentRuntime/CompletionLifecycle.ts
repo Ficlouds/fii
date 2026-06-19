@@ -5,7 +5,7 @@ import {
   type RecordOperationStartParams,
 } from '@/database/models/agentOperation';
 import { MessageModel } from '@/database/models/message';
-import { type LobeChatDatabase } from '@/database/type';
+import { type FiDatabase } from '@/database/type';
 import { buildFinalSnapshotKey } from '@/server/modules/AgentTracing';
 import { emitAgentSignalSourceEvent } from '@/server/services/agentSignal';
 import { toAgentSignalTraceEvents } from '@/server/services/agentSignal/observability/traceEvents';
@@ -43,7 +43,7 @@ export class CompletionLifecycle {
   private readonly agentOperationModel: AgentOperationModel;
 
   constructor(
-    private readonly serverDB: LobeChatDatabase,
+    private readonly serverDB: FiDatabase,
     private readonly userId: string,
   ) {
     this.messageModel = new MessageModel(serverDB, userId);

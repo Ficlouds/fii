@@ -2,16 +2,16 @@ import { z } from 'zod';
 
 import type { MetaData } from '../meta';
 
-export type LobeToolType = 'builtin' | 'customPlugin' | 'plugin';
+export type FiToolType = 'builtin' | 'customPlugin' | 'plugin';
 
-export interface LobeToolMeta extends MetaData {
+export interface FiToolMeta extends MetaData {
   author?: string;
   identifier: string;
   /**
    * @deprecated
    */
   meta: MetaData;
-  type: LobeToolType;
+  type: FiToolType;
 }
 
 export interface LobeUniformTool {

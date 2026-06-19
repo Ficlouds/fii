@@ -11,13 +11,13 @@ import {
   topics,
   users,
 } from '../../../schemas';
-import type { LobeChatDatabase } from '../../../type';
+import type { FiDatabase } from '../../../type';
 import { TopicModel } from '../../topic';
 
 const userId = 'topic-delete-user';
 const userId2 = 'topic-delete-user-2';
 const sessionId = 'topic-delete-session';
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 const topicModel = new TopicModel(serverDB, userId);
 
 describe('TopicModel - Delete', () => {

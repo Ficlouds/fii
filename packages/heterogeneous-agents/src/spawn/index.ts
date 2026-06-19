@@ -9,7 +9,7 @@
  *
  * `AgentStreamEvent` itself is re-exported here so producer-side callers
  * (desktop main, CLI sandbox) only depend on this package, not on
- * `@lobechat/agent-gateway-client` (which is a browser-side WebSocket client
+ * `@ficlouds/agent-gateway-client` (which is a browser-side WebSocket client
  * that producers have no business pulling in).
  */
 export { AgentStreamPipeline, type AgentStreamPipelineOptions } from './agentStreamPipeline';
@@ -37,4 +37,4 @@ export {
   type SpawnAgentOptions,
 } from './spawnAgent';
 export { toStreamEvent } from './streamEvent';
-export type { AgentStreamEvent, AgentStreamEventType } from '@lobechat/agent-gateway-client';
+export type { AgentStreamEvent, AgentStreamEventType } from '@ficlouds/agent-gateway-client';

@@ -1,9 +1,9 @@
 'use client';
 
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { type FormGroupItemType } from '@lobehub/ui';
 import { Form } from '@lobehub/ui';
-import { Switch } from '@lobehub/ui/base-ui';
+import { Switch } from 'antd';
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

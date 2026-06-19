@@ -1,11 +1,11 @@
-import { builtinTools } from '@lobechat/builtin-tools';
+import { builtinTools } from '@ficlouds/builtin-tools';
 import {
-  getLobehubSkillProviderById,
+  getFiSkillProviderById,
   KLAVIS_SERVER_TYPES,
   type KlavisServerType,
-  type LobehubSkillProviderType,
-} from '@lobechat/const';
-import { type DiscoverPluginDetail, type PluginSource } from '@lobechat/types';
+  type FiSkillProviderType,
+} from '@ficlouds/const';
+import { type DiscoverPluginDetail, type PluginSource } from '@ficlouds/types';
 import { Avatar, Block, Flexbox, Icon, Image, Skeleton, Tag, Text } from '@lobehub/ui';
 import { createStaticStyles, cssVar, cx } from 'antd-style';
 import { memo, useMemo } from 'react';
@@ -16,11 +16,11 @@ import urlJoin from 'url-join';
 import { useDiscoverStore } from '@/store/discover';
 
 /**
- * Icon component for built-in tools (Klavis & LobehubSkill)
+ * Icon component for built-in tools (Klavis & FiSkill)
  * For string type icon, use Image component to render
  * For IconType type icon, use Icon component to render with theme fill color
  */
-const BuiltinToolIcon = memo<Pick<KlavisServerType | LobehubSkillProviderType, 'icon' | 'label'>>(
+const BuiltinToolIcon = memo<Pick<KlavisServerType | FiSkillProviderType, 'icon' | 'label'>>(
   ({ icon, label }) => {
     if (typeof icon === 'string') {
       return <Image alt={label} height={40} src={icon} style={{ flex: 'none' }} width={40} />;
@@ -83,9 +83,9 @@ const PluginItem = memo<PluginItemProps>(({ identifier }) => {
     return KLAVIS_SERVER_TYPES.find((tool) => tool.identifier === identifier);
   }, [identifier]);
 
-  // Try to get LobehubSkill info if API returns no data
-  const lobehubSkill = useMemo(() => {
-    return getLobehubSkillProviderById(identifier);
+  // Try to get FiSkill info if API returns no data
+  const fiSkill = useMemo(() => {
+    return getFiSkillProviderById(identifier);
   }, [identifier]);
 
   // Try to get builtin tool info if API returns no data
@@ -104,7 +104,7 @@ const PluginItem = memo<PluginItemProps>(({ identifier }) => {
         avatar: '', // Avatar will be rendered by BuiltinToolIcon component
         category: undefined,
         createdAt: '',
-        description: `LobeHub Mcp Server: ${klavisTool.label}`,
+        description: `Fi Mcp Server: ${klavisTool.label}`,
         homepage: 'https://klavis.ai',
         identifier: klavisTool.identifier,
         manifest: undefined,
@@ -116,34 +116,34 @@ const PluginItem = memo<PluginItemProps>(({ identifier }) => {
       };
     }
 
-    // Check LobehubSkill providers
-    if (lobehubSkill) {
+    // Check FiSkill providers
+    if (fiSkill) {
       return {
-        author: lobehubSkill.author,
+        author: fiSkill.author,
         avatar: '', // Avatar will be rendered by BuiltinToolIcon component
         category: undefined,
         createdAt: '',
-        description: lobehubSkill.description,
-        homepage: lobehubSkill.authorUrl || 'https://lobehub.com',
-        identifier: lobehubSkill.id,
+        description: fiSkill.description,
+        homepage: fiSkill.authorUrl || 'https://ficlouds.com',
+        identifier: fiSkill.id,
         manifest: undefined,
         related: [],
         schemaVersion: 1,
         source: 'builtin' as const,
         tags: ['lobehub-skill'],
-        title: lobehubSkill.label,
+        title: fiSkill.label,
       };
     }
 
     // Check builtin tools (like lobe-cloud-sandbox, lobe-memory, etc.)
     if (builtinTool) {
       return {
-        author: 'LobeHub',
+        author: 'Fi',
         avatar: builtinTool.manifest.meta.avatar || '',
         category: undefined,
         createdAt: '',
         description: builtinTool.manifest.meta.description || '',
-        homepage: 'https://lobehub.com',
+        homepage: 'https://ficlouds.com',
         identifier: builtinTool.identifier,
         manifest: undefined,
         related: [],
@@ -155,7 +155,7 @@ const PluginItem = memo<PluginItemProps>(({ identifier }) => {
     }
 
     return undefined;
-  }, [apiData, klavisTool, lobehubSkill, builtinTool]);
+  }, [apiData, klavisTool, fiSkill, builtinTool]);
 
   const sourceConfig = useMemo(() => {
     const source: PluginSource = data?.source || 'market';
@@ -208,8 +208,8 @@ const PluginItem = memo<PluginItemProps>(({ identifier }) => {
     if (klavisTool) {
       return <BuiltinToolIcon icon={klavisTool.icon} label={klavisTool.label} />;
     }
-    if (lobehubSkill) {
-      return <BuiltinToolIcon icon={lobehubSkill.icon} label={lobehubSkill.label} />;
+    if (fiSkill) {
+      return <BuiltinToolIcon icon={fiSkill.icon} label={fiSkill.label} />;
     }
     return <Avatar avatar={data.avatar} shape={'square'} size={40} style={{ flex: 'none' }} />;
   };

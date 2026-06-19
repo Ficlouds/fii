@@ -14,9 +14,9 @@
  * Services must be injected via constructor for runtime-agnostic usage
  * (e.g., server-side services vs client-side services).
  */
-import { KLAVIS_SERVER_TYPES, LOBEHUB_SKILL_PROVIDERS } from '@lobechat/const';
-import { marketToolsResultsPrompt, modelsResultsPrompt } from '@lobechat/prompts';
-import type { BuiltinToolResult } from '@lobechat/types';
+import { KLAVIS_SERVER_TYPES, LOBEHUB_SKILL_PROVIDERS } from '@ficlouds/const';
+import { marketToolsResultsPrompt, modelsResultsPrompt } from '@ficlouds/prompts';
+import type { BuiltinToolResult } from '@ficlouds/types';
 
 import { getAgentStoreState } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors/selectors';
@@ -25,11 +25,11 @@ import { getToolStoreState } from '@/store/tool';
 import {
   builtinToolSelectors,
   klavisStoreSelectors,
-  lobehubSkillStoreSelectors,
+  fiSkillStoreSelectors,
   pluginSelectors,
 } from '@/store/tool/selectors';
 import { KlavisServerStatus } from '@/store/tool/slices/klavisStore/types';
-import { LobehubSkillStatus } from '@/store/tool/slices/lobehubSkillStore/types';
+import { FiSkillStatus } from '@/store/tool/slices/fiSkillStore/types';
 import { getUserStoreState } from '@/store/user';
 import { userProfileSelectors } from '@/store/user/selectors';
 
@@ -286,7 +286,7 @@ export class AgentManagerRuntime {
       }
 
       // The merged config may contain extra fields from the DB agent row
-      // (e.g., description, tags) that aren't on LobeAgentConfig type
+      // (e.g., description, tags) that aren't on FiAgentConfig type
       const raw = config as Record<string, any>;
 
       const detail = {
@@ -639,23 +639,23 @@ export class AgentManagerRuntime {
           }
         }
 
-        // Check if it's a LobehubSkill provider
-        const isLobehubSkillEnabled =
+        // Check if it's a FiSkill provider
+        const isFiSkillEnabled =
           typeof window !== 'undefined' &&
-          window.global_serverConfigStore?.getState()?.serverConfig?.enableLobehubSkill;
+          window.global_serverConfigStore?.getState()?.serverConfig?.enableFiSkill;
 
-        if (isLobehubSkillEnabled) {
-          const lobehubSkillServer = lobehubSkillStoreSelectors
+        if (isFiSkillEnabled) {
+          const fiSkillServer = fiSkillStoreSelectors
             .getServers(toolState)
             .find((s) => s.identifier === identifier);
-          const lobehubSkillProviderInfo = LOBEHUB_SKILL_PROVIDERS.find((p) => p.id === identifier);
+          const fiSkillProviderInfo = LOBEHUB_SKILL_PROVIDERS.find((p) => p.id === identifier);
 
-          if (lobehubSkillProviderInfo) {
-            return this.handleLobehubSkillInstall(
+          if (fiSkillProviderInfo) {
+            return this.handleFiSkillInstall(
               agentId,
               identifier,
-              lobehubSkillProviderInfo,
-              lobehubSkillServer,
+              fiSkillProviderInfo,
+              fiSkillServer,
             );
           }
         }
@@ -849,19 +849,19 @@ export class AgentManagerRuntime {
     };
   }
 
-  private async handleLobehubSkillInstall(
+  private async handleFiSkillInstall(
     agentId: string,
     identifier: string,
     providerInfo: (typeof LOBEHUB_SKILL_PROVIDERS)[0],
     server: any,
   ): Promise<BuiltinToolResult> {
-    if (server?.status === LobehubSkillStatus.CONNECTED) {
+    if (server?.status === FiSkillStatus.CONNECTED) {
       await this.enablePluginForAgent(agentId, identifier);
       return {
-        content: `Successfully enabled LobehubSkill provider: ${providerInfo.label}`,
+        content: `Successfully enabled FiSkill provider: ${providerInfo.label}`,
         state: {
           installed: true,
-          isLobehubSkill: true,
+          isFiSkill: true,
           pluginId: identifier,
           pluginName: providerInfo.label,
           serverStatus: 'connected',
@@ -877,16 +877,16 @@ export class AgentManagerRuntime {
       typeof window !== 'undefined' && window.location.protocol.startsWith('http')
         ? `${window.location.origin}/oauth/callback/success?provider=${encodeURIComponent(identifier)}`
         : undefined;
-    const authInfo = await getToolStoreState().getLobehubSkillAuthorizeUrl(identifier, {
+    const authInfo = await getToolStoreState().getFiSkillAuthorizeUrl(identifier, {
       redirectUri,
     });
 
     if (!authInfo.authorizeUrl) {
       return {
-        content: `LobehubSkill provider "${providerInfo.label}" requires OAuth authorization but no authorization URL is available.`,
+        content: `FiSkill provider "${providerInfo.label}" requires OAuth authorization but no authorization URL is available.`,
         state: {
           installed: false,
-          isLobehubSkill: true,
+          isFiSkill: true,
           pluginId: identifier,
           pluginName: providerInfo.label,
           serverStatus: 'not_connected',
@@ -896,7 +896,7 @@ export class AgentManagerRuntime {
       };
     }
 
-    const authResult = await this.openLobehubSkillOAuthWindowAndWait(
+    const authResult = await this.openFiSkillOAuthWindowAndWait(
       authInfo.authorizeUrl,
       identifier,
     );
@@ -904,10 +904,10 @@ export class AgentManagerRuntime {
     if (authResult.success) {
       await this.enablePluginForAgent(agentId, identifier);
       return {
-        content: `Successfully connected and enabled LobehubSkill provider: ${providerInfo.label}`,
+        content: `Successfully connected and enabled FiSkill provider: ${providerInfo.label}`,
         state: {
           installed: true,
-          isLobehubSkill: true,
+          isFiSkill: true,
           pluginId: identifier,
           pluginName: providerInfo.label,
           serverStatus: 'connected',
@@ -918,10 +918,10 @@ export class AgentManagerRuntime {
     }
 
     return {
-      content: `OAuth authorization was cancelled or failed for LobehubSkill provider: ${providerInfo.label}. Please try again.`,
+      content: `OAuth authorization was cancelled or failed for FiSkill provider: ${providerInfo.label}. Please try again.`,
       state: {
         installed: false,
-        isLobehubSkill: true,
+        isFiSkill: true,
         pluginId: identifier,
         pluginName: providerInfo.label,
         serverStatus: 'not_connected',
@@ -1069,14 +1069,14 @@ export class AgentManagerRuntime {
     });
   }
 
-  private openLobehubSkillOAuthWindowAndWait(
+  private openFiSkillOAuthWindowAndWait(
     oauthUrl: string,
     provider: string,
   ): Promise<{ cancelled: boolean; success: boolean }> {
     const checkAuthStatus = async (): Promise<boolean> => {
       try {
-        const server = await getToolStoreState().checkLobehubSkillStatus(provider);
-        return server?.status === LobehubSkillStatus.CONNECTED;
+        const server = await getToolStoreState().checkFiSkillStatus(provider);
+        return server?.status === FiSkillStatus.CONNECTED;
       } catch {
         return false;
       }
@@ -1113,8 +1113,8 @@ export class AgentManagerRuntime {
           event.data?.type === 'LOBEHUB_SKILL_AUTH_SUCCESS' &&
           event.data?.provider === provider
         ) {
-          const server = await getToolStoreState().checkLobehubSkillStatus(provider);
-          const isConnected = server?.status === LobehubSkillStatus.CONNECTED;
+          const server = await getToolStoreState().checkFiSkillStatus(provider);
+          const isConnected = server?.status === FiSkillStatus.CONNECTED;
           resolveOnce({ cancelled: false, success: isConnected });
         }
       };

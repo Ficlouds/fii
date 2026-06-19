@@ -1,4 +1,4 @@
-import { type AgentEvalBenchmark, type AgentEvalBenchmarkListItem } from '@lobechat/types';
+import { type AgentEvalBenchmark, type AgentEvalBenchmarkListItem } from '@ficlouds/types';
 
 export interface BenchmarkSliceState {
   benchmarkDetailMap: Record<string, AgentEvalBenchmark>;

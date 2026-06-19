@@ -12,17 +12,17 @@ vi.mock('@better-auth/passkey', () => ({
   passkey: vi.fn(() => ({ id: 'passkey' })),
 }));
 
-vi.mock('@lobechat/business-const', () => ({
+vi.mock('@ficlouds/business-const', () => ({
   ENABLE_BUSINESS_FEATURES: false,
 }));
 
-vi.mock('@lobechat/database', () => ({
+vi.mock('@ficlouds/database', () => ({
   createNanoId: vi.fn(() => vi.fn(() => 'generated-id')),
   idGenerator: vi.fn(() => 'generated-user-id'),
   serverDB: {},
 }));
 
-vi.mock('@lobechat/database/schemas', () => ({}));
+vi.mock('@ficlouds/database/schemas', () => ({}));
 
 vi.mock('bcryptjs', () => ({
   default: {

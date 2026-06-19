@@ -39,7 +39,7 @@ export type GroupAgentCategory =
   | 'other';
 
 /**
- * Group Agent Config - similar to LobeAgentConfig but for groups
+ * Group Agent Config - similar to FiAgentConfig but for groups
  */
 export interface GroupAgentConfig {
   /**

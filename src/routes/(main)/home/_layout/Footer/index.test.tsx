@@ -1,4 +1,4 @@
-import type * as LobechatConst from '@lobechat/const';
+import type * as LobechatConst from '@ficlouds/const';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
@@ -97,7 +97,7 @@ const renderFooter = async ({
     settings: { general: { isDevMode: false } },
   };
 
-  vi.doMock('@lobechat/const', async (importOriginal) => {
+  vi.doMock('@ficlouds/const', async (importOriginal) => {
     const actual = (await importOriginal()) as typeof LobechatConst;
 
     return {
@@ -210,7 +210,7 @@ const renderFooter = async ({
 afterEach(() => {
   cleanup();
   vi.unstubAllGlobals();
-  vi.doUnmock('@lobechat/const');
+  vi.doUnmock('@ficlouds/const');
   vi.doUnmock('@lobehub/analytics/react');
   vi.doUnmock('@/components/ChangelogModal');
   vi.doUnmock('@/components/HighlightNotification');

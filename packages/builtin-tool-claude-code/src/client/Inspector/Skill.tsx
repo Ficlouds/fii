@@ -1,7 +1,7 @@
 'use client';
 
-import { inspectorTextStyles, shinyTextStyles } from '@lobechat/shared-tool-ui/styles';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import { inspectorTextStyles, shinyTextStyles } from '@ficlouds/shared-tool-ui/styles';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { SkillsIcon } from '@lobehub/ui/icons';
 import { createStaticStyles, cx } from 'antd-style';
 import { memo } from 'react';

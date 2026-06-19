@@ -1,6 +1,6 @@
 'use client';
 
-import { useWatchBroadcast } from '@lobechat/electron-client-ipc';
+import { useWatchBroadcast } from '@ficlouds/electron-client-ipc';
 import { ActionIcon, ScrollArea } from '@lobehub/ui';
 import { cx } from 'antd-style';
 import { Plus } from 'lucide-react';

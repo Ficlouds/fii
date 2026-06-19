@@ -1,4 +1,4 @@
-import type { ModelTokensUsage } from '@lobechat/types';
+import type { ModelTokensUsage } from '@ficlouds/types';
 import type { Pricing } from 'model-bank';
 import anthropicChatModels from 'model-bank/anthropic';
 import azureChatModels from 'model-bank/azure';
@@ -131,7 +131,7 @@ describe('computeChatPricing', () => {
     });
   });
 
-  describe('LobeHub-hosted DeepSeek', () => {
+  describe('Fi-hosted DeepSeek', () => {
     interface HostedPricingCase {
       expectedCredits: Record<string, number>;
       expectedUnits: Pricing['units'];
@@ -222,7 +222,7 @@ describe('computeChatPricing', () => {
     ] satisfies HostedPricingCase[];
 
     it.each(hostedPricingCases)(
-      'applies LobeHub-hosted official pricing for $modelId',
+      'applies Fi-hosted official pricing for $modelId',
       ({ expectedCredits, expectedUnits, modelId }) => {
         const pricing: Pricing = { units: expectedUnits };
 

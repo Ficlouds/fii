@@ -4,7 +4,7 @@ import type {
   OpenSettingsWindowOptions,
   WindowMinimumSizeParams,
   WindowSizeParams,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 
 import type { AppBrowsersIdentifiers, WindowTemplateIdentifiers } from '@/appBrowsers';
 import { getIpcContext } from '@/utils/ipc';

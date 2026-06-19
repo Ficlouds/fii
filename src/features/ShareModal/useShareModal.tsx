@@ -1,6 +1,6 @@
 'use client';
 
-import { type ConversationContext } from '@lobechat/types';
+import { type ConversationContext } from '@ficlouds/types';
 import { type ModalInstance } from '@lobehub/ui/base-ui';
 import { useCallback, useEffect, useRef } from 'react';
 

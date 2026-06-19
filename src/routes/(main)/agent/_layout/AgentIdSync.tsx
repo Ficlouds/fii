@@ -1,4 +1,4 @@
-import { BUILTIN_AGENT_SLUGS } from '@lobechat/builtin-agents';
+import { BUILTIN_AGENT_SLUGS } from '@ficlouds/builtin-agents';
 import { useMount, usePrevious, useUnmount } from 'ahooks';
 import { useEffect, useMemo, useRef } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';

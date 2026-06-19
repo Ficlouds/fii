@@ -1,12 +1,12 @@
-import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
-import { tracer } from '@lobechat/observability-otel/modules/agent-signal';
+import { AGENT_SIGNAL_SOURCE_TYPES } from '@ficlouds/agent-signal/source';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
+import { tracer } from '@ficlouds/observability-otel/modules/agent-signal';
 import dayjs from 'dayjs';
 import timezonePlugin from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
 import { AgentSignalNightlyReviewModel } from '@/database/models/agentSignal/nightlyReview';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import type { AgentSignalSourceEventInput } from '@/server/services/agentSignal/emitter';
 import { enqueueAgentSignalSourceEvent } from '@/server/services/agentSignal/emitter';
 
@@ -279,13 +279,13 @@ export const createSelfReviewScheduleService = (
  * - Server should enqueue AgentSignal source events without running review handlers inline
  *
  * Expects:
- * - `db` points at the main LobeChat database
+ * - `db` points at the main Fi database
  *
  * Returns:
  * - A scheduler service wired to {@link AgentSignalNightlyReviewModel} and AgentSignal enqueueing
  */
 export const createServerNightlyReviewScheduleService = (
-  db: LobeChatDatabase,
+  db: FiDatabase,
 ): NightlyReviewScheduleService => {
   const model = new AgentSignalNightlyReviewModel(db);
 

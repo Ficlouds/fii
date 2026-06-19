@@ -1,4 +1,4 @@
-import { type AgentGroupDetail } from '@lobechat/types';
+import { type AgentGroupDetail } from '@ficlouds/types';
 import isEqual from 'fast-deep-equal';
 import { produce } from 'immer';
 import { type StateCreator } from 'zustand/vanilla';
@@ -198,7 +198,7 @@ class ChatGroupInternalAction implements ResetableStore {
               !currentAgentInStore ||
               new Date(agent.updatedAt) > new Date(currentAgentInStore.updatedAt || 0)
             ) {
-              // AgentGroupMember extends AgentItem which shares fields with LobeAgentConfig
+              // AgentGroupMember extends AgentItem which shares fields with FiAgentConfig
               agentStore.internal_dispatchAgentMap(agent.id, agent as any);
             }
           }

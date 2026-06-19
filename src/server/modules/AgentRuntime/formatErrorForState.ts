@@ -1,5 +1,5 @@
-import { getErrorCodeSpec, refineErrorCode } from '@lobechat/model-runtime';
-import { AgentRuntimeErrorType, ChatErrorType, type ChatMessageError } from '@lobechat/types';
+import { getErrorCodeSpec, refineErrorCode } from '@ficlouds/model-runtime';
+import { AgentRuntimeErrorType, ChatErrorType, type ChatMessageError } from '@ficlouds/types';
 
 /** Pull a usable HTTP status out of the nested upstream error object. */
 const extractHttpStatus = (body: unknown): number | undefined => {

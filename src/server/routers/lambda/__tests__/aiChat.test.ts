@@ -1,6 +1,6 @@
 // @vitest-environment node
-import type { CreateMessageParams } from '@lobechat/types';
-import { ThreadType } from '@lobechat/types';
+import type { CreateMessageParams } from '@ficlouds/types';
+import { ThreadType } from '@ficlouds/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import { AgentModel } from '@/database/models/agent';

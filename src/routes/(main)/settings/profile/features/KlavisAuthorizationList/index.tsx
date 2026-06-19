@@ -1,4 +1,4 @@
-import { KLAVIS_SERVER_TYPES } from '@lobechat/const';
+import { KLAVIS_SERVER_TYPES } from '@ficlouds/const';
 import { Avatar, Flexbox, Tag } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';
 import { memo, useCallback, useState } from 'react';

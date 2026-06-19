@@ -1,4 +1,4 @@
-import { TRACING_SCENARIOS, type TracingScenario } from '@lobechat/const';
+import { TRACING_SCENARIOS, type TracingScenario } from '@ficlouds/const';
 
 import type { ScenarioDefinition } from './types';
 
@@ -17,7 +17,7 @@ import type { ScenarioDefinition } from './types';
  * local constant — keeping the version next to the thing it versions avoids
  * the drift you'd get from a central table that nobody remembers to update.
  *
- * For the full directory of scenario *names*, see `@lobechat/const`
+ * For the full directory of scenario *names*, see `@ficlouds/const`
  * `TRACING_SCENARIOS`.
  */
 export const TRACING_SCENARIO_REGISTRY: Record<string, TracingScenario> = {

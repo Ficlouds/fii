@@ -1,5 +1,5 @@
-import type { FileMetadata } from '@lobechat/types';
-import { AsyncTaskStatus, AsyncTaskType } from '@lobechat/types';
+import type { FileMetadata } from '@ficlouds/types';
+import { AsyncTaskStatus, AsyncTaskType } from '@ficlouds/types';
 import { and, count, desc, eq, gte, ilike, inArray, lte, sum } from 'drizzle-orm';
 import { sha256 } from 'js-sha256';
 
@@ -19,7 +19,7 @@ import {
   knowledgeBases,
   users,
 } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import type { S3 } from '@/server/modules/S3';
 import { FileS3 } from '@/server/modules/S3';
 import { DocumentService } from '@/server/services/document';
@@ -71,7 +71,7 @@ export class FileUploadService extends BaseService {
   // Lazy import ChunkService to avoid circular dependency overhead
   // Note: ChunkService is only available in server-side environments
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     super(db, userId);
     this.fileModel = new FileModel(db, userId);
     this.documentModel = new DocumentModel(db, userId);

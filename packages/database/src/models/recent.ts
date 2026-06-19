@@ -1,9 +1,9 @@
-import type { TaskStatus } from '@lobechat/types';
+import type { TaskStatus } from '@ficlouds/types';
 import { and, desc, eq, inArray, isNotNull, isNull, ne, not, or, sql } from 'drizzle-orm';
 import { unionAll } from 'drizzle-orm/pg-core';
 
 import { agents, DOCUMENT_FOLDER_TYPE, documents, tasks, topics } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export interface RecentDbItem {
   id: string;
@@ -30,9 +30,9 @@ const TASK_FINAL_STATUSES = ['completed', 'canceled'];
 
 export class RecentModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

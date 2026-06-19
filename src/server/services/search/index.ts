@@ -1,5 +1,5 @@
-import type { SearchParams, SearchQuery } from '@lobechat/types';
-import type { Crawler, CrawlImplType, CrawlUniformResult } from '@lobechat/web-crawler';
+import type { SearchParams, SearchQuery } from '@ficlouds/types';
+import type { Crawler, CrawlImplType, CrawlUniformResult } from '@ficlouds/web-crawler';
 import debug from 'debug';
 import pMap from 'p-map';
 
@@ -67,7 +67,7 @@ export class SearchService {
       }
     } catch {}
 
-    const { Crawler } = await import('@lobechat/web-crawler');
+    const { Crawler } = await import('@ficlouds/web-crawler');
     const crawler = new Crawler({ impls: this.crawlerImpls });
 
     const results = await pMap(

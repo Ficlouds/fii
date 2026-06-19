@@ -1,4 +1,4 @@
-import { SESSION_CHAT_URL } from '@lobechat/const';
+import { SESSION_CHAT_URL } from '@ficlouds/const';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 

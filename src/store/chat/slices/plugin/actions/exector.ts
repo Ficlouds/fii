@@ -73,16 +73,16 @@ export const klavisExecutor: RemoteToolExecutor = async (p, _context) => {
   return createFailedResult('Klavis tool returned empty result');
 };
 
-export const lobehubSkillExecutor: RemoteToolExecutor = async (p, context) => {
+export const fiSkillExecutor: RemoteToolExecutor = async (p, context) => {
   // payload.identifier is the provider id (e.g., 'linear', 'microsoft')
   const provider = p.identifier;
 
   // Parse arguments
   const args = safeParseJSON(p.arguments) || {};
 
-  // Call LobeHub Skill tool via store action
+  // Call Fi Skill tool via store action
   // topicId comes from message context, not global active state
-  const result = await useToolStore.getState().callLobehubSkillTool({
+  const result = await useToolStore.getState().callFiSkillTool({
     args,
     provider,
     toolName: p.apiName,
@@ -91,7 +91,7 @@ export const lobehubSkillExecutor: RemoteToolExecutor = async (p, context) => {
 
   if (!result.success) {
     return createFailedResult(
-      result.error || `LobeHub Skill tool ${provider} ${p.apiName} execution failed`,
+      result.error || `Fi Skill tool ${provider} ${p.apiName} execution failed`,
     );
   }
 

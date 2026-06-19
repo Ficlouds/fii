@@ -1,17 +1,17 @@
-import { renderPlaceholderTemplate } from '@lobechat/context-engine';
+import { renderPlaceholderTemplate } from '@ficlouds/context-engine';
 import type {
   ChatCompletionTool,
   GenerateObjectPayload,
   GenerateObjectSchema,
   ModelRuntime,
-} from '@lobechat/model-runtime';
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
+} from '@ficlouds/model-runtime';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
 import {
   ATTR_GEN_AI_OPERATION_NAME,
   ATTR_GEN_AI_REQUEST_MODEL,
-} from '@lobechat/observability-otel/gen-ai';
-import { tracer } from '@lobechat/observability-otel/modules/memory-user-memory';
-import { RequestTrigger } from '@lobechat/types';
+} from '@ficlouds/observability-otel/gen-ai';
+import { tracer } from '@ficlouds/observability-otel/modules/memory-user-memory';
+import { RequestTrigger } from '@ficlouds/types';
 import type { z } from 'zod';
 
 import type {

@@ -1,15 +1,15 @@
-import { builtinSkills } from '@lobechat/builtin-skills';
-import { LocalSystemApiName, LocalSystemIdentifier } from '@lobechat/builtin-tool-local-system';
+import { builtinSkills } from '@ficlouds/builtin-skills';
+import { LocalSystemApiName, LocalSystemIdentifier } from '@ficlouds/builtin-tool-local-system';
 // Note: only `readFile` is wired through deviceProxy. Directory enumeration is
 // left to the model via `local-system.listFiles` so we don't double-fetch.
-import { type CommandResult, SkillsIdentifier } from '@lobechat/builtin-tool-skills';
+import { type CommandResult, SkillsIdentifier } from '@ficlouds/builtin-tool-skills';
 import {
   type DeviceFileAccess,
   type ExportFileResult,
   type SkillRuntimeService,
   SkillsExecutionRuntime,
-} from '@lobechat/builtin-tool-skills/executionRuntime';
-import type { BuiltinSkill, SkillItem, SkillListItem, SkillResourceContent } from '@lobechat/types';
+} from '@ficlouds/builtin-tool-skills/executionRuntime';
+import type { BuiltinSkill, SkillItem, SkillListItem, SkillResourceContent } from '@ficlouds/types';
 import type { CodeInterpreterToolName } from '@lobehub/market-sdk';
 import debug from 'debug';
 import { sha256 } from 'js-sha256';

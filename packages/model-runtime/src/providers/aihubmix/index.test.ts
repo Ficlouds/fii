@@ -65,7 +65,7 @@ describe('LobeAiHubMixAI', () => {
         expect.objectContaining({
           headers: expect.objectContaining({
             'Authorization': 'Bearer test_api_key',
-            'APP-Code': 'LobeHub',
+            'APP-Code': 'Fi',
           }),
         }),
       );
@@ -86,7 +86,7 @@ describe('LobeAiHubMixAI', () => {
       expect(list.some((m) => m.id === 'some-model')).toBe(true);
     });
 
-    it('should map AiHubMix API fields to LobeHub model card fields', async () => {
+    it('should map AiHubMix API fields to Fi model card fields', async () => {
       const spy = vi.spyOn(modelParse, 'processMultiProviderModelList').mockResolvedValueOnce([]);
 
       mockFetch.mockResolvedValueOnce(

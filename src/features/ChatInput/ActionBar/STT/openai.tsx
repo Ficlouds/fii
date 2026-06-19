@@ -1,5 +1,5 @@
-import { getMessageError } from '@lobechat/fetch-sse';
-import { type ChatMessageError } from '@lobechat/types';
+import { getMessageError } from '@ficlouds/fetch-sse';
+import { type ChatMessageError } from '@ficlouds/types';
 import { getRecordMineType } from '@lobehub/tts';
 import { type OpenAISTTOptions } from '@lobehub/tts/react';
 import { useOpenAISTT } from '@lobehub/tts/react';

@@ -1,4 +1,4 @@
-import { BaseExecutor, type BuiltinToolContext, type BuiltinToolResult } from '@lobechat/types';
+import { BaseExecutor, type BuiltinToolContext, type BuiltinToolResult } from '@ficlouds/types';
 
 import type { SkillsExecutionRuntime } from '../ExecutionRuntime';
 import {

@@ -1,5 +1,5 @@
 import { type Schema, type ValidationResult } from '@cfworker/json-schema';
-import { type LobeTool } from '@lobechat/types';
+import { type FiTool } from '@ficlouds/types';
 import { type SWRResponse } from 'swr';
 
 import { MESSAGE_CANCEL_FLAT } from '@/const/message';
@@ -91,7 +91,7 @@ export class PluginActionImpl {
       enable ? 'useFetchInstalledPlugins' : null,
       () => pluginService.getInstalledPlugins(),
       {
-        onSuccess: (data: LobeTool[]) => {
+        onSuccess: (data: FiTool[]) => {
           this.#set(
             { installedPlugins: data, loadingInstallPlugins: false },
             false,

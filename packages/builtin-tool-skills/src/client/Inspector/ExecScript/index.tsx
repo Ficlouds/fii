@@ -1,6 +1,6 @@
 'use client';
 
-import { type BuiltinInspectorProps } from '@lobechat/types';
+import { type BuiltinInspectorProps } from '@ficlouds/types';
 import { createStaticStyles, cssVar, cx } from 'antd-style';
 import { Check, X } from 'lucide-react';
 import { memo } from 'react';

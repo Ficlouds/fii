@@ -1,6 +1,6 @@
 'use client';
 
-import { AsyncTaskStatus } from '@lobechat/types';
+import { AsyncTaskStatus } from '@ficlouds/types';
 import { Alert, Flexbox, Icon, Text } from '@lobehub/ui';
 import { Progress } from 'antd';
 import { Loader2Icon, TriangleAlertIcon } from 'lucide-react';

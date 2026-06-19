@@ -1,4 +1,4 @@
-import { type AgentRuntimeContext, type SubAgentResultPayload } from '@lobechat/agent-runtime';
+import { type AgentRuntimeContext, type SubAgentResultPayload } from '@ficlouds/agent-runtime';
 import { type Mock } from 'vitest';
 import { describe, expect, it, vi } from 'vitest';
 

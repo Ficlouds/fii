@@ -2,7 +2,7 @@ import { and, eq, type SQL } from 'drizzle-orm';
 
 import type { MessengerAccountLinkItem, NewMessengerAccountLink } from '../schemas';
 import { messengerAccountLinks } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 /**
  * Tenant id for global-token platforms (Telegram today, Discord later) —
@@ -13,7 +13,7 @@ const GLOBAL_TENANT_ID = '';
 
 /**
  * Thrown by `upsertForPlatform` when the IM identity is already bound to a
- * different LobeHub user. Callers (e.g. the messenger router) should surface
+ * different Fi user. Callers (e.g. the messenger router) should surface
  * a friendly 409 — never let the underlying DB unique-index error escape.
  */
 export class MessengerAccountLinkConflictError extends Error {
@@ -21,14 +21,14 @@ export class MessengerAccountLinkConflictError extends Error {
   readonly existingUserId: string;
 
   constructor(existingUserId: string, message?: string) {
-    super(message ?? 'IM identity is already linked to another LobeHub user');
+    super(message ?? 'IM identity is already linked to another Fi user');
     this.name = 'MessengerAccountLinkConflictError';
     this.existingUserId = existingUserId;
   }
 }
 
 /**
- * Thrown when the same LobeHub user already has a different IM identity bound
+ * Thrown when the same Fi user already has a different IM identity bound
  * for the requested `(platform, tenant)` scope and must explicitly unlink
  * before switching accounts.
  */
@@ -43,9 +43,9 @@ export class MessengerAccountLinkRelinkRequiredError extends Error {
 
 export class MessengerAccountLinkModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }
@@ -66,7 +66,7 @@ export class MessengerAccountLinkModel {
    * `(user, platform, tenant)` — so we never let the
    * `messenger_account_links_platform_tenant_user_unique` constraint surface
    * as an opaque DB error when the IM identity is already owned by another
-   * LobeHub user; we throw `MessengerAccountLinkConflictError` instead.
+   * Fi user; we throw `MessengerAccountLinkConflictError` instead.
    *
    * Returns the resulting link row.
    */
@@ -243,7 +243,7 @@ export class MessengerAccountLinkModel {
    * the multi-tenant router pass the resolved `team_id` / `enterprise_id`.
    */
   static findByPlatformUser = async (
-    db: LobeChatDatabase,
+    db: FiDatabase,
     platform: string,
     platformUserId: string,
     tenantId: string = GLOBAL_TENANT_ID,
@@ -265,7 +265,7 @@ export class MessengerAccountLinkModel {
 
   /** Static setter used by IM `/switch` (no user-scope context, but trusted by sender match). */
   static setActiveAgentById = async (
-    db: LobeChatDatabase,
+    db: FiDatabase,
     linkId: string,
     agentId: string | null,
   ): Promise<MessengerAccountLinkItem | undefined> => {

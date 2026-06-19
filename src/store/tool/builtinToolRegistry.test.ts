@@ -1,18 +1,18 @@
-import { WEB_ONBOARDING } from '@lobechat/builtin-agents';
+import { WEB_ONBOARDING } from '@ficlouds/builtin-agents';
 import {
   GroupAgentBuilderApiName,
   GroupAgentBuilderIdentifier,
-} from '@lobechat/builtin-tool-group-agent-builder';
-import { GroupAgentBuilderInspectors } from '@lobechat/builtin-tool-group-agent-builder/client';
-import { SkillStoreApiName, SkillStoreIdentifier } from '@lobechat/builtin-tool-skill-store';
-import { SkillStoreInspectors, SkillStoreRenders } from '@lobechat/builtin-tool-skill-store/client';
-import { UserInteractionIdentifier } from '@lobechat/builtin-tool-user-interaction';
+} from '@ficlouds/builtin-tool-group-agent-builder';
+import { GroupAgentBuilderInspectors } from '@ficlouds/builtin-tool-group-agent-builder/client';
+import { SkillStoreApiName, SkillStoreIdentifier } from '@ficlouds/builtin-tool-skill-store';
+import { SkillStoreInspectors, SkillStoreRenders } from '@ficlouds/builtin-tool-skill-store/client';
+import { UserInteractionIdentifier } from '@ficlouds/builtin-tool-user-interaction';
 import {
   WebOnboardingApiName,
   WebOnboardingIdentifier,
   WebOnboardingManifest,
-} from '@lobechat/builtin-tool-web-onboarding';
-import { builtinToolIdentifiers } from '@lobechat/builtin-tools/identifiers';
+} from '@ficlouds/builtin-tool-web-onboarding';
+import { builtinToolIdentifiers } from '@ficlouds/builtin-tools/identifiers';
 import { describe, expect, it } from 'vitest';
 
 describe('builtin tool registry', () => {

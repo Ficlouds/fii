@@ -13,7 +13,7 @@ import McpDetailLoading from '@/features/MCP/MCPDetail/Loading';
 import PluginDetailModal from '@/features/PluginDetailModal';
 import { useToolStore } from '@/store/tool';
 import { pluginSelectors } from '@/store/tool/selectors';
-import { type LobeToolType } from '@/types/tool/tool';
+import { type FiToolType } from '@/types/tool/tool';
 
 import Actions from './Actions';
 import { styles } from './style';
@@ -24,7 +24,7 @@ interface McpSkillItemProps {
   identifier: string;
   runtimeType?: string;
   title: string;
-  type: LobeToolType;
+  type: FiToolType;
 }
 
 const McpSkillItem = memo<McpSkillItemProps>(

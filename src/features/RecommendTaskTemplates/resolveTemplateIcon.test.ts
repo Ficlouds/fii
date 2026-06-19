@@ -1,5 +1,5 @@
 import { SiGithub } from '@icons-pack/react-simple-icons';
-import type { TaskTemplate } from '@lobechat/const';
+import type { TaskTemplate } from '@ficlouds/const';
 import { BookOpen, type LucideIcon, Sparkles } from 'lucide-react';
 import { describe, expect, it } from 'vitest';
 

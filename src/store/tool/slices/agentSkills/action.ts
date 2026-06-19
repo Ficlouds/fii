@@ -8,7 +8,7 @@ import {
   type SkillListItem,
   type SkillResourceTreeNode,
   type UpdateSkillInput,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { produce } from 'immer';
 import useSWR, { mutate, type SWRResponse } from 'swr';
 

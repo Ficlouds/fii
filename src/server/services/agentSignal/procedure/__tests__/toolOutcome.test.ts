@@ -1,9 +1,9 @@
-import { createSource } from '@lobechat/agent-signal';
+import { createSource } from '@ficlouds/agent-signal';
 import type {
   SourceToolOutcomeCompleted,
   SourceToolOutcomeFailed,
-} from '@lobechat/agent-signal/source';
-import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
+} from '@ficlouds/agent-signal/source';
+import { AGENT_SIGNAL_SOURCE_TYPES } from '@ficlouds/agent-signal/source';
 
 import { createSelfReflectionAccumulator } from '../accumulators/selfReflection';
 import { createToolOutcomeSourceHandler } from '../toolOutcome';

@@ -1,5 +1,5 @@
-import { DEFAULT_SYSTEM_AGENT_CONFIG } from '@lobechat/const';
-import type { SystemAgentItem, UserSystemAgentConfigKey } from '@lobechat/types';
+import { DEFAULT_SYSTEM_AGENT_CONFIG } from '@ficlouds/const';
+import type { SystemAgentItem, UserSystemAgentConfigKey } from '@ficlouds/types';
 
 interface ResolveSystemAgentModelConfigParams {
   override?: Partial<Pick<SystemAgentItem, 'model' | 'provider'>>;

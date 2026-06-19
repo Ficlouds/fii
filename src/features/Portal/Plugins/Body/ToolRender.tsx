@@ -1,4 +1,4 @@
-import { BuiltinToolsPortals } from '@lobechat/builtin-tools/portals';
+import { BuiltinToolsPortals } from '@ficlouds/builtin-tools/portals';
 import isEqual from 'fast-deep-equal';
 import { memo } from 'react';
 

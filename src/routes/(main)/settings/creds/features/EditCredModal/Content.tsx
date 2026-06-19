@@ -1,6 +1,6 @@
 'use client';
 
-import { type UserCredSummary } from '@lobechat/types';
+import { type UserCredSummary } from '@ficlouds/types';
 import { useModalContext } from '@lobehub/ui/base-ui';
 import { type FC } from 'react';
 

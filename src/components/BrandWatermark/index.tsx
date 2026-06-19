@@ -1,9 +1,8 @@
 'use client';
 
-import { ORG_NAME, UTM_SOURCE } from '@lobechat/business-const';
+import { ORG_NAME, UTM_SOURCE } from '@ficlouds/business-const';
 import { type FlexboxProps } from '@lobehub/ui';
 import { Flexbox } from '@lobehub/ui';
-import { LobeHub } from '@lobehub/ui/brand';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { memo } from 'react';
 
@@ -13,6 +12,7 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
   logoLink: css`
     line-height: 1;
     color: inherit;
+    font-weight: 600;
 
     &:hover {
       color: ${cssVar.colorLink};
@@ -37,11 +37,11 @@ const BrandWatermark = memo<Omit<FlexboxProps, 'children'>>(({ style, ...rest })
       ) : (
         <a
           className={styles.logoLink}
-          href={`https://lobehub.com?utm_source=${UTM_SOURCE}&utm_content=brand_watermark`}
+          href={`https://ficlouds.com?utm_source=${UTM_SOURCE}&utm_content=brand_watermark`}
           rel="noreferrer"
           target="_blank"
         >
-          <LobeHub size={20} type={'text'} />
+          Fi
         </a>
       )}
     </Flexbox>

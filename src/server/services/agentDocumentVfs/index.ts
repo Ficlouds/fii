@@ -1,4 +1,4 @@
-import type { LobeChatDatabase } from '@lobechat/database';
+import type { FiDatabase } from '@ficlouds/database';
 
 import {
   AgentAccess,
@@ -95,7 +95,7 @@ export class AgentDocumentVfsService {
   private agentDocumentModel: AgentDocumentModel;
   private skillMount: SkillMount;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.agentDocumentModel = new AgentDocumentModel(db, userId);
     this.skillMount = createSkillMount(db, userId);
   }

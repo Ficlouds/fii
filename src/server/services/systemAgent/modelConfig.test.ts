@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { resolveSystemAgentModelConfig } from './modelConfig';
 
 describe('resolveSystemAgentModelConfig', () => {
-  it('should keep a configured LobeHub chat model', async () => {
+  it('should keep a configured Fi chat model', async () => {
     const result = await resolveSystemAgentModelConfig({
       taskConfig: {
         model: 'deepseek-v4-pro',
@@ -15,7 +15,7 @@ describe('resolveSystemAgentModelConfig', () => {
     expect(result).toEqual({ model: 'deepseek-v4-pro', provider: 'lobehub' });
   });
 
-  it('should let runtime hooks resolve LobeHub model mapping', async () => {
+  it('should let runtime hooks resolve Fi model mapping', async () => {
     const result = await resolveSystemAgentModelConfig({
       taskConfig: {
         model: 'mapped-topic-model',
@@ -27,7 +27,7 @@ describe('resolveSystemAgentModelConfig', () => {
     expect(result).toEqual({ model: 'mapped-topic-model', provider: 'lobehub' });
   });
 
-  it('should keep deprecated LobeHub model ids for runtime-level rejection', async () => {
+  it('should keep deprecated Fi model ids for runtime-level rejection', async () => {
     const result = await resolveSystemAgentModelConfig({
       taskConfig: {
         model: 'ag/gemini-3.1-pro-high',
@@ -39,7 +39,7 @@ describe('resolveSystemAgentModelConfig', () => {
     expect(result).toEqual({ model: 'ag/gemini-3.1-pro-high', provider: 'lobehub' });
   });
 
-  it('should keep non-LobeHub provider model ids untouched', async () => {
+  it('should keep non-Fi provider model ids untouched', async () => {
     const result = await resolveSystemAgentModelConfig({
       taskConfig: {
         model: 'private-model',

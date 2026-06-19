@@ -1,6 +1,6 @@
-import { getBuiltinRender } from '@lobechat/builtin-tools/renders';
-import { type ChatPluginPayload } from '@lobechat/types';
-import { safeParseJSON } from '@lobechat/utils';
+import { getBuiltinRender } from '@ficlouds/builtin-tools/renders';
+import { type ChatPluginPayload } from '@ficlouds/types';
+import { safeParseJSON } from '@ficlouds/utils';
 import { Flexbox } from '@lobehub/ui';
 import { memo } from 'react';
 

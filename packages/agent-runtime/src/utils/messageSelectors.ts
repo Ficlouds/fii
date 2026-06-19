@@ -1,4 +1,4 @@
-import type { UIChatMessage } from '@lobechat/types';
+import type { UIChatMessage } from '@ficlouds/types';
 
 /**
  * Options for message visitor traversal
@@ -27,7 +27,7 @@ export interface MessageVisitorOptions {
  *
  * // Find latest lobe-agent todos
  * const todos = findInMessages(messages, (msg) => {
- *   if (msg.plugin?.identifier === LobeAgentIdentifier) return msg.pluginState?.todos;
+ *   if (msg.plugin?.identifier === FiAgentIdentifier) return msg.pluginState?.todos;
  * }, { role: 'tool' });
  * ```
  */

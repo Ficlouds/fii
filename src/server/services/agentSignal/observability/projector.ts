@@ -3,7 +3,7 @@ import type {
   BaseAction,
   BaseSignal,
   ExecutorResult,
-} from '@lobechat/agent-signal';
+} from '@ficlouds/agent-signal';
 
 import type {
   AgentSignalObservabilityProjection,

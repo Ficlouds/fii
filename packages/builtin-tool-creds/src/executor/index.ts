@@ -1,6 +1,6 @@
-import { getKlavisServerByServerIdentifier, getLobehubSkillProviderById } from '@lobechat/const';
-import type { BuiltinToolContext, BuiltinToolResult } from '@lobechat/types';
-import { BaseExecutor } from '@lobechat/types';
+import { getKlavisServerByServerIdentifier, getFiSkillProviderById } from '@ficlouds/const';
+import type { BuiltinToolContext, BuiltinToolResult } from '@ficlouds/types';
+import { BaseExecutor } from '@ficlouds/types';
 import debug from 'debug';
 
 import { lambdaClient, toolsClient } from '@/libs/trpc/client';
@@ -165,7 +165,7 @@ class CredsExecutor extends BaseExecutor<typeof CredsApiName> {
       const { provider } = params;
 
       // Get provider config for display name
-      const providerConfig = getLobehubSkillProviderById(provider);
+      const providerConfig = getFiSkillProviderById(provider);
       if (!providerConfig) {
         return {
           error: {

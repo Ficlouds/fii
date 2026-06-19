@@ -1,7 +1,7 @@
 'use client';
 
-import { BRANDING_PROVIDER } from '@lobechat/business-const';
-import { CREDITS_PER_DOLLAR } from '@lobechat/const/currency';
+import { BRANDING_PROVIDER } from '@ficlouds/business-const';
+import { CREDITS_PER_DOLLAR } from '@ficlouds/const/currency';
 import { ModelIcon } from '@lobehub/icons';
 import { Flexbox, Popover, Text } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';

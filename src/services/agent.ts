@@ -1,4 +1,4 @@
-import { type AgentItem, type LobeAgentConfig } from '@lobechat/types';
+import { type AgentItem, type FiAgentConfig } from '@ficlouds/types';
 import { type PartialDeep } from 'type-fest';
 
 import { lambdaClient } from '@/libs/trpc/client';
@@ -7,11 +7,11 @@ import { lambdaClient } from '@/libs/trpc/client';
  * Market agent model can be either a string or an object with model details
  */
 type MarketAgentModel =
-  | LobeAgentConfig['model']
+  | FiAgentConfig['model']
   | {
-      model: LobeAgentConfig['model'];
-      parameters?: Partial<LobeAgentConfig['params']>;
-      provider?: LobeAgentConfig['provider'];
+      model: FiAgentConfig['model'];
+      parameters?: Partial<FiAgentConfig['params']>;
+      provider?: FiAgentConfig['provider'];
     };
 
 type AgentMetaUpdate = Partial<
@@ -176,7 +176,7 @@ class AgentService {
    */
   updateAgentConfig = async (
     agentId: string,
-    config: PartialDeep<LobeAgentConfig>,
+    config: PartialDeep<FiAgentConfig>,
     signal?: AbortSignal,
   ) => {
     return lambdaClient.agent.updateAgentConfig.mutate(

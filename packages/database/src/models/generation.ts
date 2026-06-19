@@ -5,8 +5,8 @@ import type {
   GenerationAsset,
   ImageGenerationAsset,
   VideoGenerationAsset,
-} from '@lobechat/types';
-import { FileSource } from '@lobechat/types';
+} from '@ficlouds/types';
+import { FileSource } from '@ficlouds/types';
 import debug from 'debug';
 import { and, eq } from 'drizzle-orm';
 
@@ -15,19 +15,19 @@ import { FileService } from '@/server/services/file';
 import type { NewFile } from '../schemas';
 import type { GenerationItem, GenerationWithAsyncTask, NewGeneration } from '../schemas/generation';
 import { generations } from '../schemas/generation';
-import type { LobeChatDatabase, Transaction } from '../type';
+import type { FiDatabase, Transaction } from '../type';
 import { FileModel } from './file';
 
 // Create debug logger
 const log = debug('lobe-image:generation-model');
 
 export class GenerationModel {
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private userId: string;
   private fileModel: FileModel;
   private fileService: FileService;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
     this.fileModel = new FileModel(db, userId);

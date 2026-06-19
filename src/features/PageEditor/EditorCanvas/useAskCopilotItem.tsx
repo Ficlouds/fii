@@ -1,7 +1,7 @@
 'use client';
 
-import { DEFAULT_INBOX_AVATAR } from '@lobechat/const';
-import { nanoid } from '@lobechat/utils';
+import { DEFAULT_INBOX_AVATAR } from '@ficlouds/const';
+import { nanoid } from '@ficlouds/utils';
 import { type IEditor } from '@lobehub/editor';
 import { HIDE_TOOLBAR_COMMAND } from '@lobehub/editor';
 import { type ChatInputActionsProps } from '@lobehub/editor/react';

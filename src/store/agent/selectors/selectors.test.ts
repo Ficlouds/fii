@@ -1,4 +1,4 @@
-import { DEFAULT_PROVIDER } from '@lobechat/business-const';
+import { DEFAULT_PROVIDER } from '@ficlouds/business-const';
 import {
   DEFAULT_AGENT_CONFIG,
   DEFAULT_AVATAR,
@@ -6,8 +6,8 @@ import {
   DEFAULT_MODEL,
   DEFAUTT_AGENT_TTS_CONFIG,
   INBOX_SESSION_ID,
-} from '@lobechat/const';
-import { KnowledgeType } from '@lobechat/types';
+} from '@ficlouds/const';
+import { KnowledgeType } from '@ficlouds/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import { type AgentStoreState } from '@/store/agent/initialState';

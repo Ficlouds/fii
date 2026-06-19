@@ -1,6 +1,6 @@
-import type { ToolExecuteData } from '@lobechat/agent-gateway-client';
-import { type AgentState } from '@lobechat/agent-runtime';
-import { type UIChatMessage } from '@lobechat/types';
+import type { ToolExecuteData } from '@ficlouds/agent-gateway-client';
+import { type AgentState } from '@ficlouds/agent-runtime';
+import { type UIChatMessage } from '@ficlouds/types';
 
 import { type AgentOperationMetadata, type StepResult } from './AgentStateManager';
 import { type StreamChunkData, type StreamEvent } from './StreamEventManager';

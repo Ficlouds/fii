@@ -11,24 +11,24 @@ import {
   type GeneralAgentCompressionResultPayload,
   type InstructionExecutor,
   UsageCounter,
-} from '@lobechat/agent-runtime';
-import { LobeActivatorIdentifier } from '@lobechat/builtin-tool-activator';
+} from '@ficlouds/agent-runtime';
+import { LobeActivatorIdentifier } from '@ficlouds/builtin-tool-activator';
 import {
   CredsIdentifier,
   type CredSummary,
   generateCredsList,
   generateKlavisServicesList,
   type KlavisServiceSummary,
-} from '@lobechat/builtin-tool-creds';
-import { LocalSystemManifest } from '@lobechat/builtin-tool-local-system';
-import { BRANDING_PROVIDER } from '@lobechat/business-const';
-import { KLAVIS_SERVER_TYPES } from '@lobechat/const';
+} from '@ficlouds/builtin-tool-creds';
+import { LocalSystemManifest } from '@ficlouds/builtin-tool-local-system';
+import { BRANDING_PROVIDER } from '@ficlouds/business-const';
+import { KLAVIS_SERVER_TYPES } from '@ficlouds/const';
 import {
   type AgentContextDocument,
   type BotPlatformContext,
   buildStepSkillDelta,
   buildStepToolDelta,
-  type LobeToolManifest,
+  type FiToolManifest,
   type OnboardingContext,
   type OperationToolSet,
   type ResolvedToolSet,
@@ -36,15 +36,15 @@ import {
   SkillResolver,
   ToolNameResolver,
   ToolResolver,
-} from '@lobechat/context-engine';
-import { parse } from '@lobechat/conversation-flow';
-import { consumeStreamUntilDone } from '@lobechat/model-runtime';
+} from '@ficlouds/context-engine';
+import { parse } from '@ficlouds/conversation-flow';
+import { consumeStreamUntilDone } from '@ficlouds/model-runtime';
 import {
   context as otelContext,
   SpanKind,
   SpanStatusCode,
   trace as otelTrace,
-} from '@lobechat/observability-otel/api';
+} from '@ficlouds/observability-otel/api';
 import {
   buildChatRequestAttributes,
   buildChatResponseAttributes,
@@ -56,22 +56,22 @@ import {
   executeToolSpanName,
   type ToolType,
   tracer as agentRuntimeTracer,
-} from '@lobechat/observability-otel/modules/agent-runtime';
-import { chainCompressContext } from '@lobechat/prompts';
+} from '@ficlouds/observability-otel/modules/agent-runtime';
+import { chainCompressContext } from '@ficlouds/prompts';
 import {
   type ChatToolPayload,
   type ExecSubAgentTaskParams,
   type MessageToolCall,
   type UIChatMessage,
-} from '@lobechat/types';
-import { sanitizeToolCallArguments, serializePartsForStorage } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { sanitizeToolCallArguments, serializePartsForStorage } from '@ficlouds/utils';
 import debug from 'debug';
 
 import { klavisEnv } from '@/config/klavis';
 import { type MessageModel, MessageModel as MessageModelClass } from '@/database/models/message';
 import { TopicModel } from '@/database/models/topic';
 import { UserModel } from '@/database/models/user';
-import { type LobeChatDatabase } from '@/database/type';
+import { type FiDatabase } from '@/database/type';
 import { serverMessagesEngine } from '@/server/modules/Mecha/ContextEngineering';
 import { type EvalContext } from '@/server/modules/Mecha/ContextEngineering/types';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
@@ -146,7 +146,7 @@ const archiveRuntimeToolResult = async (
     agentId?: string | null;
     identifier?: string;
     limit?: number;
-    serverDB: LobeChatDatabase;
+    serverDB: FiDatabase;
     toolCallId?: string;
     topicId?: string | null;
     userId?: string;
@@ -294,7 +294,7 @@ export interface RuntimeExecutorContext {
   loadAgentState?: (operationId: string) => Promise<AgentState | null>;
   messageModel: MessageModel;
   operationId: string;
-  serverDB: LobeChatDatabase;
+  serverDB: FiDatabase;
   stepIndex: number;
   stream?: boolean;
   streamManager: IStreamEventManager;
@@ -357,7 +357,7 @@ export const createRuntimeExecutors = (
       activeDeviceId,
       enabledToolIds: operationToolSet.enabledToolIds,
       forceFinish: state.forceFinish,
-      localSystemManifest: LocalSystemManifest as unknown as LobeToolManifest,
+      localSystemManifest: LocalSystemManifest as unknown as FiToolManifest,
       operationManifestMap: operationToolSet.manifestMap,
     });
 
@@ -537,7 +537,7 @@ export const createRuntimeExecutors = (
         if (isOnboardingAgent && !alreadyHasOnboardingContext && ctx.serverDB && ctx.userId) {
           try {
             const { formatWebOnboardingStateMessage } =
-              await import('@lobechat/builtin-tool-web-onboarding/utils');
+              await import('@ficlouds/builtin-tool-web-onboarding/utils');
             const { UserPersonaModel } = await import('@/database/models/userMemory/persona');
             const onboardingService = new OnboardingService(ctx.serverDB, ctx.userId);
             const docService = new AgentDocumentsService(ctx.serverDB, ctx.userId);
@@ -578,7 +578,7 @@ export const createRuntimeExecutors = (
           }
         }
 
-        // Build additional placeholder variables for the lobehub builtin skill
+        // Build additional placeholder variables for the fi builtin skill
         // (`packages/builtin-skills/src/lobehub/content.ts`) so it can render
         // `{{agent_id}}` / `{{agent_title}}` / `{{topic_id}}` etc. into the
         // model's prompt without needing a separate context injector.
@@ -591,29 +591,29 @@ export const createRuntimeExecutors = (
         //   topics table. Skipped when topicId is missing or the lookup fails
         //   (best-effort, falls back to empty string so the template still
         //   renders cleanly).
-        const lobehubSkillAgentId = state.metadata?.agentId;
-        const lobehubSkillTopicId = state.metadata?.topicId;
-        const lobehubSkillAgentMeta = state.metadata?.agentConfig as
+        const fiSkillAgentId = state.metadata?.agentId;
+        const fiSkillTopicId = state.metadata?.topicId;
+        const fiSkillAgentMeta = state.metadata?.agentConfig as
           | { description?: string | null; title?: string | null }
           | undefined;
 
-        let lobehubSkillTopicTitle = '';
-        if (lobehubSkillTopicId && ctx.serverDB && ctx.userId) {
+        let fiSkillTopicTitle = '';
+        if (fiSkillTopicId && ctx.serverDB && ctx.userId) {
           try {
             const topicModelForLobehub = new TopicModel(ctx.serverDB, ctx.userId);
-            const topicRecord = await topicModelForLobehub.findById(lobehubSkillTopicId);
-            lobehubSkillTopicTitle = topicRecord?.title ?? '';
+            const topicRecord = await topicModelForLobehub.findById(fiSkillTopicId);
+            fiSkillTopicTitle = topicRecord?.title ?? '';
           } catch (error) {
-            log('Failed to load topic title for lobehub skill placeholders: %O', error);
+            log('Failed to load topic title for fi skill placeholders: %O', error);
           }
         }
 
-        const lobehubSkillVariables: Record<string, string> = {
-          agent_id: lobehubSkillAgentId ?? '',
-          agent_title: lobehubSkillAgentMeta?.title ?? '',
-          agent_description: lobehubSkillAgentMeta?.description ?? '',
-          topic_id: lobehubSkillTopicId ?? '',
-          topic_title: lobehubSkillTopicTitle,
+        const fiSkillVariables: Record<string, string> = {
+          agent_id: fiSkillAgentId ?? '',
+          agent_title: fiSkillAgentMeta?.title ?? '',
+          agent_description: fiSkillAgentMeta?.description ?? '',
+          topic_id: fiSkillTopicId ?? '',
+          topic_title: fiSkillTopicTitle,
         };
 
         // ── Tool-specific template variable resolution ────────────────────
@@ -713,7 +713,7 @@ export const createRuntimeExecutors = (
           agentDocuments,
           additionalVariables: {
             ...state.metadata?.deviceSystemInfo,
-            ...lobehubSkillVariables,
+            ...fiSkillVariables,
             // User identity variables
             username: serverUsername,
             language: serverLanguage,
@@ -822,7 +822,7 @@ export const createRuntimeExecutors = (
           async (ceSpan) => {
             try {
               const result = await serverMessagesEngine(contextEngineInput);
-              ceSpan.setAttribute('lobehub.context.message_count', result.length);
+              ceSpan.setAttribute('fi.context.message_count', result.length);
               return result;
             } catch (error) {
               ceSpan.recordException(error as Error);
@@ -1919,7 +1919,7 @@ export const createRuntimeExecutors = (
           execution = { attempts: 1, result: dispatchResult };
         } else {
           // Inject source from sourceMap so BuiltinToolsExecutor can route
-          // lobehubSkill / klavis tools correctly (LLM responses don't carry source)
+          // fiSkill / klavis tools correctly (LLM responses don't carry source)
           if (toolSource && !chatToolPayload.source) {
             chatToolPayload.source = toolSource;
           }
@@ -2449,7 +2449,7 @@ export const createRuntimeExecutors = (
               execution = { attempts: 1, result: dispatchResult };
             } else {
               // Inject source from sourceMap so BuiltinToolsExecutor can route
-              // lobehubSkill / klavis tools correctly (LLM responses don't carry source)
+              // fiSkill / klavis tools correctly (LLM responses don't carry source)
               const batchToolSource =
                 state.operationToolSet?.sourceMap?.[chatToolPayload.identifier] ??
                 state.toolSourceMap?.[chatToolPayload.identifier];

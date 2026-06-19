@@ -2,7 +2,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AgentAccess, AgentDocumentModel } from '@/database/models/agentDocuments';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 
 import { AgentDocumentVfsService } from './index';
 import { createSkillMount } from './mounts/skills/createSkillMount';
@@ -23,7 +23,7 @@ vi.mock('./mounts/skills/createSkillMount', () => ({
 }));
 
 describe('AgentDocumentVfsService', () => {
-  const db = {} as LobeChatDatabase;
+  const db = {} as FiDatabase;
   const userId = 'user-1';
   const mockAgentDocumentModel = {
     create: vi.fn(),

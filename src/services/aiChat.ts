@@ -1,5 +1,5 @@
-import { type SendMessageServerParams, type StructureOutputParams } from '@lobechat/types';
-import { cleanObject } from '@lobechat/utils';
+import { type SendMessageServerParams, type StructureOutputParams } from '@ficlouds/types';
+import { cleanObject } from '@ficlouds/utils';
 
 import { lambdaClient } from '@/libs/trpc/client';
 

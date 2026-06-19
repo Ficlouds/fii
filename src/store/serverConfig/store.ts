@@ -1,4 +1,4 @@
-import { type StoreApiWithSelector } from '@lobechat/types';
+import { type StoreApiWithSelector } from '@ficlouds/types';
 import { type StoreApi } from 'zustand';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';

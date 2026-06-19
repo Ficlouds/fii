@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { type LucideIcon } from 'lucide-react';
 import {
   Brain,

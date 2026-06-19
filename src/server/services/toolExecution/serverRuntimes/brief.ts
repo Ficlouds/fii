@@ -1,6 +1,6 @@
-import { BriefIdentifier } from '@lobechat/builtin-tool-brief';
-import { formatBriefCreated, formatCheckpointCreated } from '@lobechat/prompts';
-import { DEFAULT_BRIEF_ACTIONS } from '@lobechat/types';
+import { BriefIdentifier } from '@ficlouds/builtin-tool-brief';
+import { formatBriefCreated, formatCheckpointCreated } from '@ficlouds/prompts';
+import { DEFAULT_BRIEF_ACTIONS } from '@ficlouds/types';
 
 import { BriefModel } from '@/database/models/brief';
 import { TaskModel } from '@/database/models/task';

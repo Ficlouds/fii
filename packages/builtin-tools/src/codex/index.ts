@@ -2,7 +2,7 @@ import {
   type BuiltinInspector,
   type BuiltinRender,
   type RenderDisplayControl,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 import FileChangeInspector from './FileChangeInspector';
 import FileChangeRender from './FileChangeRender';

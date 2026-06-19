@@ -2,7 +2,7 @@ import {
   type ElectronAppState,
   type WindowMinimumSizeParams,
   type WindowSizeParams,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 
 import { ensureElectronIpc } from '@/utils/electron/ipc';
 

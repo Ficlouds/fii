@@ -1,6 +1,6 @@
-import type { DocumentLoadRule } from '@lobechat/agent-templates';
-import { AgentDocumentsIdentifier } from '@lobechat/builtin-tool-agent-documents';
-import { AgentDocumentsExecutionRuntime } from '@lobechat/builtin-tool-agent-documents/executionRuntime';
+import type { DocumentLoadRule } from '@ficlouds/agent-templates';
+import { AgentDocumentsIdentifier } from '@ficlouds/builtin-tool-agent-documents';
+import { AgentDocumentsExecutionRuntime } from '@ficlouds/builtin-tool-agent-documents/executionRuntime';
 
 import { TaskModel } from '@/database/models/task';
 import { AgentDocumentsService } from '@/server/services/agentDocuments';

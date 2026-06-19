@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 
 import Notification from './Notification';
 
-vi.mock('@lobechat/const', () => ({
+vi.mock('@ficlouds/const', () => ({
   isDesktop: true,
 }));
 

@@ -1,4 +1,4 @@
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 
 import type { AgentDocumentSourceType } from '@/database/models/agentDocuments/types';
 import { DocumentModel } from '@/database/models/document';
@@ -19,7 +19,7 @@ interface DocumentServiceResult {
 }
 
 export interface NotebookRuntimeServiceOptions {
-  serverDB: LobeChatDatabase;
+  serverDB: FiDatabase;
   userId: string;
 }
 

@@ -23,7 +23,7 @@ const styles = createStaticStyles(({ css }) => ({
 const ChatWithModel = memo(() => {
   const { t } = useTranslation('discover');
   const { providers = [] } = useDetailContext();
-  const includeLobeHub = providers.some((item) => item.id === 'lobehub');
+  const includeFi = providers.some((item) => item.id === 'lobehub');
   const navigate = useNavigate();
   const list = providers.filter((provider) => provider.id !== 'lobehub');
 
@@ -37,11 +37,11 @@ const ChatWithModel = memo(() => {
     ),
   }));
 
-  const handleLobeHubChat = () => {
+  const handleFiChat = () => {
     navigate('/agent');
   };
 
-  if (includeLobeHub)
+  if (includeFi)
     return (
       <Dropdown.Button
         className={styles.button}
@@ -53,7 +53,7 @@ const ChatWithModel = memo(() => {
         menu={{
           items,
         }}
-        onClick={handleLobeHubChat}
+        onClick={handleFiChat}
       >
         {t('models.chat')}
       </Dropdown.Button>

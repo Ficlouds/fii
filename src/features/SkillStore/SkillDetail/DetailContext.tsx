@@ -1,6 +1,6 @@
 'use client';
 
-import { type KlavisServerType, type LobehubSkillProviderType } from '@lobechat/const';
+import { type KlavisServerType, type FiSkillProviderType } from '@ficlouds/const';
 import { type Klavis } from 'klavis';
 import type React from 'react';
 import { createContext, use } from 'react';
@@ -8,7 +8,7 @@ import { createContext, use } from 'react';
 export interface DetailContextValue {
   author: string;
   authorUrl?: string;
-  config: KlavisServerType | LobehubSkillProviderType;
+  config: KlavisServerType | FiSkillProviderType;
   description: string;
   icon: string | React.ComponentType<any>;
   identifier: string;

@@ -1,4 +1,4 @@
-import { getBuiltinRender } from '@lobechat/builtin-tools/renders';
+import { getBuiltinRender } from '@ficlouds/builtin-tools/renders';
 import { Accordion, AccordionItem, Flexbox, Skeleton } from '@lobehub/ui';
 import { type CSSProperties } from 'react';
 import { memo, useState } from 'react';

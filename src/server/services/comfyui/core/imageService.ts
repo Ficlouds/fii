@@ -4,7 +4,7 @@
  * Business logic for image processing including URL fetching
  * and workflow execution
  */
-import { type CreateImagePayload, type CreateImageResponse } from '@lobechat/model-runtime';
+import { type CreateImagePayload, type CreateImageResponse } from '@ficlouds/model-runtime';
 import { type PromptBuilder } from '@saintno/comfyui-sdk';
 import debug from 'debug';
 
@@ -216,7 +216,7 @@ export class ImageService {
       }
 
       // Upload to ComfyUI - use timestamp + 4-char random ID to prevent conflicts
-      const fileName = `LobeChat_img2img_${Date.now()}_${nanoid(4)}.png`;
+      const fileName = `Fi_img2img_${Date.now()}_${nanoid(4)}.png`;
       const uploadedFileName = await this.clientService.uploadImage(buffer, fileName);
 
       log('Uploaded to ComfyUI as:', uploadedFileName);

@@ -1,4 +1,4 @@
-import type { LobeChatDatabase } from '@lobechat/database';
+import type { FiDatabase } from '@ficlouds/database';
 import { describe, expect, it, vi } from 'vitest';
 
 import type { ToolExecutionContext } from '../../types';
@@ -57,7 +57,7 @@ const createContext = (): ToolExecutionContext => ({
         findFirst: vi.fn(async () => undefined),
       },
     },
-  } as unknown as LobeChatDatabase,
+  } as unknown as FiDatabase,
   toolManifestMap: {},
   userId: 'synthetic-user',
 });

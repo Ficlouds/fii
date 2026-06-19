@@ -1,4 +1,4 @@
-import { defaultUninstalledBuiltinTools } from '@lobechat/builtin-tools';
+import { defaultUninstalledBuiltinTools } from '@ficlouds/builtin-tools';
 import debug from 'debug';
 import { type SWRResponse } from 'swr';
 import useSWR from 'swr';

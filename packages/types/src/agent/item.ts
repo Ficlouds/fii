@@ -4,20 +4,20 @@ import { z } from 'zod';
 import type { FileItem } from '../files';
 import type { KnowledgeBaseItem } from '../knowledgeBase';
 import type { FewShots } from '../llm';
-import type { LobeAgentAgencyConfig } from './agencyConfig';
-import { AgentChatConfigSchema, type LobeAgentChatConfig } from './chatConfig';
-import type { LobeAgentTTSConfig } from './tts';
+import type { FiAgentAgencyConfig } from './agencyConfig';
+import { AgentChatConfigSchema, type FiAgentChatConfig } from './chatConfig';
+import type { FiAgentTTSConfig } from './tts';
 
-export interface LobeAgentConfig {
+export interface FiAgentConfig {
   /**
    * Agency configuration: device binding, heterogeneous agent provider, etc.
    */
-  agencyConfig?: LobeAgentAgencyConfig;
+  agencyConfig?: FiAgentAgencyConfig;
 
   avatar?: string;
   backgroundColor?: string;
 
-  chatConfig: LobeAgentChatConfig;
+  chatConfig: FiAgentChatConfig;
 
   /**
    * Editor content (JSON format)
@@ -74,7 +74,7 @@ export interface LobeAgentConfig {
   /**
    * Text-to-speech service
    */
-  tts: LobeAgentTTSConfig;
+  tts: FiAgentTTSConfig;
 
   /**
    * Flag for assistants generated automatically (e.g., from templates)
@@ -82,16 +82,16 @@ export interface LobeAgentConfig {
   virtual?: boolean;
 }
 
-export type LobeAgentConfigKeys =
-  | keyof LobeAgentConfig
-  | ['params', keyof LobeAgentConfig['params']];
+export type FiAgentConfigKeys =
+  | keyof FiAgentConfig
+  | ['params', keyof FiAgentConfig['params']];
 
 /**
  * Zod schema for creating a new agent.
  * Covers all user-configurable fields; system fields (id, userId, timestamps) are excluded.
  */
 export const CreateAgentSchema = z.object({
-  agencyConfig: z.custom<LobeAgentAgencyConfig>().optional(),
+  agencyConfig: z.custom<FiAgentAgencyConfig>().optional(),
   avatar: z.string().nullable().optional(),
   backgroundColor: z.string().nullable().optional(),
   chatConfig: AgentChatConfigSchema.optional(),
@@ -109,7 +109,7 @@ export const CreateAgentSchema = z.object({
   systemRole: z.string().nullable().optional(),
   tags: z.array(z.string()).optional(),
   title: z.string().nullable().optional(),
-  tts: z.custom<LobeAgentTTSConfig>().optional(),
+  tts: z.custom<FiAgentTTSConfig>().optional(),
   virtual: z.boolean().nullable().optional(),
 });
 
@@ -117,10 +117,10 @@ export type CreateAgentConfig = z.infer<typeof CreateAgentSchema>;
 
 // Agent database item type (independent from schema)
 export interface AgentItem {
-  agencyConfig?: LobeAgentAgencyConfig | null;
+  agencyConfig?: FiAgentAgencyConfig | null;
   avatar?: string | null;
   backgroundColor?: string | null;
-  chatConfig?: LobeAgentChatConfig | null;
+  chatConfig?: FiAgentChatConfig | null;
   clientId?: string | null;
   createdAt: Date;
   description?: string | null;
@@ -141,7 +141,7 @@ export interface AgentItem {
   systemRole?: string | null;
   tags?: string[];
   title?: string | null;
-  tts?: LobeAgentTTSConfig | null;
+  tts?: FiAgentTTSConfig | null;
   updatedAt: Date;
   userId: string;
   virtual?: boolean | null;

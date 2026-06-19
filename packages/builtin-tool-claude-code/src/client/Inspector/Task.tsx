@@ -1,7 +1,7 @@
 'use client';
 
-import { inspectorTextStyles, shinyTextStyles } from '@lobechat/shared-tool-ui/styles';
-import type { BuiltinInspectorProps } from '@lobechat/types';
+import { inspectorTextStyles, shinyTextStyles } from '@ficlouds/shared-tool-ui/styles';
+import type { BuiltinInspectorProps } from '@ficlouds/types';
 import { createStaticStyles, cssVar, cx } from 'antd-style';
 import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -66,7 +66,7 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
 /**
  * Items shape the CC adapter emits on `pluginState.todos` — normalized
  * `todo|processing|completed` alphabet. Mirrors `StepContextTodos` from
- * `@lobechat/types` but inlined to keep this package light.
+ * `@ficlouds/types` but inlined to keep this package light.
  *
  * `id` is optional: legacy TodoWrite-derived snapshots are positional and
  * have no stable id, while the Task* tools (CC 2.1.143+) populate it with

@@ -18,7 +18,7 @@ vi.hoisted(() => {
   });
 });
 
-vi.mock('@lobechat/const', async (importOriginal) => ({
+vi.mock('@ficlouds/const', async (importOriginal) => ({
   ...(await importOriginal()),
   isDesktop: true,
 }));

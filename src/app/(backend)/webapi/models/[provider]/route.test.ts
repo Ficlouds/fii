@@ -1,7 +1,7 @@
 // @vitest-environment node
-import { type LobeRuntimeAI } from '@lobechat/model-runtime';
-import { ModelRuntime } from '@lobechat/model-runtime';
-import { ChatErrorType } from '@lobechat/types';
+import { type LobeRuntimeAI } from '@ficlouds/model-runtime';
+import { ModelRuntime } from '@ficlouds/model-runtime';
+import { ChatErrorType } from '@ficlouds/types';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { auth } from '@/auth';

@@ -1,5 +1,5 @@
-import type { ComfyUIKeyVault } from '@lobechat/types';
-import { createBasicAuthCredentials } from '@lobechat/utils';
+import type { ComfyUIKeyVault } from '@ficlouds/types';
+import { createBasicAuthCredentials } from '@ficlouds/utils';
 import debug from 'debug';
 
 import type { LobeRuntimeAI } from '../../core/BaseAI';

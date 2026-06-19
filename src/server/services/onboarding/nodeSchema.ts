@@ -1,5 +1,5 @@
-import type { UserAgentOnboardingDraft, UserAgentOnboardingNode } from '@lobechat/types';
-import { isRecord, pickTrimmedString } from '@lobechat/utils';
+import type { UserAgentOnboardingDraft, UserAgentOnboardingNode } from '@ficlouds/types';
+import { isRecord, pickTrimmedString } from '@ficlouds/utils';
 
 type FieldType = 'string' | 'string[]';
 

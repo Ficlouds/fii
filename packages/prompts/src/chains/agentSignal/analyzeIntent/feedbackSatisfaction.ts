@@ -1,4 +1,4 @@
-import type { ChatStreamPayload } from '@lobechat/types';
+import type { ChatStreamPayload } from '@ficlouds/types';
 
 import {
   AGENT_SIGNAL_ANALYZE_INTENT_FEEDBACK_SATISFACTION_SYSTEM_ROLE,

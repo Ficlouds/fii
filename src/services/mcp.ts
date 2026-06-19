@@ -1,10 +1,10 @@
-import { CURRENT_VERSION, isDesktop } from '@lobechat/const';
+import { CURRENT_VERSION, isDesktop } from '@ficlouds/const';
 import {
   type ChatToolPayload,
   type CheckMcpInstallResult,
   type CustomPluginMetadata,
-} from '@lobechat/types';
-import { isLocalOrPrivateUrl, safeParseJSON } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { isLocalOrPrivateUrl, safeParseJSON } from '@ficlouds/utils';
 import { type PluginManifest } from '@lobehub/market-sdk';
 import { type CallReportRequest } from '@lobehub/market-types';
 import superjson from 'superjson';

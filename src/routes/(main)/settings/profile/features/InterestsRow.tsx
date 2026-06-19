@@ -1,7 +1,7 @@
 'use client';
 
-import type { InterestAreaKey } from '@lobechat/const';
-import { normalizeInterestsForStorage, resolveInterestAreaKey } from '@lobechat/const';
+import type { InterestAreaKey } from '@ficlouds/const';
+import { normalizeInterestsForStorage, resolveInterestAreaKey } from '@ficlouds/const';
 import { Block, Flexbox, Icon, Input, Text } from '@lobehub/ui';
 import { cssVar } from 'antd-style';
 import { BriefcaseIcon } from 'lucide-react';

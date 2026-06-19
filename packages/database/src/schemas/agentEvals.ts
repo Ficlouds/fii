@@ -6,7 +6,7 @@ import type {
   EvalRunTopicResult,
   EvalTestCaseContent,
   EvalTestCaseMetadata,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import {
   boolean,
   foreignKey,

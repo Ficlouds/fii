@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { buildIdentityDocument, buildSoulDocument } from './documentHelpers';
 
-vi.mock('@lobechat/agent-templates', async (importOriginal) => {
+vi.mock('@ficlouds/agent-templates', async (importOriginal) => {
   const actual = await importOriginal<any>();
   return {
     ...actual,

@@ -5,14 +5,14 @@ import {
   type GlobFilesParams,
   type GlobFilesResult,
   type SearchOptions,
-} from '@lobechat/local-file-shell';
+} from '@ficlouds/local-file-shell';
 
 import { ServiceModule } from './index';
 
 /**
  * File Search Service
  * Main service class that delegates to platform-specific implementations from
- * `@lobechat/local-file-shell`.
+ * `@ficlouds/local-file-shell`.
  */
 export default class FileSearchService extends ServiceModule {
   private impl: BaseFileSearch = createFileSearchModule();

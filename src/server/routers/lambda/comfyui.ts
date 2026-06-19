@@ -1,4 +1,4 @@
-import { type ComfyUIKeyVault } from '@lobechat/types';
+import { type ComfyUIKeyVault } from '@ficlouds/types';
 import { z } from 'zod';
 
 import { authedProcedure, router } from '@/libs/trpc/lambda';

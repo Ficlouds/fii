@@ -1,4 +1,4 @@
-import type { NetworkProxySettings } from '@lobechat/electron-client-ipc';
+import type { NetworkProxySettings } from '@ficlouds/electron-client-ipc';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ProxyConnectionTester } from '../tester';
@@ -102,7 +102,7 @@ describe('ProxyConnectionTester', () => {
           'https://www.google.com',
           expect.objectContaining({
             headers: expect.objectContaining({
-              'User-Agent': 'LobeChat-Desktop/1.0.0',
+              'User-Agent': 'Fi-Desktop/1.0.0',
             }),
             signal: expect.any(AbortSignal),
           }),

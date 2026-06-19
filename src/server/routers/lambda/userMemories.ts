@@ -1,10 +1,10 @@
-import { BRANDING_PROVIDER, ENABLE_BUSINESS_FEATURES } from '@lobechat/business-const';
+import { BRANDING_PROVIDER, ENABLE_BUSINESS_FEATURES } from '@ficlouds/business-const';
 import {
   DEFAULT_SEARCH_USER_MEMORY_TOP_K,
   DEFAULT_USER_MEMORY_EMBEDDING_MODEL_ITEM,
   MEMORY_SEARCH_TOP_K_LIMITS,
-} from '@lobechat/const';
-import { type LobeChatDatabase } from '@lobechat/database';
+} from '@ficlouds/const';
+import { type FiDatabase } from '@ficlouds/database';
 import {
   ActivityMemoryItemSchema,
   AddIdentityActionSchema,
@@ -13,9 +13,9 @@ import {
   PreferenceMemoryItemSchema,
   RemoveIdentityActionSchema,
   UpdateIdentityActionSchema,
-} from '@lobechat/memory-user-memory';
-import type { QueryTaxonomyOptionsResult, SearchMemoryResult } from '@lobechat/types';
-import { LayersEnum, queryTaxonomyOptionsSchema, searchMemorySchema } from '@lobechat/types';
+} from '@ficlouds/memory-user-memory';
+import type { QueryTaxonomyOptionsResult, SearchMemoryResult } from '@ficlouds/types';
+import { LayersEnum, queryTaxonomyOptionsSchema, searchMemorySchema } from '@ficlouds/types';
 import { type SQL } from 'drizzle-orm';
 import { and, asc, eq, gte, lte } from 'drizzle-orm';
 import pMap from 'p-map';
@@ -82,7 +82,7 @@ const EMPTY_TAXONOMY_RESULT: QueryTaxonomyOptionsResult = {
 type MemorySearchContext = {
   memoryModel: UserMemoryModel;
   memoryEffort: MemoryEffort;
-  serverDB: LobeChatDatabase;
+  serverDB: FiDatabase;
   userId: string;
 };
 
@@ -160,7 +160,7 @@ const searchUserMemories = async (
   ) as Promise<SearchMemoryResult>;
 };
 
-const getEmbeddingRuntime = async (serverDB: LobeChatDatabase, userId: string) => {
+const getEmbeddingRuntime = async (serverDB: FiDatabase, userId: string) => {
   const { provider, model: embeddingModel } =
     getServerDefaultFilesConfig().embeddingModel || DEFAULT_USER_MEMORY_EMBEDDING_MODEL_ITEM;
   // Read user's provider config from database

@@ -7,7 +7,7 @@ import type {
   UserPersonaDocumentHistoriesItem,
 } from '../../schemas';
 import { userPersonaDocumentHistories, userPersonaDocuments } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 
 export interface UpsertUserPersonaParams {
   capturedAt?: Date;
@@ -25,10 +25,10 @@ export interface UpsertUserPersonaParams {
 }
 
 export class UserPersonaModel {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly userId: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

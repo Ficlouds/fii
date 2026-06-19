@@ -1,15 +1,15 @@
-import type { RAGEvalDataSetItem } from '@lobechat/types';
+import type { RAGEvalDataSetItem } from '@ficlouds/types';
 import { and, desc, eq } from 'drizzle-orm';
 
 import type {NewEvalDatasetsItem } from '../../schemas';
 import { evalDatasets } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 
 export class EvalDatasetModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

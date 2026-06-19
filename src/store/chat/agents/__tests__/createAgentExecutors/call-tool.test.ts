@@ -1,5 +1,5 @@
-import { type GeneralAgentCallToolResultPayload } from '@lobechat/agent-runtime';
-import { type ChatToolPayload } from '@lobechat/types';
+import { type GeneralAgentCallToolResultPayload } from '@ficlouds/agent-runtime';
+import { type ChatToolPayload } from '@ficlouds/types';
 import { type Mock } from 'vitest';
 import { describe, expect, it, vi } from 'vitest';
 

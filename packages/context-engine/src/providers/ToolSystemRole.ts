@@ -1,10 +1,10 @@
-import type { API, Tool } from '@lobechat/prompts';
-import { pluginPrompts } from '@lobechat/prompts';
+import type { API, Tool } from '@ficlouds/prompts';
+import { pluginPrompts } from '@ficlouds/prompts';
 import debug from 'debug';
 
 import { BaseSystemRoleProvider } from '../base/BaseSystemRoleProvider';
 import { ToolNameResolver } from '../engine/tools';
-import type { LobeToolManifest } from '../engine/tools/types';
+import type { FiToolManifest } from '../engine/tools/types';
 import type { PipelineContext, ProcessorOptions } from '../types';
 
 declare module '../types' {
@@ -28,7 +28,7 @@ export interface ToolSystemRoleConfig {
   /** Function to check if function calling is supported */
   isCanUseFC: (model: string, provider: string) => boolean | undefined;
   /** Tool manifests with systemRole and API definitions */
-  manifests?: LobeToolManifest[];
+  manifests?: FiToolManifest[];
   /** Model name */
   model: string;
   /** Provider name */

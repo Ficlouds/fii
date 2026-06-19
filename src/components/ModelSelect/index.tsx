@@ -1,6 +1,6 @@
-import { type ChatModelCard } from '@lobechat/types';
+import { type ChatModelCard } from '@ficlouds/types';
 import { type IconAvatarProps } from '@lobehub/icons';
-import { LobeHub, ModelIcon, ProviderIcon } from '@lobehub/icons';
+import { LobeHub as FiIcon, ModelIcon, ProviderIcon } from '@lobehub/icons';
 import { type FlexboxProps } from '@lobehub/ui';
 import { Avatar, Flexbox, Icon, Tag, Text, Tooltip } from '@lobehub/ui';
 import { createStaticStyles, useResponsive } from 'antd-style';
@@ -349,7 +349,7 @@ export const ProviderItemRender = memo<ProviderItemRenderProps>(
             title={name}
           />
         ) : provider === 'lobehub' ? (
-          <LobeHub.Morden size={size} />
+          <FiIcon.Morden size={size} />
         ) : (
           <ProviderIcon provider={provider} size={size} type={type} />
         )}

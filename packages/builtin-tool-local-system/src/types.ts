@@ -2,15 +2,15 @@ import type {
   LocalFileItem,
   LocalMoveFilesResultItem,
   LocalReadFileResult,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 
-// Re-export shared state types from @lobechat/tool-runtime
+// Re-export shared state types from @ficlouds/tool-runtime
 export type {
   EditFileState as EditLocalFileState,
   GlobFilesState,
   GrepContentState,
   RunCommandState,
-} from '@lobechat/tool-runtime';
+} from '@ficlouds/tool-runtime';
 
 export const LocalSystemIdentifier = 'lobe-local-system';
 

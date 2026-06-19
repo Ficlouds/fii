@@ -1,5 +1,5 @@
-import { GroupAgentBuilderIdentifier } from '@lobechat/builtin-tool-group-agent-builder';
-import { GroupManagementIdentifier } from '@lobechat/builtin-tool-group-management';
+import { GroupAgentBuilderIdentifier } from '@ficlouds/builtin-tool-group-agent-builder';
+import { GroupManagementIdentifier } from '@ficlouds/builtin-tool-group-management';
 
 import type { BuiltinAgentDefinition } from '../../types';
 import { BUILTIN_AGENT_SLUGS } from '../../types';
@@ -26,7 +26,7 @@ const resolveSystemRole = (ctx: GroupSupervisorContext): string => {
  * Tools:
  * - GroupManagement: orchestration (speak, broadcast, executeAgentTask, etc.)
  * - GroupAgentBuilder: member management (searchAgent, inviteAgent, createAgent, etc.)
- * - LobeAgent: task tracking (plan + todos)
+ * - FiAgent: task tracking (plan + todos)
  */
 export const GROUP_SUPERVISOR: BuiltinAgentDefinition = {
   runtime: (ctx) => {

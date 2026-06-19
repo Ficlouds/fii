@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinInterventionProps } from '@lobechat/types';
+import type { BuiltinInterventionProps } from '@ficlouds/types';
 import { SendButton } from '@lobehub/editor/react';
 import { Flexbox, Icon, Input, Text, TextArea } from '@lobehub/ui';
 import { Select } from '@lobehub/ui/base-ui';

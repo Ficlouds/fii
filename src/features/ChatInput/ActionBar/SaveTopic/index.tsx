@@ -1,4 +1,4 @@
-import { HotkeyEnum } from '@lobechat/const/hotkeys';
+import { HotkeyEnum } from '@ficlouds/const/hotkeys';
 import { ActionIcon, Flexbox, Hotkey } from '@lobehub/ui';
 import { Popconfirm } from 'antd';
 import { LucideGalleryVerticalEnd, LucideMessageSquarePlus } from 'lucide-react';

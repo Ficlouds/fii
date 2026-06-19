@@ -1,6 +1,6 @@
 'use client';
 
-import type { GroupedTopic } from '@lobechat/types';
+import type { GroupedTopic } from '@ficlouds/types';
 import { Flexbox, Text } from '@lobehub/ui';
 import { createStaticStyles, cssVar, responsive } from 'antd-style';
 import { Fragment, memo } from 'react';

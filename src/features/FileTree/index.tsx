@@ -1,6 +1,6 @@
 'use client';
 
-import type { SkillResourceTreeNode } from '@lobechat/types';
+import type { SkillResourceTreeNode } from '@ficlouds/types';
 import type { MenuProps } from '@lobehub/ui';
 import { ContextMenuTrigger, Icon } from '@lobehub/ui';
 import { Input, type InputRef } from 'antd';

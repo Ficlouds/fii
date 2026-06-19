@@ -85,7 +85,7 @@ vi.mock('@/store/tool/selectors', () => ({
   klavisStoreSelectors: {
     getServers: vi.fn(() => []),
   },
-  lobehubSkillStoreSelectors: {
+  fiSkillStoreSelectors: {
     getServers: vi.fn(() => []),
   },
   pluginSelectors: {

@@ -1,4 +1,4 @@
-import type { LobeAgentConfig, MetaData } from '@lobechat/types';
+import type { FiAgentConfig, MetaData } from '@ficlouds/types';
 import type { PartialDeep } from 'type-fest';
 
 // ==================== Service Interfaces ====================
@@ -13,7 +13,7 @@ export interface IAgentService {
     sessionId?: string;
   }>;
   duplicateAgent: (agentId: string, newTitle?: string) => Promise<{ agentId: string } | null>;
-  getAgentConfigById: (agentId: string) => Promise<LobeAgentConfig | null>;
+  getAgentConfigById: (agentId: string) => Promise<FiAgentConfig | null>;
   queryAgents: (params: { keyword?: string; limit?: number }) => Promise<
     Array<{
       avatar?: string | null;
@@ -94,7 +94,7 @@ export interface CreateAgentState {
 }
 
 export interface UpdateAgentConfigParams {
-  config?: PartialDeep<LobeAgentConfig>;
+  config?: PartialDeep<FiAgentConfig>;
   meta?: Partial<MetaData>;
   togglePlugin?: {
     enabled?: boolean;
@@ -229,7 +229,7 @@ export interface InstallPluginState {
   error?: string;
   installed: boolean;
   isKlavis?: boolean;
-  isLobehubSkill?: boolean;
+  isFiSkill?: boolean;
   oauthUrl?: string;
   pluginId: string;
   pluginName?: string;

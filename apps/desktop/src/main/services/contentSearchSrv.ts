@@ -3,14 +3,14 @@ import {
   createContentSearchImpl,
   type GrepContentParams,
   type GrepContentResult,
-} from '@lobechat/local-file-shell';
+} from '@ficlouds/local-file-shell';
 
 import { ServiceModule } from './index';
 
 /**
  * Content Search Service
  * Provides content search functionality using platform-specific implementations
- * sunk into the shared `@lobechat/local-file-shell` package.
+ * sunk into the shared `@ficlouds/local-file-shell` package.
  */
 export default class ContentSearchService extends ServiceModule {
   private impl: BaseContentSearch = createContentSearchImpl();

@@ -4,7 +4,7 @@ import { promisify } from 'node:util';
 import type {
   ClaudeAuthStatus,
   DetectHeterogeneousAgentCommandParams,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 
 import type { ToolCategory, ToolStatus } from '@/core/infrastructure/ToolDetectorManager';
 import { detectHeterogeneousCliCommand } from '@/modules/toolDetectors';

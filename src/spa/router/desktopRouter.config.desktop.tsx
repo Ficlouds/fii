@@ -571,9 +571,6 @@ export const desktopRoutes: RouteObject[] = [
         path: 'connect',
       },
 
-      {
-      },
-
       // Default route - home page (handled by persistent layout)
       {
         handle: {

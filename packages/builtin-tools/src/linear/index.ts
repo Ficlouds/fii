@@ -1,7 +1,7 @@
-import { LINEAR_TOOL_NAMES, LinearInspector } from '@lobechat/shared-tool-ui/inspectors';
-import type { BuiltinInspector } from '@lobechat/types';
+import { LINEAR_TOOL_NAMES, LinearInspector } from '@ficlouds/shared-tool-ui/inspectors';
+import type { BuiltinInspector } from '@ficlouds/types';
 
-// LobeHub built-in Linear skill: tool calls arrive with
+// Fi built-in Linear skill: tool calls arrive with
 // `identifier='linear'` and bare `apiName` like 'get_issue'. The shared
 // inspector tolerates both bare and MCP-prefixed names, so we just register
 // it under every supported tool suffix.

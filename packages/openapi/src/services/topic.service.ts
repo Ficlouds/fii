@@ -1,7 +1,7 @@
 import { and, count, desc, eq, ilike, inArray, isNull, notInArray } from 'drizzle-orm';
 
 import { agentsToSessions, messages, topics, users } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { idGenerator } from '@/database/utils/idGenerator';
 
 import { BaseService } from '../common/base.service';
@@ -15,7 +15,7 @@ import type {
 } from '../types/topic.type';
 
 export class TopicService extends BaseService {
-  constructor(db: LobeChatDatabase, userId: string | null) {
+  constructor(db: FiDatabase, userId: string | null) {
     super(db, userId);
   }
 

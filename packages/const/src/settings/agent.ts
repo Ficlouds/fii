@@ -1,15 +1,15 @@
-import { DEFAULT_PROVIDER } from '@lobechat/business-const';
+import { DEFAULT_PROVIDER } from '@ficlouds/business-const';
 import {
-  type LobeAgentChatConfig,
-  type LobeAgentConfig,
-  type LobeAgentTTSConfig,
+  type FiAgentChatConfig,
+  type FiAgentConfig,
+  type FiAgentTTSConfig,
   type UserDefaultAgent,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 import { DEFAULT_AGENT_META } from '../meta';
 import { DEFAULT_MODEL } from './llm';
 
-export const DEFAUTT_AGENT_TTS_CONFIG: LobeAgentTTSConfig = {
+export const DEFAUTT_AGENT_TTS_CONFIG: FiAgentTTSConfig = {
   showAllLocaleVoice: false,
   sttLocale: 'auto',
   ttsService: 'openai',
@@ -23,7 +23,7 @@ export const DEFAULT_AGENT_SEARCH_FC_MODEL = {
   provider: DEFAULT_PROVIDER,
 };
 
-export const DEFAULT_AGENT_CHAT_CONFIG: LobeAgentChatConfig = {
+export const DEFAULT_AGENT_CHAT_CONFIG: FiAgentChatConfig = {
   enableAgentMode: true,
   enableCompressHistory: true,
   enableContextCompression: true,
@@ -39,7 +39,7 @@ export const DEFAULT_AGENT_CHAT_CONFIG: LobeAgentChatConfig = {
   },
 };
 
-export const DEFAULT_AGENT_CONFIG: LobeAgentConfig = {
+export const DEFAULT_AGENT_CONFIG: FiAgentConfig = {
   chatConfig: DEFAULT_AGENT_CHAT_CONFIG,
   model: DEFAULT_MODEL,
   openingQuestions: [],

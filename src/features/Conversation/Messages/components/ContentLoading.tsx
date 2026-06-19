@@ -1,4 +1,4 @@
-import { HETEROGENEOUS_TYPE_LABELS } from '@lobechat/heterogeneous-agents';
+import { HETEROGENEOUS_TYPE_LABELS } from '@ficlouds/heterogeneous-agents';
 import { Flexbox } from '@lobehub/ui';
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -1,4 +1,4 @@
-import { type SidebarAgentItem } from '@lobechat/types';
+import { type SidebarAgentItem } from '@ficlouds/types';
 import { Flexbox } from '@lobehub/ui';
 import { MoreHorizontal } from 'lucide-react';
 import { type CSSProperties } from 'react';

@@ -1,6 +1,6 @@
 'use client';
 
-import { type ConversationContext } from '@lobechat/types';
+import { type ConversationContext } from '@ficlouds/types';
 import { Flexbox, Segmented, Skeleton } from '@lobehub/ui';
 import { createModal, type ModalInstance } from '@lobehub/ui/base-ui';
 import { t } from 'i18next';

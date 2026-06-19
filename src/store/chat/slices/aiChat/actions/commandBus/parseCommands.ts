@@ -2,7 +2,7 @@ import type {
   RuntimeMentionedAgent,
   RuntimeSelectedSkill,
   RuntimeSelectedTool,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 import type {
   ActionTagCategory,

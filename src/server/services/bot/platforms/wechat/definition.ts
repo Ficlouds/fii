@@ -8,7 +8,7 @@ export const wechat: PlatformDefinition = {
   connectionMode: 'polling',
   description: 'Connect a WeChat bot via iLink API',
   documentation: {
-    setupGuideUrl: 'https://lobehub.com/docs/usage/channels/wechat',
+    setupGuideUrl: 'https://ficlouds.com/docs/usage/channels/wechat',
   },
   schema,
   supportsMessageEdit: false,

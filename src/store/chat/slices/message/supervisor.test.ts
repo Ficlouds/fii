@@ -5,7 +5,7 @@ import { aiChatService } from '@/services/aiChat';
 import { type SupervisorContext } from './supervisor';
 import { GroupChatSupervisor } from './supervisor';
 
-vi.mock('@lobechat/prompts', () => ({
+vi.mock('@ficlouds/prompts', () => ({
   contextSupervisorMakeDecision: vi.fn(() => ({
     messages: [{ content: 'structured-supervisor-prompt', role: 'user' }],
     temperature: 0.3,

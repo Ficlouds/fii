@@ -1,9 +1,9 @@
-import { MessageToolIdentifier } from '@lobechat/builtin-tool-message';
-import type { BotProviderQuery } from '@lobechat/builtin-tool-message/executionRuntime';
-import { MessageExecutionRuntime } from '@lobechat/builtin-tool-message/executionRuntime';
-import { LarkApiClient } from '@lobechat/chat-adapter-feishu';
-import { QQApiClient } from '@lobechat/chat-adapter-qq';
-import { WechatApiClient } from '@lobechat/chat-adapter-wechat';
+import { MessageToolIdentifier } from '@ficlouds/builtin-tool-message';
+import type { BotProviderQuery } from '@ficlouds/builtin-tool-message/executionRuntime';
+import { MessageExecutionRuntime } from '@ficlouds/builtin-tool-message/executionRuntime';
+import { LarkApiClient } from '@ficlouds/chat-adapter-feishu';
+import { QQApiClient } from '@ficlouds/chat-adapter-qq';
+import { WechatApiClient } from '@ficlouds/chat-adapter-wechat';
 import { TRPCError } from '@trpc/server';
 import { and, eq } from 'drizzle-orm';
 
@@ -443,7 +443,7 @@ export const messageRuntime: ServerRuntimeRegistration = {
       listMessengerPlatforms: async () => {
         // Mirror of `messenger.availablePlatforms` — surfaces per-deployment
         // OAuth deep-link fields (appId / botUsername) so the LLM can tell the
-        // user *which* LobeHub bot identity they'd be installing.
+        // user *which* Fi bot identity they'd be installing.
         const enabled = await getEnabledMessengerPlatforms();
         const enabledSet = new Set<string>(enabled);
         const definitions = messengerPlatformRegistry

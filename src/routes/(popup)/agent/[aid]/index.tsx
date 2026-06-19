@@ -1,6 +1,6 @@
 'use client';
 
-import { INBOX_SESSION_ID } from '@lobechat/const';
+import { INBOX_SESSION_ID } from '@ficlouds/const';
 import { memo, useLayoutEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 

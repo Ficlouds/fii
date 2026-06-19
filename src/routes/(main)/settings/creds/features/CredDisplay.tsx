@@ -1,6 +1,6 @@
 'use client';
 
-import { type UserCredSummary } from '@lobechat/types';
+import { type UserCredSummary } from '@ficlouds/types';
 import { Flexbox } from '@lobehub/ui';
 import { Typography } from 'antd';
 import { createStaticStyles } from 'antd-style';

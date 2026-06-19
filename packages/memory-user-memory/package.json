@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/memory-user-memory",
+  "name": "@ficlouds/memory-user-memory",
   "version": "1.0.0",
   "private": true,
   "sideEffects": false,
@@ -16,10 +16,10 @@
     "type-check": "tsgo --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@lobechat/context-engine": "workspace:*",
-    "@lobechat/model-runtime": "workspace:*",
-    "@lobechat/prompts": "workspace:*",
-    "@lobechat/types": "workspace:*",
+    "@ficlouds/context-engine": "workspace:*",
+    "@ficlouds/model-runtime": "workspace:*",
+    "@ficlouds/prompts": "workspace:*",
+    "@ficlouds/types": "workspace:*",
     "dayjs": "^1.11.11",
     "dotenv": "^17.2.3",
     "ora": "^9.0.0",

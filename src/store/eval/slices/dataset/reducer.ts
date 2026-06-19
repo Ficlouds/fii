@@ -1,4 +1,4 @@
-import  { type AgentEvalDataset } from '@lobechat/types';
+import  { type AgentEvalDataset } from '@ficlouds/types';
 import { produce } from 'immer';
 
 type SetDatasetDetailAction = {

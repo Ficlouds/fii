@@ -1,4 +1,4 @@
-import { type ToolManifest } from '@lobechat/types';
+import { type ToolManifest } from '@ficlouds/types';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { createAgentToolsEngine, createToolsEngine, getEnabledTools } from './index';
@@ -107,8 +107,8 @@ vi.mock('@/store/tool/selectors', () => ({
   klavisStoreSelectors: {
     klavisAsLobeTools: () => [],
   },
-  lobehubSkillStoreSelectors: {
-    lobehubSkillAsLobeTools: () => [],
+  fiSkillStoreSelectors: {
+    fiSkillAsLobeTools: () => [],
   },
 }));
 

@@ -1,4 +1,4 @@
-import { onlineDevicesPrompt } from '@lobechat/prompts';
+import { onlineDevicesPrompt } from '@ficlouds/prompts';
 
 import { type DeviceAttachment } from './ExecutionRuntime/types';
 

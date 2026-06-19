@@ -1,26 +1,26 @@
-import { getBuiltinRenderDisplayControl } from '@lobechat/builtin-tools/displayControls';
-import { getKlavisServerByServerIdentifier, getLobehubSkillProviderById } from '@lobechat/const';
-import { type RenderDisplayControl, type ToolManifest } from '@lobechat/types';
+import { getBuiltinRenderDisplayControl } from '@ficlouds/builtin-tools/displayControls';
+import { getKlavisServerByServerIdentifier, getFiSkillProviderById } from '@ficlouds/const';
+import { type RenderDisplayControl, type ToolManifest } from '@ficlouds/types';
 
 import {
   isInstalledPluginAvailableInCurrentEnv,
   isToolAvailableInCurrentEnv,
 } from '@/helpers/toolAvailability';
 import { type MetaData } from '@/types/meta';
-import { type LobeToolMeta } from '@/types/tool/tool';
+import { type FiToolMeta } from '@/types/tool/tool';
 
 import { type ToolStoreState } from '../initialState';
 import { builtinToolSelectors } from '../slices/builtin/selectors';
 import { KlavisServerStatus } from '../slices/klavisStore';
-import { lobehubSkillStoreSelectors } from '../slices/lobehubSkillStore';
-import { LobehubSkillStatus } from '../slices/lobehubSkillStore/types';
+import { fiSkillStoreSelectors } from '../slices/fiSkillStore';
+import { FiSkillStatus } from '../slices/fiSkillStore/types';
 import { pluginSelectors } from '../slices/plugin/selectors';
 
-const metaList = (s: ToolStoreState): LobeToolMeta[] => {
-  const pluginList = pluginSelectors.installedPluginMetaList(s) as LobeToolMeta[];
-  const lobehubSkillList = lobehubSkillStoreSelectors.metaList(s) as LobeToolMeta[];
+const metaList = (s: ToolStoreState): FiToolMeta[] => {
+  const pluginList = pluginSelectors.installedPluginMetaList(s) as FiToolMeta[];
+  const fiSkillList = fiSkillStoreSelectors.metaList(s) as FiToolMeta[];
 
-  return builtinToolSelectors.metaList(s).concat(pluginList).concat(lobehubSkillList);
+  return builtinToolSelectors.metaList(s).concat(pluginList).concat(fiSkillList);
 };
 
 /**
@@ -29,11 +29,11 @@ const metaList = (s: ToolStoreState): LobeToolMeta[] => {
  * Includes hidden and runtime-managed builtins (web-browsing, memory, cloud-sandbox, etc.)
  * that `metaList` hides from the chat toolbar.
  */
-const discoverableMetaList = (s: ToolStoreState): LobeToolMeta[] => {
-  const pluginList = pluginSelectors.installedPluginMetaList(s) as LobeToolMeta[];
-  const lobehubSkillList = lobehubSkillStoreSelectors.metaList(s) as LobeToolMeta[];
+const discoverableMetaList = (s: ToolStoreState): FiToolMeta[] => {
+  const pluginList = pluginSelectors.installedPluginMetaList(s) as FiToolMeta[];
+  const fiSkillList = fiSkillStoreSelectors.metaList(s) as FiToolMeta[];
 
-  return builtinToolSelectors.discoverableMetaList(s).concat(pluginList).concat(lobehubSkillList);
+  return builtinToolSelectors.discoverableMetaList(s).concat(pluginList).concat(fiSkillList);
 };
 
 const getMetaById =
@@ -100,7 +100,7 @@ const getRenderDisplayControl =
     )?.renderDisplayControl;
     if (manifestControl) return manifestControl;
 
-    // Fallback for packages that don't ship a LobeChat manifest (e.g. Claude Code —
+    // Fallback for packages that don't ship a Fi manifest (e.g. Claude Code —
     // its tools come from Anthropic tool_use blocks at runtime).
     return getBuiltinRenderDisplayControl(identifier, apiName) ?? 'collapsed';
   };
@@ -117,16 +117,16 @@ export interface AvailableToolForDiscovery {
  *
  * Sources:
  * 1. Builtin tools (from s.builtinTools) — exclude non-discoverable, skills, platform-unavailable
- * 2. User-installed plugins (from s.installedPlugins) — exclude Klavis/LobeHub Skill/agent skill overlap
+ * 2. User-installed plugins (from s.installedPlugins) — exclude Klavis/Fi Skill/agent skill overlap
  * 3. Klavis MCP servers (connected) — description from KLAVIS_SERVER_TYPES
- * 4. LobeHub Skill servers (connected) — description from LOBEHUB_SKILL_PROVIDERS
+ * 4. Fi Skill servers (connected) — description from LOBEHUB_SKILL_PROVIDERS
  */
 const availableToolsForDiscovery = (s: ToolStoreState): AvailableToolForDiscovery[] => {
   // Build exclusion sets for deduplication
   const builtinSkillIds = new Set((s.builtinSkills || []).map((skill) => skill.identifier));
   const agentSkillIds = new Set((s.agentSkills || []).map((skill) => skill.identifier));
   const klavisIds = new Set((s.servers || []).map((server) => server.identifier));
-  const lobehubSkillIds = new Set((s.lobehubSkillServers || []).map((server) => server.identifier));
+  const fiSkillIds = new Set((s.fiSkillServers || []).map((server) => server.identifier));
 
   // 1. Builtin tools — directly from s.builtinTools
   const builtinItems = s.builtinTools
@@ -140,10 +140,10 @@ const availableToolsForDiscovery = (s: ToolStoreState): AvailableToolForDiscover
     }));
 
   // 2. User-installed plugins — directly from s.installedPlugins
-  //    Exclude Klavis, LobeHub Skill, and agent skill entries (they are handled in dedicated sources)
+  //    Exclude Klavis, Fi Skill, and agent skill entries (they are handled in dedicated sources)
   const pluginItems = s.installedPlugins
     .filter((p) => !klavisIds.has(p.identifier))
-    .filter((p) => !lobehubSkillIds.has(p.identifier))
+    .filter((p) => !fiSkillIds.has(p.identifier))
     .filter((p) => !agentSkillIds.has(p.identifier))
     .filter((p) => !p.customParams?.klavis) // extra safety for Klavis plugins
     .filter((plugin) => isInstalledPluginAvailableInCurrentEnv(plugin))
@@ -168,11 +168,11 @@ const availableToolsForDiscovery = (s: ToolStoreState): AvailableToolForDiscover
       };
     });
 
-  // 4. LobeHub Skill servers (connected only)
-  const lobehubSkillItems = (s.lobehubSkillServers || [])
-    .filter((server) => server.status === LobehubSkillStatus.CONNECTED)
+  // 4. Fi Skill servers (connected only)
+  const fiSkillItems = (s.fiSkillServers || [])
+    .filter((server) => server.status === FiSkillStatus.CONNECTED)
     .map((server) => {
-      const config = getLobehubSkillProviderById(server.identifier);
+      const config = getFiSkillProviderById(server.identifier);
       return {
         description: config?.description || '',
         identifier: server.identifier,
@@ -180,7 +180,7 @@ const availableToolsForDiscovery = (s: ToolStoreState): AvailableToolForDiscover
       };
     });
 
-  return [...builtinItems, ...pluginItems, ...klavisItems, ...lobehubSkillItems];
+  return [...builtinItems, ...pluginItems, ...klavisItems, ...fiSkillItems];
 };
 
 export const toolSelectors = {

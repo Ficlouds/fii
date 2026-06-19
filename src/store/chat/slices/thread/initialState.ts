@@ -1,5 +1,5 @@
-import { type IThreadType, type ThreadItem } from '@lobechat/types';
-import { ThreadType } from '@lobechat/types';
+import { type IThreadType, type ThreadItem } from '@ficlouds/types';
+import { ThreadType } from '@ficlouds/types';
 
 export interface ChatThreadState {
   activeThreadId?: string;

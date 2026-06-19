@@ -8,16 +8,16 @@ import type {
   RuntimeProcessorResult,
   RuntimeScheduleProcessorResult,
   RuntimeWaitProcessorResult,
-} from '@lobechat/agent-signal';
-import { AGENT_SIGNAL_TYPES, createSource } from '@lobechat/agent-signal';
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
+} from '@ficlouds/agent-signal';
+import { AGENT_SIGNAL_TYPES, createSource } from '@ficlouds/agent-signal';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
 import {
   handlerCounter,
   handlerDurationHistogram,
   terminalResultCounter,
   tracer,
-} from '@lobechat/observability-otel/modules/agent-signal';
-import { attributesCommon } from '@lobechat/observability-otel/node';
+} from '@ficlouds/observability-otel/modules/agent-signal';
+import { attributesCommon } from '@ficlouds/observability-otel/node';
 
 import {
   createRuntimeProcessorContext,

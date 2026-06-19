@@ -1,5 +1,5 @@
-import type { WriteLocalFileParams } from '@lobechat/electron-client-ipc';
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { WriteLocalFileParams } from '@ficlouds/electron-client-ipc';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { Flexbox, Icon, Markdown, PatchDiff, Skeleton } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { ChevronRight } from 'lucide-react';

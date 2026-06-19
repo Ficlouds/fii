@@ -265,7 +265,7 @@ export interface KillCommandResult {
 }
 
 // Grep types — declared locally to keep this package leaf-only (no reverse
-// dependency on `@lobechat/local-file-shell`). The shape mirrors the
+// dependency on `@ficlouds/local-file-shell`). The shape mirrors the
 // definition in `local-file-shell/types`; the two must stay in sync, but
 // they're structurally compatible by design.
 export interface GrepContentParams {

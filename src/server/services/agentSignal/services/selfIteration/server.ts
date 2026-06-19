@@ -1,9 +1,9 @@
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
-import { tracer } from '@lobechat/observability-otel/modules/agent-signal';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
+import { tracer } from '@ficlouds/observability-otel/modules/agent-signal';
 
 import type { AgentSignalReviewContextModel } from '@/database/models/agentSignal/reviewContext';
 import type { BriefModel } from '@/database/models/brief';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 
 import { NIGHTLY_REVIEW_BRIEF_TRIGGER } from './review/brief';
 import type { ProposalActivityDigest } from './review/collect';
@@ -30,7 +30,7 @@ export interface CreateServerSelfIterationPolicyOptions {
   /** Agent id from the workflow payload, used as an extra ownership check. */
   agentId?: string;
   /** Database bound to the current workflow worker. */
-  db: LobeChatDatabase;
+  db: FiDatabase;
   /**
    * User-level Agent Signal gate computed by workflow normalization.
    *

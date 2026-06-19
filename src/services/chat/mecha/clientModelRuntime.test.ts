@@ -1,4 +1,4 @@
-import { type LobeOpenAICompatibleRuntime } from '@lobechat/model-runtime';
+import { type LobeOpenAICompatibleRuntime } from '@ficlouds/model-runtime';
 import {
   LobeAnthropicAI,
   LobeAzureOpenAI,
@@ -17,7 +17,7 @@ import {
   LobeZeroOneAI,
   LobeZhipuAI,
   ModelRuntime,
-} from '@lobechat/model-runtime';
+} from '@ficlouds/model-runtime';
 import { ModelProvider } from 'model-bank';
 import OpenAI from 'openai';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -34,7 +34,7 @@ vi.stubGlobal(
   vi.fn(() => Promise.resolve(new Response(JSON.stringify({ some: 'data' })))),
 );
 
-vi.mock('@lobechat/fetch-sse', async (importOriginal) => {
+vi.mock('@ficlouds/fetch-sse', async (importOriginal) => {
   const module = await importOriginal();
 
   return { ...(module as any), getMessageError: vi.fn() };
@@ -49,7 +49,7 @@ vi.mock('@/utils/imageToBase64', () => ({
   imageUrlToBase64: vi.fn(),
 }));
 
-vi.mock('@lobechat/model-runtime', async (importOriginal) => {
+vi.mock('@ficlouds/model-runtime', async (importOriginal) => {
   const actual = await importOriginal();
 
   return {
@@ -93,7 +93,7 @@ beforeEach(async () => {
   // Set default mock return values for image processing utilities
   const { isDesktopLocalStaticServerUrl } = await import('@/utils/url');
   const { imageUrlToBase64 } = await import('@/utils/imageToBase64');
-  const { parseDataUri } = await import('@lobechat/model-runtime');
+  const { parseDataUri } = await import('@ficlouds/model-runtime');
 
   vi.mocked(parseDataUri).mockReturnValue({ type: 'url', base64: null, mimeType: null });
   vi.mocked(isDesktopLocalStaticServerUrl).mockReturnValue(false);

@@ -7,10 +7,10 @@ import { sleep } from '@/utils/sleep';
 
 import { getTestDB } from '../../core/getTestDB';
 import { aiProviders, users } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { AiProviderModel } from '../aiProvider';
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'session-group-model-test-user-id';
 const aiProviderModel = new AiProviderModel(serverDB, userId);

@@ -2,8 +2,8 @@ import {
   computePromptHash,
   resolveScenario,
   type TracingOptions,
-} from '@lobechat/llm-generation-tracing';
-import type { ModelRuntimeHooks } from '@lobechat/model-runtime';
+} from '@ficlouds/llm-generation-tracing';
+import type { ModelRuntimeHooks } from '@ficlouds/model-runtime';
 import debug from 'debug';
 
 import { getLLMGenerationTracingService } from './index';

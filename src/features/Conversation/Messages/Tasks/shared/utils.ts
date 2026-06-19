@@ -2,8 +2,8 @@ import {
   type AssistantContentBlock,
   type ModelUsage,
   type TaskCurrentActivity,
-} from '@lobechat/types';
-import { ThreadStatus } from '@lobechat/types';
+} from '@ficlouds/types';
+import { ThreadStatus } from '@ficlouds/types';
 
 /**
  * Format duration in milliseconds to human-readable string

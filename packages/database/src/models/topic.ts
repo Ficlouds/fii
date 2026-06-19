@@ -3,13 +3,13 @@ import type {
   ChatTopicStatus,
   DBMessageItem,
   TopicRankItem,
-} from '@lobechat/types';
-import type { TimingSink } from '@lobechat/utils';
+} from '@ficlouds/types';
+import type { TimingSink } from '@ficlouds/utils';
 import {
   getDurationMs,
   logTimingSink as logTiming,
   runTimedSinkStage as runTimedStage,
-} from '@lobechat/utils';
+} from '@ficlouds/utils';
 import type { SQL } from 'drizzle-orm';
 import {
   and,
@@ -30,7 +30,7 @@ import {
 
 import type { TopicItem } from '../schemas';
 import { agents, agentsToSessions, messagePlugins, messages, topics } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 import { sanitizeBm25Query } from '../utils/bm25';
 import { genEndDateWhere, genRangeWhere, genStartDateWhere, genWhere } from '../utils/genWhere';
 import { idGenerator } from '../utils/idGenerator';
@@ -108,9 +108,9 @@ export interface ListTopicsForMemoryExtractorCursor {
 
 export class TopicModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

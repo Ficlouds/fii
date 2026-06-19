@@ -9,7 +9,7 @@ import {
   LINEAR_TOOL_NAMES,
   parseToolName,
   staticLabelFor,
-} from '@lobechat/shared-tool-ui/inspectors/linear-labels';
+} from '@ficlouds/shared-tool-ui/inspectors/linear-labels';
 
 export {
   capitalize,
@@ -17,7 +17,7 @@ export {
   type ParsedTool,
   parseToolName,
   staticLabelFor,
-} from '@lobechat/shared-tool-ui/inspectors/linear-labels';
+} from '@ficlouds/shared-tool-ui/inspectors/linear-labels';
 
 // Re-exported under the historical CC-flavoured name so existing imports
 // (`import { LINEAR_MCP_TOOL_NAMES } from './linearMcpLabels'`) keep working.

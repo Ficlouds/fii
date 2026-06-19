@@ -1,7 +1,7 @@
 'use client';
 
 import { SiDiscord, SiGithub, SiRss, SiX, SiYoutube } from '@icons-pack/react-simple-icons';
-import { BRANDING_EMAIL, BRANDING_NAME, SOCIAL_URL } from '@lobechat/business-const';
+import { BRANDING_EMAIL, BRANDING_NAME, SOCIAL_URL } from '@ficlouds/business-const';
 import { Flexbox, Form } from '@lobehub/ui';
 import { Divider } from 'antd';
 import { createStaticStyles } from 'antd-style';

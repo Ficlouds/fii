@@ -3,7 +3,7 @@ import {
   LOBEHUB_SKILL_PROVIDERS,
   RECOMMENDED_SKILLS,
   RecommendedSkillType,
-} from '@lobechat/const';
+} from '@ficlouds/const';
 import type { ItemType } from '@lobehub/ui';
 import { Avatar, Icon, Popover, SearchBar, stopPropagation, Tag, Tooltip } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';
@@ -40,18 +40,18 @@ import {
   agentSkillsSelectors,
   builtinToolSelectors,
   klavisStoreSelectors,
-  lobehubSkillStoreSelectors,
+  fiSkillStoreSelectors,
   pluginSelectors,
 } from '@/store/tool/selectors';
 import { KlavisServerStatus } from '@/store/tool/slices/klavisStore';
-import { LobehubSkillStatus } from '@/store/tool/slices/lobehubSkillStore/types';
+import { FiSkillStatus } from '@/store/tool/slices/fiSkillStore/types';
 
 import { useAgentId } from '../../hooks/useAgentId';
 import { useUpdateAgentConfig } from '../../hooks/useUpdateAgentConfig';
 import KlavisServerItem from './KlavisServerItem';
 import KlavisSkillIcon from './KlavisSkillIcon';
-import LobehubSkillIcon from './LobehubSkillIcon';
-import LobehubSkillServerItem from './LobehubSkillServerItem';
+import FiSkillIcon from './FiSkillIcon';
+import FiSkillServerItem from './FiSkillServerItem';
 import MarketAgentSkillPopoverContent from './MarketAgentSkillPopoverContent';
 import MarketSkillIcon from './MarketSkillIcon';
 import ToolItem from './ToolItem';
@@ -61,7 +61,7 @@ const SKILL_ICON_SIZE = 18;
 const CLOSE_TOOL_DETAIL_POPOVER_EVENT = 'lobe-chat-tool-detail-popover-close';
 
 const officialTag = (
-  <Tooltip placement={'top'} title={'LobeHub'}>
+  <Tooltip placement={'top'} title={'Fi'}>
     <Tag color={'success'} icon={<Icon icon={BadgeCheck} />} size={'small'} />
   </Tooltip>
 );
@@ -658,9 +658,9 @@ export const useControls = () => {
   const allKlavisServers = useToolStore(klavisStoreSelectors.getServers, isEqual);
   const isKlavisEnabledInEnv = useServerConfigStore(serverConfigSelectors.enableKlavis);
 
-  // LobeHub Skill related state
-  const allLobehubSkillServers = useToolStore(lobehubSkillStoreSelectors.getServers, isEqual);
-  const isLobehubSkillEnabled = useServerConfigStore(serverConfigSelectors.enableLobehubSkill);
+  // Fi Skill related state
+  const allFiSkillServers = useToolStore(fiSkillStoreSelectors.getServers, isEqual);
+  const isFiSkillEnabled = useServerConfigStore(serverConfigSelectors.enableFiSkill);
 
   // Agent Skills related state
   const installedBuiltinSkills = useToolStore(builtinToolSelectors.installedBuiltinSkills, isEqual);
@@ -669,12 +669,12 @@ export const useControls = () => {
 
   const [
     useFetchUserKlavisServers,
-    useFetchLobehubSkillConnections,
+    useFetchFiSkillConnections,
     useFetchUninstalledBuiltinTools,
     useFetchAgentSkills,
   ] = useToolStore((s) => [
     s.useFetchUserKlavisServers,
-    s.useFetchLobehubSkillConnections,
+    s.useFetchFiSkillConnections,
     s.useFetchUninstalledBuiltinTools,
     s.useFetchAgentSkills,
   ]);
@@ -687,8 +687,8 @@ export const useControls = () => {
   // Load user's Klavis integrations via SWR (from database)
   useFetchUserKlavisServers(isKlavisEnabledInEnv);
 
-  // Load user's LobeHub Skill connections via SWR
-  useFetchLobehubSkillConnections(isLobehubSkillEnabled);
+  // Load user's Fi Skill connections via SWR
+  useFetchFiSkillConnections(isFiSkillEnabled);
 
   // Get connected server by identifier
   const getServerByName = useCallback(
@@ -748,8 +748,8 @@ export const useControls = () => {
 
   // Get installed Lobehub skill IDs
   const installedLobehubIds = useMemo(
-    () => new Set(allLobehubSkillServers.map((s) => s.identifier)),
-    [allLobehubSkillServers],
+    () => new Set(allFiSkillServers.map((s) => s.identifier)),
+    [allFiSkillServers],
   );
 
   // Klavis server list items - only show installed or recommended
@@ -783,7 +783,7 @@ export const useControls = () => {
                   displayName: type.label,
                   onDelete: () => removeKlavisServer(server.identifier),
                 },
-                extraTag: type.author === 'LobeHub' ? officialTag : undefined,
+                extraTag: type.author === 'Fi' ? officialTag : undefined,
                 icon,
                 id: server.identifier,
                 popoverContent,
@@ -821,17 +821,17 @@ export const useControls = () => {
     ],
   );
 
-  // LobeHub Skill Provider list items - only show installed or recommended
-  const lobehubSkillItems = useMemo(
+  // Fi Skill Provider list items - only show installed or recommended
+  const fiSkillItems = useMemo(
     () =>
-      isLobehubSkillEnabled
+      isFiSkillEnabled
         ? LOBEHUB_SKILL_PROVIDERS.filter(
             (provider) =>
               installedLobehubIds.has(provider.id) || recommendedLobehubIds.has(provider.id),
           ).map((provider) => {
-            const server = allLobehubSkillServers.find((s) => s.identifier === provider.id);
+            const server = allFiSkillServers.find((s) => s.identifier === provider.id);
             const icon = (
-              <LobehubSkillIcon
+              <FiSkillIcon
                 icon={provider.icon}
                 label={provider.label}
                 size={SKILL_ICON_SIZE}
@@ -839,20 +839,20 @@ export const useControls = () => {
             );
             const popoverContent = (
               <ToolItemDetailPopover
-                icon={<LobehubSkillIcon icon={provider.icon} label={provider.label} size={36} />}
+                icon={<FiSkillIcon icon={provider.icon} label={provider.label} size={36} />}
                 identifier={provider.id}
                 sourceLabel={provider.author}
                 title={provider.label}
-                description={t(`tools.lobehubSkill.providers.${provider.id}.description` as any, {
+                description={t(`tools.fiSkill.providers.${provider.id}.description` as any, {
                   defaultValue: provider.description,
                 })}
               />
             );
 
-            if (server?.status === LobehubSkillStatus.CONNECTED || server?.isConnected) {
+            if (server?.status === FiSkillStatus.CONNECTED || server?.isConnected) {
               return createManagedSkillItem({
                 badge: <Icon icon={McpIcon} size={12} />,
-                extraTag: provider.author === 'LobeHub' ? officialTag : undefined,
+                extraTag: provider.author === 'Fi' ? officialTag : undefined,
                 icon,
                 id: server.identifier,
                 popoverContent,
@@ -865,7 +865,7 @@ export const useControls = () => {
               icon,
               key: provider.id, // Use provider.id as key, consistent with pluginId
               label: (
-                <LobehubSkillServerItem
+                <FiSkillServerItem
                   agentId={agentId}
                   label={provider.label}
                   provider={provider.id}
@@ -877,8 +877,8 @@ export const useControls = () => {
           })
         : [],
     [
-      isLobehubSkillEnabled,
-      allLobehubSkillServers,
+      isFiSkillEnabled,
+      allFiSkillServers,
       installedLobehubIds,
       recommendedLobehubIds,
       agentId,
@@ -887,7 +887,7 @@ export const useControls = () => {
     ],
   );
 
-  // Builtin tool list items (excluding Klavis and LobeHub Skill)
+  // Builtin tool list items (excluding Klavis and Fi Skill)
   const builtinItems = useMemo(
     () =>
       filteredBuiltinList.map((item) => {
@@ -939,7 +939,7 @@ export const useControls = () => {
     [filteredBuiltinList, t, createManagedSkillItem, uninstallBuiltinTool],
   );
 
-  // Builtin Agent Skills list items (grouped under LobeHub)
+  // Builtin Agent Skills list items (grouped under Fi)
   const builtinAgentSkillItems = useMemo(
     () =>
       installedBuiltinSkills.map((skill) => {
@@ -1050,15 +1050,15 @@ export const useControls = () => {
     [userAgentSkills, t, createManagedSkillItem, deleteAgentSkill],
   );
 
-  // Skills list items (including LobeHub Skill and Klavis)
-  // Connected items listed first, deduplicated by key (LobeHub takes priority)
+  // Skills list items (including Fi Skill and Klavis)
+  // Connected items listed first, deduplicated by key (Fi takes priority)
   const skillItems = useMemo(() => {
-    // Deduplicate by key - LobeHub items take priority over Klavis
+    // Deduplicate by key - Fi items take priority over Klavis
     const seenKeys = new Set<string>();
-    const allItems: typeof lobehubSkillItems = [];
+    const allItems: typeof fiSkillItems = [];
 
-    // Add LobeHub items first (they take priority)
-    for (const item of lobehubSkillItems) {
+    // Add Fi items first (they take priority)
+    for (const item of fiSkillItems) {
       if (!seenKeys.has(item.key as string)) {
         seenKeys.add(item.key as string);
         allItems.push(item);
@@ -1083,7 +1083,7 @@ export const useControls = () => {
       if (!isConnectedA && isConnectedB) return 1;
       return 0;
     });
-  }, [lobehubSkillItems, klavisServerItems, installedLobehubIds, installedKlavisIds]);
+  }, [fiSkillItems, klavisServerItems, installedLobehubIds, installedKlavisIds]);
 
   // Distinguish community plugins and custom plugins
   const communityPlugins = list.filter((item) => item.type !== 'customPlugin');
@@ -1133,7 +1133,7 @@ export const useControls = () => {
         <Tag color={'warning'} icon={<Icon icon={Package} />} size={'small'}>
           {t('store.customPlugin', { ns: 'plugin' })}
         </Tag>
-      ) : item.author === 'LobeHub' ? (
+      ) : item.author === 'Fi' ? (
         officialTag
       ) : undefined,
       icon,
@@ -1144,13 +1144,13 @@ export const useControls = () => {
     });
   };
 
-  // Build LobeHub group children (including Builtin Agent Skills, builtin tools, and LobeHub Skill/Klavis)
-  const lobehubGroupChildren: ItemType[] = [
+  // Build Fi group children (including Builtin Agent Skills, builtin tools, and Fi Skill/Klavis)
+  const fiGroupChildren: ItemType[] = [
     // 1. Builtin Agent Skills
     ...builtinAgentSkillItems,
     // 2. Builtin tools
     ...builtinItems,
-    // 3. LobeHub Skill and Klavis (as builtin skills)
+    // 3. Fi Skill and Klavis (as builtin skills)
     ...skillItems,
   ];
 
@@ -1168,7 +1168,7 @@ export const useControls = () => {
 
   const normalizedSearchKeyword = searchKeyword.trim().toLowerCase();
   const allSkillItems = [
-    ...lobehubGroupChildren,
+    ...fiGroupChildren,
     ...communityGroupChildren,
     ...customGroupChildren,
   ].filter(
@@ -1389,13 +1389,13 @@ export const useControls = () => {
       checked.includes(item.key as string),
     );
 
-    // Connected LobeHub Skill Providers
-    const connectedLobehubSkillItems = lobehubSkillItems.filter((item) =>
+    // Connected Fi Skill Providers
+    const connectedFiSkillItems = fiSkillItems.filter((item) =>
       checked.includes(item.key as string),
     );
 
-    // Merge enabled LobeHub Skill and Klavis (as builtin skills)
-    const enabledSkillItems = [...connectedLobehubSkillItems, ...connectedKlavisItems];
+    // Merge enabled Fi Skill and Klavis (as builtin skills)
+    const enabledSkillItems = [...connectedFiSkillItems, ...connectedKlavisItems];
 
     // Enabled Builtin Agent Skills
     const enabledBuiltinAgentSkillItems = installedBuiltinSkills
@@ -1443,7 +1443,7 @@ export const useControls = () => {
         ),
       }));
 
-    // Build builtin tools group children (including Builtin Agent Skills, builtin tools, and LobeHub Skill/Klavis)
+    // Build builtin tools group children (including Builtin Agent Skills, builtin tools, and Fi Skill/Klavis)
     const allBuiltinItems: ItemType[] = [
       // 1. Builtin Agent Skills
       ...enabledBuiltinAgentSkillItems,
@@ -1453,7 +1453,7 @@ export const useControls = () => {
       ...(enabledBuiltinItems.length > 0 && enabledSkillItems.length > 0
         ? [{ key: 'installed-divider-builtin-skill', type: 'divider' as const }]
         : []),
-      // 4. LobeHub Skill and Klavis
+      // 4. Fi Skill and Klavis
       ...enabledSkillItems,
     ];
 
@@ -1642,7 +1642,7 @@ export const useControls = () => {
     communityPlugins,
     customPlugins,
     klavisServerItems,
-    lobehubSkillItems,
+    fiSkillItems,
     checked,
     togglePlugin,
     t,

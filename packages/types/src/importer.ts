@@ -1,4 +1,4 @@
-import type { LobeAgentConfig } from './agent';
+import type { FiAgentConfig } from './agent';
 import type {
   ChatMessageError,
   ChatPluginPayload,
@@ -11,7 +11,7 @@ import type { MetaData } from './meta';
 import type { SessionGroupId } from './session';
 
 export interface ImportSession {
-  config: LobeAgentConfig;
+  config: FiAgentConfig;
   createdAt: string;
   group?: SessionGroupId;
   id: string;

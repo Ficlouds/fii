@@ -1,6 +1,6 @@
 'use client';
 
-import { DESKTOP_HEADER_ICON_SMALL_SIZE } from '@lobechat/const';
+import { DESKTOP_HEADER_ICON_SMALL_SIZE } from '@ficlouds/const';
 import { ActionIcon, Flexbox } from '@lobehub/ui';
 import { ArrowLeft, X } from 'lucide-react';
 import { Fragment, type ReactNode } from 'react';

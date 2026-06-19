@@ -5,8 +5,8 @@ import type {
   KillCommandResult,
   RunCommandParams,
   RunCommandResult,
-} from '@lobechat/electron-client-ipc';
-import { runCommand, ShellProcessManager } from '@lobechat/local-file-shell';
+} from '@ficlouds/electron-client-ipc';
+import { runCommand, ShellProcessManager } from '@ficlouds/local-file-shell';
 
 import { createLogger } from '@/utils/logger';
 

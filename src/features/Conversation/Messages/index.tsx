@@ -1,6 +1,6 @@
 'use client';
 
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { Flexbox } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
 import isEqual from 'fast-deep-equal';

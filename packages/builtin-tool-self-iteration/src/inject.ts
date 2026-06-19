@@ -1,4 +1,4 @@
-import type { LobeToolManifest, OperationToolSet, ToolSource } from '@lobechat/context-engine';
+import type { FiToolManifest, OperationToolSet, ToolSource } from '@ficlouds/context-engine';
 
 import { selfFeedbackIntentManifest } from './manifest';
 import type { ShouldExposeSelfFeedbackIntentToolOptions } from './types';
@@ -9,7 +9,7 @@ export interface SelfFeedbackIntentToolSetParts {
   /** Enabled tool identifiers persisted with the operation. */
   enabledToolIds: string[];
   /** Manifest map persisted with the operation. */
-  manifestMap: Record<string, LobeToolManifest>;
+  manifestMap: Record<string, FiToolManifest>;
   /** Source map persisted with the operation. */
   sourceMap: Record<string, ToolSource>;
   /** LLM-visible function tools for the operation. */

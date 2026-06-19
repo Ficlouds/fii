@@ -1,4 +1,4 @@
-import { type UserMemoryEffort } from '@lobechat/types';
+import { type UserMemoryEffort } from '@ficlouds/types';
 import { Center, Flexbox, Icon } from '@lobehub/ui';
 import { BrainOffIcon } from '@lobehub/ui/icons';
 import { Divider } from 'antd';

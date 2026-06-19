@@ -7,15 +7,15 @@ import {
   formatTaskEdited,
   formatTaskList,
   priorityLabel,
-} from '@lobechat/prompts';
+} from '@ficlouds/prompts';
 import type {
   BuiltinToolContext,
   BuiltinToolResult,
   TaskAutomationMode,
   TaskStatus,
   ToolAfterCallContext,
-} from '@lobechat/types';
-import { BaseExecutor } from '@lobechat/types';
+} from '@ficlouds/types';
+import { BaseExecutor } from '@ficlouds/types';
 import debug from 'debug';
 
 import { taskService } from '@/services/task';

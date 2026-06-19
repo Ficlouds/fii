@@ -13,7 +13,7 @@ vi.mock('../../utils/withTimeout', () => ({
   withTimeout: vi.fn(),
 }));
 
-vi.mock('@lobechat/ssrf-safe-fetch', () => ({
+vi.mock('@ficlouds/ssrf-safe-fetch', () => ({
   ssrfSafeFetch: vi.fn(),
 }));
 

@@ -18,7 +18,7 @@ interface PluginInstallConfirmModalProps {
 const getPluginSource = (request: McpInstallRequest): PluginSource => {
   const { marketId } = request;
 
-  // Official LobeHub plugin
+  // Official Fi plugin
   if (marketId === 'lobehub') {
     return PluginSource.OFFICIAL;
   }

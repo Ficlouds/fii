@@ -99,7 +99,7 @@ function buildRepoSetupScript(repos: string[], githubToken?: string): string | n
  * Uses the same MarketService path as ServerSandboxService.callTool —
  * `marketService.getSDK().plugins.runBuildInTool('runCommand', params, ctx)`.
  *
- * The sandbox container already has `lh` (the LobeHub CLI) installed.
+ * The sandbox container already has `lh` (the Fi CLI) installed.
  * The operation-scoped JWT is injected as `LOBEHUB_JWT` so the CLI can
  * authenticate against `heteroIngest` / `heteroFinish` without user creds.
  *

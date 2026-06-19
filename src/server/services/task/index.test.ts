@@ -6,7 +6,7 @@ import { BriefModel } from '@/database/models/brief';
 import { TaskModel } from '@/database/models/task';
 import { TaskTopicModel } from '@/database/models/taskTopic';
 import { UserModel } from '@/database/models/user';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { BriefService } from '@/server/services/brief';
 
 import { TaskService } from './index';
@@ -40,7 +40,7 @@ vi.mock('@/server/services/aiAgent', () => ({
 }));
 
 describe('TaskService', () => {
-  const db = {} as LobeChatDatabase;
+  const db = {} as FiDatabase;
   const userId = 'user-1';
 
   const mockAgentModel = {

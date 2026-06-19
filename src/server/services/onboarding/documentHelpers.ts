@@ -1,5 +1,5 @@
-import { SOUL_DOCUMENT } from '@lobechat/agent-templates';
-import type { UserAgentOnboarding } from '@lobechat/types';
+import { SOUL_DOCUMENT } from '@ficlouds/agent-templates';
+import type { UserAgentOnboarding } from '@ficlouds/types';
 
 interface AgentIdentityInput {
   emoji: string;

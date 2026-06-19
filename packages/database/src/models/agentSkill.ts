@@ -1,10 +1,10 @@
-import type { SkillItem, SkillListItem } from '@lobechat/types';
-import { merge } from '@lobechat/utils';
+import type { SkillItem, SkillListItem } from '@ficlouds/types';
+import { merge } from '@ficlouds/utils';
 import { and, desc, eq, ilike, inArray, or } from 'drizzle-orm';
 
 import type {NewAgentSkill } from '../schemas';
 import { agentSkills } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 const skillItemColumns = {
   content: agentSkills.content,
@@ -35,9 +35,9 @@ const skillListColumns = {
 
 export class AgentSkillModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

@@ -1,6 +1,6 @@
 'use client';
 
-import { BRANDING_EMAIL } from '@lobechat/business-const';
+import { BRANDING_EMAIL } from '@ficlouds/business-const';
 import { Button, Flexbox, Icon, Modal } from '@lobehub/ui';
 import { App, Form, Input, Upload } from 'antd';
 import { ImagePlus, Send } from 'lucide-react';

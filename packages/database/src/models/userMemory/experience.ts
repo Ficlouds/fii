@@ -1,17 +1,17 @@
-import type { ExperienceListParams, ExperienceListResult } from '@lobechat/types';
+import type { ExperienceListParams, ExperienceListResult } from '@ficlouds/types';
 import type { SQL } from 'drizzle-orm';
 import { and, asc, desc, eq, inArray, or, sql } from 'drizzle-orm';
 
 import type { NewUserMemoryExperience, UserMemoryExperience } from '../../schemas';
 import { userMemories, userMemoriesExperiences } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { normalizeBm25MatchQuery, SAFE_BM25_QUERY_OPTIONS } from '../../utils/bm25';
 
 export class UserMemoryExperienceModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

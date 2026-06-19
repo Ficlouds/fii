@@ -1,10 +1,10 @@
-import { CLAUDE_CODE_BASE_ARGS } from '@lobechat/heterogeneous-agents/spawn';
+import { CLAUDE_CODE_BASE_ARGS } from '@ficlouds/heterogeneous-agents/spawn';
 
 import type { HeterogeneousAgentBuildPlanParams, HeterogeneousAgentDriver } from '../types';
 
 // Desktop runs CC as the user (never root, so bypassPermissions is fine) and
 // renders the chat bubble live, so it always wants partial deltas. Compose
-// the shared invariant base args (`@lobechat/heterogeneous-agents/spawn`)
+// the shared invariant base args (`@ficlouds/heterogeneous-agents/spawn`)
 // with those caller-specific flags.
 const DESKTOP_CLAUDE_CODE_ARGS = [
   ...CLAUDE_CODE_BASE_ARGS,

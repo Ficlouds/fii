@@ -1,14 +1,14 @@
-import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@lobechat/const';
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
-import { tracer } from '@lobechat/observability-otel/modules/agent-signal';
-import { pickTrimmedString, toRecord } from '@lobechat/utils';
+import { DEFAULT_MINI_SYSTEM_AGENT_ITEM } from '@ficlouds/const';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
+import { tracer } from '@ficlouds/observability-otel/modules/agent-signal';
+import { pickTrimmedString, toRecord } from '@ficlouds/utils';
 
 import { AgentSignalNightlyReviewModel } from '@/database/models/agentSignal/nightlyReview';
 import { AgentSignalReviewContextModel } from '@/database/models/agentSignal/reviewContext';
 import { BriefModel } from '@/database/models/brief';
 import { UserModel } from '@/database/models/user';
 import type { BriefItem } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 import { AGENT_SIGNAL_DEFAULTS } from '@/server/services/agentSignal/constants';
 import { isAgentSignalEnabledForUser } from '@/server/services/agentSignal/featureGate';
@@ -564,7 +564,7 @@ export const createServerToolSet = ({
   context: Parameters<
     CreateNightlyReviewSourceHandlerDependencies['runSelfReviewAgent']
   >[0]['context'];
-  db: LobeChatDatabase;
+  db: FiDatabase;
   localDate: string;
   proposalBriefWriter: ReturnType<typeof createServerSelfReviewBriefWriter>;
   skillDocumentService: SkillManagementDocumentService;

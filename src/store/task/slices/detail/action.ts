@@ -1,4 +1,4 @@
-import type { TaskDetailData } from '@lobechat/types';
+import type { TaskDetailData } from '@ficlouds/types';
 import isEqual from 'fast-deep-equal';
 import { t } from 'i18next';
 

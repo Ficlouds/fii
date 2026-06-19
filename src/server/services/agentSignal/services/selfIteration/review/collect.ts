@@ -1,6 +1,6 @@
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
-import { tracer } from '@lobechat/observability-otel/modules/agent-signal';
-import { pickString, toRecord } from '@lobechat/utils';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
+import { tracer } from '@ficlouds/observability-otel/modules/agent-signal';
+import { pickString, toRecord } from '@ficlouds/utils';
 
 import type { AgentSignalDocumentActivityRow } from '@/database/models/agentSignal/reviewContext';
 

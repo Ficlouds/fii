@@ -1,5 +1,5 @@
 {
-  "name": "@lobechat/builtin-tool-agent-documents",
+  "name": "@ficlouds/builtin-tool-agent-documents",
   "version": "1.0.0",
   "private": true,
   "exports": {
@@ -10,10 +10,10 @@
   },
   "main": "./src/index.ts",
   "devDependencies": {
-    "@lobechat/types": "workspace:*"
+    "@ficlouds/types": "workspace:*"
   },
   "peerDependencies": {
-    "@lobehub/ui": "^5",
+    "@ficlouds/ui": "^5",
     "antd": "^6",
     "antd-style": "*",
     "lucide-react": "*",

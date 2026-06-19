@@ -1,4 +1,4 @@
-import type { LobeAgentChatConfig } from '@lobechat/types';
+import type { FiAgentChatConfig } from '@ficlouds/types';
 import type { ExtendParamsType } from 'model-bank';
 
 import { aiModelSelectors, getAiInfraStoreState } from '@/store/aiInfra';
@@ -7,7 +7,7 @@ import { aiModelSelectors, getAiInfraStoreState } from '@/store/aiInfra';
  * Context for resolving model parameters
  */
 export interface ModelParamsContext {
-  chatConfig: LobeAgentChatConfig;
+  chatConfig: FiAgentChatConfig;
   model: string;
   provider: string;
 }
@@ -38,7 +38,7 @@ type ThinkingLevelExtendParam =
   | 'thinkingLevel3'
   | 'thinkingLevel4';
 
-type ThinkingLevelValue = NonNullable<LobeAgentChatConfig['thinkingLevel']>;
+type ThinkingLevelValue = NonNullable<FiAgentChatConfig['thinkingLevel']>;
 
 const DEFAULT_THINKING_LEVEL_BY_EXTEND_PARAM = {
   thinkingLevel: 'high',
@@ -66,7 +66,7 @@ const MODEL_THINKING_LEVEL_DEFAULTS: Partial<
  * Without this fallback, an old `thinking: 'enabled'` or `thinking: 'disabled'`
  * setting would be treated as unset by models that now expose the `enableReasoning` switch.
  */
-const resolveEnableReasoningValue = (chatConfig: LobeAgentChatConfig): boolean | undefined => {
+const resolveEnableReasoningValue = (chatConfig: FiAgentChatConfig): boolean | undefined => {
   if (Object.hasOwn(chatConfig, 'enableReasoning')) return chatConfig.enableReasoning;
 
   if (chatConfig.thinking === 'enabled') return true;

@@ -1,4 +1,4 @@
-import { FILE_URL } from '@lobechat/business-const';
+import { FILE_URL } from '@ficlouds/business-const';
 import { Notion } from '@lobehub/icons';
 import { Center, FileTypeIcon, Flexbox, Icon, Text } from '@lobehub/ui';
 import { Upload } from 'antd';

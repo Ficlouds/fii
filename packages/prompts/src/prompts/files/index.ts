@@ -1,4 +1,4 @@
-import type { ChatFileItem, ChatImageItem, ChatVideoItem } from '@lobechat/types';
+import type { ChatFileItem, ChatImageItem, ChatVideoItem } from '@ficlouds/types';
 
 import { filePrompts } from './file';
 import { imagesPrompts } from './image';

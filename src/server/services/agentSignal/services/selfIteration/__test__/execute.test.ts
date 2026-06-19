@@ -1,8 +1,8 @@
 // @vitest-environment node
-import type { ChatMethodOptions, ChatStreamPayload, ModelRuntime } from '@lobechat/model-runtime';
-import type * as ModelRuntimeModule from '@lobechat/model-runtime';
-import { consumeStreamUntilDone } from '@lobechat/model-runtime';
-import type { MessageToolCall, ModelUsage } from '@lobechat/types';
+import type { ChatMethodOptions, ChatStreamPayload, ModelRuntime } from '@ficlouds/model-runtime';
+import type * as ModelRuntimeModule from '@ficlouds/model-runtime';
+import { consumeStreamUntilDone } from '@ficlouds/model-runtime';
+import type { MessageToolCall, ModelUsage } from '@ficlouds/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { AgentRunResult } from '../execute';
@@ -12,7 +12,7 @@ import type { ToolSet, ToolWriteResult } from '../tools/shared';
 import { createToolSet } from '../tools/shared';
 import { ActionStatus, ApplyMode, ReviewRunStatus, Risk, Scope } from '../types';
 
-vi.mock('@lobechat/model-runtime', async (importOriginal) => {
+vi.mock('@ficlouds/model-runtime', async (importOriginal) => {
   const actual = await importOriginal<typeof ModelRuntimeModule>();
 
   return {

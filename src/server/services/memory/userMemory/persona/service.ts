@@ -1,15 +1,15 @@
 import {
   type UserPersonaDocument,
   type UserPersonaDocumentHistoriesItem,
-} from '@lobechat/database/schemas';
-import { userMemories } from '@lobechat/database/schemas';
-import { type UserPersonaExtractionResult } from '@lobechat/memory-user-memory';
+} from '@ficlouds/database/schemas';
+import { userMemories } from '@ficlouds/database/schemas';
+import { type UserPersonaExtractionResult } from '@ficlouds/memory-user-memory';
 import {
   RetrievalUserMemoryContextProvider,
   RetrievalUserMemoryIdentitiesProvider,
   UserPersonaExtractor,
-} from '@lobechat/memory-user-memory';
-import type { UserServiceModelConfig } from '@lobechat/types';
+} from '@ficlouds/memory-user-memory';
+import type { UserServiceModelConfig } from '@ficlouds/types';
 import { desc, eq } from 'drizzle-orm';
 
 import { getBusinessModelRuntimeHooks } from '@/business/server/model-runtime';
@@ -17,7 +17,7 @@ import { UserModel } from '@/database/models/user';
 import { UserMemoryModel } from '@/database/models/userMemory';
 import { UserPersonaModel } from '@/database/models/userMemory/persona';
 import { AiInfraRepos } from '@/database/repositories/aiInfra';
-import { type LobeChatDatabase } from '@/database/type';
+import { type FiDatabase } from '@/database/type';
 import { type MemoryAgentConfig } from '@/server/globalConfig/parseMemoryExtractionConfig';
 import { parseMemoryExtractionConfig } from '@/server/globalConfig/parseMemoryExtractionConfig';
 import { KeyVaultsGateKeeper } from '@/server/modules/KeyVaultsEncrypt';
@@ -59,10 +59,10 @@ const normalizeProvider = (provider: string) => provider.toLowerCase();
 
 export class UserPersonaService {
   private readonly preferredLanguage?: string;
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly agentConfig: MemoryAgentConfig;
 
-  constructor(db: LobeChatDatabase) {
+  constructor(db: FiDatabase) {
     const { agentPersonaWriter } = parseMemoryExtractionConfig();
 
     this.db = db;
@@ -167,7 +167,7 @@ export class UserPersonaService {
   }
 }
 
-export const buildUserPersonaJobInput = async (db: LobeChatDatabase, userId: string) => {
+export const buildUserPersonaJobInput = async (db: FiDatabase, userId: string) => {
   const personaModel = new UserPersonaModel(db, userId);
   const latestPersona = await personaModel.getLatestPersonaDocument();
   const { agentPersonaWriter } = parseMemoryExtractionConfig();

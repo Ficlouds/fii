@@ -1,7 +1,7 @@
-import type * as businessConstModule from '@lobechat/business-const';
-import { HeterogeneousAgentSessionErrorCode } from '@lobechat/electron-client-ipc';
-import type * as modelRuntimeModule from '@lobechat/model-runtime';
-import type * as lobechatTypesModule from '@lobechat/types';
+import type * as businessConstModule from '@ficlouds/business-const';
+import { HeterogeneousAgentSessionErrorCode } from '@ficlouds/electron-client-ipc';
+import type * as modelRuntimeModule from '@ficlouds/model-runtime';
+import type * as lobechatTypesModule from '@ficlouds/types';
 import type * as lobehubUiModule from '@lobehub/ui';
 import { render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
@@ -11,7 +11,7 @@ import ErrorMessageExtra from './index';
 
 const navigateMock = vi.fn();
 
-vi.mock('@lobechat/business-const', async (importOriginal) => {
+vi.mock('@ficlouds/business-const', async (importOriginal) => {
   const actual = (await importOriginal()) as typeof businessConstModule;
 
   return {
@@ -20,7 +20,7 @@ vi.mock('@lobechat/business-const', async (importOriginal) => {
   };
 });
 
-vi.mock('@lobechat/model-runtime', async (importOriginal) => {
+vi.mock('@ficlouds/model-runtime', async (importOriginal) => {
   const actual = (await importOriginal()) as typeof modelRuntimeModule;
 
   return {
@@ -32,7 +32,7 @@ vi.mock('@lobechat/model-runtime', async (importOriginal) => {
   };
 });
 
-vi.mock('@lobechat/types', async (importOriginal) => {
+vi.mock('@ficlouds/types', async (importOriginal) => {
   const actual = (await importOriginal()) as typeof lobechatTypesModule;
 
   return {

@@ -7,7 +7,7 @@ import type {
   NewAgentOperation,
 } from '../schemas/agentOperations';
 import { agentOperations } from '../schemas/agentOperations';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export interface RecordOperationStartParams {
   agentId?: string | null;
@@ -52,10 +52,10 @@ export interface RecordOperationCompletionParams {
 }
 
 export class AgentOperationModel {
-  private readonly db: LobeChatDatabase;
+  private readonly db: FiDatabase;
   private readonly userId: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
   }

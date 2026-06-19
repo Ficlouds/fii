@@ -1,4 +1,4 @@
-import { nanoid } from '@lobechat/utils';
+import { nanoid } from '@ficlouds/utils';
 
 import { type Operation, type OperationType } from '@/store/chat/slices/operation/types';
 

@@ -1,5 +1,5 @@
-import type { OnboardingUserInfo } from '@lobechat/context-engine';
-import { type MarkdownPatchHunk } from '@lobechat/markdown-patch';
+import type { OnboardingUserInfo } from '@ficlouds/context-engine';
+import { type MarkdownPatchHunk } from '@ficlouds/markdown-patch';
 import { type PartialDeep } from 'type-fest';
 
 import { lambdaClient } from '@/libs/trpc/client';

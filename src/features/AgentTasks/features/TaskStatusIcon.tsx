@@ -1,4 +1,4 @@
-import type { TaskStatus } from '@lobechat/types';
+import type { TaskStatus } from '@ficlouds/types';
 import { ActionIcon } from '@lobehub/ui';
 import { cssVar } from 'antd-style';
 import type { LucideIcon } from 'lucide-react';

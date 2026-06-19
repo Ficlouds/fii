@@ -7,7 +7,7 @@ import { chatGroups, chatGroupsAgents } from '../../schemas/chatGroup';
 import { agentsToSessions } from '../../schemas/relations';
 import { sessionGroups, sessions } from '../../schemas/session';
 import { users } from '../../schemas/user';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { HomeRepository } from './index';
 
 const userId = 'home-test-user';
@@ -15,7 +15,7 @@ const otherUserId = 'other-home-user';
 
 let homeRepo: HomeRepository;
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 beforeEach(async () => {
   // Clean up

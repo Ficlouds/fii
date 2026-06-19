@@ -1,4 +1,4 @@
-import { KeyEnum } from '@lobechat/const/hotkeys';
+import { KeyEnum } from '@ficlouds/const/hotkeys';
 import { combineKeys, Flexbox, Hotkey } from '@lobehub/ui';
 import { memo, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';

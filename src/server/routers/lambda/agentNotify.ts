@@ -1,4 +1,4 @@
-import { RequestTrigger } from '@lobechat/types';
+import { RequestTrigger } from '@ficlouds/types';
 import { TRPCError } from '@trpc/server';
 import debug from 'debug';
 import { z } from 'zod';

@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { Avatar, Flexbox, Text } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
 import { memo } from 'react';

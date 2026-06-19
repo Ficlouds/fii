@@ -1,4 +1,4 @@
-import { WebBrowsingManifest } from '@lobechat/builtin-tool-web-browsing';
+import { WebBrowsingManifest } from '@ficlouds/builtin-tool-web-browsing';
 import { ActionIcon, Flexbox, Icon, Text } from '@lobehub/ui';
 import isEqual from 'fast-deep-equal';
 import { ArrowLeft, Globe } from 'lucide-react';

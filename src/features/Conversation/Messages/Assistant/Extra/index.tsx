@@ -1,6 +1,6 @@
-import { LOADING_FLAT } from '@lobechat/const';
-import { HETEROGENEOUS_TYPE_LABELS } from '@lobechat/heterogeneous-agents';
-import { type ModelPerformance, type ModelUsage } from '@lobechat/types';
+import { LOADING_FLAT } from '@ficlouds/const';
+import { HETEROGENEOUS_TYPE_LABELS } from '@ficlouds/heterogeneous-agents';
+import { type ModelPerformance, type ModelUsage } from '@ficlouds/types';
 import { Flexbox } from '@lobehub/ui';
 import { memo } from 'react';
 

@@ -1,45 +1,45 @@
 import {
   LobeActivatorManifest,
   LobeActivatorRenders,
-} from '@lobechat/builtin-tool-activator/client';
-import { AgentBuilderManifest } from '@lobechat/builtin-tool-agent-builder';
-import { AgentBuilderRenders } from '@lobechat/builtin-tool-agent-builder/client';
-import { AgentDocumentsManifest } from '@lobechat/builtin-tool-agent-documents';
-import { AgentDocumentsRenders } from '@lobechat/builtin-tool-agent-documents/client';
-import { AgentManagementManifest } from '@lobechat/builtin-tool-agent-management';
-import { AgentManagementRenders } from '@lobechat/builtin-tool-agent-management/client';
-import { ClaudeCodeIdentifier, ClaudeCodeRenders } from '@lobechat/builtin-tool-claude-code/client';
-import { CloudSandboxManifest } from '@lobechat/builtin-tool-cloud-sandbox';
-import { CloudSandboxRenders } from '@lobechat/builtin-tool-cloud-sandbox/client';
-import { GroupAgentBuilderManifest } from '@lobechat/builtin-tool-group-agent-builder';
-import { GroupAgentBuilderRenders } from '@lobechat/builtin-tool-group-agent-builder/client';
-import { GroupManagementManifest } from '@lobechat/builtin-tool-group-management';
-import { GroupManagementRenders } from '@lobechat/builtin-tool-group-management/client';
+} from '@ficlouds/builtin-tool-activator/client';
+import { AgentBuilderManifest } from '@ficlouds/builtin-tool-agent-builder';
+import { AgentBuilderRenders } from '@ficlouds/builtin-tool-agent-builder/client';
+import { AgentDocumentsManifest } from '@ficlouds/builtin-tool-agent-documents';
+import { AgentDocumentsRenders } from '@ficlouds/builtin-tool-agent-documents/client';
+import { AgentManagementManifest } from '@ficlouds/builtin-tool-agent-management';
+import { AgentManagementRenders } from '@ficlouds/builtin-tool-agent-management/client';
+import { ClaudeCodeIdentifier, ClaudeCodeRenders } from '@ficlouds/builtin-tool-claude-code/client';
+import { CloudSandboxManifest } from '@ficlouds/builtin-tool-cloud-sandbox';
+import { CloudSandboxRenders } from '@ficlouds/builtin-tool-cloud-sandbox/client';
+import { GroupAgentBuilderManifest } from '@ficlouds/builtin-tool-group-agent-builder';
+import { GroupAgentBuilderRenders } from '@ficlouds/builtin-tool-group-agent-builder/client';
+import { GroupManagementManifest } from '@ficlouds/builtin-tool-group-management';
+import { GroupManagementRenders } from '@ficlouds/builtin-tool-group-management/client';
 import {
   KnowledgeBaseManifest,
   KnowledgeBaseRenders,
-} from '@lobechat/builtin-tool-knowledge-base/client';
-import { LobeAgentManifest, LobeAgentRenders } from '@lobechat/builtin-tool-lobe-agent/client';
+} from '@ficlouds/builtin-tool-knowledge-base/client';
+import { FiAgentManifest, FiAgentRenders } from '@ficlouds/builtin-tool-fi-agent/client';
 import {
   LocalSystemManifest,
   LocalSystemRenders,
-} from '@lobechat/builtin-tool-local-system/client';
-import { MemoryManifest, MemoryRenders } from '@lobechat/builtin-tool-memory/client';
-import { MessageManifest, MessageRenders } from '@lobechat/builtin-tool-message/client';
-import { PageAgentManifest, PageAgentRenders } from '@lobechat/builtin-tool-page-agent/client';
-import { SkillStoreManifest, SkillStoreRenders } from '@lobechat/builtin-tool-skill-store/client';
-import { SkillsManifest, SkillsRenders } from '@lobechat/builtin-tool-skills/client';
-import { TaskManifest, TaskRenders } from '@lobechat/builtin-tool-task/client';
+} from '@ficlouds/builtin-tool-local-system/client';
+import { MemoryManifest, MemoryRenders } from '@ficlouds/builtin-tool-memory/client';
+import { MessageManifest, MessageRenders } from '@ficlouds/builtin-tool-message/client';
+import { PageAgentManifest, PageAgentRenders } from '@ficlouds/builtin-tool-page-agent/client';
+import { SkillStoreManifest, SkillStoreRenders } from '@ficlouds/builtin-tool-skill-store/client';
+import { SkillsManifest, SkillsRenders } from '@ficlouds/builtin-tool-skills/client';
+import { TaskManifest, TaskRenders } from '@ficlouds/builtin-tool-task/client';
 import {
   WebBrowsingManifest,
   WebBrowsingRenders,
-} from '@lobechat/builtin-tool-web-browsing/client';
+} from '@ficlouds/builtin-tool-web-browsing/client';
 import {
   WebOnboardingManifest,
   WebOnboardingRenders,
-} from '@lobechat/builtin-tool-web-onboarding/client';
-import { RunCommandRender } from '@lobechat/shared-tool-ui/renders';
-import { type BuiltinRender } from '@lobechat/types';
+} from '@ficlouds/builtin-tool-web-onboarding/client';
+import { RunCommandRender } from '@ficlouds/shared-tool-ui/renders';
+import { type BuiltinRender } from '@ficlouds/types';
 
 import { CodexRenders } from './codex';
 import { GithubIdentifier, GithubRenders } from './github';
@@ -64,7 +64,7 @@ const BuiltinToolsRenders: Record<string, Record<string, BuiltinRender>> = {
   [GroupAgentBuilderManifest.identifier]: GroupAgentBuilderRenders as Record<string, BuiltinRender>,
   [GroupManagementManifest.identifier]: GroupManagementRenders as Record<string, BuiltinRender>,
   [KnowledgeBaseManifest.identifier]: KnowledgeBaseRenders as Record<string, BuiltinRender>,
-  [LobeAgentManifest.identifier]: LobeAgentRenders as Record<string, BuiltinRender>,
+  [FiAgentManifest.identifier]: FiAgentRenders as Record<string, BuiltinRender>,
   [LocalSystemManifest.identifier]: LocalSystemRenders as Record<string, BuiltinRender>,
   [MemoryManifest.identifier]: MemoryRenders as Record<string, BuiltinRender>,
   [MessageManifest.identifier]: MessageRenders as Record<string, BuiltinRender>,

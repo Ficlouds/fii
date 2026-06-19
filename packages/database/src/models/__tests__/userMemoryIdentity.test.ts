@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { RelationshipEnum } from '@lobechat/types';
+import { RelationshipEnum } from '@ficlouds/types';
 import { eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -8,13 +8,13 @@ import { idGenerator } from '@/database/utils/idGenerator';
 
 import { getTestDB } from '../../core/getTestDB';
 import { userMemoriesIdentities, users } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { UserMemoryIdentityModel } from '../userMemory/identity';
 
 // Helper to generate unique identity IDs
 const genIdentityId = () => `mem_${nanoid(12)}`;
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = idGenerator('user');
 const userId2 = idGenerator('user');

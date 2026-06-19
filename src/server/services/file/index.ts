@@ -1,5 +1,5 @@
-import { type LobeChatDatabase } from '@lobechat/database';
-import { inferContentTypeFromImageUrl, nanoid, uuid } from '@lobechat/utils';
+import { type FiDatabase } from '@ficlouds/database';
+import { inferContentTypeFromImageUrl, nanoid, uuid } from '@ficlouds/utils';
 import { TRPCError } from '@trpc/server';
 import { sha256 } from 'js-sha256';
 
@@ -22,7 +22,7 @@ export class FileService {
 
   private impl: FileServiceImpl;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.fileModel = new FileModel(db, userId);
     this.impl = createFileServiceModule(db);

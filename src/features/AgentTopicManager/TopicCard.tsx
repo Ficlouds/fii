@@ -1,6 +1,6 @@
 'use client';
 
-import { formatPrice, formatTokenNumber } from '@lobechat/utils/format';
+import { formatPrice, formatTokenNumber } from '@ficlouds/utils/format';
 import { Block, Checkbox, Flexbox, Icon, Tag, Text } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { CircleDollarSign, FolderIcon, MessageSquare, Star, Zap } from 'lucide-react';

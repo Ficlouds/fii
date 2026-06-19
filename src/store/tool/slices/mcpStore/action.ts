@@ -1,5 +1,5 @@
-import { CURRENT_VERSION, isDesktop } from '@lobechat/const';
-import { type ToolManifest } from '@lobechat/types';
+import { CURRENT_VERSION, isDesktop } from '@ficlouds/const';
+import { type ToolManifest } from '@ficlouds/types';
 import { type PluginItem, type PluginListResponse } from '@lobehub/market-sdk';
 import { type TRPCClientError } from '@trpc/client';
 import debug from 'debug';
@@ -78,27 +78,27 @@ const buildCloudMcpManifest = (params: {
 
   log('Using cloud connection, building manifest from market data');
 
-  // Get tools (MCP format) or api (LobeChat format) from data
+  // Get tools (MCP format) or api (Fi format) from data
   const mcpTools = data.tools;
   const lobeChatApi = data.api;
 
-  // If MCP format tools, need to convert to LobeChat api format
+  // If MCP format tools, need to convert to Fi api format
   // MCP: { name, description, inputSchema }
-  // LobeChat: { name, description, parameters }
+  // Fi: { name, description, parameters }
   let apiArray: any[] = [];
 
   if (lobeChatApi) {
-    // Already in LobeChat format, use directly
+    // Already in Fi format, use directly
     apiArray = lobeChatApi;
-    log('[Cloud MCP] Using existing LobeChat API format');
+    log('[Cloud MCP] Using existing Fi API format');
   } else if (mcpTools && Array.isArray(mcpTools)) {
-    // Convert MCP tools format to LobeChat api format
+    // Convert MCP tools format to Fi api format
     apiArray = mcpTools.map((tool: any) => ({
       description: tool.description || '',
       name: tool.name,
       parameters: tool.inputSchema || {},
     }));
-    log('[Cloud MCP] Converted %d MCP tools to LobeChat API format', apiArray.length);
+    log('[Cloud MCP] Converted %d MCP tools to Fi API format', apiArray.length);
   } else {
     console.warn('[Cloud MCP] No tools or api found in manifest data');
   }
@@ -234,7 +234,7 @@ export class PluginMCPStoreActionImpl {
     let data: any;
     let result: CheckMcpInstallResult | undefined;
     let connection: any;
-    const userAgent = `LobeHub Desktop/${CURRENT_VERSION}`;
+    const userAgent = `Fi Desktop/${CURRENT_VERSION}`;
 
     try {
       // Check if already cancelled

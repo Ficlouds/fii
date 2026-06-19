@@ -85,7 +85,7 @@ export class LobeReplicateAI implements LobeRuntimeAI {
   }
 
   /**
-   * Image generation support for LobeChat async image generation (FLUX, Stable Diffusion, etc.)
+   * Image generation support for Fi async image generation (FLUX, Stable Diffusion, etc.)
    */
   async createImage(payload: CreateImagePayload) {
     try {
@@ -161,7 +161,7 @@ export class LobeReplicateAI implements LobeRuntimeAI {
             '[Replicate createImage] Local URL detected, will fetch and upload as data',
           );
           try {
-            const { ssrfSafeFetch } = await import('@lobechat/ssrf-safe-fetch');
+            const { ssrfSafeFetch } = await import('@ficlouds/ssrf-safe-fetch');
             const imageResponse = await ssrfSafeFetch(imageUrl);
             if (!imageResponse.ok) {
               throw new Error(
@@ -200,7 +200,7 @@ export class LobeReplicateAI implements LobeRuntimeAI {
         this.debugLog('[Replicate createImage] No imageUrl provided');
       }
 
-      // Map LobeChat params to Replicate params
+      // Map Fi params to Replicate params
       if (width && height) {
         input.width = width;
         input.height = height;

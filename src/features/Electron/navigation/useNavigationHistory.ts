@@ -1,6 +1,6 @@
 'use client';
 
-import { useWatchBroadcast } from '@lobechat/electron-client-ipc';
+import { useWatchBroadcast } from '@ficlouds/electron-client-ipc';
 import { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';

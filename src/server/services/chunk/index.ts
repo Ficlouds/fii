@@ -1,4 +1,4 @@
-import { type LobeChatDatabase } from '@lobechat/database';
+import { type FiDatabase } from '@ficlouds/database';
 
 import { AsyncTaskModel } from '@/database/models/asyncTask';
 import { FileModel } from '@/database/models/file';
@@ -17,7 +17,7 @@ export class ChunkService {
   private fileModel: FileModel;
   private asyncTaskModel: AsyncTaskModel;
 
-  constructor(serverDB: LobeChatDatabase, userId: string) {
+  constructor(serverDB: FiDatabase, userId: string) {
     this.userId = userId;
 
     this.chunkClient = new ContentChunk();

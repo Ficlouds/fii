@@ -1,5 +1,5 @@
-import { getMessageError } from '@lobechat/fetch-sse';
-import { type ChatMessageError, type ChatTTS } from '@lobechat/types';
+import { getMessageError } from '@ficlouds/fetch-sse';
+import { type ChatMessageError, type ChatTTS } from '@ficlouds/types';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

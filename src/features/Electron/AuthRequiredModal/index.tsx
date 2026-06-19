@@ -1,6 +1,6 @@
 'use client';
 
-import { useWatchBroadcast } from '@lobechat/electron-client-ipc';
+import { useWatchBroadcast } from '@ficlouds/electron-client-ipc';
 import { type ModalInstance } from '@lobehub/ui';
 import { Button, createModal, Flexbox, Icon } from '@lobehub/ui';
 import { AlertCircle, LogIn } from 'lucide-react';

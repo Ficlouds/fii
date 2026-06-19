@@ -1,4 +1,4 @@
-import type { BuiltinInspector } from '@lobechat/types';
+import type { BuiltinInspector } from '@ficlouds/types';
 
 import { AgentDocumentsApiName } from '../../types';
 import { CopyDocumentInspector } from './CopyDocument';

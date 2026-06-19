@@ -6,7 +6,7 @@ import type {
   AuthorizationProgress,
   DataSyncConfig,
   MarketAuthorizationParams,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 import { BrowserWindow, shell } from 'electron';
 
 import GatewayConnectionService from '@/services/gatewayConnectionSrv';

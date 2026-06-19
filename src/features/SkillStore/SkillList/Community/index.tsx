@@ -1,6 +1,6 @@
 'use client';
 
-import { type SkillListItem } from '@lobechat/types';
+import { type SkillListItem } from '@ficlouds/types';
 import { Center, Icon, Text } from '@lobehub/ui';
 import isEqual from 'fast-deep-equal';
 import { ServerCrash } from 'lucide-react';

@@ -1,6 +1,6 @@
 'use client';
 
-import { type UserMemoryEffort } from '@lobechat/types';
+import { type UserMemoryEffort } from '@ficlouds/types';
 import { type FormGroupItemType } from '@lobehub/ui';
 import { Form, Icon, Skeleton } from '@lobehub/ui';
 import { Switch } from 'antd';

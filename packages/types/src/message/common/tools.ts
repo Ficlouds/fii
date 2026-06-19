@@ -1,7 +1,7 @@
 import type { PartialDeep } from 'type-fest';
 import { z } from 'zod';
 
-import type { LobeToolRenderType } from '../../tool';
+import type { FiToolRenderType } from '../../tool';
 
 // ToolIntervention must be defined first to avoid circular dependency
 export interface ToolIntervention {
@@ -19,13 +19,13 @@ export interface ChatPluginPayload {
   arguments: string;
   identifier: string;
   intervention?: ToolIntervention;
-  type: LobeToolRenderType;
+  type: FiToolRenderType;
 }
 
 /**
  * Tool source indicates where the tool comes from
  */
-export type ToolSource = 'builtin' | 'client' | 'mcp' | 'klavis' | 'lobehubSkill';
+export type ToolSource = 'builtin' | 'client' | 'mcp' | 'klavis' | 'fiSkill';
 
 /**
  * Tool executor indicates where the tool is executed for a given invocation.
@@ -49,7 +49,7 @@ export interface ChatToolPayload {
    */
   source?: ToolSource;
   thoughtSignature?: string;
-  type: LobeToolRenderType;
+  type: FiToolRenderType;
 }
 
 /**

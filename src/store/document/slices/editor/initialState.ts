@@ -1,7 +1,7 @@
 'use client';
 
 import type { IEditor } from '@lobehub/editor';
-import type { EditorState as LobehubEditorState } from '@lobehub/editor/react';
+import type { EditorState as FiEditorState } from '@lobehub/editor/react';
 
 /**
  * Document source type - determines which service to use for persistence
@@ -86,7 +86,7 @@ export interface EditorState {
   /**
    * Editor state from useEditorState hook
    */
-  editorState: LobehubEditorState | undefined;
+  editorState: FiEditorState | undefined;
   /**
    * Last notebook document opened from each topic.
    */

@@ -12,7 +12,7 @@ import {
   topics,
   userMemories,
 } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { sanitizeBm25Query } from '../../utils/bm25';
 
 export type SearchResultType =
@@ -193,9 +193,9 @@ const RECENCY_CANDIDATE_MULTIPLIER = 4;
  */
 export class SearchRepo {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

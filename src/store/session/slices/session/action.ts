@@ -17,12 +17,12 @@ import { getUserStoreState, useUserStore } from '@/store/user';
 import { settingsSelectors, userProfileSelectors } from '@/store/user/selectors';
 import {
   type ChatSessionList,
-  type LobeAgentSession,
-  type LobeSessionGroups,
-  type LobeSessions,
+  type FiAgentSession,
+  type FiSessionGroups,
+  type FiSessions,
   type UpdateSessionParams,
 } from '@/types/session';
-import { LobeSessionType } from '@/types/session';
+import { FiSessionType } from '@/types/session';
 import { merge } from '@/utils/merge';
 import { setNamespace } from '@/utils/storeDebug';
 
@@ -61,7 +61,7 @@ export class SessionActionImpl {
 
   /** @deprecated Use agentStore.createAgent instead */
   createSession = async (
-    agent?: PartialDeep<LobeAgentSession>,
+    agent?: PartialDeep<FiAgentSession>,
     isSwitchSession: boolean = true,
   ): Promise<string> => {
     const { switchSession, refreshSessions } = this.#get();
@@ -72,9 +72,9 @@ export class SessionActionImpl {
       settingsSelectors.defaultAgent(useUserStore.getState()),
     );
 
-    const newSession: LobeAgentSession = merge(defaultAgent, agent);
+    const newSession: FiAgentSession = merge(defaultAgent, agent);
 
-    const id = await sessionService.createSession(LobeSessionType.Agent, newSession);
+    const id = await sessionService.createSession(FiSessionType.Agent, newSession);
     await refreshSessions();
 
     // Track new agent creation analytics
@@ -268,7 +268,7 @@ export class SessionActionImpl {
   };
 
   useSearchSessions = (keyword?: string): SWRResponse<any> => {
-    return useSWR<LobeSessions>(
+    return useSWR<FiSessions>(
       [SEARCH_SESSIONS_KEY, keyword],
       async () => {
         if (!keyword) return [];
@@ -294,7 +294,7 @@ export class SessionActionImpl {
     await this.#get().refreshSessions();
   };
 
-  internal_processSessions = (sessions: LobeSessions, sessionGroups: LobeSessionGroups): void => {
+  internal_processSessions = (sessions: FiSessions, sessionGroups: FiSessionGroups): void => {
     const customGroups = sessionGroups.map((item) => ({
       ...item,
       children: sessions.filter((i) => i.group === item.id && !i.pinned),

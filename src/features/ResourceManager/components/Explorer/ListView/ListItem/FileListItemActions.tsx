@@ -1,4 +1,4 @@
-import type { IAsyncTaskError } from '@lobechat/types';
+import type { IAsyncTaskError } from '@ficlouds/types';
 import { Button, Flexbox, stopPropagation } from '@lobehub/ui';
 import type { ItemType } from 'antd/es/menu/interface';
 import { isNull } from 'es-toolkit/compat';

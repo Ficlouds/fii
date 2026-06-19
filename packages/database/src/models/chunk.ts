@@ -1,17 +1,17 @@
-import type { ChunkMetadata, FileChunk } from '@lobechat/types';
+import type { ChunkMetadata, FileChunk } from '@ficlouds/types';
 import { and, asc, cosineDistance, count, desc, eq, inArray, isNull, sql } from 'drizzle-orm';
 import { chunk } from 'es-toolkit/compat';
 
 import type { NewChunkItem, NewUnstructuredChunkItem } from '../schemas';
 import { chunks, embeddings, fileChunks, files, unstructuredChunks } from '../schemas';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 
 export class ChunkModel {
   private userId: string;
 
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

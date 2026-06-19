@@ -1,4 +1,4 @@
-import { useWatchBroadcast } from '@lobechat/electron-client-ipc';
+import { useWatchBroadcast } from '@ficlouds/electron-client-ipc';
 import { ActionIcon, Flexbox } from '@lobehub/ui';
 import { Input, Popover, Switch } from 'antd';
 import { createStaticStyles } from 'antd-style';

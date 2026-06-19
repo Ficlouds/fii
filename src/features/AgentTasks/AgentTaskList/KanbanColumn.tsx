@@ -1,5 +1,5 @@
 import { useDndContext, useDraggable, useDroppable } from '@dnd-kit/core';
-import type { TaskStatus } from '@lobechat/types';
+import type { TaskStatus } from '@ficlouds/types';
 import { ActionIcon, type DropdownItem, DropdownMenu, Icon, Text } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
 import { EyeOff, MoreHorizontal, Plus } from 'lucide-react';

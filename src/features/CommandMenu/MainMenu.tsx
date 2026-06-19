@@ -1,4 +1,4 @@
-import { SOCIAL_URL } from '@lobechat/business-const';
+import { SOCIAL_URL } from '@ficlouds/business-const';
 import { DiscordIcon, GithubIcon } from '@lobehub/ui/icons';
 import { Command } from 'cmdk';
 import {

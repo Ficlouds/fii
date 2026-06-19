@@ -6,7 +6,7 @@ import {
   type MessageToolCall,
   type ModelPerformance,
   type ModelUsage,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 /**
  * Streaming context - immutable configuration

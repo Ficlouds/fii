@@ -1,4 +1,4 @@
-import type { TaskDetailActivity } from '@lobechat/types';
+import type { TaskDetailActivity } from '@ficlouds/types';
 import { Flexbox, Icon, Text } from '@lobehub/ui';
 import { TreeDownRightIcon } from '@lobehub/ui/icons';
 import { cssVar } from 'antd-style';

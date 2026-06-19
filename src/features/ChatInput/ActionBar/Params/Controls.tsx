@@ -1,4 +1,4 @@
-import { DEFAULT_AGENT_CONFIG } from '@lobechat/const';
+import { DEFAULT_AGENT_CONFIG } from '@ficlouds/const';
 import { Flexbox, Icon, Select, SliderWithInput, TextArea } from '@lobehub/ui';
 import { Form as AntdForm, Switch } from 'antd';
 import { createStaticStyles, cssVar, cx } from 'antd-style';
@@ -18,7 +18,7 @@ import { agentByIdSelectors, chatConfigByIdSelectors } from '@/store/agent/selec
 import { aiModelSelectors, useAiInfraStore } from '@/store/aiInfra';
 import { useUserStore } from '@/store/user';
 import { systemAgentSelectors } from '@/store/user/selectors';
-import type { LobeAgentConfig } from '@/types/agent';
+import type { FiAgentConfig } from '@/types/agent';
 
 import { useAgentId } from '../../hooks/useAgentId';
 import { useUpdateAgentConfig } from '../../hooks/useUpdateAgentConfig';
@@ -634,7 +634,7 @@ const Controls = memo<ControlsProps>(({ setUpdating, updating, variant = 'popove
 
       // Save changes immediately - manually construct config object to ensure latest values are used
       setUpdating(true);
-      const currentValues = form.getFieldsValue(true) as PartialDeep<LobeAgentConfig>;
+      const currentValues = form.getFieldsValue(true) as PartialDeep<FiAgentConfig>;
       const prevParams = (currentValues.params ?? {}) as Partial<
         Record<ParamKey, null | number | undefined>
       >;
@@ -654,8 +654,8 @@ const Controls = memo<ControlsProps>(({ setUpdating, updating, variant = 'popove
 
       const updatedConfig = {
         ...currentValues,
-        params: currentParams as LobeAgentConfig['params'],
-      } satisfies PartialDeep<LobeAgentConfig>;
+        params: currentParams as FiAgentConfig['params'],
+      } satisfies PartialDeep<FiAgentConfig>;
 
       try {
         await updateAgentConfig(updatedConfig);
@@ -668,7 +668,7 @@ const Controls = memo<ControlsProps>(({ setUpdating, updating, variant = 'popove
 
   const handleValuesChange = useMemo(
     () =>
-      debounce(async (values: PartialDeep<LobeAgentConfig>) => {
+      debounce(async (values: PartialDeep<FiAgentConfig>) => {
         setUpdating(true);
         try {
           await updateAgentConfig(values);
@@ -691,7 +691,7 @@ const Controls = memo<ControlsProps>(({ setUpdating, updating, variant = 'popove
         lastValuesRef.current[namePath[1] as ParamKey] = value;
       }
       refreshFormValues((current) => current + 1);
-      handleValuesChange(form.getFieldsValue(true) as PartialDeep<LobeAgentConfig>);
+      handleValuesChange(form.getFieldsValue(true) as PartialDeep<FiAgentConfig>);
     },
     [form, handleValuesChange, refreshFormValues],
   );

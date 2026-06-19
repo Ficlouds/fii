@@ -1,4 +1,4 @@
-import type { ConversationContext, MessageMetadata, UploadFileItem } from '@lobechat/types';
+import type { ConversationContext, MessageMetadata, UploadFileItem } from '@ficlouds/types';
 
 /**
  * Operation Type Definitions

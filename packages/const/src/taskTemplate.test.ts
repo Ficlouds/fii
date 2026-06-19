@@ -1,4 +1,4 @@
-import { parseCronPattern } from '@lobechat/utils/cron';
+import { parseCronPattern } from '@ficlouds/utils/cron';
 import { describe, expect, it } from 'vitest';
 
 import { INTEREST_AREA_KEYS } from './interests';

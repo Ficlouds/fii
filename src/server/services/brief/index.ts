@@ -1,10 +1,10 @@
-import type { TaskStatus } from '@lobechat/types';
+import type { TaskStatus } from '@ficlouds/types';
 
 import { AgentModel } from '@/database/models/agent';
 import { BriefModel } from '@/database/models/brief';
 import { TaskModel } from '@/database/models/task';
 import type { BriefItem } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 
 export interface AgentAvatarInfo {
   avatar: string | null;
@@ -32,11 +32,11 @@ export interface BriefResolveOptions {
 export class BriefService {
   private agentModel: AgentModel;
   private briefModel: BriefModel;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private taskModel: TaskModel;
   private userId: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
     this.agentModel = new AgentModel(db, userId);

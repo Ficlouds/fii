@@ -1,12 +1,12 @@
-import type { LobeChatDatabase } from '@lobechat/database';
-import { createTimingHelpers } from '@lobechat/utils';
+import type { FiDatabase } from '@ficlouds/database';
+import { createTimingHelpers } from '@ficlouds/utils';
 
 import { MessageModel } from '@/database/models/message';
 import { TopicModel } from '@/database/models/topic';
 import { FileService } from '@/server/services/file';
 
 const { createPrefixedTimingContext, runTimedStage, toTimingContext } = createTimingHelpers(
-  'lobe-server:chat:lobehub:timing',
+  'lobe-server:chat:fi:timing',
 );
 
 interface GetMessagesAndTopicsParams {
@@ -34,7 +34,7 @@ export class AiChatService {
   private fileService: FileService;
   private topicModel: TopicModel;
 
-  constructor(serverDB: LobeChatDatabase, userId: string) {
+  constructor(serverDB: FiDatabase, userId: string) {
     this.userId = userId;
 
     this.messageModel = new MessageModel(serverDB, userId);

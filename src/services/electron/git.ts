@@ -13,7 +13,7 @@ import {
   type GitWorkingTreeFiles,
   type GitWorkingTreePatches,
   type GitWorkingTreeStatus,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 
 import { ensureElectronIpc } from '@/utils/electron/ipc';
 

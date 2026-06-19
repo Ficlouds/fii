@@ -1,4 +1,4 @@
-import type { UniformSearchResult } from '@lobechat/types';
+import type { UniformSearchResult } from '@ficlouds/types';
 import { Block, Flexbox, Text } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import type { CSSProperties } from 'react';

@@ -1,11 +1,11 @@
-import type { QueryFileListParams } from '@lobechat/types';
-import { FilesTabs, SortType } from '@lobechat/types';
+import type { QueryFileListParams } from '@ficlouds/types';
+import { FilesTabs, SortType } from '@ficlouds/types';
 import { and, eq, sql } from 'drizzle-orm';
 
 import { DocumentModel } from '../../models/document';
 import { FileModel } from '../../models/file';
 import { DOCUMENT_FOLDER_TYPE, documents, files, knowledgeBaseFiles } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 
 export interface KnowledgeItem {
   chunkTaskId?: string | null;
@@ -36,11 +36,11 @@ export interface KnowledgeItem {
  */
 export class KnowledgeRepo {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private fileModel: FileModel;
   private documentModel: DocumentModel;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
     this.fileModel = new FileModel(db, userId);

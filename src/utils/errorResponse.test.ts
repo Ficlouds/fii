@@ -1,5 +1,5 @@
-import { AgentRuntimeErrorType } from '@lobechat/model-runtime';
-import { ChatErrorType } from '@lobechat/types';
+import { AgentRuntimeErrorType } from '@ficlouds/model-runtime';
+import { ChatErrorType } from '@ficlouds/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import { createErrorResponse } from './errorResponse';

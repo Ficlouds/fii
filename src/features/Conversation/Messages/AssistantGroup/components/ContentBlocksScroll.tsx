@@ -1,6 +1,6 @@
 'use client';
 
-import type { UIChatMessage } from '@lobechat/types';
+import type { UIChatMessage } from '@ficlouds/types';
 import { Flexbox, ScrollArea } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import type { RefObject } from 'react';

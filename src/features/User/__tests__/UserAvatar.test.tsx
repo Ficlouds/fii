@@ -1,4 +1,4 @@
-import { BRANDING_NAME } from '@lobechat/business-const';
+import { BRANDING_NAME } from '@ficlouds/business-const';
 import { act, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -42,7 +42,7 @@ describe('UserAvatar', () => {
     expect(screen.getByText('TE')).toBeInTheDocument();
   });
 
-  it('should show LobeChat and default avatar when the user is not logged in', () => {
+  it('should show Fi and default avatar when the user is not logged in', () => {
     act(() => {
       useUserStore.setState({ isSignedIn: false, user: undefined });
     });

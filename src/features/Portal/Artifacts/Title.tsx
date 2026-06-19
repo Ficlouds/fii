@@ -1,4 +1,4 @@
-import { ArtifactType } from '@lobechat/types';
+import { ArtifactType } from '@ficlouds/types';
 import { ActionIcon, Flexbox, Icon, Segmented, Text } from '@lobehub/ui';
 import { ConfigProvider } from 'antd';
 import { cx } from 'antd-style';

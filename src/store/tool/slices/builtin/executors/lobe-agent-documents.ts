@@ -1,6 +1,6 @@
-import type { DocumentLoadFormat, DocumentLoadRule } from '@lobechat/agent-templates';
-import { AgentDocumentsExecutionRuntime } from '@lobechat/builtin-tool-agent-documents/executionRuntime';
-import { AgentDocumentsExecutor } from '@lobechat/builtin-tool-agent-documents/executor';
+import type { DocumentLoadFormat, DocumentLoadRule } from '@ficlouds/agent-templates';
+import { AgentDocumentsExecutionRuntime } from '@ficlouds/builtin-tool-agent-documents/executionRuntime';
+import { AgentDocumentsExecutor } from '@ficlouds/builtin-tool-agent-documents/executor';
 
 import { agentDocumentService } from '@/services/agentDocument';
 

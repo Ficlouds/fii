@@ -1,11 +1,11 @@
 import { produce } from 'immer';
 
-import { type LobeToolCustomPlugin } from '@/types/tool/plugin';
+import { type FiToolCustomPlugin } from '@/types/tool/plugin';
 
-export type DevListState = LobeToolCustomPlugin[];
+export type DevListState = FiToolCustomPlugin[];
 
 export type AddPluginAction = {
-  plugin: LobeToolCustomPlugin;
+  plugin: FiToolCustomPlugin;
   type: 'addItem';
 };
 
@@ -16,7 +16,7 @@ export type DeletePluginAction = {
 
 export type UpdatePluginAction = {
   id: string;
-  plugin: LobeToolCustomPlugin;
+  plugin: FiToolCustomPlugin;
   type: 'updateItem';
 };
 

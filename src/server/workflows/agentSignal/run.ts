@@ -1,7 +1,7 @@
 import type {
   AgentSignalSourceEvent,
   SourceEventAgentUserMessage,
-} from '@lobechat/agent-signal/source';
+} from '@ficlouds/agent-signal/source';
 import {
   AGENT_SIGNAL_SOURCE_TYPES,
   isAgentUserMessageSource,
@@ -10,16 +10,16 @@ import {
   isSelfFeedbackIntentSource,
   isSelfReflectionSource,
   isToolOutcomeSource,
-} from '@lobechat/agent-signal/source';
-import type { ExecutionSnapshot, ISnapshotStore, StepSnapshot } from '@lobechat/agent-tracing';
-import { messages } from '@lobechat/database/schemas';
-import { context as otContext, SpanStatusCode } from '@lobechat/observability-otel/api';
+} from '@ficlouds/agent-signal/source';
+import type { ExecutionSnapshot, ISnapshotStore, StepSnapshot } from '@ficlouds/agent-tracing';
+import { messages } from '@ficlouds/database/schemas';
+import { context as otContext, SpanStatusCode } from '@ficlouds/observability-otel/api';
 import {
   tracer,
   workflowRunCounter,
   workflowRunDurationHistogram,
-} from '@lobechat/observability-otel/modules/agent-signal';
-import { attributesCommon } from '@lobechat/observability-otel/node';
+} from '@ficlouds/observability-otel/modules/agent-signal';
+import { attributesCommon } from '@ficlouds/observability-otel/node';
 import debug from 'debug';
 import { and, desc, eq, isNull, lte } from 'drizzle-orm';
 
@@ -114,7 +114,7 @@ const createDefaultSnapshotStore = (): ISnapshotStore | null => {
     // - `runAgentSignalWorkflow` only persisted OTel observability before this bridge.
     // - `agent-tracing inspect -S` therefore showed zero events for workflow-triggered runs.
 
-    const { FileSnapshotStore } = require('@lobechat/agent-tracing');
+    const { FileSnapshotStore } = require('@ficlouds/agent-tracing');
     return new FileSnapshotStore();
   } catch {
     return null;

@@ -1,6 +1,6 @@
 import type { DesktopIpcServices } from './controllers/registry';
 
-declare module '@lobechat/electron-client-ipc' {
+declare module '@ficlouds/electron-client-ipc' {
    
   interface DesktopIpcServicesMap extends DesktopIpcServices {}
 }

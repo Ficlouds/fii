@@ -5,9 +5,9 @@ import type {
   InitDocumentArgs,
   ModifyNodesArgs,
   ReplaceTextArgs,
-} from '@lobechat/editor-runtime';
-import type { BuiltinToolResult } from '@lobechat/types';
-import { BaseExecutor } from '@lobechat/types';
+} from '@ficlouds/editor-runtime';
+import type { BuiltinToolResult } from '@ficlouds/types';
+import { BaseExecutor } from '@ficlouds/types';
 import debug from 'debug';
 
 import type {

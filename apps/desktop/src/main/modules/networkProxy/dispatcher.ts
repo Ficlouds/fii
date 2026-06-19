@@ -1,4 +1,4 @@
-import type { NetworkProxySettings } from '@lobechat/electron-client-ipc';
+import type { NetworkProxySettings } from '@ficlouds/electron-client-ipc';
 import type { SocksProxies } from 'fetch-socks';
 import { socksDispatcher } from 'fetch-socks';
 import { Agent, getGlobalDispatcher, ProxyAgent, setGlobalDispatcher } from 'undici';

@@ -1,6 +1,6 @@
-import { DEFAULT_PROVIDER } from '@lobechat/business-const';
-import { DEFAULT_SETTINGS } from '@lobechat/config';
-import { DEFAULT_MINI_MODEL, DEFAULT_MODEL } from '@lobechat/const';
+import { DEFAULT_PROVIDER } from '@ficlouds/business-const';
+import { DEFAULT_SETTINGS } from '@ficlouds/config';
+import { DEFAULT_MINI_MODEL, DEFAULT_MODEL } from '@ficlouds/const';
 import { LOBE_DEFAULT_MODEL_LIST } from 'model-bank';
 import { DEFAULT_MODEL_PROVIDER_LIST } from 'model-bank/modelProviders';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -46,7 +46,7 @@ describe('AiModelService', () => {
           type: 'chat',
         },
         {
-          displayName: 'LobeHub Onboarding',
+          displayName: 'Fi Onboarding',
           enabled: true,
           id: 'lobehub-onboarding-v1',
           type: 'chat',

@@ -1,6 +1,6 @@
 'use client';
 
-import type { BuiltinRenderProps } from '@lobechat/types';
+import type { BuiltinRenderProps } from '@ficlouds/types';
 import { Flexbox, Icon, Text } from '@lobehub/ui';
 import { createStaticStyles, cx } from 'antd-style';
 import { Check, PenLine } from 'lucide-react';

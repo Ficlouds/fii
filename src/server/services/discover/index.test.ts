@@ -59,7 +59,7 @@ vi.mock('model-bank', async (importOriginal) => {
       },
       {
         id: 'lobehub-onboarding-v1',
-        displayName: 'LobeHub Onboarding',
+        displayName: 'Fi Onboarding',
         description: 'Runtime-only onboarding alias model',
         providerId: 'lobehub',
         contextWindowTokens: 1_000_000,

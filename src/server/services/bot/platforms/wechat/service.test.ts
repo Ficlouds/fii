@@ -15,7 +15,7 @@ const WechatUploadMediaType = vi.hoisted(() => ({
   VOICE: 2,
 }));
 
-vi.mock('@lobechat/chat-adapter-wechat', () => ({
+vi.mock('@ficlouds/chat-adapter-wechat', () => ({
   MessageItemType,
   WechatUploadMediaType,
 }));

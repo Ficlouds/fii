@@ -2,8 +2,8 @@ import {
   type RecentTopic,
   type RecentTopicGroup,
   type RecentTopicGroupMember,
-} from '@lobechat/types';
-import { cleanObject } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { cleanObject } from '@ficlouds/utils';
 import { eq, inArray } from 'drizzle-orm';
 import { after } from 'next/server';
 import { z } from 'zod';

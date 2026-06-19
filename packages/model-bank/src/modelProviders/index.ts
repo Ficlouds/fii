@@ -1,4 +1,4 @@
-import { ENABLE_BUSINESS_FEATURES } from '@lobechat/business-const';
+import { ENABLE_BUSINESS_FEATURES } from '@ficlouds/business-const';
 
 import type { ChatModelCard, ModelProviderCard } from '@/types/llm';
 
@@ -36,7 +36,7 @@ import InternLMProvider from './internlm';
 import JinaProvider from './jina';
 import KimiCodingPlanProvider from './kimiCodingPlan';
 import LMStudioProvider from './lmstudio';
-import LobeHubProvider from './lobehub';
+import FiProvider from './lobehub';
 import LongCatProvider from './longcat';
 import MinimaxProvider from './minimax';
 import MinimaxCodingPlanProvider from './minimaxCodingPlan';
@@ -141,7 +141,7 @@ export const LOBE_DEFAULT_MODEL_LIST: ChatModelCard[] = [
 ].flat();
 
 export const DEFAULT_MODEL_PROVIDER_LIST = [
-  ...(ENABLE_BUSINESS_FEATURES ? [LobeHubProvider] : []),
+  ...(ENABLE_BUSINESS_FEATURES ? [FiProvider] : []),
   AnthropicProvider,
   GoogleProvider,
   GLMCodingPlanProvider,
@@ -269,7 +269,7 @@ export { default as InternLMProviderCard } from './internlm';
 export { default as JinaProviderCard } from './jina';
 export { default as KimiCodingPlanProviderCard } from './kimiCodingPlan';
 export { default as LMStudioProviderCard } from './lmstudio';
-export { default as LobeHubProviderCard } from './lobehub';
+export { default as FiProviderCard } from './lobehub';
 export { default as LongCatProviderCard } from './longcat';
 export { default as MinimaxProviderCard } from './minimax';
 export { default as MinimaxCodingPlanProviderCard } from './minimaxCodingPlan';

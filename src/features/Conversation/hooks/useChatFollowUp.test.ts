@@ -1,4 +1,4 @@
-import { type LobeAgentChatConfig } from '@lobechat/types';
+import { type FiAgentChatConfig } from '@ficlouds/types';
 import { renderHook } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -13,9 +13,9 @@ const VALID_GLOBAL = {
   provider: 'global-provider',
 };
 
-const VALID_AGENT: LobeAgentChatConfig = {
+const VALID_AGENT: FiAgentChatConfig = {
   enableFollowUpChips: true,
-} as LobeAgentChatConfig;
+} as FiAgentChatConfig;
 
 const CONVERSATION_KEY = 'main_agent-1_topic-1';
 const TOPIC_ID = 'topic-1';
@@ -53,7 +53,7 @@ describe('useChatFollowUp', () => {
 
   describe('disabled effective state — returns empty hooks', () => {
     const renderWith = (config: {
-      agentChatConfig?: LobeAgentChatConfig;
+      agentChatConfig?: FiAgentChatConfig;
       conversationKey?: string;
       topicId?: string;
     }) =>
@@ -122,7 +122,7 @@ describe('useChatFollowUp', () => {
 
     it('when per-agent enableFollowUpChips is false', () => {
       const { result } = renderWith({
-        agentChatConfig: { enableFollowUpChips: false } as LobeAgentChatConfig,
+        agentChatConfig: { enableFollowUpChips: false } as FiAgentChatConfig,
         conversationKey: CONVERSATION_KEY,
         topicId: TOPIC_ID,
       });
@@ -149,7 +149,7 @@ describe('useChatFollowUp', () => {
 
     it('does not call clear or fetchFor when invoked through empty hooks', async () => {
       const { result } = renderWith({
-        agentChatConfig: { enableFollowUpChips: false } as LobeAgentChatConfig,
+        agentChatConfig: { enableFollowUpChips: false } as FiAgentChatConfig,
         conversationKey: CONVERSATION_KEY,
         topicId: TOPIC_ID,
       });

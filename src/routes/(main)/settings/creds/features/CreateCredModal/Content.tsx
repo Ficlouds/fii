@@ -1,6 +1,6 @@
 'use client';
 
-import { type CredType } from '@lobechat/types';
+import { type CredType } from '@ficlouds/types';
 import { useModalContext } from '@lobehub/ui/base-ui';
 import { Steps } from 'antd';
 import { createStaticStyles } from 'antd-style';

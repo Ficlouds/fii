@@ -1,6 +1,6 @@
 // @vitest-environment node
-import { type LobeChatDatabase } from '@lobechat/database';
-import { getTestDB } from '@lobechat/database/test-utils';
+import { type FiDatabase } from '@ficlouds/database';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { taskRouter } from '../../task';
@@ -13,7 +13,7 @@ import {
 } from './setup';
 
 // Mock getServerDB
-let testDB: LobeChatDatabase;
+let testDB: FiDatabase;
 vi.mock('@/database/core/db-adaptor', () => ({
   getServerDB: vi.fn(() => testDB),
 }));
@@ -52,7 +52,7 @@ vi.mock('@/server/modules/ModelRuntime', () => ({
 }));
 
 describe('Task Router Integration', () => {
-  let serverDB: LobeChatDatabase;
+  let serverDB: FiDatabase;
   let userId: string;
   let otherUserId: string | undefined;
   let testAgentId: string;

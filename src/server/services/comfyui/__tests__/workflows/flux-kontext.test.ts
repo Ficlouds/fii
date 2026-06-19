@@ -16,7 +16,7 @@ vi.mock('../utils/promptSplitter', () => ({
 vi.mock('../utils/weightDType', () => ({
   selectOptimalWeightDtype: vi.fn(() => 'default'),
 }));
-vi.mock('@lobechat/utils', () => ({
+vi.mock('@ficlouds/utils', () => ({
   generateUniqueSeeds: vi.fn(() => ({ seed: 123456, noiseSeed: 654321 })),
 }));
 vi.mock('../utils/workflowUtils', () => ({
@@ -309,7 +309,7 @@ describe('buildFluxKontextWorkflow - Complex Dual-Mode Architecture', () => {
     });
 
     it('should generate unique seeds for workflow', async () => {
-      const { generateUniqueSeeds } = await import('@lobechat/utils');
+      const { generateUniqueSeeds } = await import('@ficlouds/utils');
       const params = {
         cfg: 3.5,
         height: 1024,

@@ -1,6 +1,6 @@
 'use client';
 
-import { MAX_ONBOARDING_STEPS } from '@lobechat/types';
+import { MAX_ONBOARDING_STEPS } from '@ficlouds/types';
 import { Flexbox } from '@lobehub/ui';
 import { memo, useCallback, useEffect, useRef } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';

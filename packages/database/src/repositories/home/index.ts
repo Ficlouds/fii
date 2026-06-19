@@ -2,8 +2,8 @@ import {
   type SidebarAgentItem,
   type SidebarAgentListResponse,
   type SidebarGroup,
-} from '@lobechat/types';
-import { cleanObject } from '@lobechat/utils';
+} from '@ficlouds/types';
+import { cleanObject } from '@ficlouds/utils';
 import { and, desc, eq, inArray, not, sql } from 'drizzle-orm';
 
 import {
@@ -14,7 +14,7 @@ import {
   sessionGroups,
   sessions,
 } from '../../schemas';
-import { type LobeChatDatabase } from '../../type';
+import { type FiDatabase } from '../../type';
 import { sanitizeBm25Query } from '../../utils/bm25';
 
 // Re-export types for backward compatibility
@@ -23,16 +23,16 @@ export type {
   SidebarAgentListResponse,
   SidebarGroup,
   SidebarItemType,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 /**
  * Home Repository - provides sidebar agent list data
  */
 export class HomeRepository {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
   }

@@ -1,4 +1,4 @@
-import type { RuntimeSelectedTool } from '@lobechat/types';
+import type { RuntimeSelectedTool } from '@ficlouds/types';
 
 import { getToolStoreState } from '@/store/tool';
 

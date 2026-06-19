@@ -1,6 +1,6 @@
 'use client';
 
-import type { CompressionGroupMetadata, UIChatMessage } from '@lobechat/types';
+import type { CompressionGroupMetadata, UIChatMessage } from '@ficlouds/types';
 import {
   ActionIcon,
   Flexbox,

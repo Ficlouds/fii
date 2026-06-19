@@ -1,6 +1,6 @@
 // @vitest-environment node
-import type { LobeChatDatabase } from '@lobechat/database';
-import { getTestDB } from '@lobechat/database/test-utils';
+import type { FiDatabase } from '@ficlouds/database';
+import { getTestDB } from '@ficlouds/database/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AgentDocumentVfsService } from '@/server/services/agentDocumentVfs';
@@ -22,7 +22,7 @@ vi.mock('@/server/services/skill/resource', () => ({
 }));
 
 describe('runSkillManagementAction integration', () => {
-  let serverDB: LobeChatDatabase;
+  let serverDB: FiDatabase;
   let userId: string;
   let agentId: string;
 

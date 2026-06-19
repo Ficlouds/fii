@@ -1,10 +1,10 @@
 'use client';
 
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import type {
   ImessageBridgeConfig,
   ImessageBridgePublicConfig,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 import { Flexbox, FormItem, Tag, Text } from '@lobehub/ui';
 import { App, Button, Form as AntdForm, Switch } from 'antd';
 import { RefreshCw, TestTube2 } from 'lucide-react';

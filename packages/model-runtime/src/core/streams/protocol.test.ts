@@ -292,7 +292,7 @@ describe('convertIterableToStream', () => {
       yield 'first';
       // Reproduce the V8 JSON.parse SyntaxError shape that surfaces from the
       // OpenAI SDK iterator when an upstream SSE chunk contains an illegal
-      // backslash escape — see LobeHub op_1778403331540 for a real instance.
+      // backslash escape — see Fi op_1778403331540 for a real instance.
       throw new SyntaxError(
         'Bad escaped character in JSON at position 160050 (line 1 column 160051)',
       );

@@ -1,22 +1,22 @@
-import type { AgentRuntimeContext, AgentState } from '@lobechat/agent-runtime';
+import type { AgentRuntimeContext, AgentState } from '@ficlouds/agent-runtime';
 import type {
   AgenticAttempt,
   BaseAction,
   ExecutorResult,
   SignalAttempt,
-} from '@lobechat/agent-signal';
-import { MemoryApiName, MemoryIdentifier } from '@lobechat/builtin-tool-memory';
-import type { LobeToolManifest, ToolExecutor, ToolSource } from '@lobechat/context-engine';
+} from '@ficlouds/agent-signal';
+import { MemoryApiName, MemoryIdentifier } from '@ficlouds/builtin-tool-memory';
+import type { FiToolManifest, ToolExecutor, ToolSource } from '@ficlouds/context-engine';
 import {
   createAgentSignalMemoryWriterPrompt,
   createAgentSignalMemoryWriterSystemRole,
-} from '@lobechat/prompts';
-import { LayersEnum, RequestTrigger, ThreadType } from '@lobechat/types';
-import { isRecord, nanoid, pickTrimmedString } from '@lobechat/utils';
+} from '@ficlouds/prompts';
+import { LayersEnum, RequestTrigger, ThreadType } from '@ficlouds/types';
+import { isRecord, nanoid, pickTrimmedString } from '@ficlouds/utils';
 
 import { PluginModel } from '@/database/models/plugin';
 import { ThreadModel } from '@/database/models/thread';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import {
   InMemoryAgentStateManager,
   InMemoryStreamEventManager,
@@ -88,7 +88,7 @@ export interface MemoryAgentActionResult {
 
 export interface UserMemoryActionHandlerOptions {
   agentService?: Pick<AgentService, 'getAgentConfig'>;
-  db: LobeChatDatabase;
+  db: FiDatabase;
   memoryActionRunner?: (input: {
     agentId?: string;
     conflictPolicy?: AgentSignalFeedbackDomainConflictPolicy;
@@ -146,8 +146,8 @@ const createInitialContext = (operationId: string): AgentRuntimeContext => {
   };
 };
 
-const toManifestRecord = (manifestMap: Map<string, LobeToolManifest>) => {
-  return Object.fromEntries(manifestMap) as Record<string, LobeToolManifest>;
+const toManifestRecord = (manifestMap: Map<string, FiToolManifest>) => {
+  return Object.fromEntries(manifestMap) as Record<string, FiToolManifest>;
 };
 
 const createFunctionCallSupportChecker = async () => {

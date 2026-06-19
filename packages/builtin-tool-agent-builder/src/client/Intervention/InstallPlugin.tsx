@@ -1,7 +1,7 @@
 'use client';
 
-import { KLAVIS_SERVER_TYPES, LOBEHUB_SKILL_PROVIDERS } from '@lobechat/const';
-import type { BuiltinInterventionProps } from '@lobechat/types';
+import { KLAVIS_SERVER_TYPES, LOBEHUB_SKILL_PROVIDERS } from '@ficlouds/const';
+import type { BuiltinInterventionProps } from '@ficlouds/types';
 import { Avatar, Flexbox } from '@lobehub/ui';
 import { CheckCircle } from 'lucide-react';
 import { memo } from 'react';
@@ -10,12 +10,12 @@ import { useTranslation } from 'react-i18next';
 import { useToolStore } from '@/store/tool';
 import {
   klavisStoreSelectors,
-  lobehubSkillStoreSelectors,
+  fiSkillStoreSelectors,
   mcpStoreSelectors,
   pluginSelectors,
 } from '@/store/tool/selectors';
 import { KlavisServerStatus } from '@/store/tool/slices/klavisStore/types';
-import { LobehubSkillStatus } from '@/store/tool/slices/lobehubSkillStore/types';
+import { FiSkillStatus } from '@/store/tool/slices/fiSkillStore/types';
 
 import type { InstallPluginParams } from '../../types';
 
@@ -39,9 +39,9 @@ const InstallPluginIntervention = memo<BuiltinInterventionProps<InstallPluginPar
       klavisStoreSelectors.getServers(s).find((srv) => srv.identifier === identifier),
     );
 
-    // Get LobehubSkill server state
-    const lobehubSkillServer = useToolStore((s) =>
-      lobehubSkillStoreSelectors.getServers(s).find((srv) => srv.identifier === identifier),
+    // Get FiSkill server state
+    const fiSkillServer = useToolStore((s) =>
+      fiSkillStoreSelectors.getServers(s).find((srv) => srv.identifier === identifier),
     );
 
     // Get Market MCP plugin info
@@ -56,9 +56,9 @@ const InstallPluginIntervention = memo<BuiltinInterventionProps<InstallPluginPar
     const klavisTypeInfo = KLAVIS_SERVER_TYPES.find((t) => t.identifier === identifier);
     const isKlavis = source === 'official' && !!klavisTypeInfo;
 
-    // Check if it's a LobehubSkill provider
-    const lobehubSkillProviderInfo = LOBEHUB_SKILL_PROVIDERS.find((p) => p.id === identifier);
-    const isLobehubSkill = source === 'official' && !!lobehubSkillProviderInfo;
+    // Check if it's a FiSkill provider
+    const fiSkillProviderInfo = LOBEHUB_SKILL_PROVIDERS.find((p) => p.id === identifier);
+    const isFiSkill = source === 'official' && !!fiSkillProviderInfo;
 
     // Render success state (already installed)
     if (isPluginInstalled) {
@@ -76,12 +76,12 @@ const InstallPluginIntervention = memo<BuiltinInterventionProps<InstallPluginPar
           <CheckCircle size={20} style={{ color: 'var(--lobe-success-6)' }} />
           <Flexbox gap={4}>
             <span style={{ fontWeight: 600 }}>
-              {isKlavis || isLobehubSkill
+              {isKlavis || isFiSkill
                 ? t('agentBuilder.installPlugin.connectedAndEnabled')
                 : t('agentBuilder.installPlugin.installedAndEnabled')}
             </span>
             <span style={{ color: 'var(--lobe-text-secondary)', fontSize: 12 }}>
-              {klavisTypeInfo?.label || lobehubSkillProviderInfo?.label || identifier}
+              {klavisTypeInfo?.label || fiSkillProviderInfo?.label || identifier}
             </span>
           </Flexbox>
         </Flexbox>
@@ -126,14 +126,14 @@ const InstallPluginIntervention = memo<BuiltinInterventionProps<InstallPluginPar
       );
     }
 
-    // Render LobehubSkill provider
-    if (isLobehubSkill) {
+    // Render FiSkill provider
+    if (isFiSkill) {
       const icon =
-        typeof lobehubSkillProviderInfo?.icon === 'string'
-          ? lobehubSkillProviderInfo.icon
+        typeof fiSkillProviderInfo?.icon === 'string'
+          ? fiSkillProviderInfo.icon
           : undefined;
       const isNotConnected =
-        !lobehubSkillServer || lobehubSkillServer.status !== LobehubSkillStatus.CONNECTED;
+        !fiSkillServer || fiSkillServer.status !== FiSkillStatus.CONNECTED;
 
       return (
         <Flexbox
@@ -143,7 +143,7 @@ const InstallPluginIntervention = memo<BuiltinInterventionProps<InstallPluginPar
           <Flexbox horizontal align="center" gap={12}>
             {icon ? (
               <img
-                alt={lobehubSkillProviderInfo?.label || identifier}
+                alt={fiSkillProviderInfo?.label || identifier}
                 height={40}
                 src={icon}
                 style={{ borderRadius: 8 }}
@@ -155,10 +155,10 @@ const InstallPluginIntervention = memo<BuiltinInterventionProps<InstallPluginPar
             <Flexbox flex={1} gap={4}>
               <Flexbox horizontal align="center" gap={8}>
                 <span style={{ fontWeight: 600 }}>
-                  {lobehubSkillProviderInfo?.label || identifier}
+                  {fiSkillProviderInfo?.label || identifier}
                 </span>
                 <span style={{ color: 'var(--lobe-text-tertiary)', fontSize: 12 }}>
-                  LobeHub Skill
+                  Fi Skill
                 </span>
               </Flexbox>
               <span style={{ color: 'var(--lobe-text-secondary)', fontSize: 12 }}>

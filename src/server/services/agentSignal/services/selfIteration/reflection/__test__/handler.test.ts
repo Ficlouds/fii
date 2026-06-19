@@ -1,7 +1,7 @@
 // @vitest-environment node
-import { createSource } from '@lobechat/agent-signal';
-import type { SourceAgentSelfReflectionRequested } from '@lobechat/agent-signal/source';
-import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
+import { createSource } from '@ficlouds/agent-signal';
+import type { SourceAgentSelfReflectionRequested } from '@ficlouds/agent-signal/source';
+import { AGENT_SIGNAL_SOURCE_TYPES } from '@ficlouds/agent-signal/source';
 import { describe, expect, it, vi } from 'vitest';
 
 import { createDefaultAgentSignalPolicies } from '../../../../policies';

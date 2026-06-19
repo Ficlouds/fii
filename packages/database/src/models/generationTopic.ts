@@ -2,22 +2,22 @@ import type {
   ImageGenerationAsset,
   ImageGenerationTopic,
   VideoGenerationAsset,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 import { and, desc, eq } from 'drizzle-orm';
 
 import { FileService } from '@/server/services/file';
 
 import type { GenerationTopicItem } from '../schemas/generation';
 import { generationTopics } from '../schemas/generation';
-import type { LobeChatDatabase } from '../type';
+import type { FiDatabase } from '../type';
 import type { GenerationTopicType } from '../types/generation';
 
 export class GenerationTopicModel {
   private userId: string;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private fileService: FileService;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.userId = userId;
     this.db = db;
     this.fileService = new FileService(db, userId);

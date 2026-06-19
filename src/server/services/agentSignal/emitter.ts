@@ -1,4 +1,4 @@
-import type { DedupedSourceEventResult } from '@lobechat/agent-signal';
+import type { DedupedSourceEventResult } from '@ficlouds/agent-signal';
 import {
   type AgentSignalSourceEventInput as SharedAgentSignalSourceEventInput,
   type AgentSignalSourceType,
@@ -10,11 +10,11 @@ import {
   type SourceBotMessageMerged,
   type SourceRuntimeAfterStep,
   type SourceRuntimeBeforeStep,
-} from '@lobechat/agent-signal/source';
+} from '@ficlouds/agent-signal/source';
 import debug from 'debug';
 
 import { getServerDB } from '@/database/server';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { AgentSignalWorkflow } from '@/server/workflows/agentSignal';
 
 import { isAgentSignalEnabledForUser } from './featureGate';
@@ -25,7 +25,7 @@ const log = debug('lobe-server:agent-signal:service');
 
 export interface AgentSignalExecutionContext {
   agentId?: string;
-  db: LobeChatDatabase;
+  db: FiDatabase;
   userId: string;
 }
 

@@ -1,67 +1,67 @@
 import {
   LobeActivatorInspectors,
   LobeActivatorManifest,
-} from '@lobechat/builtin-tool-activator/client';
+} from '@ficlouds/builtin-tool-activator/client';
 import {
   AgentBuilderInspectors,
   AgentBuilderManifest,
-} from '@lobechat/builtin-tool-agent-builder/client';
+} from '@ficlouds/builtin-tool-agent-builder/client';
 import {
   AgentDocumentsInspectors,
   AgentDocumentsManifest,
-} from '@lobechat/builtin-tool-agent-documents/client';
+} from '@ficlouds/builtin-tool-agent-documents/client';
 import {
   AgentManagementInspectors,
   AgentManagementManifest,
-} from '@lobechat/builtin-tool-agent-management/client';
+} from '@ficlouds/builtin-tool-agent-management/client';
 import {
   ClaudeCodeIdentifier,
   ClaudeCodeInspectors,
-} from '@lobechat/builtin-tool-claude-code/client';
+} from '@ficlouds/builtin-tool-claude-code/client';
 import {
   CloudSandboxIdentifier,
   CloudSandboxInspectors,
-} from '@lobechat/builtin-tool-cloud-sandbox/client';
+} from '@ficlouds/builtin-tool-cloud-sandbox/client';
 import {
   GroupAgentBuilderInspectors,
   GroupAgentBuilderManifest,
-} from '@lobechat/builtin-tool-group-agent-builder/client';
+} from '@ficlouds/builtin-tool-group-agent-builder/client';
 import {
   GroupManagementInspectors,
   GroupManagementManifest,
-} from '@lobechat/builtin-tool-group-management/client';
+} from '@ficlouds/builtin-tool-group-management/client';
 import {
   KnowledgeBaseInspectors,
   KnowledgeBaseManifest,
-} from '@lobechat/builtin-tool-knowledge-base/client';
-import { LobeAgentInspectors, LobeAgentManifest } from '@lobechat/builtin-tool-lobe-agent/client';
+} from '@ficlouds/builtin-tool-knowledge-base/client';
+import { FiAgentInspectors, FiAgentManifest } from '@ficlouds/builtin-tool-fi-agent/client';
 import {
   LocalSystemInspectors,
   LocalSystemManifest,
-} from '@lobechat/builtin-tool-local-system/client';
-import { MemoryInspectors, MemoryManifest } from '@lobechat/builtin-tool-memory/client';
-import { MessageInspectors, MessageManifest } from '@lobechat/builtin-tool-message/client';
-import { PageAgentInspectors, PageAgentManifest } from '@lobechat/builtin-tool-page-agent/client';
+} from '@ficlouds/builtin-tool-local-system/client';
+import { MemoryInspectors, MemoryManifest } from '@ficlouds/builtin-tool-memory/client';
+import { MessageInspectors, MessageManifest } from '@ficlouds/builtin-tool-message/client';
+import { PageAgentInspectors, PageAgentManifest } from '@ficlouds/builtin-tool-page-agent/client';
 import {
   SelfFeedbackIntentInspectors,
   selfFeedbackIntentManifest,
-} from '@lobechat/builtin-tool-self-iteration/client';
+} from '@ficlouds/builtin-tool-self-iteration/client';
 import {
   SkillStoreInspectors,
   SkillStoreManifest,
-} from '@lobechat/builtin-tool-skill-store/client';
-import { SkillsInspectors, SkillsManifest } from '@lobechat/builtin-tool-skills/client';
-import { TaskInspectors, TaskManifest } from '@lobechat/builtin-tool-task/client';
+} from '@ficlouds/builtin-tool-skill-store/client';
+import { SkillsInspectors, SkillsManifest } from '@ficlouds/builtin-tool-skills/client';
+import { TaskInspectors, TaskManifest } from '@ficlouds/builtin-tool-task/client';
 import {
   WebBrowsingInspectors,
   WebBrowsingManifest,
-} from '@lobechat/builtin-tool-web-browsing/client';
+} from '@ficlouds/builtin-tool-web-browsing/client';
 import {
   WebOnboardingInspectors,
   WebOnboardingManifest,
-} from '@lobechat/builtin-tool-web-onboarding/client';
-import { createRunCommandInspector } from '@lobechat/shared-tool-ui/inspectors';
-import type { BuiltinInspector } from '@lobechat/types';
+} from '@ficlouds/builtin-tool-web-onboarding/client';
+import { createRunCommandInspector } from '@ficlouds/shared-tool-ui/inspectors';
+import type { BuiltinInspector } from '@ficlouds/types';
 
 import { CodexInspectors } from './codex';
 import { GithubIdentifier, GithubInspectors } from './github';
@@ -93,7 +93,7 @@ const BuiltinToolInspectors: Record<string, Record<string, BuiltinInspector>> = 
     BuiltinInspector
   >,
   [KnowledgeBaseManifest.identifier]: KnowledgeBaseInspectors as Record<string, BuiltinInspector>,
-  [LobeAgentManifest.identifier]: LobeAgentInspectors as Record<string, BuiltinInspector>,
+  [FiAgentManifest.identifier]: FiAgentInspectors as Record<string, BuiltinInspector>,
   [LocalSystemManifest.identifier]: LocalSystemInspectors as Record<string, BuiltinInspector>,
   [MemoryManifest.identifier]: MemoryInspectors as Record<string, BuiltinInspector>,
   [MessageManifest.identifier]: MessageInspectors as Record<string, BuiltinInspector>,

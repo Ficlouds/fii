@@ -1,4 +1,4 @@
-import { EMPTY_ARRAY } from '@lobechat/const';
+import { EMPTY_ARRAY } from '@ficlouds/const';
 import { Flexbox, Icon, Text, Tooltip } from '@lobehub/ui';
 import { SkillsIcon } from '@lobehub/ui/icons';
 import { createStaticStyles } from 'antd-style';

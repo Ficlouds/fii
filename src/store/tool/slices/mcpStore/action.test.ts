@@ -1,5 +1,5 @@
-import type * as LobechatConstModule from '@lobechat/const';
-import { type ToolManifest } from '@lobechat/types';
+import type * as LobechatConstModule from '@ficlouds/const';
+import { type ToolManifest } from '@ficlouds/types';
 import { type PluginItem } from '@lobehub/market-sdk';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -56,8 +56,8 @@ const bootstrapToolStoreWithDesktop = async (isDesktopEnv: boolean) => {
   vi.resetModules();
   vi.mock('zustand/traditional');
 
-  vi.doMock('@lobechat/const', async () => {
-    const actual = await vi.importActual<typeof LobechatConstModule>('@lobechat/const');
+  vi.doMock('@ficlouds/const', async () => {
+    const actual = await vi.importActual<typeof LobechatConstModule>('@ficlouds/const');
     return {
       ...actual,
       isDesktop: isDesktopEnv,
@@ -70,7 +70,7 @@ const bootstrapToolStoreWithDesktop = async (isDesktopEnv: boolean) => {
 
   const cleanup = () => {
     vi.resetModules();
-    vi.doUnmock('@lobechat/const');
+    vi.doUnmock('@ficlouds/const');
     vi.mock('zustand/traditional');
   };
 
@@ -976,8 +976,8 @@ describe('mcpStore actions', () => {
         );
 
         // Mock isDesktop to false (web environment)
-        const originalIsDesktop = (await import('@lobechat/const')).isDesktop;
-        vi.spyOn(await import('@lobechat/const'), 'isDesktop', 'get').mockReturnValue(false);
+        const originalIsDesktop = (await import('@ficlouds/const')).isDesktop;
+        vi.spyOn(await import('@ficlouds/const'), 'isDesktop', 'get').mockReturnValue(false);
 
         // Create plugin with haveCloudEndpoint field
         const mockPluginWithCloudEndpoint = {
@@ -1018,7 +1018,7 @@ describe('mcpStore actions', () => {
         expect(mcpService.checkInstallation).not.toHaveBeenCalled();
 
         // Restore original isDesktop
-        vi.spyOn(await import('@lobechat/const'), 'isDesktop', 'get').mockReturnValue(
+        vi.spyOn(await import('@ficlouds/const'), 'isDesktop', 'get').mockReturnValue(
           originalIsDesktop,
         );
       });
@@ -1044,8 +1044,8 @@ describe('mcpStore actions', () => {
         );
 
         // Mock isDesktop to false (web environment)
-        const originalIsDesktop = (await import('@lobechat/const')).isDesktop;
-        vi.spyOn(await import('@lobechat/const'), 'isDesktop', 'get').mockReturnValue(false);
+        const originalIsDesktop = (await import('@ficlouds/const')).isDesktop;
+        vi.spyOn(await import('@ficlouds/const'), 'isDesktop', 'get').mockReturnValue(false);
 
         act(() => {
           useToolStore.setState({
@@ -1064,7 +1064,7 @@ describe('mcpStore actions', () => {
         expect(mcpService.getStdioMcpServerManifest).toHaveBeenCalled();
 
         // Restore original isDesktop
-        vi.spyOn(await import('@lobechat/const'), 'isDesktop', 'get').mockReturnValue(
+        vi.spyOn(await import('@ficlouds/const'), 'isDesktop', 'get').mockReturnValue(
           originalIsDesktop,
         );
       });

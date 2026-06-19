@@ -5,11 +5,11 @@ import { lambdaClient } from '@/libs/trpc/client';
 
 import { UPLOAD_NETWORK_ERROR, uploadService } from '../upload';
 
-vi.mock('@lobechat/model-runtime', () => ({
+vi.mock('@ficlouds/model-runtime', () => ({
   parseDataUri: vi.fn(),
 }));
 
-vi.mock('@lobechat/utils', () => ({
+vi.mock('@ficlouds/utils', () => ({
   uuid: () => 'mock-uuid',
 }));
 
@@ -121,7 +121,7 @@ describe('UploadService', () => {
     });
 
     it('should upload base64 data successfully', async () => {
-      const { parseDataUri } = await import('@lobechat/model-runtime');
+      const { parseDataUri } = await import('@ficlouds/model-runtime');
       vi.mocked(parseDataUri).mockReturnValueOnce({
         base64: 'dGVzdA==', // "test" in base64
         mimeType: 'image/png',
@@ -145,7 +145,7 @@ describe('UploadService', () => {
     });
 
     it('should throw error for invalid base64 data', async () => {
-      const { parseDataUri } = await import('@lobechat/model-runtime');
+      const { parseDataUri } = await import('@ficlouds/model-runtime');
       vi.mocked(parseDataUri).mockReturnValueOnce({
         base64: null,
         mimeType: null,
@@ -160,7 +160,7 @@ describe('UploadService', () => {
     });
 
     it('should use custom filename when provided', async () => {
-      const { parseDataUri } = await import('@lobechat/model-runtime');
+      const { parseDataUri } = await import('@ficlouds/model-runtime');
       vi.mocked(parseDataUri).mockReturnValueOnce({
         base64: 'dGVzdA==',
         mimeType: 'image/png',

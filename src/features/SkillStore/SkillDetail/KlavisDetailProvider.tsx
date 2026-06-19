@@ -1,6 +1,6 @@
 'use client';
 
-import { getKlavisServerByServerIdentifier } from '@lobechat/const';
+import { getKlavisServerByServerIdentifier } from '@ficlouds/const';
 import { type Klavis } from 'klavis';
 import { type ReactNode } from 'react';
 import { useMemo } from 'react';

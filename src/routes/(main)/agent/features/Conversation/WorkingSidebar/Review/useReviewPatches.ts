@@ -1,8 +1,8 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import type {
   GitWorkingTreePatch,
   SubmoduleWorkingTreePatches,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 
 import { useClientDataSWR } from '@/libs/swr';
 import { electronGitService } from '@/services/electron/git';

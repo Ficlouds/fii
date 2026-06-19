@@ -1,5 +1,5 @@
-import type { SkillManifest } from '@lobechat/types';
-import { skillManifestSchema } from '@lobechat/types';
+import type { SkillManifest } from '@ficlouds/types';
+import { skillManifestSchema } from '@ficlouds/types';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 

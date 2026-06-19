@@ -1,8 +1,8 @@
 import {
   HETEROGENEOUS_TYPE_LABELS,
   isRemoteHeterogeneousType,
-} from '@lobechat/heterogeneous-agents';
-import { type ModelPerformance, type ModelUsage } from '@lobechat/types';
+} from '@ficlouds/heterogeneous-agents';
+import { type ModelPerformance, type ModelUsage } from '@ficlouds/types';
 import { ModelIcon } from '@lobehub/icons';
 import { Center, Flexbox } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';

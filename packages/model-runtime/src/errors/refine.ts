@@ -1,4 +1,4 @@
-import { AgentRuntimeErrorType, type ILobeAgentRuntimeErrorType } from '@lobechat/types';
+import { AgentRuntimeErrorType, type ILobeAgentRuntimeErrorType } from '@ficlouds/types';
 
 import { matchErrorPattern } from './match';
 

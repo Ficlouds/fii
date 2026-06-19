@@ -1,36 +1,36 @@
 import {
   AgentBuilderInterventions,
   AgentBuilderManifest,
-} from '@lobechat/builtin-tool-agent-builder/client';
+} from '@ficlouds/builtin-tool-agent-builder/client';
 import {
   ClaudeCodeIdentifier,
   ClaudeCodeInterventions,
-} from '@lobechat/builtin-tool-claude-code/client';
-import { CloudSandboxManifest } from '@lobechat/builtin-tool-cloud-sandbox';
-import { CloudSandboxInterventions } from '@lobechat/builtin-tool-cloud-sandbox/client';
+} from '@ficlouds/builtin-tool-claude-code/client';
+import { CloudSandboxManifest } from '@ficlouds/builtin-tool-cloud-sandbox';
+import { CloudSandboxInterventions } from '@ficlouds/builtin-tool-cloud-sandbox/client';
 import {
   GroupManagementInterventions,
   GroupManagementManifest,
-} from '@lobechat/builtin-tool-group-management/client';
+} from '@ficlouds/builtin-tool-group-management/client';
 import {
-  LobeAgentInterventions,
-  LobeAgentManifest,
-} from '@lobechat/builtin-tool-lobe-agent/client';
+  FiAgentInterventions,
+  FiAgentManifest,
+} from '@ficlouds/builtin-tool-fi-agent/client';
 import {
   LocalSystemIdentifier,
   LocalSystemInterventions,
-} from '@lobechat/builtin-tool-local-system/client';
-import { MemoryInterventions, MemoryManifest } from '@lobechat/builtin-tool-memory/client';
-import { MessageInterventions, MessageManifest } from '@lobechat/builtin-tool-message/client';
+} from '@ficlouds/builtin-tool-local-system/client';
+import { MemoryInterventions, MemoryManifest } from '@ficlouds/builtin-tool-memory/client';
+import { MessageInterventions, MessageManifest } from '@ficlouds/builtin-tool-message/client';
 import {
   UserInteractionIdentifier,
   UserInteractionInterventions,
-} from '@lobechat/builtin-tool-user-interaction/client';
+} from '@ficlouds/builtin-tool-user-interaction/client';
 import {
   WebOnboardingInterventions,
   WebOnboardingManifest,
-} from '@lobechat/builtin-tool-web-onboarding/client';
-import { type BuiltinIntervention } from '@lobechat/types';
+} from '@ficlouds/builtin-tool-web-onboarding/client';
+import { type BuiltinIntervention } from '@ficlouds/types';
 
 /**
  * Builtin tools interventions registry
@@ -42,7 +42,7 @@ export const BuiltinToolInterventions: Record<string, Record<string, any>> = {
   [ClaudeCodeIdentifier]: ClaudeCodeInterventions,
   [CloudSandboxManifest.identifier]: CloudSandboxInterventions,
   [GroupManagementManifest.identifier]: GroupManagementInterventions,
-  [LobeAgentManifest.identifier]: LobeAgentInterventions,
+  [FiAgentManifest.identifier]: FiAgentInterventions,
   [LocalSystemIdentifier]: LocalSystemInterventions,
   [MemoryManifest.identifier]: MemoryInterventions,
   [MessageManifest.identifier]: MessageInterventions,

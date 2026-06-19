@@ -9,14 +9,14 @@ vi.mock('@/libs/trpc/utils/internalJwt', () => ({
 }));
 
 vi.mock('@/envs/app', () => ({
-  appEnv: { APP_URL: 'https://app.lobehub.com' },
+  appEnv: { APP_URL: 'https://app.ficlouds.com' },
 }));
 
 vi.mock('@/utils/env', () => ({
   isDev: false,
 }));
 
-const ENV_PREFIX = 'LOBEHUB_JWT=mock-jwt-token LOBEHUB_SERVER=https://app.lobehub.com';
+const ENV_PREFIX = 'LOBEHUB_JWT=mock-jwt-token LOBEHUB_SERVER=https://app.ficlouds.com';
 
 describe('preprocessLhCommand', () => {
   it('should return unchanged command for non-lh commands', async () => {

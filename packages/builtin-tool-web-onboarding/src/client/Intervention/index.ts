@@ -1,4 +1,4 @@
-import type { BuiltinIntervention } from '@lobechat/types';
+import type { BuiltinIntervention } from '@ficlouds/types';
 
 import { AgentMarketplaceInterventions } from '../../agentMarketplace/client/Intervention';
 import { WebOnboardingApiName } from '../../types';

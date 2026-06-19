@@ -10,8 +10,8 @@ import { useServerConfigStore } from '@/store/serverConfig';
 import { serverConfigSelectors } from '@/store/serverConfig/selectors';
 import { useSessionStore } from '@/store/session';
 import { sessionSelectors } from '@/store/session/selectors';
-import { type LobeAgentSession, type LobeSessions } from '@/types/session';
-import { LobeSessionType, SessionDefaultGroup } from '@/types/session';
+import { type FiAgentSession, type FiSessions } from '@/types/session';
+import { FiSessionType, SessionDefaultGroup } from '@/types/session';
 
 import CollapseGroup from './CollapseGroup';
 import Actions from './CollapseGroup/Actions';
@@ -35,14 +35,14 @@ const DefaultMode = memo(() => {
   const customSessionGroups = useSessionStore(sessionSelectors.customSessionGroups, isEqual);
   const pinnedSessions = useSessionStore(sessionSelectors.pinnedSessions, isEqual);
 
-  const shouldHideSession = (session: LobeSessions[0]) =>
+  const shouldHideSession = (session: FiSessions[0]) =>
     !isMobile &&
-    session.type === LobeSessionType.Agent &&
-    Boolean((session as LobeAgentSession).config?.virtual);
+    session.type === FiSessionType.Agent &&
+    Boolean((session as FiAgentSession).config?.virtual);
 
-  const filterSessionsForView = (sessions: LobeSessions): LobeSessions => {
+  const filterSessionsForView = (sessions: FiSessions): FiSessions => {
     const filteredForDevice = isMobile
-      ? sessions.filter((session) => session.type !== LobeSessionType.Group)
+      ? sessions.filter((session) => session.type !== FiSessionType.Group)
       : sessions;
 
     if (isMobile) return filteredForDevice;

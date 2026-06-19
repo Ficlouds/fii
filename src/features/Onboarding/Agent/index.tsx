@@ -1,10 +1,10 @@
 'use client';
 
-import { BUILTIN_AGENT_SLUGS } from '@lobechat/builtin-agents';
-import { setAgentTemplatesFetcher } from '@lobechat/builtin-tool-web-onboarding/agentMarketplace';
-import { SESSION_CHAT_TOPIC_URL } from '@lobechat/const';
-import type { SendMessageParams } from '@lobechat/types';
-import { RequestTrigger } from '@lobechat/types';
+import { BUILTIN_AGENT_SLUGS } from '@ficlouds/builtin-agents';
+import { setAgentTemplatesFetcher } from '@ficlouds/builtin-tool-web-onboarding/agentMarketplace';
+import { SESSION_CHAT_TOPIC_URL } from '@ficlouds/const';
+import type { SendMessageParams } from '@ficlouds/types';
+import { RequestTrigger } from '@ficlouds/types';
 import { Button, ErrorBoundary, Flexbox } from '@lobehub/ui';
 import { Drawer } from 'antd';
 import { History } from 'lucide-react';

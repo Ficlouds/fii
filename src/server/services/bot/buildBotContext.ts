@@ -1,4 +1,4 @@
-import type { ChatTopicBotContext } from '@lobechat/types';
+import type { ChatTopicBotContext } from '@ficlouds/types';
 
 export interface BuildBotContextParams {
   applicationId: string;

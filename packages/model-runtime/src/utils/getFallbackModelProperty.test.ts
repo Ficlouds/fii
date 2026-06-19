@@ -54,7 +54,7 @@ const { loadModelsMock, mockModelList } = vi.hoisted(() => ({
   ],
 }));
 
-vi.mock('@lobechat/business-model-bank/model-config', () => ({
+vi.mock('@ficlouds/business-model-bank/model-config', () => ({
   loadModels: loadModelsMock,
 }));
 
@@ -65,7 +65,7 @@ describe('getModelPropertyWithFallback', () => {
   });
 
   describe('when providerId is specified', () => {
-    it('should use injected LobeHub model config before static fallback', async () => {
+    it('should use injected Fi model config before static fallback', async () => {
       loadModelsMock.mockResolvedValue([
         ...mockModelList,
         {
@@ -74,14 +74,14 @@ describe('getModelPropertyWithFallback', () => {
           enabled: true,
           id: 'injected-model',
           type: 'chat',
-          displayName: 'Injected LobeHub Model',
+          displayName: 'Injected Fi Model',
         },
       ]);
 
       const result = await getModelPropertyWithFallback('injected-model', 'displayName', 'lobehub');
 
       expect(loadModelsMock).toHaveBeenCalledTimes(1);
-      expect(result).toBe('Injected LobeHub Model');
+      expect(result).toBe('Injected Fi Model');
     });
 
     it('should propagate loadModels errors instead of falling back to static defaults', async () => {
@@ -92,7 +92,7 @@ describe('getModelPropertyWithFallback', () => {
       ).rejects.toThrow('model config missing');
     });
 
-    it('should prefer the injected LobeHub model over another provider with the same id', async () => {
+    it('should prefer the injected Fi model over another provider with the same id', async () => {
       loadModelsMock.mockResolvedValue([
         {
           displayName: 'Static Same ID',
@@ -101,7 +101,7 @@ describe('getModelPropertyWithFallback', () => {
           type: 'chat',
         },
         {
-          displayName: 'Injected LobeHub Model',
+          displayName: 'Injected Fi Model',
           id: 'same-model',
           providerId: 'lobehub',
           type: 'chat',
@@ -109,7 +109,7 @@ describe('getModelPropertyWithFallback', () => {
       ]);
 
       const result = await getModelPropertyWithFallback('same-model', 'displayName', 'lobehub');
-      expect(result).toBe('Injected LobeHub Model');
+      expect(result).toBe('Injected Fi Model');
     });
 
     it('should return exact match value when model exists with specified provider', async () => {

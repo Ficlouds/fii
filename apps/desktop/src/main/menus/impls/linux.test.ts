@@ -12,7 +12,7 @@ vi.mock('electron', () => ({
     setApplicationMenu: vi.fn(),
   },
   app: {
-    getName: vi.fn(() => 'LobeChat'),
+    getName: vi.fn(() => 'Fi'),
     getVersion: vi.fn(() => '1.0.0'),
   },
   shell: {
@@ -81,7 +81,7 @@ const createMockApp = () => {
     const translations: Record<string, string> = {
       'about.title': 'About',
       'about.message': `${params?.appName || 'App'} ${params?.appVersion || '1.0.0'}`,
-      'about.detail': 'LobeChat Desktop Application',
+      'about.detail': 'Fi Desktop Application',
     };
     return translations[key] || key;
   });
@@ -267,7 +267,7 @@ describe('LinuxMenu', () => {
 
       expect(visitWebsiteItem).toBeDefined();
       await visitWebsiteItem.click();
-      expect(shell.openExternal).toHaveBeenCalledWith('https://lobehub.com');
+      expect(shell.openExternal).toHaveBeenCalledWith('https://ficlouds.com');
     });
 
     it('should handle github repo click', async () => {
@@ -540,7 +540,7 @@ describe('LinuxMenu', () => {
       aboutItem.click();
 
       const callArgs = (dialog.showMessageBox as any).mock.calls[0][0];
-      expect(callArgs.message).toContain('LobeChat');
+      expect(callArgs.message).toContain('Fi');
       expect(callArgs.message).toContain('1.0.0');
     });
   });

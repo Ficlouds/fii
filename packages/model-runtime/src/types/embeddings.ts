@@ -1,4 +1,4 @@
-import type { ModelUsage } from '@lobechat/types';
+import type { ModelUsage } from '@ficlouds/types';
 
 export interface EmbeddingsPayload {
   /**

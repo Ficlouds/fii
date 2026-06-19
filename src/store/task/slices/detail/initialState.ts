@@ -1,4 +1,4 @@
-import type { TaskDetailData } from '@lobechat/types';
+import type { TaskDetailData } from '@ficlouds/types';
 
 export interface TaskDetailSliceState {
   activeTaskId?: string;

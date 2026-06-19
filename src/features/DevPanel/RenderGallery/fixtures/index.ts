@@ -1,7 +1,7 @@
 'use client';
 
-import { builtinTools } from '@lobechat/builtin-tools';
-import type { BuiltinToolManifest, LobeChatPluginApi } from '@lobechat/types';
+import { builtinTools } from '@ficlouds/builtin-tools';
+import type { BuiltinToolManifest, FiPluginApi } from '@ficlouds/types';
 
 import type { ToolRenderFixture } from '../lifecycleMode';
 import { buildSchemaSample, humanize, single, type ToolsetFixtureModule } from './_helpers';
@@ -9,10 +9,10 @@ import claudeCode from './claude-code';
 import codex from './codex';
 import github from './github';
 import lobeActivator from './lobe-activator';
-import lobeAgent from './lobe-agent';
-import lobeAgentBuilder from './lobe-agent-builder';
-import lobeAgentDocuments from './lobe-agent-documents';
-import lobeAgentManagement from './lobe-agent-management';
+import fiAgent from './lobe-agent';
+import fiAgentBuilder from './lobe-agent-builder';
+import fiAgentDocuments from './lobe-agent-documents';
+import fiAgentManagement from './lobe-agent-management';
 import lobeCloudSandbox from './lobe-cloud-sandbox';
 import lobeGroupAgentBuilder from './lobe-group-agent-builder';
 import lobeGroupManagement from './lobe-group-management';
@@ -30,7 +30,7 @@ import lobeWebOnboarding from './lobe-web-onboarding';
 export type { ToolRenderFixture, ToolRenderFixtureVariant } from '../lifecycleMode';
 
 export interface ToolRenderMeta {
-  api?: LobeChatPluginApi;
+  api?: FiPluginApi;
   apiName: string;
   description?: string;
   identifier: string;
@@ -67,10 +67,10 @@ const toolsetModules: ToolsetFixtureModule[] = [
   codex,
   github,
   lobeActivator,
-  lobeAgent,
-  lobeAgentBuilder,
-  lobeAgentDocuments,
-  lobeAgentManagement,
+  fiAgent,
+  fiAgentBuilder,
+  fiAgentDocuments,
+  fiAgentManagement,
   lobeCloudSandbox,
   lobeGroupAgentBuilder,
   lobeGroupManagement,
@@ -103,7 +103,7 @@ const manifestByIdentifier = new Map<string, BuiltinToolManifest>(
 export const getToolRenderFixture = (
   identifier: string,
   apiName: string,
-  api?: LobeChatPluginApi,
+  api?: FiPluginApi,
 ): ToolRenderFixture => {
   const fixture = fixtureRegistry.get(`${identifier}:${apiName}`);
   if (fixture) return fixture;

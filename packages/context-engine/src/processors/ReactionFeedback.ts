@@ -1,4 +1,4 @@
-import type { EmojiReaction } from '@lobechat/types';
+import type { EmojiReaction } from '@ficlouds/types';
 import debug from 'debug';
 
 import { BaseProcessor } from '../base/BaseProcessor';

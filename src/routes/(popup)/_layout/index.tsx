@@ -1,6 +1,6 @@
 'use client';
 
-import { HotkeyScopeEnum } from '@lobechat/const/hotkeys';
+import { HotkeyScopeEnum } from '@ficlouds/const/hotkeys';
 import { Flexbox } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { type FC } from 'react';

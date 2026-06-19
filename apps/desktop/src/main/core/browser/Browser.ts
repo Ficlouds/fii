@@ -1,8 +1,8 @@
 import console from 'node:console';
 import path from 'node:path';
 
-import { APP_WINDOW_MIN_SIZE } from '@lobechat/desktop-bridge';
-import type { MainBroadcastEventKey, MainBroadcastParams } from '@lobechat/electron-client-ipc';
+import { APP_WINDOW_MIN_SIZE } from '@ficlouds/desktop-bridge';
+import type { MainBroadcastEventKey, MainBroadcastParams } from '@ficlouds/electron-client-ipc';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { app, BrowserWindow, ipcMain, screen, session as electronSession, shell } from 'electron';
 

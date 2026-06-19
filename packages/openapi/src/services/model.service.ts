@@ -1,7 +1,7 @@
 import { and, asc, count, eq, ilike, or } from 'drizzle-orm';
 
 import { aiModels } from '@/database/schemas';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 
 import { BaseService } from '../common/base.service';
 import { processPaginationConditions } from '../helpers/pagination';
@@ -19,7 +19,7 @@ import type {
  * Provides model query and grouping functionality
  */
 export class ModelService extends BaseService {
-  constructor(db: LobeChatDatabase, userId: string | null) {
+  constructor(db: FiDatabase, userId: string | null) {
     super(db, userId);
   }
 

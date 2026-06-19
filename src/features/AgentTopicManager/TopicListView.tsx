@@ -1,6 +1,6 @@
 'use client';
 
-import type { GroupedTopic } from '@lobechat/types';
+import type { GroupedTopic } from '@ficlouds/types';
 import { ActionIcon, Checkbox, DropdownMenu, Flexbox, Icon, Tag, Text } from '@lobehub/ui';
 import { createStaticStyles, cssVar } from 'antd-style';
 import { FolderIcon, MoreHorizontal, Star } from 'lucide-react';

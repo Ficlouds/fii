@@ -1,4 +1,4 @@
-import { type ChatTranslate } from '@lobechat/types';
+import { type ChatTranslate } from '@ficlouds/types';
 import { ActionIcon, copyToClipboard, Flexbox, Icon, Markdown, Tag } from '@lobehub/ui';
 import { App } from 'antd';
 import { cssVar } from 'antd-style';

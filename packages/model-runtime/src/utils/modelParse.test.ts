@@ -1,4 +1,4 @@
-import type { ChatModelCard } from '@lobechat/types';
+import type { ChatModelCard } from '@ficlouds/types';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
@@ -116,7 +116,7 @@ vi.mock('model-bank', () => ({
   },
   LOBE_DEFAULT_MODEL_LIST: mockDefaultModelList,
   loadModels: vi.fn().mockResolvedValue(mockDefaultModelList),
-  ModelProvider: { LobeHub: 'lobehub' },
+  ModelProvider: { Fi: 'lobehub' },
   // 新增 provider 专用清单，供 findKnownModelByProvider 使用
   google: [
     {
@@ -127,7 +127,7 @@ vi.mock('model-bank', () => ({
   ],
 }));
 
-vi.mock('@lobechat/business-model-bank/model-config', () => ({
+vi.mock('@ficlouds/business-model-bank/model-config', () => ({
   loadModels: loadModelsMock,
 }));
 

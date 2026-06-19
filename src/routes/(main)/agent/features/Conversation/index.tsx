@@ -1,4 +1,4 @@
-import { isDesktop } from '@lobechat/const';
+import { isDesktop } from '@ficlouds/const';
 import { Flexbox, TooltipGroup } from '@lobehub/ui';
 import React, { memo, Suspense, useCallback } from 'react';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { BRANDING_NAME } from '@lobechat/business-const';
+import { BRANDING_NAME } from '@ficlouds/business-const';
 import { type FormGroupItemType } from '@lobehub/ui';
 import { Button, Form, Icon } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';

@@ -1,11 +1,11 @@
 // @vitest-environment node
-import type { ImageGenerationTopic } from '@lobechat/types';
+import type { ImageGenerationTopic } from '@ficlouds/types';
 import { eq } from 'drizzle-orm';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { getTestDB } from '../../core/getTestDB';
 import { generationBatches, generations, generationTopics, users } from '../../schemas';
-import type { LobeChatDatabase } from '../../type';
+import type { FiDatabase } from '../../type';
 import { GenerationTopicModel } from '../generationTopic';
 
 // Mock FileService
@@ -16,7 +16,7 @@ vi.mock('@/server/services/file', () => ({
   })),
 }));
 
-const serverDB: LobeChatDatabase = await getTestDB();
+const serverDB: FiDatabase = await getTestDB();
 
 const userId = 'generation-topic-test-user';
 const otherUserId = 'other-user';

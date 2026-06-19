@@ -1,6 +1,6 @@
 'use client';
 
-import type { TaskTemplate } from '@lobechat/const';
+import type { TaskTemplate } from '@ficlouds/const';
 import { ActionIcon, Button, Flexbox, Icon, Markdown, Text } from '@lobehub/ui';
 import { createModal, type ModalInstance, useModalContext } from '@lobehub/ui/base-ui';
 import { Divider } from 'antd';

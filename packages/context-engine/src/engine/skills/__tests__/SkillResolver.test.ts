@@ -20,9 +20,9 @@ describe('SkillResolver', () => {
       name: 'Agent Browser',
     },
     {
-      description: 'LobeHub management',
+      description: 'Fi management',
       identifier: 'lobehub-cli',
-      name: 'LobeHub CLI',
+      name: 'Fi CLI',
     },
   ];
 

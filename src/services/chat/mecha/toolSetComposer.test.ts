@@ -1,11 +1,11 @@
-import { PageAgentIdentifier } from '@lobechat/builtin-tool-page-agent';
-import type { LobeToolManifest, ToolsGenerationResult } from '@lobechat/context-engine';
-import { generateToolsFromManifest } from '@lobechat/context-engine';
+import { PageAgentIdentifier } from '@ficlouds/builtin-tool-page-agent';
+import type { FiToolManifest, ToolsGenerationResult } from '@ficlouds/context-engine';
+import { generateToolsFromManifest } from '@ficlouds/context-engine';
 import { describe, expect, it } from 'vitest';
 
 import { composeEnabledTools } from './toolSetComposer';
 
-const makeManifest = (identifier: string, apiName: string): LobeToolManifest => ({
+const makeManifest = (identifier: string, apiName: string): FiToolManifest => ({
   api: [
     {
       description: `${identifier}.${apiName}`,
@@ -19,7 +19,7 @@ const makeManifest = (identifier: string, apiName: string): LobeToolManifest => 
   type: 'builtin',
 });
 
-const makeToolsDetailed = (manifests: LobeToolManifest[]): ToolsGenerationResult => ({
+const makeToolsDetailed = (manifests: FiToolManifest[]): ToolsGenerationResult => ({
   enabledManifests: manifests,
   enabledToolIds: manifests.map((m) => m.identifier),
   filteredTools: [],

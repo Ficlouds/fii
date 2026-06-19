@@ -1,4 +1,4 @@
-import type { ChatToolPayload } from '@lobechat/types';
+import type { ChatToolPayload } from '@ficlouds/types';
 import debug from 'debug';
 
 import type { ToolExecutionResultResponse } from '@/server/services/toolExecution/types';

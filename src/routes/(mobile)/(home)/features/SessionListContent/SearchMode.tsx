@@ -3,8 +3,8 @@ import { memo, useMemo } from 'react';
 import { useServerConfigStore } from '@/store/serverConfig';
 import { serverConfigSelectors } from '@/store/serverConfig/selectors';
 import { useSessionStore } from '@/store/session';
-import { type LobeAgentSession, type LobeSessions } from '@/types/session';
-import { LobeSessionType } from '@/types/session';
+import { type FiAgentSession, type FiSessions } from '@/types/session';
+import { FiSessionType } from '@/types/session';
 
 import SkeletonList from '../SkeletonList';
 import SessionList from './List';
@@ -23,12 +23,12 @@ const SearchMode = memo(() => {
     if (!data) return data;
 
     if (isMobile) {
-      return data.filter((session: LobeSessions[0]) => session.type !== LobeSessionType.Group);
+      return data.filter((session: FiSessions[0]) => session.type !== FiSessionType.Group);
     }
 
     return data.filter(
-      (session: LobeSessions[0]) =>
-        session.type !== LobeSessionType.Agent || !(session as LobeAgentSession).config?.virtual,
+      (session: FiSessions[0]) =>
+        session.type !== FiSessionType.Agent || !(session as FiAgentSession).config?.virtual,
     );
   }, [data, isMobile]);
 

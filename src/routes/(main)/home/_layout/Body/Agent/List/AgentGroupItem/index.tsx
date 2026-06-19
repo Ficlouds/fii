@@ -1,5 +1,5 @@
-import { GROUP_CHAT_URL } from '@lobechat/const';
-import { type SidebarAgentItem } from '@lobechat/types';
+import { GROUP_CHAT_URL } from '@ficlouds/const';
+import { type SidebarAgentItem } from '@ficlouds/types';
 import { ActionIcon, Icon } from '@lobehub/ui';
 import { cssVar } from 'antd-style';
 import { Loader2, PinIcon } from 'lucide-react';

@@ -1,5 +1,5 @@
-import { TRACING_SCENARIOS } from '@lobechat/const';
-import type { TracingOptions } from '@lobechat/llm-generation-tracing';
+import { TRACING_SCENARIOS } from '@ficlouds/const';
+import type { TracingOptions } from '@ficlouds/llm-generation-tracing';
 import {
   chainGenerateBrief,
   chainJudgeBriefEmit,
@@ -13,22 +13,22 @@ import {
   TASK_TOPIC_HANDOFF_PROMPT_VERSION,
   TASK_TOPIC_HANDOFF_SCHEMA,
   TASK_TOPIC_HANDOFF_SCHEMA_NAME,
-} from '@lobechat/prompts';
+} from '@ficlouds/prompts';
 import type {
   BriefArtifacts,
   BriefDecision,
   TaskItem,
   TaskSchedulerContext,
   TaskTopicHandoff,
-} from '@lobechat/types';
-import { DEFAULT_BRIEF_ACTIONS } from '@lobechat/types';
+} from '@ficlouds/types';
+import { DEFAULT_BRIEF_ACTIONS } from '@ficlouds/types';
 import debug from 'debug';
 
 import { BriefModel } from '@/database/models/brief';
 import { TaskModel } from '@/database/models/task';
 import { TaskTopicModel } from '@/database/models/taskTopic';
 import { TopicModel } from '@/database/models/topic';
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 import { SystemAgentService } from '@/server/services/systemAgent';
 import { TaskReviewService } from '@/server/services/taskReview';
@@ -79,14 +79,14 @@ export interface TopicCompleteParams {
  */
 export class TaskLifecycleService {
   private briefModel: BriefModel;
-  private db: LobeChatDatabase;
+  private db: FiDatabase;
   private systemAgentService: SystemAgentService;
   private taskModel: TaskModel;
   private taskTopicModel: TaskTopicModel;
   private topicModel: TopicModel;
   private userId: string;
 
-  constructor(db: LobeChatDatabase, userId: string) {
+  constructor(db: FiDatabase, userId: string) {
     this.db = db;
     this.userId = userId;
     this.taskModel = new TaskModel(db, userId);

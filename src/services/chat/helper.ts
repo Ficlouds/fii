@@ -9,7 +9,7 @@ const getModelAbilities = (model: string, provider: string) => {
     (item) => item.id === model && item.providerId === provider,
   );
 
-  if (exactModel || provider !== ModelProvider.LobeHub) return exactModel?.abilities;
+  if (exactModel || provider !== ModelProvider.Fi) return exactModel?.abilities;
 
   return state.enabledAiModels?.find((item) => item.id === model)?.abilities;
 };

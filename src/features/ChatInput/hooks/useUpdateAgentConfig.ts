@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import { type PartialDeep } from 'type-fest';
 
 import { useAgentStore } from '@/store/agent';
-import { type LobeAgentChatConfig, type LobeAgentConfig } from '@/types/agent';
+import { type FiAgentChatConfig, type FiAgentConfig } from '@/types/agent';
 
 import { useAgentId } from './useAgentId';
 
@@ -18,14 +18,14 @@ export const useUpdateAgentConfig = () => {
   const updateAgentChatConfigById = useAgentStore((s) => s.updateAgentChatConfigById);
 
   const updateAgentConfig = useCallback(
-    (config: PartialDeep<LobeAgentConfig>) => {
+    (config: PartialDeep<FiAgentConfig>) => {
       return updateAgentConfigById(agentId, config);
     },
     [agentId, updateAgentConfigById],
   );
 
   const updateAgentChatConfig = useCallback(
-    (config: Partial<LobeAgentChatConfig>) => {
+    (config: Partial<FiAgentChatConfig>) => {
       return updateAgentChatConfigById(agentId, config);
     },
     [agentId, updateAgentChatConfigById],

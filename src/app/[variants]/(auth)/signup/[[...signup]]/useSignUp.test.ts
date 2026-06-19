@@ -24,8 +24,8 @@ vi.mock('@/libs/better-auth/auth-client', () => ({
   signUp: { email: mockSignUpEmail },
 }));
 
-vi.mock('@lobechat/business-const', () => ({
-  BRANDING_NAME: 'LobeHub',
+vi.mock('@ficlouds/business-const', () => ({
+  BRANDING_NAME: 'Fi',
   ENABLE_BUSINESS_FEATURES: false,
 }));
 

@@ -1,7 +1,7 @@
 'use client';
 
-import type { InterestAreaKey } from '@lobechat/const';
-import type { BuiltinRenderProps, SaveUserQuestionInput } from '@lobechat/types';
+import type { InterestAreaKey } from '@ficlouds/const';
+import type { BuiltinRenderProps, SaveUserQuestionInput } from '@ficlouds/types';
 import { Flexbox, Text } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { memo, useMemo } from 'react';

@@ -1,5 +1,5 @@
-import { escapeXml } from '@lobechat/prompts';
-import type { RuntimeMentionedAgent } from '@lobechat/types';
+import { escapeXml } from '@ficlouds/prompts';
+import type { RuntimeMentionedAgent } from '@ficlouds/types';
 import debug from 'debug';
 
 import { BaseFirstUserContentProvider } from '../base/BaseFirstUserContentProvider';
@@ -66,7 +66,7 @@ export interface AvailablePluginInfo {
   identifier: string;
   /** Plugin display name */
   name: string;
-  /** Plugin type: 'builtin' for built-in tools, 'klavis' for Klavis servers, 'lobehub-skill' for LobehubSkill providers */
+  /** Plugin type: 'builtin' for built-in tools, 'klavis' for Klavis servers, 'lobehub-skill' for FiSkill providers */
   type: 'builtin' | 'klavis' | 'lobehub-skill';
 }
 
@@ -164,7 +164,7 @@ const defaultFormatContext = (context: AgentManagementContext): string => {
   if (context.availablePlugins && context.availablePlugins.length > 0) {
     const builtinPlugins = context.availablePlugins.filter((p) => p.type === 'builtin');
     const klavisPlugins = context.availablePlugins.filter((p) => p.type === 'klavis');
-    const lobehubSkillPlugins = context.availablePlugins.filter((p) => p.type === 'lobehub-skill');
+    const fiSkillPlugins = context.availablePlugins.filter((p) => p.type === 'lobehub-skill');
 
     const pluginsSections: string[] = [];
 
@@ -188,15 +188,15 @@ const defaultFormatContext = (context: AgentManagementContext): string => {
       pluginsSections.push(`  <klavis_plugins>\n${klavisItems}\n  </klavis_plugins>`);
     }
 
-    if (lobehubSkillPlugins.length > 0) {
-      const lobehubSkillItems = lobehubSkillPlugins
+    if (fiSkillPlugins.length > 0) {
+      const fiSkillItems = fiSkillPlugins
         .map((p) => {
           const desc = p.description ? ` - ${escapeXml(p.description)}` : '';
           return `    <plugin id="${p.identifier}">${escapeXml(p.name)}${desc}</plugin>`;
         })
         .join('\n');
       pluginsSections.push(
-        `  <lobehub_skill_plugins>\n${lobehubSkillItems}\n  </lobehub_skill_plugins>`,
+        `  <fi_skill_plugins>\n${fiSkillItems}\n  </fi_skill_plugins>`,
       );
     }
 

@@ -1,12 +1,12 @@
-import { DEFAULT_PROVIDER } from '@lobechat/business-const';
-import { DEFAULT_MODEL, DEFAUTT_AGENT_TTS_CONFIG, isDesktop } from '@lobechat/const';
-import { type AgentBuilderContext } from '@lobechat/context-engine';
+import { DEFAULT_PROVIDER } from '@ficlouds/business-const';
+import { DEFAULT_MODEL, DEFAUTT_AGENT_TTS_CONFIG, isDesktop } from '@ficlouds/const';
+import { type AgentBuilderContext } from '@ficlouds/context-engine';
 import {
   type AgentMode,
-  type LobeAgentAgencyConfig,
-  type LobeAgentTTSConfig,
+  type FiAgentAgencyConfig,
+  type FiAgentTTSConfig,
   type RuntimeEnvConfig,
-} from '@lobechat/types';
+} from '@ficlouds/types';
 
 import { globalAgentContextManager } from '@/helpers/GlobalAgentContextManager';
 
@@ -40,7 +40,7 @@ const getAgentSystemRoleById =
 
 const getAgentTTSById =
   (agentId: string) =>
-  (s: AgentStoreState): LobeAgentTTSConfig =>
+  (s: AgentStoreState): FiAgentTTSConfig =>
     agentSelectors.getAgentConfigById(agentId)(s)?.tts || DEFAUTT_AGENT_TTS_CONFIG;
 
 const getAgentFilesById = (agentId: string) => (s: AgentStoreState) =>
@@ -126,7 +126,7 @@ const getAgentBuilderContextById =
  */
 const getAgencyConfigById =
   (agentId: string) =>
-  (s: AgentStoreState): LobeAgentAgencyConfig | undefined =>
+  (s: AgentStoreState): FiAgentAgencyConfig | undefined =>
     agentSelectors.getAgentConfigById(agentId)(s)?.agencyConfig;
 
 /**

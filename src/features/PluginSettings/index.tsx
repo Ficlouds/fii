@@ -1,4 +1,4 @@
-import { type ToolManifestSettings } from '@lobechat/types';
+import { type ToolManifestSettings } from '@ficlouds/types';
 import { Form, Markdown } from '@lobehub/ui';
 import { Form as AForm } from 'antd';
 import { createStaticStyles } from 'antd-style';

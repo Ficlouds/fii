@@ -2,7 +2,7 @@ import {
   type DetectAppsResult,
   type OpenInAppParams,
   type OpenInAppResult,
-} from '@lobechat/electron-client-ipc';
+} from '@ficlouds/electron-client-ipc';
 
 import { ensureElectronIpc } from '@/utils/electron/ipc';
 

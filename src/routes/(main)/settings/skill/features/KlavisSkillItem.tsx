@@ -1,6 +1,6 @@
 'use client';
 
-import { type KlavisServerType } from '@lobechat/const';
+import { type KlavisServerType } from '@ficlouds/const';
 import { Avatar, Button as LobeButton, DropdownMenu, Flexbox, Icon } from '@lobehub/ui';
 import { confirmModal } from '@lobehub/ui/base-ui';
 import { Button } from 'antd';
@@ -166,13 +166,13 @@ const KlavisSkillItem = memo<KlavisSkillItemProps>(({ serverType, server }) => {
     if (!server) return;
     confirmModal({
       cancelText: t('cancel', { ns: 'common' }),
-      content: t('tools.lobehubSkill.disconnectConfirm.desc', { name: serverType.label }),
+      content: t('tools.fiSkill.disconnectConfirm.desc', { name: serverType.label }),
       okButtonProps: { danger: true },
-      okText: t('tools.lobehubSkill.disconnect'),
+      okText: t('tools.fiSkill.disconnect'),
       onOk: async () => {
         await removeKlavisServer(server.identifier);
       },
-      title: t('tools.lobehubSkill.disconnectConfirm.title', { name: serverType.label }),
+      title: t('tools.fiSkill.disconnectConfirm.title', { name: serverType.label }),
     });
   };
 

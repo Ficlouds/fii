@@ -1,4 +1,4 @@
-import { MessageToolIdentifier } from '@lobechat/builtin-tool-message';
+import { MessageToolIdentifier } from '@ficlouds/builtin-tool-message';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { ToolExecutionContext } from '../../types';
@@ -159,7 +159,7 @@ vi.mock('@/server/services/bot/platforms/slack/api', () => ({
 }));
 
 const mockFeishuSendMessage = vi.fn();
-vi.mock('@lobechat/chat-adapter-feishu', () => ({
+vi.mock('@ficlouds/chat-adapter-feishu', () => ({
   LarkApiClient: vi.fn().mockImplementation(() => ({
     addReaction: vi.fn(),
     deleteMessage: vi.fn(),
@@ -173,7 +173,7 @@ vi.mock('@lobechat/chat-adapter-feishu', () => ({
 }));
 
 const mockQQSendGroupMessage = vi.fn();
-vi.mock('@lobechat/chat-adapter-qq', () => ({
+vi.mock('@ficlouds/chat-adapter-qq', () => ({
   QQApiClient: vi.fn().mockImplementation(() => ({
     sendC2CMessage: vi.fn(),
     sendDmsMessage: vi.fn(),

@@ -1,9 +1,9 @@
 // @vitest-environment node
-import type { SourceAgentUserMessage } from '@lobechat/agent-signal/source';
-import { RequestTrigger } from '@lobechat/types';
+import type { SourceAgentUserMessage } from '@ficlouds/agent-signal/source';
+import { RequestTrigger } from '@ficlouds/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { LobeChatDatabase } from '@/database/type';
+import type { FiDatabase } from '@/database/type';
 import { initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 
 import { createRuntimeProcessorContext } from '../../../runtime/context';
@@ -126,7 +126,7 @@ describe('feedbackSatisfactionJudge', () => {
     });
 
     const processor = createFeedbackSatisfactionJudgeProcessor({
-      db: {} as LobeChatDatabase,
+      db: {} as FiDatabase,
       model: 'gpt-test',
       provider: 'openai',
       userId: 'user_1',
@@ -136,7 +136,7 @@ describe('feedbackSatisfactionJudge', () => {
       ctx,
     );
 
-    expect(initModelRuntimeFromDB).toHaveBeenCalledWith({} as LobeChatDatabase, 'user_1', 'openai');
+    expect(initModelRuntimeFromDB).toHaveBeenCalledWith({} as FiDatabase, 'user_1', 'openai');
     expect(mockGenerateObject).toHaveBeenCalledWith(
       expect.objectContaining({
         messages: [

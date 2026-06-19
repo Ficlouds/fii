@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const loadModelsMock = vi.hoisted(() => vi.fn());
 
-vi.mock('@lobechat/business-model-bank/model-config', () => ({
+vi.mock('@ficlouds/business-model-bank/model-config', () => ({
   loadModels: loadModelsMock,
 }));
 
@@ -29,7 +29,7 @@ describe('getModelPricing', () => {
     ]);
   });
 
-  it('should use injected LobeHub pricing before same-id fallback pricing', async () => {
+  it('should use injected Fi pricing before same-id fallback pricing', async () => {
     loadModelsMock.mockResolvedValue([
       {
         id: 'injected-only-model',

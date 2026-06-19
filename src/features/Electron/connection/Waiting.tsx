@@ -1,6 +1,6 @@
 'use client';
 
-import { useWatchBroadcast } from '@lobechat/electron-client-ipc';
+import { useWatchBroadcast } from '@ficlouds/electron-client-ipc';
 import { Button, Flexbox, Highlighter, Icon, Text } from '@lobehub/ui';
 import { createStaticStyles } from 'antd-style';
 import { ShieldX } from 'lucide-react';

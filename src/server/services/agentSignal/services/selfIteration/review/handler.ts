@@ -1,8 +1,8 @@
-import type { SourceAgentNightlyReviewRequested } from '@lobechat/agent-signal/source';
-import { AGENT_SIGNAL_SOURCE_TYPES } from '@lobechat/agent-signal/source';
-import { SpanStatusCode } from '@lobechat/observability-otel/api';
-import { tracer } from '@lobechat/observability-otel/modules/agent-signal';
-import { isNonEmptyString } from '@lobechat/utils';
+import type { SourceAgentNightlyReviewRequested } from '@ficlouds/agent-signal/source';
+import { AGENT_SIGNAL_SOURCE_TYPES } from '@ficlouds/agent-signal/source';
+import { SpanStatusCode } from '@ficlouds/observability-otel/api';
+import { tracer } from '@ficlouds/observability-otel/modules/agent-signal';
+import { isNonEmptyString } from '@ficlouds/utils';
 
 import { defineSourceHandler } from '../../../runtime/middleware';
 import type { AgentSignalReceipt } from '../../receiptService';

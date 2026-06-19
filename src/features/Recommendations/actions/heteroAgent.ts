@@ -1,4 +1,4 @@
-import { type HeterogeneousAgentClientConfig } from '@lobechat/heterogeneous-agents/client';
+import { type HeterogeneousAgentClientConfig } from '@ficlouds/heterogeneous-agents/client';
 import { ClaudeCode, Codex } from '@lobehub/icons';
 import { createElement } from 'react';
 

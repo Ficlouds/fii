@@ -1,4 +1,4 @@
-import { DEFAULT_AVATAR, INBOX_SESSION_ID } from '@lobechat/const';
+import { DEFAULT_AVATAR, INBOX_SESSION_ID } from '@ficlouds/const';
 import { ActionIcon, Avatar, Block, Flexbox, Icon, Text } from '@lobehub/ui';
 import { Divider } from 'antd';
 import { cssVar } from 'antd-style';

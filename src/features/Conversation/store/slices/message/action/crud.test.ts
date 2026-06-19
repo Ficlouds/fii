@@ -1,4 +1,4 @@
-import { type UIChatMessage } from '@lobechat/types';
+import { type UIChatMessage } from '@ficlouds/types';
 import { act } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -8,7 +8,7 @@ import { type ConversationContext } from '../../../../types';
 import { createStore } from '../../../index';
 
 // Mock conversation-flow parse function (必须 mock，因为这是外部库)
-vi.mock('@lobechat/conversation-flow', () => ({
+vi.mock('@ficlouds/conversation-flow', () => ({
   parse: (messages: UIChatMessage[]) => {
     const messageMap: Record<string, UIChatMessage> = {};
     for (const msg of messages) {

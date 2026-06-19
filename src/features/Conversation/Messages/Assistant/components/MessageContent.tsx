@@ -1,5 +1,5 @@
-import { LOADING_FLAT } from '@lobechat/const';
-import { type UIChatMessage } from '@lobechat/types';
+import { LOADING_FLAT } from '@ficlouds/const';
+import { type UIChatMessage } from '@ficlouds/types';
 import { Flexbox } from '@lobehub/ui';
 import { memo, useCallback } from 'react';
 

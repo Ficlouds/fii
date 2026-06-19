@@ -1,7 +1,7 @@
-import { type GeneralAgentCallLLMResultPayload } from '@lobechat/agent-runtime';
-import { LOADING_FLAT } from '@lobechat/const';
-import type { MessageToolCall } from '@lobechat/types';
-import { RequestTrigger } from '@lobechat/types';
+import { type GeneralAgentCallLLMResultPayload } from '@ficlouds/agent-runtime';
+import { LOADING_FLAT } from '@ficlouds/const';
+import type { MessageToolCall } from '@ficlouds/types';
+import { RequestTrigger } from '@ficlouds/types';
 import { describe, expect, it, vi } from 'vitest';
 
 import { chatService } from '@/services/chat';

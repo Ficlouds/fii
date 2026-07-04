@@ -87,7 +87,8 @@
     "./zenmux": "./src/aiModels/zenmux.ts",
     "./zeroone": "./src/aiModels/zeroone.ts",
     "./zhipu": "./src/aiModels/zhipu.ts",
-    "./types": "./src/types/index.ts"
+    "./types": "./src/types/index.ts",
+    "./modelProviders/fimodels": "./src/modelProviders/fimodels.ts"
   },
   "scripts": {
     "build": "tsdown",

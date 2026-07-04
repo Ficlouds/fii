@@ -55,7 +55,7 @@ const AskAgentCommands = memo(() => {
   if (!isAtMention) return null;
 
   // Check if Fi matches the query
-  const showLobeAI = false; // Fi: disabled
+  const showFiAI = false; // Fi: disabled
 
   return (
     <Command.Group heading={t('cmdk.mentionAgent')}>

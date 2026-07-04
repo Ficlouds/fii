@@ -1,5 +1,5 @@
 import { DEFAULT_MODEL_PROVIDER_LIST } from 'model-bank/modelProviders';
-import FiProvider from 'model-bank/modelProviders/lobehub';
+import FiProvider from 'model-bank/modelProviders/fimodels';
 
 const locales: Record<`${string}.description`, string> = {};
 

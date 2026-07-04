@@ -1031,7 +1031,7 @@ export default {
 
   'skills.details.sidebar.agent.title': 'Send this prompt to your Agent to install this Skill',
 
-  'skills.details.sidebar.agent.useOnLobeAI': 'Use on Fi',
+  'skills.details.sidebar.agent.useOnFi': 'Use on Fi',
 
   'skills.details.sidebar.description': 'Description',
 

@@ -12,7 +12,7 @@ export const ENABLED_SKILL_SOURCES: ReadonlySet<TaskTemplateSkillSource> = (() =
   const sources = new Set<TaskTemplateSkillSource>();
   if (klavisEnv.KLAVIS_API_KEY) sources.add('klavis');
   if (appEnv.MARKET_TRUSTED_CLIENT_ID && appEnv.MARKET_TRUSTED_CLIENT_SECRET) {
-    sources.add('lobehub');
+    sources.add('fi');
   }
   return sources;
 })();

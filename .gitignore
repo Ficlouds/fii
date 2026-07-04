@@ -158,3 +158,22 @@ docs/superpowers/
 garak-config/
 .venvs/
 litellm-config/
+
+# Server bridge files — belong on AWS, not in repo
+crowdsec-config/
+crowdsec-data/
+docling-bridge/
+guardrails-bridge/
+llamaguard-bridge/
+presidio-bridge/
+qwen3guard-bridge/
+security-bridge/
+python3
+
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Database files
+*.db

@@ -9,7 +9,7 @@ import Nav from './components/Nav';
 const FiLogo = ({ height = 22 }: { height?: number }) => {
   const isDark = useIsDark();
   const resetChat = () => {
-    useChatStore.setState({ activeTopicId: null, activeAgentId: null });
+    useChatStore.setState({ activeTopicId: undefined, activeAgentId: undefined });
   };
   return (
     <img

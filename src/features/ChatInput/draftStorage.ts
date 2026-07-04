@@ -1,4 +1,4 @@
-export const CHAT_INPUT_DRAFTS_STORAGE_KEY = 'lobechat:chat-input-drafts:v1';
+export const CHAT_INPUT_DRAFTS_STORAGE_KEY = 'fi:chat-input-drafts:v1';
 
 const MAX_DRAFTS = 50;
 

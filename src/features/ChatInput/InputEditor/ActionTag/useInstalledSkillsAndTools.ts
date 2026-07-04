@@ -54,7 +54,7 @@ export const useInstalledSkillsAndTools = (): ActionTagData[] => {
     const toolMap = new Map<string, { icon?: string; label: string }>();
 
     for (const item of installedPlugins) {
-      // Skip entries that are actually skills (lobehub skill, agent skill, builtin skill)
+      // Skip entries that are actually skills (fi skill, agent skill, builtin skill)
       if (skillMap.has(item.identifier)) continue;
       if (!toolMap.has(item.identifier)) {
         toolMap.set(item.identifier, { icon: item.avatar, label: item.title || item.identifier });

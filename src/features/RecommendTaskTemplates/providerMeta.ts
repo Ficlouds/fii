@@ -15,10 +15,10 @@ export interface SkillProviderMeta {
 export const getProviderMeta = (
   spec: TaskTemplateSkillRequirement,
 ): SkillProviderMeta | undefined => {
-  if (spec.source === 'lobehub') {
+  if (spec.source === 'fi') {
     const p = getFiSkillProviderById(spec.provider);
     if (!p) return undefined;
-    return { icon: p.icon, label: p.label, provider: spec.provider, source: 'lobehub' };
+    return { icon: p.icon, label: p.label, provider: spec.provider, source: 'fi' };
   }
   const p = getKlavisServerByServerIdentifier(spec.provider);
   if (!p) return undefined;

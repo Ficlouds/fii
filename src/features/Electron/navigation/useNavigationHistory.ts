@@ -69,7 +69,7 @@ export const useNavigationHistory = () => {
     const staticMeta = matchRouteMeta(desktopRoutes, currentUrl).static;
     const presetTitle = staticMeta.titleKey
       ? (t(staticMeta.titleKey as never) as string)
-      : (t('navigation.lobehub') as string);
+      : (t('navigation.fi') as string);
 
     pushHistory({
       metadata: { timestamp: Date.now() },

@@ -177,6 +177,13 @@ interface ErrorExtraProps {
   onRegenerate?: () => void;
 }
 
+// Renders a ContentFiltered block exactly like a normal Fi assistant message —
+// plain text, no alert box, no warning icon, no raw JSON. Backend logic is
+// untouched; this only changes what the user sees.
+const PlainAssistantText = memo<{ text: string }>(({ text }) => (
+  <div style={{ lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{text}</div>
+));
+
 const ErrorMessageExtra = memo<ErrorExtraProps>(({ error: alertError, data, onRegenerate }) => {
   const error = data.error;
   const navigate = useNavigate();
@@ -209,6 +216,14 @@ const ErrorMessageExtra = memo<ErrorExtraProps>(({ error: alertError, data, onRe
 
   if (enableBusinessFeatures && businessChatErrorMessageExtra) return businessChatErrorMessageExtra;
 
+  // ContentFiltered: render as a plain Fi message bubble, not a system alert.
+  // The friendly message is already set as alertError.message by useErrorContent
+  // (via the translated 'response.ContentFiltered' string in error.ts).
+  if (error?.type === ChatErrorType.ContentFiltered) {
+    const text = alertError?.message || rawErrorMessage || '';
+    return <PlainAssistantText text={text} />;
+  }
+
   switch (error?.type) {
     case AgentRuntimeErrorType.OllamaServiceUnavailable: {
       return <OllamaSetupGuide id={data.id} />;
@@ -229,7 +244,7 @@ const ErrorMessageExtra = memo<ErrorExtraProps>(({ error: alertError, data, onRe
     }
   }
 
-  if (error?.type?.toString().includes('Invalid')) {
+  if (error?.type?.toString().includes('Invalid') && data.error?.body?.provider !== 'fimodels') {
     return <ChatInvalidAPIKey id={data.id} provider={data.error?.body?.provider} />;
   }
 
@@ -239,16 +254,7 @@ const ErrorMessageExtra = memo<ErrorExtraProps>(({ error: alertError, data, onRe
       error={{
         ...alertError,
         ...(rawErrorMessage ? { message: rawErrorMessage } : {}),
-        extra: data.error?.body ? (
-          <Highlighter
-            actionIconSize={'small'}
-            language={'json'}
-            padding={8}
-            variant={'borderless'}
-          >
-            {JSON.stringify(data.error?.body, null, 2)}
-          </Highlighter>
-        ) : undefined,
+        extra: undefined,
       }}
       onRegenerate={onRegenerate}
     />

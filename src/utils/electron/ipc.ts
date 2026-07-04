@@ -1,12 +1,9 @@
-import { getElectronIpc } from '@ficlouds/electron-client-ipc';
-import { type DesktopIpcServices } from '@lobehub/desktop-ipc-typings';
+// Electron IPC utility — desktop-ipc-typings package replaced with local stub
+// Full Electron desktop implementation deferred to future Fi Desktop phase
+
+type DesktopIpcServices = Record<string, any>;
 
 export const ensureElectronIpc = (): DesktopIpcServices => {
-  const ipc = getElectronIpc();
-  if (!ipc) {
-    throw new Error(
-      'electronAPI.invoke not found. Ensure the preload exposes invoke via window.electronAPI.invoke',
-    );
-  }
-  return ipc;
+  if (typeof window === 'undefined') return {} as DesktopIpcServices;
+  return (window as any).electronIpc ?? ({} as DesktopIpcServices);
 };

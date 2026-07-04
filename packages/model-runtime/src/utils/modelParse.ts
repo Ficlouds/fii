@@ -462,11 +462,11 @@ const getProviderLocalConfig = async (
 ): Promise<AiFullModelCard[] | null> => {
   if (!provider) return null;
 
-  if (provider === ModelProvider.Fi) {
+  if (provider === ModelProvider.FiModels) {
     const { loadModels } =
       (await import('@ficlouds/business-model-bank/model-config')) as BusinessModelConfigModule;
     const models = await loadModels();
-    return models.filter((model) => model.providerId === ModelProvider.Fi);
+    return models.filter((model) => model.providerId === ModelProvider.FiModels);
   }
 
   try {

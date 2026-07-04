@@ -116,7 +116,7 @@ const ControlsForm = memo<ControlsFormProps>(
             <Trans i18nKey={'extendParams.disableContextCaching.desc'} ns={'chat'}>
               单条对话生成成本最高可降低 90%，响应速度提升 4 倍（
               <a
-                href={'https://www.anthropic.com/news/prompt-caching?utm_source=lobechat'}
+                href={'https://www.anthropic.com/news/prompt-caching?utm_source=ficlouds'}
                 rel="noreferrer nofollow"
                 target="_blank"
               >

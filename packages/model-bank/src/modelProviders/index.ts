@@ -74,6 +74,7 @@ import V0Provider from './v0';
 import VercelAIGatewayProvider from './vercelaigateway';
 import VertexAIProvider from './vertexai';
 import VLLMProvider from './vllm';
+import FiModelsProvider from './fimodels';
 import VolcengineProvider from './volcengine';
 import VolcengineCodingPlanProvider from './volcengineCodingPlan';
 import WenxinProvider from './wenxin';
@@ -102,6 +103,7 @@ export const LOBE_DEFAULT_MODEL_LIST: ChatModelCard[] = [
   MoonshotProvider.chatModels,
   OllamaProvider.chatModels,
   VLLMProvider.chatModels,
+  FiModelsProvider.chatModels,
   XinferenceProvider.chatModels,
   OpenRouterProvider.chatModels,
   TogetherAIProvider.chatModels,
@@ -161,6 +163,7 @@ export const DEFAULT_MODEL_PROVIDER_LIST = [
   OllamaProvider,
   OllamaCloudProvider,
   VLLMProvider,
+  FiModelsProvider,
   ComfyUIProvider,
   HuggingFaceProvider,
   CloudflareProvider,
@@ -307,6 +310,7 @@ export { default as V0ProviderCard } from './v0';
 export { default as VercelAIGatewayProviderCard } from './vercelaigateway';
 export { default as VertexAIProviderCard } from './vertexai';
 export { default as VLLMProviderCard } from './vllm';
+export { default as FiModelsProviderCard } from './fimodels';
 export { default as VolcengineProviderCard } from './volcengine';
 export { default as VolcengineCodingPlanProviderCard } from './volcengineCodingPlan';
 export { default as WenxinProviderCard } from './wenxin';

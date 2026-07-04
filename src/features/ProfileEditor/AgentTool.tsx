@@ -364,7 +364,7 @@ const AgentTool = memo<AgentToolProps>(
           popoverContent: (
             <ToolItemDetailPopover
               identifier={skill.identifier}
-              sourceLabel={t('skillStore.tabs.lobehub')}
+              sourceLabel={t('skillStore.tabs.fi')}
               description={t(`tools.builtins.${skill.identifier}.description` as any, {
                 defaultValue: skill.description,
               })}
@@ -485,7 +485,7 @@ const AgentTool = memo<AgentToolProps>(
           popoverContent: (
             <ToolItemDetailPopover
               identifier={item.identifier}
-              sourceLabel={t('skillStore.tabs.lobehub')}
+              sourceLabel={t('skillStore.tabs.fi')}
               description={t(`tools.builtins.${item.identifier}.description` as any, {
                 defaultValue: item.meta?.description || '',
               })}
@@ -603,8 +603,8 @@ const AgentTool = memo<AgentToolProps>(
           ? [
               {
                 children: builtinItems,
-                key: 'lobehub',
-                label: t('skillStore.tabs.lobehub'),
+                key: 'fi',
+                label: t('skillStore.tabs.fi'),
                 type: 'group' as const,
               },
             ]
@@ -666,7 +666,7 @@ const AgentTool = memo<AgentToolProps>(
           popoverContent: (
             <ToolItemDetailPopover
               identifier={item.identifier}
-              sourceLabel={t('skillStore.tabs.lobehub')}
+              sourceLabel={t('skillStore.tabs.fi')}
               description={t(`tools.builtins.${item.identifier}.description` as any, {
                 defaultValue: item.meta?.description || '',
               })}
@@ -720,7 +720,7 @@ const AgentTool = memo<AgentToolProps>(
             <ToolItemDetailPopover
               description={skill.description}
               identifier={skill.identifier}
-              sourceLabel={t('skillStore.tabs.lobehub')}
+              sourceLabel={t('skillStore.tabs.fi')}
               title={skill.name}
               icon={
                 skill.avatar ? (
@@ -748,8 +748,8 @@ const AgentTool = memo<AgentToolProps>(
       if (fiGroupItems.length > 0) {
         items.push({
           children: fiGroupItems,
-          key: 'installed-lobehub',
-          label: t('skillStore.tabs.lobehub'),
+          key: 'installed-fi',
+          label: t('skillStore.tabs.fi'),
           type: 'group',
         });
       }

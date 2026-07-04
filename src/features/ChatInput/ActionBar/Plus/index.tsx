@@ -168,7 +168,7 @@ type DropdownItemWithPopover = NonNullable<ActionDropdownMenuItems>[number] & {
   popoverContent?: unknown;
 };
 
-const CLOSE_TOOL_DETAIL_POPOVER_EVENT = 'lobe-chat-tool-detail-popover-close';
+const CLOSE_TOOL_DETAIL_POPOVER_EVENT = 'fi-tool-detail-popover-close';
 
 interface PopoverLabelProps {
   label: ReactNode;

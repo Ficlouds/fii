@@ -50,7 +50,6 @@ const MainChatInput = memo(() => {
     <ChatInput
       
       allowExpand={false}
-      showEditorInline
       disableFollowUpVariant
       inputContainerProps={inputContainerProps}
       isConfigLoading={isAgentConfigLoading}

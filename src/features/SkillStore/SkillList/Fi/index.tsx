@@ -75,7 +75,7 @@ export const FiList = memo<FiListProps>(({ keywords }) => {
 
   const filteredItems = useMemo(() => {
     const items: Array<
-      | { provider: (typeof LOBEHUB_SKILL_PROVIDERS)[number]; type: 'lobehub' }
+      | { provider: (typeof LOBEHUB_SKILL_PROVIDERS)[number]; type: 'fi' }
       | { serverType: (typeof KLAVIS_SERVER_TYPES)[number]; type: 'klavis' }
       | { skill: BuiltinSkill; type: 'builtinAgentSkill' }
       | { tool: FiToolMeta; type: 'builtin' }
@@ -94,7 +94,7 @@ export const FiList = memo<FiListProps>(({ keywords }) => {
     // Add Fi skills
     if (isFiSkillEnabled) {
       for (const provider of LOBEHUB_SKILL_PROVIDERS) {
-        items.push({ provider, type: 'lobehub' });
+        items.push({ provider, type: 'fi' });
       }
     }
 
@@ -120,7 +120,7 @@ export const FiList = memo<FiListProps>(({ keywords }) => {
         const identifier = item.tool.identifier?.toLowerCase() || '';
         return title.includes(lowerKeywords) || identifier.includes(lowerKeywords);
       }
-      const label = item.type === 'lobehub' ? item.provider.label : item.serverType.label;
+      const label = item.type === 'fi' ? item.provider.label : item.serverType.label;
       return label.toLowerCase().includes(lowerKeywords);
     });
   }, [keywords, isFiSkillEnabled, isKlavisEnabled, builtinTools, builtinSkills]);
@@ -173,7 +173,7 @@ export const FiList = memo<FiListProps>(({ keywords }) => {
               />
             );
           }
-          if (item.type === 'lobehub') {
+          if (item.type === 'fi') {
             const server = getFiSkillServerByProvider(item.provider.id);
             const isConnected = server?.status === FiSkillStatus.CONNECTED;
             return (
@@ -184,7 +184,7 @@ export const FiList = memo<FiListProps>(({ keywords }) => {
                 isConnected={isConnected}
                 key={item.provider.id}
                 label={item.provider.label}
-                type="lobehub"
+                type="fi"
                 onOpenDetail={() => createFiSkillDetailModal({ identifier: item.provider.id })}
               />
             );

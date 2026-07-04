@@ -24,6 +24,7 @@ import type {
 import { SkillEngine } from '@ficlouds/context-engine';
 import type { FiDatabase } from '@ficlouds/database';
 import { isRemoteHeterogeneousType } from '@ficlouds/heterogeneous-agents';
+import { scanUserMessage } from '@/server/security/securityScan';
 import { buildTaskManagerDefaultsPrompt } from '@ficlouds/prompts';
 import type {
   ChatFileItem,
@@ -303,7 +304,7 @@ export class AiAgentService {
       additionalPluginIds,
       agentId,
       slug,
-      prompt,
+      prompt: rawPrompt,
       appContext,
       autoStart = true,
       botContext,
@@ -344,6 +345,30 @@ export class AiAgentService {
 
     // Determine the identifier to use (agentId takes precedence)
     const identifier = agentId || slug!;
+    console.error('[FI-SECURITY-DIAGNOSTIC] execAgent reached, prompt=', rawPrompt?.slice(0, 80));
+
+    // ============  Security scan (LLM Guard)   ============ //
+    // Block prompt injection/toxicity attempts before they reach the model.
+    // PII gets auto-masked rather than blocked outright.
+    let prompt = rawPrompt;
+    if (prompt) {
+      const scanResult = await scanUserMessage(prompt);
+      if (!scanResult.isSafe) {
+        const isBlockingViolation = scanResult.triggeredScanners.some(
+          (s) => s === 'PromptInjection' || s === 'Toxicity',
+        );
+        if (isBlockingViolation) {
+          log(
+            'execAgent: BLOCKED by security filter for user %s: %O',
+            this.userId,
+            scanResult.triggeredScanners,
+          );
+          throw new Error('ContentFiltered');
+        }
+        prompt = scanResult.sanitizedContent;
+      }
+    }
+
 
     log('execAgent: identifier=%s, prompt=%s', identifier, prompt.slice(0, 50));
 
@@ -432,6 +457,27 @@ export class AiAgentService {
           agentConfig.plugins = runtimeConfig.plugins;
           log('execAgent: merged builtin agent runtime plugins for slug=%s', agentSlug);
         }
+    // Fi: inject user memories into system role
+    console.log('[Fi Memory] Attempting memory injection for user:', this.userId);
+    try {
+      const memBridgeUrl = process.env.MEMORY_BRIDGE_URL || 'http://174.129.39.26:8008';
+      const memResponse = await fetch(`${memBridgeUrl}/memory/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: this.userId, query: 'user preferences work location food', limit: 8 }),
+        signal: AbortSignal.timeout(3000),
+      });
+      if (memResponse.ok) {
+        const memData = await memResponse.json() as { results?: { memory?: string }[] };
+        const memories = (memData.results || []).map((m: { memory?: string }) => m.memory).filter(Boolean);
+        if (memories.length > 0) {
+          const memBlock = `\n\nFI MEMORY CONTEXT (facts you know about this user — use naturally, never mention you are using memory):\n${(memories as string[]).map((m) => `- ${m}`).join('\n')}`;
+          agentConfig.systemRole = (agentConfig.systemRole || '') + memBlock;
+        }
+      }
+    } catch {
+      // Memory injection fails silently — never blocks chat
+    }
       }
     }
 
@@ -1628,14 +1674,14 @@ export class AiAgentService {
 
       log(
         'execAgent: built agentManagementContext with %d providers, %d plugins, %d agents',
-        agentManagementContext.availableProviders!.length,
-        agentManagementContext.availablePlugins!.length,
-        agentManagementContext.availableAgents?.length ?? 0,
+        agentManagementContext?.availableProviders?.length ?? 0,
+        agentManagementContext?.availablePlugins?.length ?? 0,
+        agentManagementContext?.availableAgents?.length ?? 0,
       );
     } else if (agentManagementContext) {
       log(
         'execAgent: injected availableAgents only (auto mode, agent-management tool not enabled): %d agents',
-        agentManagementContext.availableAgents?.length ?? 0,
+        agentManagementContext?.availableAgents?.length ?? 0,
       );
     }
 

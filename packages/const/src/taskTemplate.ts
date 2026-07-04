@@ -36,7 +36,7 @@ export interface TaskTemplateSkillRequirement {
   source: TaskTemplateSkillSource;
 }
 
-export type TaskTemplateSkillSource = 'klavis' | 'lobehub';
+export type TaskTemplateSkillSource = 'klavis' | 'lobehub' | 'fi';
 
 export type TaskTemplateCategory =
   | 'content-creation'

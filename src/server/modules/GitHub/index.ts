@@ -1,6 +1,6 @@
 import debug from 'debug';
 
-const log = debug('lobe-chat:module:github');
+const log = debug('fi:module:github');
 
 export interface GitHubRepoInfo {
   branch: string;

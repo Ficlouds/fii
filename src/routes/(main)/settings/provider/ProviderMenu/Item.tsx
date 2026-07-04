@@ -40,7 +40,7 @@ const ProviderItem = memo<ProviderItemProps>(
           style={{ borderRadius: 4 }}
         />
       ) : isCustomBranding && id === BRANDING_PROVIDER ? (
-        <ProductLogo size={24} type={'flat'} />
+        <ProductLogo size={24} type={'icon'} />
       ) : (
         <ProviderIcon
           provider={id}

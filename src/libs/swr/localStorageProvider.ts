@@ -24,7 +24,7 @@ interface CacheEntry<T = unknown> {
 export interface LocalStorageCacheOptions {
   /** Allowed SWR key patterns (whitelist) */
   cacheablePatterns?: string[];
-  /** localStorage key name, defaults to 'lobechat-swr-cache' */
+  /** localStorage key name, defaults to 'fi-swr-cache' */
   cacheKey?: string;
   /** Maximum cache entries, defaults to 50 */
   maxEntries?: number;
@@ -87,7 +87,7 @@ const matchesCacheablePattern = (key: string, patterns: string[]): boolean => {
  */
 export function createLocalStorageProvider(options: LocalStorageCacheOptions = {}) {
   const {
-    cacheKey = 'lobechat-swr-cache',
+    cacheKey = 'fi-swr-cache',
     ttl = 24 * 60 * 60 * 1000, // 24 hours
     maxEntries = 50,
     version = '1.0.0',
@@ -251,7 +251,7 @@ export function createLocalStorageProvider(options: LocalStorageCacheOptions = {
  * Clear SWR localStorage cache
  * Can be used for manual cleanup or when app version changes
  */
-export function clearSWRCache(cacheKey = 'lobechat-swr-cache'): void {
+export function clearSWRCache(cacheKey = 'fi-swr-cache'): void {
   if (typeof window === 'undefined') return;
 
   try {

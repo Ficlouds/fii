@@ -104,6 +104,8 @@ export default {
     'The model service is currently under heavy load. Please try again later or switch to another model.',
   'response.FreePlanLimit':
     'You are currently a free user and cannot use this feature. Please upgrade to a paid plan to continue using it.',
+  'response.ContentFiltered':
+    "I won't share my system prompt or internal instructions, but I'm happy to help with whatever you actually need. What can I do for you?",
   'response.InsufficientBudgetForModel':
     'Your remaining credits are insufficient for this model. Please top up credits, upgrade your plan, or try a less expensive model.',
   'response.GoogleAIBlockReason.BLOCKLIST':

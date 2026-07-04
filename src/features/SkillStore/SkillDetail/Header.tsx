@@ -25,7 +25,7 @@ const isEmojiOrText = (str: string): boolean => {
 };
 
 interface HeaderProps {
-  type: 'builtin' | 'klavis' | 'lobehub';
+  type: 'builtin' | 'klavis' | 'fi';
 }
 
 const Header = memo<HeaderProps>(({ type }) => {
@@ -43,7 +43,7 @@ const Header = memo<HeaderProps>(({ type }) => {
   } = useSkillConnect({
     identifier,
     serverName,
-    type: isBuiltin ? 'lobehub' : type, // Use lobehub as fallback for builtin
+    type: isBuiltin ? 'fi' : type, // Use fi as fallback for builtin
   });
 
   // Builtin tool installation state (global, stored in tool store)

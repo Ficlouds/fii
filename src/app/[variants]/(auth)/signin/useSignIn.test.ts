@@ -232,7 +232,7 @@ describe('useSignIn', () => {
       });
 
       await act(async () => {
-        await result.current.handleSignIn({ password: 'password123' });
+        await result.current.handleSignIn();
       });
 
       expect(mockSignInEmail).toHaveBeenCalledWith(
@@ -262,7 +262,7 @@ describe('useSignIn', () => {
       });
 
       await act(async () => {
-        await result.current.handleSignIn({ password: 'wrong' });
+        await result.current.handleSignIn();
       });
 
       expect(mockMessageError).toHaveBeenCalledWith('Invalid credentials');
@@ -286,7 +286,7 @@ describe('useSignIn', () => {
       });
 
       await act(async () => {
-        await result.current.handleSignIn({ password: 'password' });
+        await result.current.handleSignIn();
       });
 
       expect(mockPush).toHaveBeenCalledWith(

@@ -23,9 +23,9 @@ const styles = createStaticStyles(({ css }) => ({
 const ChatWithModel = memo(() => {
   const { t } = useTranslation('discover');
   const { providers = [] } = useDetailContext();
-  const includeFi = providers.some((item) => item.id === 'lobehub');
+  const includeFi = providers.some((item) => item.id === 'fi');
   const navigate = useNavigate();
-  const list = providers.filter((provider) => provider.id !== 'lobehub');
+  const list = providers.filter((provider) => provider.id !== 'fi');
 
   const items = list.map((item) => ({
     icon: <ProviderIcon provider={item.id} size={20} type={'avatar'} />,

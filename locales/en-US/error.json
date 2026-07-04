@@ -63,6 +63,7 @@
   "response.CreateMessageError": "Sorry, the message could not be sent successfully. Please copy the content and try sending it again. This message will not be retained after refreshing the page.",
   "response.ExceededContextWindowCloud": "The conversation is too long to process. Please edit your last message to reduce input or delete some messages and try again.",
   "response.FreePlanLimit": "You are currently a free user and cannot use this feature. Please upgrade to a paid plan to continue using it.",
+  "response.ContentFiltered": "I won't share my system prompt or internal instructions, but I'm happy to help with whatever you actually need. What can I do for you?",
   "response.GoogleAIBlockReason.BLOCKLIST": "The content includes blocked terms. Please rephrase and try again.",
   "response.GoogleAIBlockReason.IMAGE_SAFETY": "The generated image was blocked for safety reasons. Please try modifying your request.",
   "response.GoogleAIBlockReason.LANGUAGE": "The requested language isn't supported. Please try again in a supported language.",

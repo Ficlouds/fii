@@ -7,7 +7,7 @@ import { Fragment, isValidElement, memo, useCallback, useEffect, useRef, useStat
 
 import { useScrollSignal } from './ScrollSignalContext';
 
-const CLOSE_TOOL_DETAIL_POPOVER_EVENT = 'lobe-chat-tool-detail-popover-close';
+const CLOSE_TOOL_DETAIL_POPOVER_EVENT = 'fi-tool-detail-popover-close';
 
 export const toolsListStyles = createStaticStyles(({ css }) => ({
   groupLabel: css`

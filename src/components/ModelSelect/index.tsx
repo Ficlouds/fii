@@ -348,7 +348,7 @@ export const ProviderItemRender = memo<ProviderItemRenderProps>(
             style={isMono ? { filter: 'grayscale(1)' } : {}}
             title={name}
           />
-        ) : provider === 'lobehub' ? (
+        ) : provider === 'fi' ? (
           <FiIcon.Morden size={size} />
         ) : (
           <ProviderIcon provider={provider} size={size} type={type} />

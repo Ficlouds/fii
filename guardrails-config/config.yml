@@ -1,0 +1,13 @@
+models:
+  - type: main
+    engine: openai
+    model: deepseek-chat
+    parameters:
+      base_url: https://api.deepseek.com/v1/
+      api_key: sk-ac94b88f47554242b32285747dfdd619
+
+# Use our custom linear-scan provider (registered in config.py) instead of the
+# default Annoy-based provider which is broken on macOS arm64 (macosx_26_0 wheel).
+core:
+  embedding_search_provider:
+    name: linear_scan

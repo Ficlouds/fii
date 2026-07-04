@@ -1250,10 +1250,10 @@ export class MessengerRouter {
   /**
    * Fetch a user's agents for `/agents`. Mirrors the web
    * verify-im picker (and the home sidebar):
-   *  - excludes virtual agents but explicitly keeps the inbox/LobeAI agent
+   *  - excludes virtual agents but explicitly keeps the inbox/Fi agent
    *  - orders by `updatedAt DESC`
-   *  - pins inbox/LobeAI to the top regardless of updatedAt
-   *  - applies the LobeAI title fallback (slug='inbox') and a generic
+   *  - pins inbox/Fi to the top regardless of updatedAt
+   *  - applies the Fi title fallback (slug='inbox') and a generic
    *    "Custom Agent" fallback for agents without a title
    */
   private async fetchUserAgents(
@@ -1278,7 +1278,7 @@ export class MessengerRouter {
         slug: row.slug,
         title:
           (row.title && row.title.trim()) ||
-          (row.slug === INBOX_SESSION_ID ? 'LobeAI' : 'Custom Agent'),
+          (row.slug === INBOX_SESSION_ID ? 'Fi' : 'Custom Agent'),
       }));
 
     const inboxIdx = mapped.findIndex((row) => row.slug === INBOX_SESSION_ID);

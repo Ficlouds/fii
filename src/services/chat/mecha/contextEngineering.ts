@@ -319,7 +319,7 @@ export const contextEngineering = async ({
 
   // Resolve plan + todos context (now part of the lobe-agent tool).
   // Lobe-agent must be enabled and topicId must be provided.
-  const isPlanTodoEnabled = tools?.includes(FiAgentIdentifier) ?? false;
+  const isPlanTodoEnabled = false; // Fi: plan/todo agent disabled
   let planTodoConfig: PlanTodoConfig | undefined;
 
   if (isPlanTodoEnabled && topicId) {
@@ -428,7 +428,7 @@ export const contextEngineering = async ({
 
   // Build tool discovery config if lobe-activator is enabled
   const enabledToolSet = new Set(tools || []);
-  const isLobeToolsEnabled = enabledToolSet.has(LobeActivatorIdentifier);
+  const isLobeToolsEnabled = false; // Fi: lobe-activator permanently disabled
 
   let toolDiscoveryConfig: ToolDiscoveryConfig | undefined;
   if (isLobeToolsEnabled) {
@@ -584,9 +584,9 @@ export const contextEngineering = async ({
 
     log(
       'agentManagementContext built: %d providers, %d plugins, %d agents',
-      agentManagementContext.availableProviders?.length ?? 0,
-      agentManagementContext.availablePlugins?.length ?? 0,
-      agentManagementContext.availableAgents?.length ?? 0,
+      agentManagementContext?.availableProviders?.length ?? 0,
+      agentManagementContext?.availablePlugins?.length ?? 0,
+      agentManagementContext?.availableAgents?.length ?? 0,
     );
   }
 
@@ -660,7 +660,7 @@ export const contextEngineering = async ({
       fileContents,
       knowledgeBases,
     },
-    agentDocuments,
+    agentDocuments: [], // Fi: agent documents disabled
 
     // Messages
     messages,

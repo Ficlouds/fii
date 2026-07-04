@@ -61,7 +61,7 @@ interface AutoLinkPattern {
 // becomes clickable.
 const AUTO_LINK_PATTERNS: AutoLinkPattern[] = [
   {
-    build: (match) => `https://linear.app/lobehub/issue/${match}`,
+    build: (match) => `https://linear.app/ficlouds/issue/${match}`,
     regex: /LOBE-\d+/g,
   },
   {

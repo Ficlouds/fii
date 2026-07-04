@@ -10,7 +10,7 @@ export interface FiSkillDetailContentProps {
 export const FiSkillDetailContent = ({ identifier }: FiSkillDetailContentProps) => {
   return (
     <FiDetailProvider identifier={identifier}>
-      <SkillDetailInner type="lobehub" />
+      <SkillDetailInner type="fi" />
     </FiDetailProvider>
   );
 };

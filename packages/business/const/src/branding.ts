@@ -11,11 +11,11 @@ export const BRANDING_URL = {
   terms: 'https://ficlouds.com/terms',
 };
 export const SOCIAL_URL = {
-  discord: undefined,
-  github: undefined,
-  medium: undefined,
-  x: undefined,
-  youtube: undefined,
+  discord: 'https://ficlouds.com',
+  github: 'https://ficlouds.com',
+  medium: 'https://ficlouds.com',
+  x: 'https://ficlouds.com',
+  youtube: 'https://ficlouds.com',
 };
 export const FILE_URL = {
   importFromNotionGuide: '',

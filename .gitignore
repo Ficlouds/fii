@@ -157,3 +157,4 @@ docs/superpowers/
 .kagura/
 garak-config/
 .venvs/
+litellm-config/

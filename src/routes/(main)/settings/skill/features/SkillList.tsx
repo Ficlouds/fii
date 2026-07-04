@@ -116,7 +116,7 @@ const SkillList = memo(() => {
     type IntegrationItem =
       | { builtinAgentSkill: BuiltinSkill; type: 'builtinAgent' }
       | { builtinTool: LobeBuiltinTool; type: 'builtin' }
-      | { provider: FiSkillProviderType; type: 'lobehub' }
+      | { provider: FiSkillProviderType; type: 'fi' }
       | { serverType: KlavisServerType; type: 'klavis' };
 
     let integrationItems: IntegrationItem[] = [];
@@ -142,7 +142,7 @@ const SkillList = memo(() => {
         } else if (skill.type === RecommendedSkillType.Lobehub && isFiSkillEnabled) {
           const provider = getFiSkillProviderById(skill.id);
           if (provider) {
-            integrationItems.push({ provider, type: 'lobehub' });
+            integrationItems.push({ provider, type: 'fi' });
             addedLobehubIds.add(skill.id);
           }
         } else if (skill.type === RecommendedSkillType.Klavis && isKlavisEnabled) {
@@ -174,7 +174,7 @@ const SkillList = memo(() => {
           ) {
             const provider = getFiSkillProviderById(server.identifier);
             if (provider) {
-              integrationItems.push({ provider, type: 'lobehub' });
+              integrationItems.push({ provider, type: 'fi' });
             }
           }
         }
@@ -202,10 +202,10 @@ const SkillList = memo(() => {
         }
       }
 
-      // Add lobehub skills
+      // Add fi skills
       if (isFiSkillEnabled) {
         for (const provider of LOBEHUB_SKILL_PROVIDERS) {
-          integrationItems.push({ provider, type: 'lobehub' });
+          integrationItems.push({ provider, type: 'fi' });
         }
       }
 
@@ -216,9 +216,9 @@ const SkillList = memo(() => {
         }
       }
 
-      // Filter integrations: show all builtin and lobehub skills, but only connected klavis
+      // Filter integrations: show all builtin and fi skills, but only connected klavis
       integrationItems = integrationItems.filter((item) => {
-        if (item.type === 'builtinAgent' || item.type === 'builtin' || item.type === 'lobehub') {
+        if (item.type === 'builtinAgent' || item.type === 'builtin' || item.type === 'fi') {
           return true;
         }
         return (
@@ -237,7 +237,7 @@ const SkillList = memo(() => {
         case 'builtin': {
           return isBuiltinToolInstalled(item.builtinTool.identifier);
         }
-        case 'lobehub': {
+        case 'fi': {
           return (
             getFiSkillServerByProvider(item.provider.id)?.status ===
             FiSkillStatus.CONNECTED
@@ -317,7 +317,7 @@ const SkillList = memo(() => {
           />
         );
       }
-      if (item.type === 'lobehub') {
+      if (item.type === 'fi') {
         return (
           <FiSkillItem
             key={item.provider.id}

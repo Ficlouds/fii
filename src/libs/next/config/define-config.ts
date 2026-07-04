@@ -62,6 +62,14 @@ export function defineConfig(config: CustomNextConfig) {
     ...(isStandaloneMode ? standaloneConfig : {}),
     assetPrefix,
 
+    // Security: never ship source maps or framework fingerprint headers
+    // to the client in production. Source maps would expose the original
+    // file tree and package names; the x-powered-by header fingerprints
+    // the framework. Both are non-conversational leak vectors, unrelated
+    // to chat content but real exposure if left at Next.js defaults.
+    productionBrowserSourceMaps: false,
+    poweredByHeader: false,
+
     compiler: {
       emotion: true,
     },

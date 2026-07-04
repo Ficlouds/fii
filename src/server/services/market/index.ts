@@ -561,7 +561,7 @@ export class MarketService {
             meta: {
               avatar: icon || '🔗',
               description: `Fi Skill: ${providerLabel}`,
-              tags: ['lobehub-skill', providerId],
+              tags: ['fi-skill', providerId],
               title: providerLabel,
             },
             systemRole: instruction || undefined,

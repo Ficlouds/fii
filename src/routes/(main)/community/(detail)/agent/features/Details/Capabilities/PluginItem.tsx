@@ -130,7 +130,7 @@ const PluginItem = memo<PluginItemProps>(({ identifier }) => {
         related: [],
         schemaVersion: 1,
         source: 'builtin' as const,
-        tags: ['lobehub-skill'],
+        tags: ['fi-skill'],
         title: fiSkill.label,
       };
     }

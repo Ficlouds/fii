@@ -77,7 +77,7 @@ export const videoRouter = router({
 
     const { resolvedModelId } = await resolveBusinessModelMapping(provider, model);
 
-    // Reject lobehub model ids that are no longer in the model bank so callers get a
+    // Reject fi model ids that are no longer in the model bank so callers get a
     // clear error instead of an opaque downstream failure when the resolved channel
     // model is no longer in the model bank.
     if (

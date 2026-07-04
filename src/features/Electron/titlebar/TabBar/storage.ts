@@ -3,8 +3,8 @@ import { type DynamicRouteMeta } from '@/spa/router/routeMeta';
 import { type TabItem } from './types';
 import { normalizeTabUrl } from './url';
 
-export const TAB_PAGES_STORAGE_KEY_V1 = 'lobechat:desktop:tab-pages:v1';
-export const TAB_PAGES_STORAGE_KEY = 'lobechat:desktop:tab-pages:v2';
+export const TAB_PAGES_STORAGE_KEY_V1 = 'fi:desktop:tab-pages:v1';
+export const TAB_PAGES_STORAGE_KEY = 'fi:desktop:tab-pages:v2';
 
 interface TabPagesStorageData {
   activeTabId: string | null;

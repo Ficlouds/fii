@@ -402,8 +402,8 @@ const PARAM_CONFIG = {
 
 const PARAM_ORDER: ParamKey[] = ['temperature', 'top_p', 'frequency_penalty', 'presence_penalty'];
 
-const ADVANCED_OPEN_STORAGE_KEY = 'lobehub-chat-input-params-advanced-open';
-const MODEL_CONFIG_OPEN_STORAGE_KEY = 'lobehub-chat-input-params-model-config-open';
+const ADVANCED_OPEN_STORAGE_KEY = 'fi-chat-input-params-advanced-open';
+const MODEL_CONFIG_OPEN_STORAGE_KEY = 'fi-chat-input-params-model-config-open';
 
 const getStoredOpen = (storageKey: string) => {
   if (typeof window === 'undefined') return false;

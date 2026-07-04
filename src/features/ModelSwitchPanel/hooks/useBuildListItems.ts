@@ -22,10 +22,10 @@ export const useBuildListItems = (
 
     // fi first, then others
     const sortedProviders = [...enabledList].sort((a, b) => {
-      const aIsLobehub = a.id === 'lobehub';
-      const bIsLobehub = b.id === 'lobehub';
-      if (aIsLobehub && !bIsLobehub) return -1;
-      if (!aIsLobehub && bIsLobehub) return 1;
+      const aIsFi = a.id === 'fi';
+      const bIsFi = b.id === 'fi';
+      if (aIsFi && !bIsFi) return -1;
+      if (!aIsFi && bIsFi) return 1;
       return 0;
     });
 
@@ -62,10 +62,10 @@ export const useBuildListItems = (
       const modelArray = Array.from(modelMap.values());
       for (const model of modelArray) {
         model.providers.sort((a, b) => {
-          const aIsLobehub = a.id === 'lobehub';
-          const bIsLobehub = b.id === 'lobehub';
-          if (aIsLobehub && !bIsLobehub) return -1;
-          if (!aIsLobehub && bIsLobehub) return 1;
+          const aIsFi = a.id === 'fi';
+          const bIsFi = b.id === 'fi';
+          if (aIsFi && !bIsFi) return -1;
+          if (!aIsFi && bIsFi) return 1;
           return 0;
         });
       }

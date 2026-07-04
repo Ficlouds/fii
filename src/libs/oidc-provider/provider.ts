@@ -15,9 +15,9 @@ import { DrizzleAdapter } from './adapter';
 import { defaultClaims, defaultClients, defaultScopes } from './config';
 import { createInteractionPolicy } from './interaction-policy';
 
-const logProvider = debug('lobe-oidc:provider');
+const logProvider = debug('fi:oidc:provider');
 
-export const API_AUDIENCE = 'urn:lobehub:chat';
+export const API_AUDIENCE = 'urn:fi:chat';
 
 /**
  * Get cookie keys using KEY_VAULTS_SECRET

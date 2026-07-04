@@ -88,8 +88,7 @@ const FallbackIntervention = memo<FallbackInterventionProps>(
 
     const parsedArgs = useMemo(() => safeParseJSON(requestArgs || '') ?? {}, [requestArgs]);
     const argCount = typeof parsedArgs === 'object' ? Object.keys(parsedArgs).length : 0;
-    const isActivateToolsIntervention =
-      identifier === LobeActivatorIdentifier && apiName === ActivatorApiName.activateTools;
+    const isActivateToolsIntervention = false; // Fi: lobe-activator disabled
     const requestedToolIdentifiers = useMemo(() => {
       if (!isActivateToolsIntervention) return [];
 

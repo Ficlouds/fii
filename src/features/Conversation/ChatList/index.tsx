@@ -100,7 +100,7 @@ const ChatList = memo<ChatListProps>(
     // Skip fetching notebook and memories for share pages (they require authentication)
     const isSharePage = !!context.topicShareId;
     // TODO: Migrate Agent Signal receipts behind a dedicated user-visible receipt capability.
-    const canShowAgentSignalReceipts = enableAgentSelfIteration === true && !isSharePage;
+    const canShowAgentSignalReceipts = false; // Fi: agent signal disabled
     const { receiptsByAnchor } = useAgentSignalReceipts({
       agentId: canShowAgentSignalReceipts ? activeAgentId : undefined,
       displayMessages,

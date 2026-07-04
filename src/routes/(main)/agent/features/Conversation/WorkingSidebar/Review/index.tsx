@@ -38,11 +38,11 @@ interface RepoGroup {
   patches: GitWorkingTreePatch[];
 }
 
-const WORD_WRAP_STORAGE_KEY = 'lobechat-review-word-wrap';
-const TEXT_DIFF_STORAGE_KEY = 'lobechat-review-text-diff';
-const VIEW_MODE_STORAGE_KEY = 'lobechat-review-view-mode';
-const REVIEW_MODE_STORAGE_KEY = 'lobechat-review-mode';
-const BASE_REF_OVERRIDES_STORAGE_KEY = 'lobechat-review-base-overrides';
+const WORD_WRAP_STORAGE_KEY = 'fi-review-word-wrap';
+const TEXT_DIFF_STORAGE_KEY = 'fi-review-text-diff';
+const VIEW_MODE_STORAGE_KEY = 'fi-review-view-mode';
+const REVIEW_MODE_STORAGE_KEY = 'fi-review-mode';
+const BASE_REF_OVERRIDES_STORAGE_KEY = 'fi-review-base-overrides';
 
 interface ReviewProps {
   workingDirectory: string;

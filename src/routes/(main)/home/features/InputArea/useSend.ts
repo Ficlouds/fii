@@ -118,11 +118,11 @@ export const useSend = () => {
       try {
         // Fi: Check for automation intent first
         if (isAutomationIntent(message) && activeAgentId) {
-          toast.loading('Creating your automation...', { id: 'automation' });
+          toast.loading('Creating your automation...');
           createAutomation(message).then((result) => {
-            toast.success(`✓ Automation live: ${result.split('**')[1] || 'Done'}`, { id: 'automation', duration: 5000 });
+            toast.success(`✓ Automation live: ${result.split('**')[1] || 'Done'}`);
           }).catch(() => {
-            toast.error('Failed to create automation. Please try again.', { id: 'automation' });
+            toast.error('Failed to create automation. Please try again.');
           });
           return;
         }

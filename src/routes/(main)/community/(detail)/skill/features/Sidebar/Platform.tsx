@@ -35,7 +35,7 @@ enum PlatformType {
   Cline = 'cline',
   Codex = 'codex',
   Cursor = 'cursor',
-  Fi = 'lobehub',
+  Fi = 'fi',
   VsCode = 'vscode',
 }
 
@@ -62,7 +62,7 @@ const genInstallCommand = (identifier?: string, platform?: PlatformType) => {
     [PlatformType.Claude]: 'claude-code',
     [PlatformType.Cline]: 'cline',
     [PlatformType.Cursor]: 'cursor',
-    [PlatformType.Fi]: 'lobehub',
+    [PlatformType.Fi]: 'fi',
     [PlatformType.Codex]: 'codex',
     [PlatformType.VsCode]: 'vscode',
   };
@@ -89,7 +89,7 @@ const genLayout = (
   identifier: string | undefined,
   platform: PlatformType,
   i18nText: {
-    lobehub: string;
+    fi: string;
     resourcesHint: string;
   },
 ) => {
@@ -105,7 +105,7 @@ const genLayout = (
   const basePath = basePathMap[platform];
 
   if (platform === PlatformType.Fi) {
-    return i18nText.lobehub;
+    return i18nText.fi;
   }
 
   return `${basePath}
@@ -155,7 +155,7 @@ const Platform = memo<PlatformProps>(
         case PlatformType.Fi: {
           return {
             platform: 'Fi',
-            steps: t('skills.details.sidebar.platform.steps.lobehub'),
+            steps: t('skills.details.sidebar.platform.steps.fi'),
           };
         }
         case PlatformType.Claude: {
@@ -195,7 +195,7 @@ const Platform = memo<PlatformProps>(
 
     const agentPrompt = `Curl https://ficlouds.com/skills/${identifier}/skill.md, then follow the instructions to set up Fi Skills Marketplace and install the skill. Once installed, read the SKILL.md file in the installed directory and follow its instructions to complete the task.`;
 
-    const handleUseOnLobeAI = useCallback(() => {
+    const handleUseOnFi = useCallback(() => {
       if (!inboxAgentId) return;
 
       // Send message to LobeAI
@@ -257,9 +257,9 @@ const Platform = memo<PlatformProps>(
                 icon={<Avatar avatar={DEFAULT_INBOX_AVATAR} size={18} />}
                 size={'large'}
                 type={'primary'}
-                onClick={handleUseOnLobeAI}
+                onClick={handleUseOnFi}
               >
-                {t('skills.details.sidebar.agent.useOnLobeAI')}
+                {'Use on Fi'}
               </Button>
             </Flexbox>
           </Flexbox>
@@ -314,7 +314,7 @@ const Platform = memo<PlatformProps>(
               variant={lite ? 'borderless' : 'outlined'}
             >
               {genLayout(identifier, active, {
-                lobehub: t('skills.details.sidebar.platform.layout.lobehub'),
+                fi: t('skills.details.sidebar.platform.layout.fi'),
                 resourcesHint: t('skills.details.sidebar.platform.layout.resourcesHint'),
               })}
             </Highlighter>

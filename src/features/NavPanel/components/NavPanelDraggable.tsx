@@ -1,7 +1,7 @@
 'use client';
 
 import { createStaticStyles } from 'antd-style';
-import { BotIcon, BoxIcon, ClockIcon, FolderIcon, PlusIcon, SearchIcon,ZapIcon } from 'lucide-react';
+import { BoxIcon, ClockIcon, FolderIcon, PlusIcon, SearchIcon, ZapIcon } from 'lucide-react';
 import { type ReactNode } from 'react';
 import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +23,6 @@ const KEY_ICON_MAP: Record<string, any> = {
   connect: ZapIcon,
   projects: FolderIcon,
   artifacts: BoxIcon,
-  automate: BotIcon,
   recents: ClockIcon,
 };
 
@@ -33,14 +32,11 @@ const KEY_LABEL_MAP: Record<string, string> = {
   connect: 'Connect',
   projects: 'Projects',
   artifacts: 'Artifacts',
-  automate: 'Automate',
   recents: 'Recents',
 };
 
 const COLLAPSED_KEYS = ['search', 'newchat', 'connect', 'projects', 'artifacts', 'recents'];
 
-// On /automate, hide search + recents to avoid confusion with the Automate sidebar's own recents
-const AUTOMATE_COLLAPSED_KEYS = ['newchat', 'connect', 'projects', 'artifacts', 'automate'];
 
 const styles = createStaticStyles(({ css }) => ({
   wrapper: css`
@@ -131,7 +127,7 @@ export const NavPanelDraggable = memo<NavPanelDraggableProps>(({ activeContent }
   const isDark = useIsDark();
   const tab = useActiveTabKey();
   const navigate = useNavigate();
-  const collapsedKeys = tab === 'automate' ? AUTOMATE_COLLAPSED_KEYS : COLLAPSED_KEYS;
+  const collapsedKeys = COLLAPSED_KEYS;
 
   return (
     <div

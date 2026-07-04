@@ -55,9 +55,9 @@ export const resolveTemplateIcon = (
 export const getMainIconProvider = (
   template: TaskTemplate,
 ): TaskTemplateSkillRequirement | undefined => {
-  // The self-icon union is currently the single lobehub provider id 'github';
+  // The self-icon union is currently the single fi provider id 'github';
   // expand `SELF_ICON_MAP` and this mapping together when more are added.
-  if (template.icon) return { provider: template.icon, source: 'lobehub' };
+  if (template.icon) return { provider: template.icon, source: 'fi' };
 
   for (const spec of [template.requiresSkills?.[0], template.optionalSkills?.[0]]) {
     if (!spec) continue;

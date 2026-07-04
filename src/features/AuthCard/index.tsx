@@ -6,11 +6,12 @@ import { type ReactNode } from 'react';
 import { memo } from 'react';
 
 export interface AuthCardProps extends Omit<FlexboxProps, 'title'> {
+  footer?: ReactNode;
   subtitle?: ReactNode;
   title?: ReactNode;
 }
 
-export const AuthCard = memo<AuthCardProps>(({ children, title, ...rest }) => {
+export const AuthCard = memo<AuthCardProps>(({ children, title, subtitle, footer, ...rest }) => {
   return (
     <Flexbox width={'min(100%,440px)'} {...rest}>
       <Flexbox gap={16}>
@@ -27,10 +28,20 @@ export const AuthCard = memo<AuthCardProps>(({ children, title, ...rest }) => {
             {title}
           </h1>
         )}
+        {subtitle && (
+          <p style={{ color: '#a0a0a0', fontSize: 14, margin: 0 }}>
+            {subtitle}
+          </p>
+        )}
       </Flexbox>
       <Flexbox gap={4} paddingBlock={32}>
         {children}
       </Flexbox>
+      {footer && (
+        <Flexbox gap={12}>
+          {footer}
+        </Flexbox>
+      )}
     </Flexbox>
   );
 });

@@ -80,7 +80,7 @@ export const DEFAULT_FEATURE_FLAGS: IFeatureFlags = {
   knowledge_base: true,
   rag_eval: false,
 
-  agent_self_iteration: isDev,
+  agent_self_iteration: false, // Fi: disabled — agent signal not needed
   agent_onboarding: isDev,
   auth_captcha: true,
   cloud_promotion: false,

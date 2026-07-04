@@ -1031,7 +1031,7 @@ export default {
 
   'skills.details.sidebar.agent.title': 'Send this prompt to your Agent to install this Skill',
 
-  'skills.details.sidebar.agent.useOnLobeAI': 'Use on LobeAI',
+  'skills.details.sidebar.agent.useOnLobeAI': 'Use on Fi',
 
   'skills.details.sidebar.description': 'Description',
 
@@ -1047,7 +1047,7 @@ export default {
 
   'skills.details.sidebar.installCommand': 'Install Command',
 
-  'skills.details.sidebar.platform.layout.lobehub': 'Skills are managed by Fi automatically',
+  'skills.details.sidebar.platform.layout.fi': 'Skills are managed by Fi automatically',
 
   'skills.details.sidebar.platform.layout.resourcesHint': 'other resources',
 
@@ -1063,7 +1063,7 @@ export default {
   'skills.details.sidebar.platform.steps.cursor':
     'Run the install command in your terminal to download and configure this skill for Cursor.',
 
-  'skills.details.sidebar.platform.steps.lobehub':
+  'skills.details.sidebar.platform.steps.fi':
     'Install directly from the Fi marketplace with one click.',
 
   'skills.details.sidebar.platform.steps.vscode':

@@ -22,6 +22,7 @@ export const ChatErrorType = {
   PluginFailToTransformArguments: 'PluginFailToTransformArguments',
   UnknownChatFetchError: 'UnknownChatFetchError',
   SystemTimeNotMatchError: 'SystemTimeNotMatchError',
+  ContentFiltered: 'ContentFiltered', // Message blocked by security/content filter
   ServerAgentRuntimeError: 'ServerAgentRuntimeError',
 
   // ******* Client Errors ******* //

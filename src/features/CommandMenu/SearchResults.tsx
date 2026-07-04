@@ -157,7 +157,7 @@ const SearchResults = memo<SearchResultsProps>(({ isLoading, onClose, results, s
     </>
   );
 
-  const options: Record<number, JSX.Element> = { 1: <Option1 />, 2: <Option2 />, 3: <Option3 />, 4: <Option4 />, 5: <Option5 /> };
+  const options: Record<number, React.ReactElement> = { 1: <Option1 />, 2: <Option2 />, 3: <Option3 />, 4: <Option4 />, 5: <Option5 /> };
 
   return (
     <>

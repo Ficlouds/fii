@@ -74,9 +74,9 @@ const BANNER_SKILL_IDS = [
   { id: 'google-drive', type: 'klavis' },
   { id: 'google-calendar', type: 'klavis' },
   { id: 'slack', type: 'klavis' },
-  { id: 'notion', type: 'lobehub' },
-  { id: 'twitter', type: 'lobehub' },
-  { id: 'github', type: 'lobehub' },
+  { id: 'notion', type: 'fi' },
+  { id: 'twitter', type: 'fi' },
+  { id: 'github', type: 'fi' },
 ] as const;
 
 const SkillInstallBanner = memo(() => {
@@ -99,7 +99,7 @@ const SkillInstallBanner = memo(() => {
     const icons: Array<{ icon: string | React.ComponentType<{ size?: number }>; key: string }> = [];
 
     for (const skill of BANNER_SKILL_IDS) {
-      if (skill.type === 'lobehub') {
+      if (skill.type === 'fi') {
         const provider = getFiSkillProviderById(skill.id);
         if (provider) {
           icons.push({ icon: provider.icon, key: provider.id });

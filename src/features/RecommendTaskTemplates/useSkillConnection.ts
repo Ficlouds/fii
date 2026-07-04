@@ -55,7 +55,7 @@ export const useIsSkillConnected = () => {
 
   return useCallback(
     (spec: TaskTemplateSkillRequirement): boolean => {
-      if (spec.source === 'lobehub') {
+      if (spec.source === 'fi') {
         return fiServers.some(
           (s) => s.identifier === spec.provider && s.status === FiSkillStatus.CONNECTED,
         );
@@ -131,7 +131,7 @@ export const useSkillConnection = (
 
       pollIntervalRef.current = setInterval(async () => {
         try {
-          if (target.source === 'lobehub') {
+          if (target.source === 'fi') {
             await checkFiStatus(target.provider);
           } else {
             await refreshKlavisServerTools(target.provider);
@@ -174,7 +174,7 @@ export const useSkillConnection = (
           // can advance to the next provider immediately, instead of waiting up
           // to 15s for fallback polling to release isWaitingAuth.
           try {
-            if (target.source === 'lobehub') {
+            if (target.source === 'fi') {
               await checkFiStatus(target.provider);
             } else {
               await refreshKlavisServerTools(target.provider);
@@ -248,7 +248,7 @@ export const useSkillConnection = (
     isConnectingRef.current = true;
     setIsConnecting(true);
     try {
-      if (next.source === 'lobehub') {
+      if (next.source === 'fi') {
         // Skip redirectUri on desktop (app:// protocol) since the system browser can't navigate to it
         const redirectUri = window.location.protocol.startsWith('http')
           ? `${window.location.origin}/oauth/callback/success?provider=${encodeURIComponent(next.provider)}`

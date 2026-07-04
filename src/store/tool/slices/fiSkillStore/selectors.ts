@@ -101,7 +101,7 @@ export const fiSkillStoreSelectors = {
             meta: {
               avatar: server.icon || '🔗',
               description: `Fi Skill: ${server.name}`,
-              tags: ['lobehub-skill', server.identifier],
+              tags: ['fi-skill', server.identifier],
               title: server.name,
             },
             type: 'builtin',

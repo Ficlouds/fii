@@ -91,9 +91,6 @@ export const isAgentSelfIterationFeatureEnabledForUser = async (userId: string) 
  * - `true` only when the Agent Self-iteration feature flag is enabled for the user
  */
 export const isAgentSignalEnabledForUser = async (_db: FiDatabase, userId: string) => {
-  try {
-    return await isAgentSelfIterationFeatureEnabledForUser(userId);
-  } catch {
-    return false;
-  }
+  // Fi: Agent signal disabled — prevents lobe-activator tool approval UI from showing
+  return false;
 };

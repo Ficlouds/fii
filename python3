@@ -1,0 +1,37 @@
+
+            _redis_client = None
+            _redis_client = redis.Redis(host='localhost', port=6379, db=1, decode_responses=True)
+            _redis_client.ping()
+        except Exception:
+        return
+        return False
+        return True
+        try:
+    entry = json.dumps({"payload": payload, "error": error, "timestamp": datetime.now(timezone.utc).isoformat()})
+    global _redis_client
+    if not r:
+    if not r or not idempotency_key:
+    if _redis_client is None:
+    if r.exists(key):
+    key = f"fi:memory:idem:{idempotency_key}"
+    r = get_redis()
+    return False
+    return _redis_client
+    r.lpush("fi:memory:dead_letter", entry)
+    r.ltrim("fi:memory:dead_letter", 0, 999)  # keep last 1000 failed writes"""
+    r.setex(key, 86400, "1")  # 24 hour TTL
+# ── Redis for idempotency + dead letter queue ─────────────────────
+# Add Redis + idempotency imports after existing imports
+content = content.replace(old, new)
+content = open('/home/ubuntu/fi-bridges/fastapi/main.py').read()
+def get_redis():
+def is_duplicate(idempotency_key: str) -> bool:
+def send_to_dead_letter(payload: dict, error: str):
+import hashlib
+import json
+import redis
+new = """from typing import Optional
+old = "from typing import Optional"
+open('/home/ubuntu/fi-bridges/fastapi/main.py', 'w').write(content)
+print('Done')
+_redis_client = None

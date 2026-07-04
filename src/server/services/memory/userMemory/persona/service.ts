@@ -114,7 +114,7 @@ export class UserPersonaService {
       {} as ProviderKeyVaultMap,
     );
 
-    const hooks = getBusinessModelRuntimeHooks(payload.userId, 'lobehub');
+    const hooks = getBusinessModelRuntimeHooks(payload.userId, 'fi');
 
     const runtime = await resolveRuntimeAgentConfig(
       agentConfig,

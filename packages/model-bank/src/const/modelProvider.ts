@@ -71,6 +71,7 @@ export enum ModelProvider {
   VercelAIGateway = 'vercelaigateway',
   VertexAI = 'vertexai',
   VLLM = 'vllm',
+  FiModels = 'fimodels',
   Volcengine = 'volcengine',
   VolcengineCodingPlan = 'volcenginecodingplan',
   Wenxin = 'wenxin',

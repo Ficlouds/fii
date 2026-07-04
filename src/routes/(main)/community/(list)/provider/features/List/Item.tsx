@@ -88,7 +88,7 @@ const ProviderItem = memo<DiscoverProviderItem>(
               <ActionIcon color={cssVar.colorTextDescription} icon={GlobeIcon} />
             </a>
             <a
-              href={`https://github.com/lobehub/lobe-chat/blob/main/src/config/modelProviders/${identifier}.ts`}
+              href={`https://github.com/ficlouds/fi/blob/main/src/config/modelProviders/${identifier}.ts`}
               rel="noopener noreferrer"
               target={'_blank'}
               onClick={stopPropagation}

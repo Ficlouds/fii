@@ -148,7 +148,7 @@ const PluginTag = memo<PluginTagProps>(
             isInstalled: !!connectedServer,
             label: fiSkillProvider.label,
             title: fiSkillProvider.label,
-            type: 'lobehub-skill' as const,
+            type: 'fi-skill' as const,
           };
         }
       }
@@ -229,7 +229,7 @@ const PluginTag = memo<PluginTagProps>(
       }
 
       // Fi Skill type has icon property
-      if (meta.type === 'lobehub-skill' && 'icon' in meta && 'label' in meta) {
+      if (meta.type === 'fi-skill' && 'icon' in meta && 'label' in meta) {
         return <FiSkillIcon icon={meta.icon} label={meta.label} />;
       }
 

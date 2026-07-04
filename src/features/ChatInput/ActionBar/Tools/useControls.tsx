@@ -58,7 +58,7 @@ import ToolItem from './ToolItem';
 import ToolItemDetailPopover from './ToolItemDetailPopover';
 
 const SKILL_ICON_SIZE = 18;
-const CLOSE_TOOL_DETAIL_POPOVER_EVENT = 'lobe-chat-tool-detail-popover-close';
+const CLOSE_TOOL_DETAIL_POPOVER_EVENT = 'fi-tool-detail-popover-close';
 
 const officialTag = (
   <Tooltip placement={'top'} title={'Fi'}>
@@ -902,7 +902,7 @@ export const useControls = () => {
         const popoverContent = (
           <ToolItemDetailPopover
             identifier={item.identifier}
-            sourceLabel={t('skillStore.tabs.lobehub')}
+            sourceLabel={t('skillStore.tabs.fi')}
             title={title}
             description={t(`tools.builtins.${item.identifier}.description` as any, {
               defaultValue: item.meta?.description || '',
@@ -954,7 +954,7 @@ export const useControls = () => {
         const popoverContent = (
           <ToolItemDetailPopover
             identifier={skill.identifier}
-            sourceLabel={t('skillStore.tabs.lobehub')}
+            sourceLabel={t('skillStore.tabs.fi')}
             title={title}
             description={t(`tools.builtins.${skill.identifier}.description` as any, {
               defaultValue: skill.description,
@@ -1361,7 +1361,7 @@ export const useControls = () => {
         popoverContent: (
           <ToolItemDetailPopover
             identifier={item.identifier}
-            sourceLabel={t('skillStore.tabs.lobehub')}
+            sourceLabel={t('skillStore.tabs.fi')}
             description={t(`tools.builtins.${item.identifier}.description` as any, {
               defaultValue: item.meta?.description || '',
             })}
@@ -1420,7 +1420,7 @@ export const useControls = () => {
         popoverContent: (
           <ToolItemDetailPopover
             identifier={skill.identifier}
-            sourceLabel={t('skillStore.tabs.lobehub')}
+            sourceLabel={t('skillStore.tabs.fi')}
             description={t(`tools.builtins.${skill.identifier}.description` as any, {
               defaultValue: skill.description,
             })}
@@ -1460,8 +1460,8 @@ export const useControls = () => {
     if (allBuiltinItems.length > 0) {
       installedItems.push({
         children: allBuiltinItems,
-        key: 'installed-lobehub',
-        label: t('skillStore.tabs.lobehub'),
+        key: 'installed-fi',
+        label: t('skillStore.tabs.fi'),
         type: 'group',
       });
     }

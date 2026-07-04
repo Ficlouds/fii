@@ -322,7 +322,7 @@ export class FiSkillStoreActionImpl {
 
   useFetchProviderTools = (provider: string | undefined): SWRResponse<FiSkillTool[]> => {
     return useSWR<FiSkillTool[]>(
-      provider ? `lobehub-skill-tools-${provider}` : null,
+      provider ? `fi-skill-tools-${provider}` : null,
       async () => {
         const response = await toolsClient.market.connectListTools.query({ provider: provider! });
         return (response.tools || []).map((tool: any) => ({

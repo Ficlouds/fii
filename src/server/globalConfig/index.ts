@@ -34,7 +34,7 @@ export const getServerGlobalConfig = async () => {
     aiProvider: await genServerAiProvidersConfig({
       ...(ENABLE_BUSINESS_FEATURES
         ? {
-            lobehub: {
+            fi: {
               enabled: true,
             },
           }

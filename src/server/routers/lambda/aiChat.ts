@@ -79,7 +79,7 @@ export const aiChatRouter = router({
     .input(AiSendMessageServerSchema)
     .mutation(async ({ input, ctx }) => {
       const timingContext =
-        input.newAssistantMessage.provider === 'lobehub'
+        input.newAssistantMessage.provider === 'fi'
           ? { requestId: createTimingRequestId(), startedAt: Date.now() }
           : undefined;
       logTiming(timingContext, 'lambda.aiChat.sendMessageInServer:start', {

@@ -139,7 +139,7 @@ const ProviderList = memo(() => {
               dataIndex: 'action',
               key: 'action',
               render: (_, record) => {
-                const isFi = record.id === 'lobehub';
+                const isFi = record.id === 'fi';
                 return (
                   <Flexbox horizontal align="center" gap={4} justify={'flex-end'}>
                     {isFi && (

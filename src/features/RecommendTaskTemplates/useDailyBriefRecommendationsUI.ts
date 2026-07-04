@@ -16,7 +16,7 @@ import { authSelectors } from '@/store/user/slices/auth/selectors';
 
 import { useResolvedInterestKeys } from './useResolvedInterestKeys';
 
-const REFRESH_SEED_STORAGE_KEY = 'lobehub:taskTemplate:refreshSeed';
+const REFRESH_SEED_STORAGE_KEY = 'fi:taskTemplate:refreshSeed';
 const nextRefreshSeed = createNanoId(8);
 
 export type DailyBriefRecommendationsUIState =
@@ -116,7 +116,7 @@ export function useDailyBriefRecommendationsUI(
   const useFetchUserKlavisServers = useToolStore((s) => s.useFetchUserKlavisServers);
   const useFetchFiSkillConnections = useToolStore((s) => s.useFetchFiSkillConnections);
   useFetchUserKlavisServers(requiredSources.has('klavis'));
-  useFetchFiSkillConnections(requiredSources.has('lobehub'));
+  useFetchFiSkillConnections(requiredSources.has('fi'));
 
   if (!swrEnabled) return { mode: 'hidden' };
   if (!isInit || isLoading) return { mode: 'skeleton', skeletonCount: recommendationCount };

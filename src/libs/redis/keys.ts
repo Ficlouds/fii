@@ -22,7 +22,7 @@ export const RedisKeyNamespace = {
   /**
    * Core LOBEHUB application keys (sessions, cache, etc.)
    */
-  LOBEHUB: 'lobechat',
+  LOBEHUB: 'fi',
 } as const;
 
 /**
@@ -58,7 +58,7 @@ export const RedisKeys = {
   /**
    * Lobechat core scope - for application-level caching
    */
-  lobechat: {
-    // Add lobechat scope keys here as needed
+  fi: {
+    // Add fi scope keys here as needed
   },
 } as const;

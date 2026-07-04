@@ -8,6 +8,9 @@ const inVercel = process.env.VERCEL === '1';
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html suppressHydrationWarning lang={'en'} style={{ height: '100%' }}>
+      <head>
+        <link href="/fonts/geist.css" rel="stylesheet" />
+      </head>
       <body style={{ height: '100%', margin: 0 }}>
         {children}
         <Suspense fallback={null}>

@@ -1,8 +1,8 @@
 import { type DesktopOnboardingScreen } from './types';
 import { isDesktopOnboardingScreen } from './types';
 
-export const DESKTOP_ONBOARDING_COMPLETED_KEY = 'lobechat:desktop:onboarding:completed:v1';
-export const DESKTOP_ONBOARDING_SCREEN_KEY = 'lobechat:desktop:onboarding:screen:v1';
+export const DESKTOP_ONBOARDING_COMPLETED_KEY = 'fi:desktop:onboarding:completed:v1';
+export const DESKTOP_ONBOARDING_SCREEN_KEY = 'fi:desktop:onboarding:screen:v1';
 
 /**
  * Check if user has completed onboarding in this session

@@ -78,7 +78,7 @@ const ConnectPage = memo(() => {
           {filtered.map((server) => {
             const connected = isConnected(server.identifier);
             return (
-              <div key={server.identifier} onClick={() => createKlavisSkillDetailModal({ serverType: server })}
+              <div key={server.identifier} onClick={() => createKlavisSkillDetailModal({ identifier: server.identifier, serverName: server.serverName })}
                 onMouseEnter={(e) => { e.currentTarget.style.boxShadow = isDark ? '0 4px 12px rgba(0,0,0,0.3)' : '0 4px 12px rgba(0,0,0,0.08)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none'; }}
                 style={{ alignItems: 'center', background: cardBg, border: `1px solid ${connected ? 'rgba(74,222,128,0.4)' : border}`, borderRadius: 12, cursor: 'pointer', display: 'flex', gap: 12, padding: '14px 16px', transition: 'box-shadow 0.15s' }}>
@@ -96,7 +96,7 @@ const ConnectPage = memo(() => {
                     {server.description.slice(0, 60)}{server.description.length > 60 ? '...' : ''}
                   </div>
                 </div>
-                <button onClick={(e) => { e.stopPropagation(); createKlavisSkillDetailModal({ serverType: server }); }}
+                <button onClick={(e) => { e.stopPropagation(); createKlavisSkillDetailModal({ identifier: server.identifier, serverName: server.serverName }); }}
                   style={{ background: connected ? 'transparent' : (isDark ? '#fff' : '#111'), border: connected ? `1px solid ${border}` : 'none', borderRadius: 16, color: connected ? textSub : (isDark ? '#111' : '#fff'), cursor: 'pointer', flexShrink: 0, fontSize: 11, fontWeight: 600, padding: '5px 12px', whiteSpace: 'nowrap' }}>
                   {connected ? 'Manage' : 'Connect'}
                 </button>

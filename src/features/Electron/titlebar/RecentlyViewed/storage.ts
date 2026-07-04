@@ -1,6 +1,6 @@
 import { type TabItem } from '../TabBar/types';
 
-export const PINNED_PAGES_STORAGE_KEY = 'lobechat:desktop:pinned-pages:v3';
+export const PINNED_PAGES_STORAGE_KEY = 'fi:desktop:pinned-pages:v3';
 
 const isTabItem = (item: unknown): item is TabItem =>
   !!item &&

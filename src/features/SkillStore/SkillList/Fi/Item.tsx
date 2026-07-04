@@ -19,7 +19,7 @@ interface ItemProps {
   label: string;
   onOpenDetail?: () => void;
   serverName?: Klavis.McpServerName;
-  type: 'klavis' | 'lobehub';
+  type: 'klavis' | 'fi';
 }
 
 const Item = memo<ItemProps>(

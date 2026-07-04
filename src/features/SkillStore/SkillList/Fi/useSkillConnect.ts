@@ -17,7 +17,7 @@ const POLL_TIMEOUT_MS = 15_000;
 interface UseSkillConnectOptions {
   identifier: string;
   serverName?: Klavis.McpServerName;
-  type: 'klavis' | 'lobehub';
+  type: 'klavis' | 'fi';
 }
 
 export const useSkillConnect = ({ identifier, serverName, type }: UseSkillConnectOptions) => {
@@ -67,7 +67,7 @@ export const useSkillConnect = ({ identifier, serverName, type }: UseSkillConnec
 
   useEffect(() => {
     const connected =
-      type === 'lobehub'
+      type === 'fi'
         ? fiServer?.status === FiSkillStatus.CONNECTED
         : klavisServer?.status === KlavisServerStatus.CONNECTED;
 
@@ -78,7 +78,7 @@ export const useSkillConnect = ({ identifier, serverName, type }: UseSkillConnec
 
   // Listen for OAuth success message from popup window (for Fi skills)
   useEffect(() => {
-    if (type !== 'lobehub') return;
+    if (type !== 'fi') return;
 
     const handleMessage = async (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
@@ -102,7 +102,7 @@ export const useSkillConnect = ({ identifier, serverName, type }: UseSkillConnec
 
       pollIntervalRef.current = setInterval(async () => {
         try {
-          if (type === 'lobehub') {
+          if (type === 'fi') {
             await checkFiStatus(serverIdOrName);
           } else {
             await refreshKlavisServerTools(serverIdOrName);
@@ -134,7 +134,7 @@ export const useSkillConnect = ({ identifier, serverName, type }: UseSkillConnec
             }
             oauthWindowRef.current = null;
             // Check status and then reset waiting state
-            if (type === 'lobehub') {
+            if (type === 'fi') {
               await checkFiStatus(serverIdOrName);
             } else {
               await refreshKlavisServerTools(serverIdOrName);
@@ -226,10 +226,10 @@ export const useSkillConnect = ({ identifier, serverName, type }: UseSkillConnec
     openOAuthWindow,
   ]);
 
-  const handleConnect = type === 'lobehub' ? handleLobehubConnect : handleKlavisConnect;
+  const handleConnect = type === 'fi' ? handleLobehubConnect : handleKlavisConnect;
 
   const handleDisconnect = useCallback(async () => {
-    if (type === 'lobehub' && fiServer) {
+    if (type === 'fi' && fiServer) {
       await revokeLobehubConnect(fiServer.identifier);
     } else if (type === 'klavis' && klavisServer) {
       await removeKlavisServer(klavisServer.identifier);
@@ -237,7 +237,7 @@ export const useSkillConnect = ({ identifier, serverName, type }: UseSkillConnec
   }, [type, fiServer, klavisServer, revokeLobehubConnect, removeKlavisServer]);
 
   const isConnected =
-    type === 'lobehub'
+    type === 'fi'
       ? fiServer?.status === FiSkillStatus.CONNECTED
       : klavisServer?.status === KlavisServerStatus.CONNECTED;
 

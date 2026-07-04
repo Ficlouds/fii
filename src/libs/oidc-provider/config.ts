@@ -11,12 +11,12 @@ const marketBaseUrl = new URL(appEnv.MARKET_BASE_URL ?? 'https://market.ficlouds
 export const defaultClients: ClientMetadata[] = [
   {
     application_type: 'web',
-    client_id: 'lobehub-desktop',
+    client_id: 'fi-desktop',
     client_name: 'Fi Desktop',
     // Only supports authorization code flow
     grant_types: ['authorization_code', 'refresh_token'],
 
-    logo_uri: 'https://hub-apac-1.lobeobjects.space/lobehub-desktop-icon.png',
+    logo_uri: 'https://ficlouds.com/logos/fi-icon.svg',
 
     post_logout_redirect_uris: [
       // Dynamically construct web page callback URL
@@ -40,34 +40,39 @@ export const defaultClients: ClientMetadata[] = [
 
   {
     application_type: 'native', // Mobile uses native type
-    client_id: 'lobehub-mobile',
+    client_id: 'fi-mobile',
     client_name: 'Fi Mobile',
     // Supports authorization code flow and refresh token
     grant_types: ['authorization_code', 'refresh_token'],
-    logo_uri: 'https://hub-apac-1.lobeobjects.space/docs/73f69adfa1b802a0e250f6ff9d62f70b.png',
+    logo_uri: 'https://ficlouds.com/logos/fi-icon.svg',
     // Mobile does not need post_logout_redirect_uris as logout is typically handled within the app
     post_logout_redirect_uris: [],
     // Mobile uses custom URL Scheme
-    redirect_uris: ['com.lobehub.app://auth/callback'],
+    redirect_uris: ['com.ficlouds.app://auth/callback'],
     response_types: ['code'],
     // Public client with no secret
     token_endpoint_auth_method: 'none',
   },
   {
     application_type: 'native',
-    client_id: 'lobehub-cli',
+    client_id: 'fi-cli',
     client_name: 'Fi CLI',
     grant_types: ['urn:ietf:params:oauth:grant-type:device_code', 'refresh_token'],
-    logo_uri: 'https://hub-apac-1.lobeobjects.space/lobehub-desktop-icon.png',
+    logo_uri: 'https://ficlouds.com/logos/fi-icon.svg',
     response_types: [],
     token_endpoint_auth_method: 'none',
   },
   {
     application_type: 'web',
-    client_id: 'lobehub-market',
+    client_id: 'fi-market',
     client_name: 'Fi Marketplace',
     grant_types: ['authorization_code', 'refresh_token'],
-    logo_uri: 'https://hub-apac-1.lobeobjects.space/lobehub-desktop-icon.png',
+    logo_uri: 'https://ficlouds.com/logos/fi-icon.svg',
+    // NOTE: path kept as /lobehub-oidc/ -- this must match the actual
+    // route registered on the market service (MARKET_BASE_URL). Confirm
+    // whether that service is ours before renaming this path; renaming
+    // only here without updating the market service would break the
+    // marketplace skill/plugin connect flow.
     post_logout_redirect_uris: [
       urlJoin(marketBaseUrl!, '/lobehub-oidc/logout'),
       'http://localhost:8787/lobehub-oidc/logout',

@@ -25,7 +25,6 @@ const CommonOnboardingPage = memo(() => {
   const [roleOpen, setRoleOpen] = useState(false);
   const navigate = useNavigate();
   const updateGeneralConfig = useUserStore((s) => s.updateGeneralConfig);
-  const updateBasicInfo = useUserStore((s) => s.updateBasicInfo);
   const setOnboardingStep = useUserStore((s) => s.setOnboardingStep);
 
   const finish = useCallback(async () => {
@@ -34,14 +33,13 @@ const CommonOnboardingPage = memo(() => {
     if (name.trim()) {
       const firstName = extractFirstName(name);
       try {
-        await updateBasicInfo({ fullName: name.trim(), nickname: firstName });
       } catch {}
     }
     try {
       await setOnboardingStep(99);
     } catch {}
     navigate('/');
-  }, [telemetry, name, updateGeneralConfig, updateBasicInfo, setOnboardingStep, navigate]);
+  }, [telemetry, name, updateGeneralConfig, setOnboardingStep, navigate]);
 
   const wrap: React.CSSProperties = {
     fontFamily: 'Inter, system-ui, -apple-system, sans-serif',

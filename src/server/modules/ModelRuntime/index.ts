@@ -170,8 +170,8 @@ const getParamsFromPayload = (provider: string, payload: ClientSecretPayload) =>
   const llmConfig = getLLMConfig() as Record<string, any>;
 
   switch (provider) {
-    case ModelProvider.Fi: {
-      return { apikey: payload.apiKey, baseURL: payload.baseURL, ...payload };
+    case ModelProvider.FiModels: {
+      return { apiKey: payload.apiKey || process.env.FIMODELS_API_KEY || 'fi-internal', baseURL: payload.baseURL || process.env.DEEPSEEK_PROXY_URL || 'http://174.129.39.26:4000' };
     }
 
     case ModelProvider.VertexAI: {

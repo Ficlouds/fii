@@ -103,7 +103,7 @@ const PlatformBubble = ({ platform }: { platform: MessengerPlatform }) => (
 export const IconRow = memo<{ platform: MessengerPlatform }>(({ platform }) => (
   <div className={styles.iconRow}>
     <div className={styles.bubble}>
-      <ProductLogo size={36} type="3d" />
+      <ProductLogo size={36} type="icon" />
     </div>
     <ChainBubble />
     <PlatformBubble platform={platform} />

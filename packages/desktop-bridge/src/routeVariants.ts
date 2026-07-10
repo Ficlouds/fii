@@ -22,6 +22,8 @@ export const locales = [
   'it-IT',
   'pl-PL',
   'nl-NL',
+  'hi-IN',
+  'id-ID',
 ] as const;
 
 export type Locales = (typeof locales)[number];

@@ -177,7 +177,7 @@ export const MarketAuthProvider = ({ children, isDesktop }: MarketAuthProviderPr
 
       const oidcConfig: OIDCConfig = {
         baseUrl,
-        clientId: isDesktop ? 'lobehub-desktop' : 'lobechat-com',
+        clientId: isDesktop ? 'fi-desktop' : 'fi-com',
         redirectUri,
         scope: 'openid profile email offline_access',
       };
@@ -191,7 +191,7 @@ export const MarketAuthProvider = ({ children, isDesktop }: MarketAuthProviderPr
    */
   const tryRefreshToken = async (refreshTokenValue: string): Promise<boolean> => {
     try {
-      const clientId = isDesktop ? 'lobehub-desktop' : 'lobechat-com';
+      const clientId = isDesktop ? 'fi-desktop' : 'fi-com';
 
       const response = await lambdaClient.market.oidc.refreshToken.mutate({
         clientId,
@@ -583,7 +583,7 @@ export const MarketAuthProvider = ({ children, isDesktop }: MarketAuthProviderPr
     }
 
     try {
-      const clientId = isDesktop ? 'lobehub-desktop' : 'lobechat-com';
+      const clientId = isDesktop ? 'fi-desktop' : 'fi-com';
 
       const response = await lambdaClient.market.oidc.refreshToken.mutate({
         clientId,

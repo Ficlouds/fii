@@ -243,7 +243,7 @@
   "input.costEstimate.settingsLink": "Adjust warning threshold",
   "input.costEstimate.tokenCount": "~{{tokens}} tokens",
   "input.costEstimate.tooltip": "Estimated from current context, tools, and model pricing. Actual cost may vary.",
-  "input.disclaimer": "Fi is AI and can make mistakes. Please verify important responses.",
+  "input.disclaimer": "Fi एक AI है और गलतियाँ कर सकता है। महत्वपूर्ण जानकारी की जाँच करें।",
   "input.errorMsg": "Send failed: {{errorMsg}}. Retry, or send again later.",
   "input.more": "More",
   "input.send": "Send",

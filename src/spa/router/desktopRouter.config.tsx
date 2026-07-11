@@ -450,6 +450,16 @@ export const desktopRoutes: RouteObject[] = [
           },
           {
             element: dynamicElement(
+              () => import('@/routes/(main)/memory/brain/page'),
+              'Desktop > Memory > Brain',
+            ),
+            handle: {
+              meta: routeMeta({ icon: BrainCircuit, titleKey: 'navigation.memory' }),
+            },
+            path: 'brain',
+          },
+          {
+            element: dynamicElement(
               () => import('@/routes/(main)/memory/identities'),
               'Desktop > Memory > Identities',
             ),
@@ -684,13 +694,9 @@ export const desktopRoutes: RouteObject[] = [
         path: 'page',
       },
 
-
       // Connect page (standalone, full screen)
       {
-        element: dynamicElement(
-          () => import('@/routes/(main)/connect'),
-          'Desktop > Connect',
-        ),
+        element: dynamicElement(() => import('@/routes/(main)/connect'), 'Desktop > Connect'),
         path: 'connect',
       },
 

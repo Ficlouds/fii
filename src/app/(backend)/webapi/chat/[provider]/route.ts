@@ -11,6 +11,7 @@ import {
   retrieveUserMemories,
   saveConversationMemory,
   scanFiOutput,
+  scanMultiTurn,
   scanUserMessage,
   scanWithLlamaFirewall,
   scanWithPromptGuard,
@@ -286,6 +287,13 @@ export const POST = checkAuth(async (req: Request, { params, userId, serverDB })
       }
 
       // LlamaFirewall — regex + PromptGuard ML layer (runs on Fi FastAPI)
+
+      // Multi-turn attack monitor
+      const multiTurnResult = await scanMultiTurn(userId, lastMessage.content);
+      if (multiTurnResult.isAttack) {
+        console.warn('[Fi MultiTurn] Multi-turn identity extraction blocked for user', userId);
+        return buildSseMessage(generateBlockedResponse());
+      }
 
       const llamaFirewallResult = await scanWithLlamaFirewall(lastMessage.content);
       if (!llamaFirewallResult.isSafe) {

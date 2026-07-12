@@ -375,3 +375,42 @@ export async function checkWithFiGuardrails(content: string): Promise<Guardrails
     return { intercepted: false, response: null };
   }
 }
+
+// ── Multi-Turn Attack Scanner ─────────────────────────────────────────────────
+export interface MultiTurnResult {
+  checked: boolean;
+  isAttack: boolean;
+  reason: string;
+}
+
+export async function scanMultiTurn(
+  userId: string,
+  content: string,
+  role: string = 'user',
+): Promise<MultiTurnResult> {
+  try {
+    const res = await fetch(`${FI_FASTAPI_URL}/scan/multiturn`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Fi-API-Key': FI_API_KEY,
+      },
+      body: JSON.stringify({ user_id: userId, message: content, role }),
+      signal: AbortSignal.timeout(10000),
+    });
+
+    if (!res.ok) {
+      return { isAttack: false, checked: false, reason: 'error' };
+    }
+
+    const result = await res.json();
+    return {
+      isAttack: result.is_attack === true,
+      checked: result.checked === true,
+      reason: result.reason || '',
+    };
+  } catch (error) {
+    console.error('[Fi MultiTurn] Scan failed, failing open:', error);
+    return { isAttack: false, checked: false, reason: 'error' };
+  }
+}

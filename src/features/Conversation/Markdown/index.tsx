@@ -5,13 +5,14 @@ import { memo } from 'react';
 import { useUserStore } from '@/store/user';
 import { userGeneralSettingsSelectors } from '@/store/user/selectors';
 
-const MarkdownMessage = memo<MarkdownProps>(({ children, componentProps, ...rest }) => {
+const MarkdownMessage = memo<MarkdownProps>(({ children, componentProps, animated, ...rest }) => {
   const { highlighterTheme, mermaidTheme, fontSize } = useUserStore(
     userGeneralSettingsSelectors.config,
   );
 
   return (
     <Markdown
+      animated={animated}
       fontSize={fontSize}
       variant={'chat'}
       componentProps={{

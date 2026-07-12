@@ -265,7 +265,7 @@ export async function retrieveUserMemories(
     const res = await fetch(`${MEMORY_BRIDGE_URL}/memory/query`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: userId, query, limit }),
+      body: JSON.stringify({ user_id: userId, query, limit, include_sensitive: true }),
       signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) return [];

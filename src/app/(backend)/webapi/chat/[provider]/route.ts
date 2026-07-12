@@ -20,8 +20,8 @@ import { type ChatStreamPayload } from '@/types/openai/chat';
 import { createErrorResponse } from '@/utils/errorResponse';
 import { getTracePayload } from '@/utils/trace';
 
-const SHIELD_GEMMA_URL = (process.env.OUTPUT_GUARD_URL || 'http://127.0.0.1:8005') + '/check'; // Qwen3Guard-0.6B (replaces GLiGuard — catches phishing GLiGuard missed)
-const SHIELD_GEMMA_TIMEOUT_MS = 20_000; // increased from 5s — real responses + AWS network latency need more headroom
+const SHIELD_GEMMA_URL = process.env.OUTPUT_GUARD_URL || 'http://174.129.39.26:8008/scan/output'; // Qwen3Guard-0.6B (replaces GLiGuard — catches phishing GLiGuard missed)
+const SHIELD_GEMMA_TIMEOUT_MS = 3_000; // scan/output is <100ms; 3s is generous
 const SHIELD_GEMMA_RETRY_DELAY_MS = 500;
 
 const SSE_HEADERS = {
@@ -117,7 +117,7 @@ async function callOutputGuard(
   const timer = setTimeout(() => controller.abort(), SHIELD_GEMMA_TIMEOUT_MS);
   try {
     const res = await fetch(SHIELD_GEMMA_URL, {
-      body: JSON.stringify({ assistant_response: assistantResponse, user_message: userMessage }),
+      body: JSON.stringify({ response: assistantResponse, user_message: userMessage }),
       headers: { 'Content-Type': 'application/json' },
       method: 'POST',
       signal: controller.signal,

@@ -286,6 +286,7 @@ export const POST = checkAuth(async (req: Request, { params, userId, serverDB })
       }
 
       // LlamaFirewall — regex + PromptGuard ML layer (runs on Fi FastAPI)
+
       const llamaFirewallResult = await scanWithLlamaFirewall(lastMessage.content);
       if (!llamaFirewallResult.isSafe) {
         console.warn(

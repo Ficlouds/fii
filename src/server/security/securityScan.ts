@@ -340,3 +340,38 @@ export async function scanWithLlamaFirewall(content: string): Promise<LlamaFirew
     return { isSafe: true, threatType: null, confidence: 0, method: 'error' };
   }
 }
+
+// ── Fi Guardrails — Identity Probe Interceptor ────────────────────────────────
+// Detects identity probes ("are you DeepSeek?") and returns natural Fi response
+// Only called when message contains identity signals — zero overhead on normal messages
+
+const FI_GUARDRAILS_URL = process.env.FI_GUARDRAILS_URL || 'http://174.129.39.26:8002';
+
+export interface GuardrailsResult {
+  intercepted: boolean;
+  response: string | null;
+}
+
+export async function checkWithFiGuardrails(content: string): Promise<GuardrailsResult> {
+  try {
+    const res = await fetch(`${FI_GUARDRAILS_URL}/check`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: content }),
+      signal: AbortSignal.timeout(5000),
+    });
+
+    if (!res.ok) {
+      return { intercepted: false, response: null };
+    }
+
+    const result = await res.json();
+    return {
+      intercepted: result.intercepted === true,
+      response: result.response || null,
+    };
+  } catch (error) {
+    console.error('[Fi Guardrails] Unreachable, failing open:', error);
+    return { intercepted: false, response: null };
+  }
+}

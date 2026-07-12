@@ -1,5 +1,3 @@
-import { type MessageContentPart } from '@ficlouds/types';
-import { deserializeParts } from '@ficlouds/utils';
 import { memo } from 'react';
 
 import Thinking from '@/features/Conversation/components/Thinking';
@@ -7,35 +5,31 @@ import { useUserStore } from '@/store/user';
 import { userGeneralSettingsSelectors } from '@/store/user/selectors';
 
 import { messageStateSelectors, useConversationStore } from '../../store';
-import { RichContentRenderer } from './RichContentRenderer';
 
 interface ReasoningProps {
   content?: string;
   duration?: number;
   id: string;
   isMultimodal?: boolean;
-  tempDisplayContent?: MessageContentPart[];
 }
 
-const Reasoning = memo<ReasoningProps>(
-  ({ content = '', duration, id, isMultimodal, tempDisplayContent }) => {
-    const isReasoning = useConversationStore(messageStateSelectors.isMessageInReasoning(id));
-    const transitionMode = useUserStore(userGeneralSettingsSelectors.transitionMode);
+const Reasoning = memo<ReasoningProps>(({ duration, id }) => {
+  const isReasoning = useConversationStore(messageStateSelectors.isMessageInReasoning(id));
+  const transitionMode = useUserStore(userGeneralSettingsSelectors.transitionMode);
 
-    const parts = tempDisplayContent || deserializeParts(content);
+  // Fi Security: raw reasoning_content is NEVER shown to users.
+  // DeepSeek's internal thoughts can contain model identity and system
+  // prompt fragments. We show only our custom spinner words instead.
+  // See: research doc Section 3 — Option B (hide raw reasoning).
 
-    // If parts are provided, render multimodal content
-    const thinkingContent = isMultimodal && parts ? <RichContentRenderer parts={parts} /> : content;
-
-    return (
-      <Thinking
-        content={thinkingContent}
-        duration={duration}
-        thinking={isReasoning}
-        thinkingAnimated={transitionMode === 'fadeIn' && isReasoning}
-      />
-    );
-  },
-);
+  return (
+    <Thinking
+      content={undefined}
+      duration={duration}
+      thinking={isReasoning}
+      thinkingAnimated={transitionMode === 'fadeIn' && isReasoning}
+    />
+  );
+});
 
 export default Reasoning;

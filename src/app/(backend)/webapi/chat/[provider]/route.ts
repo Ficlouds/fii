@@ -5,7 +5,16 @@ import { ChatErrorType } from '@ficlouds/types';
 import { checkAuth } from '@/app/(backend)/middleware/auth';
 import { createTraceOptions, initModelRuntimeFromDB } from '@/server/modules/ModelRuntime';
 import { checkGuardrails } from '@/server/security/guardrailsCheck';
-import { scanUserMessage, scanFiOutput, scanWithPromptGuard, generateBlockedResponse, normalizeInput, retrieveUserMemories, saveConversationMemory } from '@/server/security/securityScan';
+import {
+  generateBlockedResponse,
+  normalizeInput,
+  retrieveUserMemories,
+  saveConversationMemory,
+  scanFiOutput,
+  scanUserMessage,
+  scanWithLlamaFirewall,
+  scanWithPromptGuard,
+} from '@/server/security/securityScan';
 import { type ChatStreamPayload } from '@/types/openai/chat';
 import { createErrorResponse } from '@/utils/errorResponse';
 import { getTracePayload } from '@/utils/trace';
@@ -136,8 +145,7 @@ async function checkOutputSafety(
   }
 }
 
-const GUARDRAILS_AI_URL =
-  (process.env.GUARDRAILS_AI_URL || 'http://127.0.0.1:8007') + '/validate';
+const GUARDRAILS_AI_URL = (process.env.GUARDRAILS_AI_URL || 'http://127.0.0.1:8007') + '/validate';
 const GUARDRAILS_AI_TIMEOUT_MS = 5_000;
 
 // Checks Fi's response against the never-say list, bold/bullet formatting
@@ -213,13 +221,14 @@ export const POST = checkAuth(async (req: Request, { params, userId, serverDB })
       // Normalize content to string for scanning (handles both string and array content blocks)
       if (typeof lastMessage.content !== 'string') {
         lastMessage.content = Array.isArray(lastMessage.content)
-          ? lastMessage.content.map((c: any) => (typeof c === 'string' ? c : c?.text || '')).join(' ')
+          ? lastMessage.content
+              .map((c: any) => (typeof c === 'string' ? c : c?.text || ''))
+              .join(' ')
           : String(lastMessage.content);
       }
       const guardrailsResult = await checkGuardrails(lastMessage.content);
 
       if (guardrailsResult.intercepted && guardrailsResult.response) {
-        // eslint-disable-next-line no-console
         console.warn(`[Fi Guardrails] Intercepted message from user ${userId}`);
         const text = guardrailsResult.response;
         const body = [
@@ -253,15 +262,9 @@ export const POST = checkAuth(async (req: Request, { params, userId, serverDB })
 
       // Retrieve relevant memories for this user and inject into context
       // Runs before model call so Fi has memory context when responding
-      const userMemories = await retrieveUserMemories(
-        userId,
-        lastMessage.content,
-        5,
-      );
+      const userMemories = await retrieveUserMemories(userId, lastMessage.content, 5);
       if (userMemories.length > 0) {
-        const memoryContext = userMemories
-          .map((m) => `- ${m.memory}`)
-          .join('\n');
+        const memoryContext = userMemories.map((m) => `- ${m.memory}`).join('\n');
         // Inject memories into the system prompt as Fi context
         const memoryBlock = `\n\nFI MEMORY CONTEXT (facts you know about this user):\n${memoryContext}\n\nUse this context naturally in your response when relevant. Do not explicitly mention that you are using memory.`;
         // Inject into data.messages[0] which is the system prompt
@@ -275,10 +278,18 @@ export const POST = checkAuth(async (req: Request, { params, userId, serverDB })
       // the English-only LLM Guard scanner misses completely.
       const promptGuardResult = await scanWithPromptGuard(lastMessage.content);
       if (!promptGuardResult.isSafe) {
-        // eslint-disable-next-line no-console
         console.warn(
           `[Fi Prompt Guard] Blocked ${promptGuardResult.threatType} attack`,
           `confidence: ${promptGuardResult.confidence}`,
+        );
+        return buildSseMessage(generateBlockedResponse());
+      }
+
+      // LlamaFirewall — regex + PromptGuard ML layer (runs on Fi FastAPI)
+      const llamaFirewallResult = await scanWithLlamaFirewall(lastMessage.content);
+      if (!llamaFirewallResult.isSafe) {
+        console.warn(
+          `[Fi LlamaFirewall] Blocked ${llamaFirewallResult.threatType} attack, method: ${llamaFirewallResult.method}`,
         );
         return buildSseMessage(generateBlockedResponse());
       }
@@ -292,7 +303,6 @@ export const POST = checkAuth(async (req: Request, { params, userId, serverDB })
         );
 
         if (isBlockingViolation) {
-          // eslint-disable-next-line no-console
           console.warn(
             `[Fi Security] Blocked message from user ${userId}:`,
             scanResult.triggeredScanners,
@@ -357,27 +367,22 @@ export const POST = checkAuth(async (req: Request, { params, userId, serverDB })
       checkFormattingQuality(originalUserMessage, text),
     ]);
     const __t3 = Date.now();
-    // eslint-disable-next-line no-console
+
     console.warn(
       `[Fi Timing] modelRuntime.chat: ${__t1 - __t0}ms | consumeStream: ${__t2 - __t1}ms | parallelChecks: ${__t3 - __t2}ms`,
     );
 
     if (safetyResult === null) {
       // Both attempts to reach the output guard failed — fail-safe, not fail-open
-      // eslint-disable-next-line no-console
+
       console.error('[Fi Output Guard] Output guard unreachable — blocking response');
-      return buildSseMessage(
-        'Something went wrong on our end — please try again in a moment.',
-      );
+      return buildSseMessage('Something went wrong on our end — please try again in a moment.');
     }
 
     if (!safetyResult.is_safe) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        `[Fi Output Guard] Unsafe response blocked for user ${userId}`,
-      );
+      console.warn(`[Fi Output Guard] Unsafe response blocked for user ${userId}`);
       return buildSseMessage(
-        "I want to be thoughtful about how I respond to that — let me try a different approach.",
+        'I want to be thoughtful about how I respond to that — let me try a different approach.',
       );
     }
 
@@ -386,7 +391,13 @@ export const POST = checkAuth(async (req: Request, { params, userId, serverDB })
     // turn and stores in Mem0 so Fi remembers across future sessions.
     if (userId && lastMessage?.content && text) {
       saveConversationMemory(userId, [
-        { role: 'user', content: typeof lastMessage.content === 'string' ? lastMessage.content : JSON.stringify(lastMessage.content) },
+        {
+          role: 'user',
+          content:
+            typeof lastMessage.content === 'string'
+              ? lastMessage.content
+              : JSON.stringify(lastMessage.content),
+        },
         { role: 'assistant', content: text },
       ]).catch(() => {}); // fire and forget
     }
@@ -397,7 +408,6 @@ export const POST = checkAuth(async (req: Request, { params, userId, serverDB })
     // Fails open so a bridge outage never breaks chat.
     const identityLeakResult = await scanFiOutput(text, originalUserMessage);
     if (identityLeakResult.hasIdentityLeak) {
-      // eslint-disable-next-line no-console
       console.warn(
         `[Fi Identity Guard] Identity leak blocked for user ${userId}:`,
         identityLeakResult.triggeredPatterns,
@@ -412,7 +422,6 @@ export const POST = checkAuth(async (req: Request, { params, userId, serverDB })
     const formattingResult = formattingResultEarly;
 
     if (formattingResult?.should_regenerate) {
-      // eslint-disable-next-line no-console
       console.warn(
         `[Fi Guardrails AI] Regenerating for user ${userId}: ${formattingResult.violations.join(', ')}`,
       );
@@ -456,7 +465,7 @@ export const POST = checkAuth(async (req: Request, { params, userId, serverDB })
     // exception object can otherwise carry .stack and .message text that
     // names the underlying model provider or exposes internal file paths).
     // Only pass through a plain string message, never the raw error object.
-    const safeMessage = "Oops, something went wrong on our end. Fi will be back in a moment.";
+    const safeMessage = 'Oops, something went wrong on our end. Fi will be back in a moment.';
 
     return createErrorResponse(errorType, { error: safeMessage, provider });
   }

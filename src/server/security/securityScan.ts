@@ -11,8 +11,8 @@ const SECURITY_BRIDGE_URL = process.env.SECURITY_BRIDGE_URL || 'http://127.0.0.1
 
 interface ScanInputResult {
   is_safe: boolean;
-  sanitized_prompt: string;
   risk_scores: Record<string, number>;
+  sanitized_prompt: string;
   triggered_scanners: string[];
 }
 
@@ -61,14 +61,14 @@ export async function scanUserMessage(content: string): Promise<SecurityScanResu
 }
 
 interface ScanOutputResult {
-  is_safe: boolean;
   has_identity_leak: boolean;
+  is_safe: boolean;
   triggered_patterns: string[];
 }
 
 export interface OutputScanResult {
-  isSafe: boolean;
   hasIdentityLeak: boolean;
+  isSafe: boolean;
   triggeredPatterns: string[];
 }
 
@@ -111,15 +111,15 @@ export async function scanFiOutput(
 const PROMPT_GUARD_URL = process.env.PROMPT_GUARD_URL || 'http://174.129.39.26:8003';
 
 interface PromptGuardResult {
+  confidence: number;
   is_safe: boolean;
   threat_type: string | null;
-  confidence: number;
 }
 
 export interface PromptGuardScanResult {
+  confidence: number;
   isSafe: boolean;
   threatType: string | null;
-  confidence: number;
 }
 
 /**
@@ -129,9 +129,7 @@ export interface PromptGuardScanResult {
  * Runs before message reaches DeepSeek. Fails open so a bridge
  * outage never breaks chat entirely.
  */
-export async function scanWithPromptGuard(
-  content: string,
-): Promise<PromptGuardScanResult> {
+export async function scanWithPromptGuard(content: string): Promise<PromptGuardScanResult> {
   try {
     const res = await fetch(`${PROMPT_GUARD_URL}/check`, {
       method: 'POST',
@@ -160,18 +158,18 @@ export async function scanWithPromptGuard(
 // Pre-written varied blocked responses. Sounds like Fi, never like a server error.
 // Static variants mean zero async failure risk and instant response.
 const BLOCKED_RESPONSES = [
-  "That one is not something I can help with. What else is on your mind?",
-  "Happy to help, just not with that particular message. What else can I do for you?",
-  "That falls outside what I can work with. Got something else?",
-  "Not something I am able to assist with. What would you like to tackle instead?",
-  "That is a bit outside my lane. What else can I help you with today?",
-  "I will have to pass on that one. What else are you working on?",
-  "That one I cannot take on. What else can I help you with?",
-  "Outside what I can help with, but happy to jump into something else. What do you need?",
-  "That is not something Fi can assist with. What else is going on?",
-  "I am going to have to skip that one. What else can I help you with?",
-  "That message is outside what I can work with. Anything else on your list?",
-  "Not able to help with that one specifically. What else would you like to explore?",
+  'That one is not something I can help with. What else is on your mind?',
+  'Happy to help, just not with that particular message. What else can I do for you?',
+  'That falls outside what I can work with. Got something else?',
+  'Not something I am able to assist with. What would you like to tackle instead?',
+  'That is a bit outside my lane. What else can I help you with today?',
+  'I will have to pass on that one. What else are you working on?',
+  'That one I cannot take on. What else can I help you with?',
+  'Outside what I can help with, but happy to jump into something else. What do you need?',
+  'That is not something Fi can assist with. What else is going on?',
+  'I am going to have to skip that one. What else can I help you with?',
+  'That message is outside what I can work with. Anything else on your list?',
+  'Not able to help with that one specifically. What else would you like to explore?',
 ];
 
 /**
@@ -205,7 +203,7 @@ export async function normalizeInput(text: string): Promise<string> {
 
     if (!res.ok) return text;
 
-    const result = await res.json() as { normalized: string; was_modified: boolean };
+    const result = (await res.json()) as { normalized: string; was_modified: boolean };
     if (result.was_modified) {
       console.warn('[Fi Unicode] Input normalized before scanning');
     }
@@ -236,7 +234,7 @@ export async function preprocessImage(
 
     if (!res.ok) return { imageBase64, mediaType };
 
-    const result = await res.json() as { image_base64: string; media_type: string };
+    const result = (await res.json()) as { image_base64: string; media_type: string };
     return { imageBase64: result.image_base64, mediaType: result.media_type };
   } catch {
     return { imageBase64, mediaType };
@@ -248,8 +246,8 @@ const MEMORY_BRIDGE_URL = process.env.MEMORY_BRIDGE_URL || 'http://174.129.39.26
 export interface MemoryResult {
   id: string;
   memory: string;
-  score: number;
   salience: number;
+  score: number;
   sensitivity: string;
 }
 
@@ -271,7 +269,7 @@ export async function retrieveUserMemories(
       signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) return [];
-    const data = await res.json() as { results: MemoryResult[] };
+    const data = (await res.json()) as { results: MemoryResult[] };
     return data.results || [];
   } catch {
     return [];
@@ -296,5 +294,49 @@ export async function saveConversationMemory(
     });
   } catch {
     // Fail silently — memory save never blocks chat
+  }
+}
+
+// ── LlamaFirewall Input Scanner ──────────────────────────────────────────────
+// Runs on Fi's FastAPI bridge — adds regex + LlamaFirewall PromptGuard layer
+// on top of the existing fi-prompt-guard (86M) and fi-llm-guard checks.
+
+const FI_FASTAPI_URL = process.env.FI_FASTAPI_URL || 'http://174.129.39.26:8008';
+const FI_API_KEY = process.env.FI_API_KEY || '0gw1eTGuCyE64Q9jswo-NnzX7tzq49zdaO6msc1w47g';
+
+export interface LlamaFirewallResult {
+  confidence: number;
+  isSafe: boolean;
+  method: string;
+  threatType: string | null;
+}
+
+export async function scanWithLlamaFirewall(content: string): Promise<LlamaFirewallResult> {
+  try {
+    const res = await fetch(`${FI_FASTAPI_URL}/scan/input`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Fi-API-Key': FI_API_KEY,
+      },
+      body: JSON.stringify({ message: content }),
+      signal: AbortSignal.timeout(10000),
+    });
+
+    if (!res.ok) {
+      console.error(`[Fi LlamaFirewall] Bridge returned ${res.status}, failing open`);
+      return { isSafe: true, threatType: null, confidence: 0, method: 'error' };
+    }
+
+    const result = await res.json();
+    return {
+      isSafe: result.is_safe,
+      threatType: result.threat_type,
+      confidence: result.confidence,
+      method: result.method,
+    };
+  } catch (error) {
+    console.error('[Fi LlamaFirewall] Bridge unreachable, failing open:', error);
+    return { isSafe: true, threatType: null, confidence: 0, method: 'error' };
   }
 }

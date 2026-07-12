@@ -1,5 +1,5 @@
 import { Flexbox } from '@lobehub/ui';
-import { memo, useEffect, useRef } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 
 import { shinyTextStyles } from '@/styles';
 
@@ -12,7 +12,6 @@ interface ThinkingTitleProps {
 }
 
 const FI_THINKING_WORDS = [
-  // Feeling
   'Feeling',
   'Sensing',
   'Absorbing',
@@ -27,7 +26,6 @@ const FI_THINKING_WORDS = [
   'Inhabiting',
   'Sitting with this',
   'Perceiving',
-  // Thinking
   'Thinking',
   'Reflecting',
   'Considering',
@@ -46,7 +44,6 @@ const FI_THINKING_WORDS = [
   'Scrutinising',
   'Examining',
   'Appraising',
-  // Cooking / patience
   'Brewing',
   'Simmering',
   'Steeping',
@@ -62,7 +59,6 @@ const FI_THINKING_WORDS = [
   'Tempering',
   'Reducing',
   'Blending',
-  // Nature
   'Germinating',
   'Growing',
   'Rooting',
@@ -76,7 +72,6 @@ const FI_THINKING_WORDS = [
   'Drifting',
   'Weathering',
   'Blossoming',
-  // Movement
   'Wandering',
   'Meandering',
   'Navigating',
@@ -92,7 +87,6 @@ const FI_THINKING_WORDS = [
   'Ambling',
   'Moseying',
   'Roaming',
-  // Memory & connection
   'Remembering',
   'Connecting',
   'Piecing together',
@@ -109,7 +103,6 @@ const FI_THINKING_WORDS = [
   'Harmonising',
   'Triangulating',
   'Cross-referencing',
-  // Playful
   'Frolicking',
   'Gallivanting',
   'Doodling',
@@ -130,7 +123,6 @@ const FI_THINKING_WORDS = [
   'Bimbling',
   'Sauntering',
   'Faffing',
-  // Crafting
   'Crafting',
   'Shaping',
   'Sculpting',
@@ -145,7 +137,6 @@ const FI_THINKING_WORDS = [
   'Etching',
   'Drafting',
   'Moulding',
-  // Deep thinking
   'Philosophising',
   'Ruminating',
   'Cogitating',
@@ -157,7 +148,6 @@ const FI_THINKING_WORDS = [
   'Chin-stroking',
   'Headscratching',
   'Brow-furrowing',
-  // Unique to Fi
   'Fi-ing',
   'Being here',
   'Showing up',
@@ -190,26 +180,25 @@ const FI_SYMBOLS = [
 const getRandom = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
 const ThinkingTitle = memo<ThinkingTitleProps>(({ showDetail, thinking }) => {
-  const wordRef = useRef<string>(getRandom(FI_THINKING_WORDS));
-  const symbolRef = useRef<string>(getRandom(FI_SYMBOLS));
+  const [display, setDisplay] = useState({
+    word: getRandom(FI_THINKING_WORDS),
+    symbol: getRandom(FI_SYMBOLS),
+  });
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const prevThinkingRef = useRef<boolean | undefined>(undefined);
-
-  useEffect(() => {
-    if (thinking && !prevThinkingRef.current) {
-      // Pick fresh word + symbol when thinking starts
-      wordRef.current = getRandom(FI_THINKING_WORDS);
-      symbolRef.current = getRandom(FI_SYMBOLS);
-    }
-    prevThinkingRef.current = thinking;
-  }, [thinking]);
 
   useEffect(() => {
     if (thinking) {
-      // Rotate word + symbol every 2 seconds while thinking
+      // Pick fresh on start
+      setDisplay({
+        word: getRandom(FI_THINKING_WORDS),
+        symbol: getRandom(FI_SYMBOLS),
+      });
+      // Rotate every 2 seconds
       intervalRef.current = setInterval(() => {
-        wordRef.current = getRandom(FI_THINKING_WORDS);
-        symbolRef.current = getRandom(FI_SYMBOLS);
+        setDisplay({
+          word: getRandom(FI_THINKING_WORDS),
+          symbol: getRandom(FI_SYMBOLS),
+        });
       }, 2000);
     } else {
       if (intervalRef.current) {
@@ -227,7 +216,7 @@ const ThinkingTitle = memo<ThinkingTitleProps>(({ showDetail, thinking }) => {
       <StatusIndicator showDetail={showDetail} thinking={thinking} />
       {thinking && (
         <span className={shinyTextStyles.shinyText}>
-          {symbolRef.current} {wordRef.current}
+          {display.symbol} {display.word}
         </span>
       )}
     </Flexbox>

@@ -377,6 +377,28 @@ export const POST = checkAuth(async (req: Request, { params, userId, serverDB })
       traceOptions = createTraceOptions(data, { provider, trace: tracePayload });
     }
 
+    // ── Gemini file/image routing ─────────────────────────────────────────────
+    // If any message contains an image or file block, route to Gemini Flash Lite
+    // regardless of which model the user selected — only Gemini handles multimodal
+    const hasMediaContent = data.messages?.some((msg: any) => {
+      const content = msg?.content;
+      if (!Array.isArray(content)) return false;
+      return content.some(
+        (block: any) =>
+          block?.type === 'image_url' ||
+          block?.type === 'image' ||
+          block?.type === 'file' ||
+          block?.type === 'input_file' ||
+          (block?.type === 'text' && block?.image_url) ||
+          (typeof block === 'object' && block?.source?.type === 'base64'),
+      );
+    });
+
+    if (hasMediaContent) {
+      console.warn('[Fi Router] Media content detected — routing to Gemini Flash Lite');
+      data.model = process.env.FI_VISION_MODEL || 'gemini-3.1-flash-lite';
+    }
+
     // ============  2.8. output content moderation (GLiGuard)   ============ //
     // Buffer the full LLM response before sending it to the client so we can
     // check it for policy violations.  Only after the safety check passes do

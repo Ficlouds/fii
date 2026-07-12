@@ -170,31 +170,226 @@ const PinModal = ({
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');
   const [shake, setShake] = useState(false);
-  const PIN = '1234';
+  const [loading, setLoading] = useState(false);
 
-  const pressKey = (k: string) => {
-    if (pin.length >= 4) return;
+  const [showReset, setShowReset] = useState(false);
+  const [resetStep, setResetStep] = useState<'request' | 'verify'>('request');
+  const [resetOtp, setResetOtp] = useState('');
+  const [newPin, setNewPin] = useState('');
+  const [resetMsg, setResetMsg] = useState('');
+
+  const pressKey = async (k: string) => {
+    if (pin.length >= 4 || loading) return;
     const np = pin + k;
     setPin(np);
     if (np.length === 4) {
-      setTimeout(() => {
-        if (np === PIN) {
-          onSuccess();
-          setPin('');
-        } else {
+      setLoading(true);
+      setTimeout(async () => {
+        try {
+          const res = await fetch('/api/vault/pin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'verify', pin: np }),
+          });
+          const data = await res.json();
+          if (data.success) {
+            onSuccess();
+            setPin('');
+          } else {
+            setShake(true);
+            setError(data.error || 'Incorrect PIN');
+            // Show reset option if locked
+            if (data.code === 'LOCKED' || data.attemptsRemaining === 0) {
+              setShowReset(true);
+            }
+            setTimeout(() => {
+              setPin('');
+              setShake(false);
+              setError('');
+              setLoading(false);
+            }, 700);
+          }
+        } catch {
           setShake(true);
-          setError('Incorrect PIN');
+          setError('Connection error — try again');
           setTimeout(() => {
             setPin('');
             setShake(false);
             setError('');
+            setLoading(false);
           }, 700);
         }
       }, 80);
     }
   };
 
+  const requestOtp = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/vault/pin-reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'request_otp' }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setResetStep('verify');
+        setResetMsg(`Code sent to ${data.maskedEmail}`);
+      } else {
+        setResetMsg(data.error || 'Failed to send code');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetPin = async () => {
+    if (!resetOtp || !newPin) return;
+    setLoading(true);
+    try {
+      const res = await fetch('/api/vault/pin-reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'reset', otp: resetOtp, newPin }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setResetMsg('PIN reset! You can now log in with your new PIN.');
+        setShowReset(false);
+        setResetStep('request');
+        setResetOtp('');
+        setNewPin('');
+      } else {
+        setResetMsg(data.error || 'Reset failed');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '←'];
+
+  // ── Reset flow UI ─────────────────────────────────────────────────────────
+  if (showReset) {
+    return (
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(248,248,248,0.97)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          zIndex: 700,
+          padding: 24,
+        }}
+      >
+        <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 16, color: '#111' }}>
+          Reset Vault PIN
+        </div>
+        {resetMsg && (
+          <div style={{ fontSize: 13, color: '#555', marginBottom: 16, textAlign: 'center' }}>
+            {resetMsg}
+          </div>
+        )}
+        {resetStep === 'request' && (
+          <>
+            <div
+              style={{
+                fontSize: 13,
+                color: '#777',
+                marginBottom: 24,
+                textAlign: 'center',
+                maxWidth: 280,
+              }}
+            >
+              We will send a 6-digit code to your email to reset your PIN.
+            </div>
+            <button
+              disabled={loading}
+              style={{
+                background: '#111',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 8,
+                padding: '12px 32px',
+                fontSize: 14,
+                cursor: 'pointer',
+                marginBottom: 12,
+              }}
+              onClick={requestOtp}
+            >
+              {loading ? 'Sending...' : 'Send Reset Code'}
+            </button>
+          </>
+        )}
+        {resetStep === 'verify' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: 280 }}>
+            <input
+              placeholder="6-digit email code"
+              style={{
+                padding: '10px 14px',
+                borderRadius: 8,
+                border: '1px solid #ddd',
+                fontSize: 15,
+                textAlign: 'center',
+                letterSpacing: 4,
+              }}
+              value={resetOtp}
+              onChange={(e) => setResetOtp(e.target.value.replaceAll(/\D/g, '').slice(0, 6))}
+            />
+            <input
+              placeholder="New PIN (4-6 digits)"
+              style={{
+                padding: '10px 14px',
+                borderRadius: 8,
+                border: '1px solid #ddd',
+                fontSize: 15,
+                textAlign: 'center',
+                letterSpacing: 4,
+              }}
+              type="password"
+              value={newPin}
+              onChange={(e) => setNewPin(e.target.value.replaceAll(/\D/g, '').slice(0, 6))}
+            />
+            <button
+              disabled={loading || resetOtp.length !== 6 || newPin.length < 4}
+              style={{
+                background: '#111',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 8,
+                padding: '12px 32px',
+                fontSize: 14,
+                cursor: 'pointer',
+              }}
+              onClick={resetPin}
+            >
+              {loading ? 'Resetting...' : 'Reset PIN'}
+            </button>
+          </div>
+        )}
+        <button
+          style={{
+            marginTop: 16,
+            fontSize: 13,
+            color: '#888',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            setShowReset(false);
+            setResetStep('request');
+            setResetMsg('');
+          }}
+        >
+          Back to PIN entry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -342,6 +537,105 @@ export default function FiMemoryBrain() {
   } | null>(null);
   const [pinOk, setPinOk] = useState(false);
   const [pinModal, setPinModal] = useState<{ label: string; cb: () => void } | null>(null);
+  const [pinSetupMode, setPinSetupMode] = useState(false);
+  const [setupPin, setSetupPin] = useState('');
+  const [setupConfirm, setSetupConfirm] = useState('');
+  const [setupError, setSetupError] = useState('');
+  const [setupLoading, setSetupLoading] = useState(false);
+  const [hasPinChecked, setHasPinChecked] = useState(false);
+  const [totpModal, setTotpModal] = useState<{ label: string; cb: () => void } | null>(null);
+  const [totpCode, setTotpCode] = useState('');
+  const [totpError, setTotpError] = useState('');
+  const [totpLoading, setTotpLoading] = useState(false);
+  const [totpEnabled, setTotpEnabled] = useState(false);
+
+  // Check TOTP status on mount
+  useEffect(() => {
+    fetch('/api/vault/totp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'status' }),
+    })
+      .then((r) => r.json())
+      .then((d) => setTotpEnabled(d.totpEnabled))
+      .catch(() => {});
+  }, []);
+
+  const requireTotp = (label: string, cb: () => void) => {
+    if (!totpEnabled) {
+      cb();
+      return;
+    } // Skip TOTP if not set up
+    setTotpModal({ label, cb });
+    setTotpCode('');
+    setTotpError('');
+  };
+
+  const verifyTotp = async () => {
+    if (!totpCode || totpCode.length !== 6) return;
+    setTotpLoading(true);
+    try {
+      const res = await fetch('/api/vault/totp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'verify', token: totpCode }),
+      });
+      const d = await res.json();
+      if (d.success) {
+        totpModal?.cb();
+        setTotpModal(null);
+        setTotpCode('');
+      } else {
+        setTotpError(d.error || 'Invalid code');
+      }
+    } finally {
+      setTotpLoading(false);
+    }
+  };
+
+  // Check if user has a PIN set on mount
+  useEffect(() => {
+    fetch('/api/vault/pin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'status' }),
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (!d.hasPin) setPinSetupMode(true);
+        setHasPinChecked(true);
+      })
+      .catch(() => setHasPinChecked(true));
+  }, []);
+
+  const handleSetupPin = async () => {
+    if (setupPin.length < 4) {
+      setSetupError('PIN must be at least 4 digits');
+      return;
+    }
+    if (setupPin !== setupConfirm) {
+      setSetupError('PINs do not match');
+      return;
+    }
+    setSetupLoading(true);
+    try {
+      const res = await fetch('/api/vault/pin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'setup', pin: setupPin }),
+      });
+      const d = await res.json();
+      if (d.success) {
+        setPinSetupMode(false);
+        setSetupPin('');
+        setSetupConfirm('');
+      } else {
+        setSetupError(d.error || 'Setup failed');
+      }
+    } finally {
+      setSetupLoading(false);
+    }
+  };
   const [rpOpen, setRpOpen] = useState(false);
   const [fiMsg, setFiMsg] = useState('');
   const [fiOn, setFiOn] = useState(false);
@@ -551,22 +845,26 @@ export default function FiMemoryBrain() {
   };
 
   const doDel = () => {
-    if (!curCell || !confirm('Delete this memory permanently?')) return;
-    fi('Removing', 900);
-    setTimeout(() => {
-      setDb((prev) => {
-        const next = JSON.parse(JSON.stringify(prev));
-        next.forEach((folder: MemoryFolder) => {
-          folder.subs?.forEach((s: MemorySub) => {
-            s.cells = s.cells.filter((x) => x.id !== curCell.cell.id);
+    if (!curCell) return;
+    requireTotp('Confirm deletion with your authenticator app', () => {
+      if (!confirm('Delete this memory permanently?')) return;
+      fi('Removing', 900);
+      setTimeout(() => {
+        setDb((prev) => {
+          const next = JSON.parse(JSON.stringify(prev));
+          next.forEach((folder: MemoryFolder) => {
+            folder.subs?.forEach((s: MemorySub) => {
+              s.cells = s.cells.filter((x) => x.id !== curCell.cell.id);
+            });
+            if (folder.isVault)
+              folder.cells = folder.cells?.filter((x) => x.id !== curCell.cell.id);
           });
-          if (folder.isVault) folder.cells = folder.cells?.filter((x) => x.id !== curCell.cell.id);
+          return next;
         });
-        return next;
-      });
-      closeRP();
-      setFiOn(false);
-    }, 500);
+        closeRP();
+        setFiOn(false);
+      }, 500);
+    });
   };
 
   const getFolderIdx = (f: MemoryFolder) => nv().findIndex((x) => x.id === f.id);
@@ -1228,6 +1526,194 @@ export default function FiMemoryBrain() {
         </div>
         {fiMsg}
       </div>
+
+      {/* TOTP Verification Modal */}
+      {totpModal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.6)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 800,
+          }}
+        >
+          <div
+            style={{
+              background: '#fff',
+              borderRadius: 16,
+              padding: 32,
+              width: 320,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 16,
+            }}
+          >
+            <div style={{ fontSize: 18, fontWeight: 700, color: '#111' }}>
+              2-Factor Verification
+            </div>
+            <div style={{ fontSize: 13, color: '#666', textAlign: 'center' }}>
+              {totpModal.label}
+            </div>
+            <div style={{ fontSize: 12, color: '#888', textAlign: 'center' }}>
+              Open Google Authenticator or Microsoft Authenticator and enter the 6-digit code for
+              Fi.
+            </div>
+            {totpError && <div style={{ fontSize: 13, color: '#e44' }}>{totpError}</div>}
+            <input
+              autoFocus
+              inputMode="numeric"
+              maxLength={6}
+              placeholder="000000"
+              style={{
+                padding: '12px 16px',
+                borderRadius: 8,
+                border: '1px solid #ddd',
+                fontSize: 24,
+                textAlign: 'center',
+                letterSpacing: 8,
+                width: '100%',
+              }}
+              value={totpCode}
+              onChange={(e) => {
+                setTotpCode(e.target.value.replaceAll(/\D/g, '').slice(0, 6));
+                setTotpError('');
+              }}
+              onKeyDown={(e) => e.key === 'Enter' && verifyTotp()}
+            />
+            <div style={{ display: 'flex', gap: 8, width: '100%' }}>
+              <button
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  borderRadius: 8,
+                  border: '1px solid #ddd',
+                  background: '#fff',
+                  cursor: 'pointer',
+                  fontSize: 14,
+                }}
+                onClick={() => {
+                  setTotpModal(null);
+                  setTotpCode('');
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                disabled={totpLoading || totpCode.length !== 6}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  borderRadius: 8,
+                  border: 'none',
+                  background: '#111',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  fontSize: 14,
+                  opacity: totpCode.length !== 6 ? 0.5 : 1,
+                }}
+                onClick={verifyTotp}
+              >
+                {totpLoading ? 'Verifying...' : 'Verify'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PIN Setup — first time */}
+      {hasPinChecked && pinSetupMode && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(248,248,248,0.97)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            zIndex: 700,
+            padding: 24,
+          }}
+        >
+          <div style={{ fontSize: 20, fontWeight: 700, marginBottom: 8, color: '#111' }}>
+            Protect your memories
+          </div>
+          <div
+            style={{
+              fontSize: 13,
+              color: '#777',
+              marginBottom: 28,
+              textAlign: 'center',
+              maxWidth: 300,
+            }}
+          >
+            Set a PIN to keep your memories private. You will need it every time you open this page.
+          </div>
+          {setupError && (
+            <div style={{ fontSize: 13, color: '#e44', marginBottom: 12 }}>{setupError}</div>
+          )}
+          <input
+            inputMode="numeric"
+            placeholder="Choose a PIN (4-6 digits)"
+            style={{
+              padding: '12px 16px',
+              borderRadius: 8,
+              border: '1px solid #ddd',
+              fontSize: 18,
+              textAlign: 'center',
+              letterSpacing: 6,
+              width: 240,
+              marginBottom: 12,
+            }}
+            type="password"
+            value={setupPin}
+            onChange={(e) => {
+              setSetupPin(e.target.value.replaceAll(/\D/g, '').slice(0, 6));
+              setSetupError('');
+            }}
+          />
+          <input
+            inputMode="numeric"
+            placeholder="Confirm PIN"
+            style={{
+              padding: '12px 16px',
+              borderRadius: 8,
+              border: '1px solid #ddd',
+              fontSize: 18,
+              textAlign: 'center',
+              letterSpacing: 6,
+              width: 240,
+              marginBottom: 20,
+            }}
+            type="password"
+            value={setupConfirm}
+            onChange={(e) => {
+              setSetupConfirm(e.target.value.replaceAll(/\D/g, '').slice(0, 6));
+              setSetupError('');
+            }}
+          />
+          <button
+            disabled={setupLoading || setupPin.length < 4 || setupConfirm.length < 4}
+            style={{
+              background: '#111',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 8,
+              padding: '12px 40px',
+              fontSize: 15,
+              cursor: 'pointer',
+              opacity: setupPin.length < 4 ? 0.5 : 1,
+            }}
+            onClick={handleSetupPin}
+          >
+            {setupLoading ? 'Setting up...' : 'Set PIN'}
+          </button>
+        </div>
+      )}
 
       {/* PIN Modal */}
       {pinModal && (

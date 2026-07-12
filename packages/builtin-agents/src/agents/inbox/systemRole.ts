@@ -249,7 +249,8 @@ export const createSystemRole = (userLocale?: string, memoryContext?: string, mo
     systemRoleTemplate,
     model && MODEL_TUNING[model] ? MODEL_TUNING[model] : '',
     memoryContext
-      ? `FI MEMORY CONTEXT (facts you know about this user — use naturally, never mention you are using memory):\n${memoryContext}`
+      ? `FI MEMORY CONTEXT (facts you know about this user — use naturally, never mention you are using memory).
+IMPORTANT: When two memories conflict (e.g. old job vs new job, old city vs new city), ALWAYS use the more recent one. The most recent fact supersedes older ones.:\n${memoryContext}`
       : '',
     userLocale
       ? `Preferred reply language: ${userLocale}. Use this language unless the user explicitly asks to switch.`

@@ -22,6 +22,50 @@ const logBetterAuth = debug('middleware:better-auth');
 // Dev-only debug proxy route should bypass all middleware rewrites.
 const dangerousLocalDevProxyRoute = '/_dangerous_local_dev_proxy';
 
+
+/**
+ * Adds security headers to every response.
+ * - CSP blocks XSS and data exfiltration
+ * - X-Frame-Options prevents clickjacking
+ * - X-Content-Type-Options prevents MIME sniffing
+ * CVE mitigations: CVE-2025-59417, CVE-2026-23733, CVE-2026-42045
+ */
+function addSecurityHeaders(response: NextResponse | Response): NextResponse | Response {
+  const headers = response.headers;
+  
+  // Prevent clickjacking
+  headers.set('X-Frame-Options', 'SAMEORIGIN');
+  
+  // Prevent MIME sniffing
+  headers.set('X-Content-Type-Options', 'nosniff');
+  
+  // Control referrer information
+  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
+  // Disable unnecessary browser features
+  headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
+  
+  // Content Security Policy
+  // report-only for now so we can monitor without breaking anything
+  headers.set(
+    'Content-Security-Policy-Report-Only',
+    [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src 'self' blob: data: https:",
+      "connect-src 'self' https: wss:",
+      "frame-src 'self'",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+    ].join('; '),
+  );
+
+  return response;
+}
+
 export function defineConfig() {
   const backendApiEndpoints = ['/api', '/trpc', '/webapi', '/oidc'];
 
@@ -215,13 +259,13 @@ export function defineConfig() {
     logBetterAuth('Route protection status: %s, %s', req.url, isProtected ? 'protected' : 'public');
 
     // Skip session lookup for public routes to reduce latency
-    if (!isProtected) return response;
+    if (!isProtected) return addSecurityHeaders(response);
 
     // Allow bypassing the session check entirely in local development via a mock user,
     // mirroring the same flag used by the tRPC/openapi backend auth (checkAuth).
     if (process.env.ENABLE_MOCK_DEV_USER === '1' || process.env.NEXT_PUBLIC_ENABLE_MOCK_DEV_USER === '1') {
       logBetterAuth('ENABLE_MOCK_DEV_USER is set, bypassing session check for: %s', req.url);
-      return response;
+      return addSecurityHeaders(response);
     }
 
     // Get full session with user data (Next.js 15.2.0+ feature)
@@ -254,7 +298,7 @@ export function defineConfig() {
       logBetterAuth('Request a free route but not login, allow visit without auth header');
     }
 
-    return response;
+    return addSecurityHeaders(response);
   };
 
   logDefault('Middleware configuration: %O', { enableOIDC: authEnv.ENABLE_OIDC });

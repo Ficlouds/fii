@@ -49,7 +49,7 @@ export const SignInEmailStep = ({
   useEffect(() => { emailInputRef.current?.focus(); }, []);
 
   return (
-    <AuthCard title={'Log into your account'}>
+    <AuthCard title={'Welcome back.'}>
       {!serverConfigInit && (
         <Flexbox gap={10}>
           <Skeleton.Button active block size="large" />
@@ -68,7 +68,7 @@ export const SignInEmailStep = ({
               onClick={() => onSocialSignIn(provider)}
             >
               {provider === 'google' && <GoogleIcon />}
-              Login with {provider.charAt(0).toUpperCase() + provider.slice(1)}
+              Continue with {provider.charAt(0).toUpperCase() + provider.slice(1)}
             </Button>
           ))}
 
@@ -81,7 +81,7 @@ export const SignInEmailStep = ({
               onClick={() => alert('Google OAuth coming soon')}
             >
               <GoogleIcon />
-              Login with Google
+              Continue with Google
             </Button>
           )}
 
@@ -115,7 +115,7 @@ export const SignInEmailStep = ({
             ]}
           >
             <Input
-              placeholder="Enter your email or username"
+              placeholder="Your email address"
               ref={emailInputRef}
               size="large"
               prefix={<Icon icon={Mail} style={{ marginInline: 4, color: '#bbb' }} />}

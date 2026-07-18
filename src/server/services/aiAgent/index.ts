@@ -461,9 +461,10 @@ export class AiAgentService {
     console.log('[Fi Memory] Attempting memory injection for user:', this.userId);
     try {
       const memBridgeUrl = process.env.MEMORY_BRIDGE_URL || 'http://174.129.39.26:8008';
+      const fiApiKey = process.env.FI_API_KEY || '0gw1eTGuCyE64Q9jswo-NnzX7tzq49zdaO6msc1w47g';
       const memResponse = await fetch(`${memBridgeUrl}/memory/query`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-Fi-API-Key': fiApiKey },
         body: JSON.stringify({ user_id: this.userId, query: 'user preferences work location food', limit: 8 }),
         signal: AbortSignal.timeout(3000),
       });

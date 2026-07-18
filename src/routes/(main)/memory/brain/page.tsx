@@ -507,7 +507,7 @@ export default function FiMemoryBrain() {
     const load = async () => {
       try {
         const userId = 'cts13677';
-        const API = 'http://174.129.39.26:8008';
+        const API = process.env.NEXT_PUBLIC_FI_API_URL || 'http://localhost:8008';
         const KEY = '0gw1eTGuCyE64Q9jswo-NnzX7tzq49zdaO6msc1w47g';
         const headers = { 'X-Fi-API-Key': KEY };
         const [structRes, memRes] = await Promise.all([

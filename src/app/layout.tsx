@@ -9,7 +9,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html suppressHydrationWarning lang={'en'} style={{ height: '100%' }}>
       <head>
-        <link href="/fonts/geist.css" rel="stylesheet" />
+        <link href="/fonts/manrope.css" rel="stylesheet" />
       </head>
       <body style={{ height: '100%', margin: 0 }}>
         {children}

@@ -101,6 +101,7 @@ const openExternalBrowser = async (
 };
 
 export default defineConfig({
+
   base: isDev ? '/' : process.env.VITE_CDN_BASE || '/_spa/',
   build: {
     modulePreload: sharedModulePreload,
@@ -293,8 +294,9 @@ export default defineConfig({
 
   server: {
     cors: true,
-    host: true,
+    host: '127.0.0.1',
     port: 9876,
+    strictPort: true,
     proxy: {
       '/api': `http://localhost:${process.env.PORT || 3010}`,
       '/oidc': `http://localhost:${process.env.PORT || 3010}`,

@@ -18,11 +18,11 @@ interface PlaceholderProps {
 }
 
 const ROTATING_PLACEHOLDERS = [
-  'What do you want to know?',
-  'How can I help you today?',
-  'Ask me anything...',
-  'Start a task or explore an idea...',
-  'What are you working on?',
+  "What's on your mind?",
+  "Tell me anything — I remember it all.",
+  "How are you doing today?",
+  "What happened today?",
+  "I'm here. What's going on?",
 ];
 
 const ROTATE_INTERVAL = 3000;

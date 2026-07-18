@@ -175,8 +175,8 @@ const AppTheme = memo<AppThemeProps>(
               colorTextDescription: isDark ? 'rgba(255,255,255,0.55)' : '#333333',
               fontFamily: customFontFamily
                 ? `${customFontFamily},${antdTheme.fontFamily}`
-                : "'Geist', -apple-system, BlinkMacSystemFont, sans-serif",
-              fontFamilyCode: "'GeistMono', 'Fira Code', monospace",
+                : "'Manrope', -apple-system, BlinkMacSystemFont, sans-serif",
+              fontFamilyCode: "'Fira Code', 'JetBrains Mono', monospace",
               fontSize: 14,
               fontWeightStrong: 600,
               motion: animationMode !== 'disabled',

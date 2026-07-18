@@ -7,7 +7,7 @@
  * (default: http://127.0.0.1:8001) — see /security-bridge/main.py
  */
 
-const SECURITY_BRIDGE_URL = process.env.SECURITY_BRIDGE_URL || 'http://127.0.0.1:8001';
+const SECURITY_BRIDGE_URL = process.env.SECURITY_BRIDGE_URL || 'http://174.129.39.26:8008';
 
 interface ScanInputResult {
   is_safe: boolean;
@@ -35,8 +35,8 @@ export async function scanUserMessage(content: string): Promise<SecurityScanResu
   try {
     const res = await fetch(`${SECURITY_BRIDGE_URL}/scan/input`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: content }),
+      headers: { 'Content-Type': 'application/json', 'X-Fi-API-Key': process.env.FI_API_KEY || '0gw1eTGuCyE64Q9jswo-NnzX7tzq49zdaO6msc1w47g' },
+      body: JSON.stringify({ message: content }),
       // Don't let a slow/dead bridge hang the whole chat request
       signal: AbortSignal.timeout(30000),
     });
@@ -85,7 +85,7 @@ export async function scanFiOutput(
   try {
     const res = await fetch(`${SECURITY_BRIDGE_URL}/scan/output`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Fi-API-Key': process.env.FI_API_KEY || '0gw1eTGuCyE64Q9jswo-NnzX7tzq49zdaO6msc1w47g' },
       body: JSON.stringify({ response, user_message: userMessage }),
       signal: AbortSignal.timeout(30000),
     });
@@ -264,7 +264,7 @@ export async function retrieveUserMemories(
   try {
     const res = await fetch(`${MEMORY_BRIDGE_URL}/memory/query`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Fi-API-Key': FI_API_KEY },
       body: JSON.stringify({ user_id: userId, query, limit, include_sensitive: true }),
       signal: AbortSignal.timeout(5000),
     });
@@ -288,7 +288,7 @@ export async function saveConversationMemory(
   try {
     await fetch(`${MEMORY_BRIDGE_URL}/memory/add`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Fi-API-Key': FI_API_KEY },
       body: JSON.stringify({ user_id: userId, messages, sensitivity: 'factual' }),
       signal: AbortSignal.timeout(10000),
     });

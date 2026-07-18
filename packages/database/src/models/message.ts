@@ -1948,23 +1948,23 @@ export class MessageModel {
 
   updatePluginState = async (id: string, state: Record<string, any>): Promise<void> => {
     const item = await this.db.query.messagePlugins.findFirst({
-      where: eq(messagePlugins.id, id),
+      where: and(eq(messagePlugins.id, id), eq(messagePlugins.userId, this.userId)),
     });
     if (!item) throw new Error('Plugin not found');
 
     await this.db
       .update(messagePlugins)
       .set({ state: merge(item.state || {}, state) })
-      .where(eq(messagePlugins.id, id));
+      .where(and(eq(messagePlugins.id, id), eq(messagePlugins.userId, this.userId)));
   };
 
   updateMessagePlugin = async (id: string, value: Partial<MessagePluginItem>) => {
     const item = await this.db.query.messagePlugins.findFirst({
-      where: eq(messagePlugins.id, id),
+      where: and(eq(messagePlugins.id, id), eq(messagePlugins.userId, this.userId)),
     });
     if (!item) throw new Error('Plugin not found');
 
-    return this.db.update(messagePlugins).set(value).where(eq(messagePlugins.id, id));
+    return this.db.update(messagePlugins).set(value).where(and(eq(messagePlugins.id, id), eq(messagePlugins.userId, this.userId)));
   };
 
   /**
@@ -1980,7 +1980,7 @@ export class MessageModel {
    */
   findMessagePlugin = async (messageId: string): Promise<MessagePluginItem | undefined> => {
     const row = await this.db.query.messagePlugins.findFirst({
-      where: eq(messagePlugins.id, messageId),
+      where: and(eq(messagePlugins.id, messageId), eq(messagePlugins.userId, this.userId)),
     });
     if (!row) return undefined;
     return {
@@ -2101,7 +2101,7 @@ export class MessageModel {
               await trx
                 .update(messagePlugins)
                 .set(pluginUpdateData)
-                .where(eq(messagePlugins.id, id));
+                .where(and(eq(messagePlugins.id, id), eq(messagePlugins.userId, this.userId)));
             }
           }
         }
@@ -2188,7 +2188,7 @@ export class MessageModel {
 
   updateTranslate = async (id: string, translate: Partial<ChatTranslate>) => {
     const result = await this.db.query.messageTranslates.findFirst({
-      where: and(eq(messageTranslates.id, id)),
+      where: and(eq(messageTranslates.id, id), eq(messageTranslates.userId, this.userId)),
     });
 
     // If the message does not exist in the translate table, insert it
@@ -2197,12 +2197,12 @@ export class MessageModel {
     }
 
     // or just update the existing one
-    return this.db.update(messageTranslates).set(translate).where(eq(messageTranslates.id, id));
+    return this.db.update(messageTranslates).set(translate).where(and(eq(messageTranslates.id, id), eq(messageTranslates.userId, this.userId)));
   };
 
   updateTTS = async (id: string, tts: Partial<ChatTTS>) => {
     const result = await this.db.query.messageTTS.findFirst({
-      where: and(eq(messageTTS.id, id)),
+      where: and(eq(messageTTS.id, id), eq(messageTTS.userId, this.userId)),
     });
 
     // If the message does not exist in the translate table, insert it
@@ -2220,7 +2220,7 @@ export class MessageModel {
     return this.db
       .update(messageTTS)
       .set({ contentMd5: tts.contentMd5, fileId: tts.file, voice: tts.voice })
-      .where(eq(messageTTS.id, id));
+      .where(and(eq(messageTTS.id, id), eq(messageTTS.userId, this.userId)));
   };
 
   async updateMessageRAG(id: string, { ragQueryId, fileChunks }: UpdateMessageRAGParams) {

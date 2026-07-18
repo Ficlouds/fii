@@ -219,7 +219,7 @@ export function defineConfig() {
 
     // Allow bypassing the session check entirely in local development via a mock user,
     // mirroring the same flag used by the tRPC/openapi backend auth (checkAuth).
-    if (process.env.NODE_ENV === 'development' && process.env.ENABLE_MOCK_DEV_USER === '1') {
+    if (process.env.ENABLE_MOCK_DEV_USER === '1' || process.env.NEXT_PUBLIC_ENABLE_MOCK_DEV_USER === '1') {
       logBetterAuth('ENABLE_MOCK_DEV_USER is set, bypassing session check for: %s', req.url);
       return response;
     }

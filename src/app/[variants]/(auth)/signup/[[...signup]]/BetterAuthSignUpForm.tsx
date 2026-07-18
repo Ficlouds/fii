@@ -31,7 +31,7 @@ const BetterAuthSignUpForm = () => {
   }, [searchParams, form]);
 
   return (
-    <AuthCard title={'Create your account'}>
+    <AuthCard title={'Create your Fi.'}>
       <Form form={form} layout="vertical" onFinish={onSubmit}>
         <Form.Item
           name="email"
@@ -85,7 +85,7 @@ const BetterAuthSignUpForm = () => {
 
         <Form.Item style={{ marginBottom: 0 }}>
           <Button block htmlType="submit" loading={loading} size="large" type="primary">
-            Create account
+            Get started
           </Button>
         </Form.Item>
       </Form>

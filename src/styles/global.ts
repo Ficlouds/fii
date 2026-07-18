@@ -1,3 +1,4 @@
+/* stylelint-disable */
 import { CLASSNAMES } from '@lobehub/ui';
 import type { Theme } from 'antd-style';
 import { css } from 'antd-style';
@@ -5,7 +6,7 @@ import { css } from 'antd-style';
 export default ({ token }: { prefixCls: string; token: Theme }) => css`
 
   html, body {
-    font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif !important;
     font-weight: 450 !important;
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;
@@ -13,11 +14,11 @@ export default ({ token }: { prefixCls: string; token: Theme }) => css`
   }
 
   input, textarea, button, select {
-    font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif !important;
   }
 
   pre, code, kbd, samp {
-    font-family: 'GeistMono', 'Fira Code', monospace !important;
+    font-family: 'Fira Code', 'JetBrains Mono', monospace !important;
   }
 
   h1, h2, h3 {

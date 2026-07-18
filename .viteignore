@@ -1,0 +1,4 @@
+.venvs
+node_modules
+.next
+dist

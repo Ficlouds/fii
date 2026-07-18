@@ -116,9 +116,10 @@ async function callOutputGuard(
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), SHIELD_GEMMA_TIMEOUT_MS);
   try {
+    const FI_API_KEY = process.env.FI_API_KEY || '0gw1eTGuCyE64Q9jswo-NnzX7tzq49zdaO6msc1w47g';
     const res = await fetch(SHIELD_GEMMA_URL, {
       body: JSON.stringify({ response: assistantResponse, user_message: userMessage }),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Fi-API-Key': FI_API_KEY },
       method: 'POST',
       signal: controller.signal,
     });

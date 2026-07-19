@@ -13,11 +13,11 @@ export interface AuthCardProps extends Omit<FlexboxProps, 'title'> {
 
 export const AuthCard = memo<AuthCardProps>(({ children, title, subtitle, footer, ...rest }) => {
   return (
-    <Flexbox width={'min(100%,440px)'} {...rest}>
+    <Flexbox width={'100%'} {...rest}>
       <Flexbox gap={16}>
         {title && (
           <h1 style={{
-            color: '#ffffff',
+            color: '#111111',
             fontSize: 28,
             fontWeight: 600,
             lineHeight: 1.3,

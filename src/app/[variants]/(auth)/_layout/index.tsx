@@ -5,44 +5,56 @@ import { type FC, type PropsWithChildren } from 'react';
 
 const AuthContainer: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <div style={{ display:'flex', height:'100vh', width:'100vw', overflow:'hidden', fontFamily:'Manrope, -apple-system, BlinkMacSystemFont, system-ui, sans-serif' }}>
+    <div style={{ display:'flex', height:'100vh', width:'100vw', fontFamily:'Manrope, -apple-system, BlinkMacSystemFont, system-ui, sans-serif' }}>
 
       {/* LEFT PANEL */}
-      <div style={{ width:'52%', height:'100vh', position:'relative', overflow:'hidden' }}>
-        <img
-          src="/images/fi-login-bg.jpg"
-          alt=""
-          style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'center' }}
-        />
-        <div style={{ position:'absolute', inset:0, background:'rgba(0,0,0,0.08)' }} />
+      <div style={{ width:'50%', height:'100vh', position:'relative', overflow:'hidden', background:'#fff', display:'flex', flexDirection:'column' }}>
 
-        <div style={{ position:'absolute', top:32, left:32, zIndex:2 }}>
-          <Link href="/" style={{ textDecoration:'none' }}>
-            <span style={{ fontSize:18, fontWeight:700, color:'#111', letterSpacing:'-0.4px', background:'rgba(255,255,255,0.85)', backdropFilter:'blur(8px)', padding:'5px 14px', borderRadius:20 }}>Fi</span>
+        {/* Grid background with fade right */}
+        <div style={{
+          position:'absolute', inset:0, zIndex:0,
+          backgroundImage:'linear-gradient(rgba(0,0,0,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.07) 1px, transparent 1px)',
+          backgroundSize:'60px 60px',
+          WebkitMaskImage:'linear-gradient(to right, black 0%, black 40%, transparent 100%)',
+          maskImage:'linear-gradient(to right, black 0%, black 40%, transparent 100%)'
+        }} />
+
+        {/* Fi logo top left */}
+        <div style={{ position:'relative', zIndex:2, padding:'36px 36px 0' }}>
+          <Link href="/" style={{ textDecoration:'none', display:'inline-flex', alignItems:'center' }}>
+            <img src="/logos/fi-icon-black.svg" alt="Fi" style={{ height:36, width:'auto', display:'block' }} />
           </Link>
         </div>
 
-        <div style={{ position:'absolute', bottom:40, left:32, right:32, zIndex:2 }}>
-          <div style={{ background:'rgba(255,255,255,0.82)', backdropFilter:'blur(20px)', WebkitBackdropFilter:'blur(20px)', borderRadius:20, padding:'24px 28px', boxShadow:'0 8px 32px rgba(0,0,0,0.12)', border:'1px solid rgba(255,255,255,0.95)' }}>
-            <div style={{ fontSize:28, fontWeight:700, color:'#111', letterSpacing:'-0.5px', lineHeight:1.2 }}>Think it.</div>
-            <div style={{ fontSize:28, fontWeight:700, color:'#111', letterSpacing:'-0.5px', lineHeight:1.2 }}>Fi gets it.</div>
+        {/* Headline centered */}
+        <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', padding:'0 48px', position:'relative', zIndex:2 }}>
+          <div>
+            <h1 style={{ fontSize:26, fontWeight:700, color:'#111', letterSpacing:'-0.4px', lineHeight:1.3, margin:'0 0 10px 0', fontFamily:'Manrope, sans-serif' }}>
+              For the ones who never stop thinking.
+            </h1>
+            <p style={{ fontSize:15, color:'#444', margin:0, fontFamily:'Manrope, sans-serif', lineHeight:1.5 }}>
+              Every idea has a home here.
+            </p>
           </div>
         </div>
+
+        <div style={{ height:36 }} />
+
       </div>
 
       {/* RIGHT PANEL */}
-      <div style={{ width:'48%', height:'100vh', background:'#fff', display:'flex', flexDirection:'column', borderLeft:'1px solid rgba(0,0,0,0.06)' }}>
-        <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', padding:'0 10%' }}>
+      <div style={{ width:'50%', height:'100vh', background:'#fff', display:'flex', flexDirection:'column', borderLeft:'1px solid rgba(0,0,0,0.06)' }}>
+        <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', padding:'0 52px' }}>
           <div style={{ width:'100%', maxWidth:'340px' }}>
             {children}
           </div>
         </div>
-        <div style={{ padding:'24px 10%', textAlign:'center' }}>
-          <span style={{ fontSize:11, color:'#ccc', lineHeight:1.6 }}>
+        <div style={{ padding:'0 0 28px', textAlign:'center' }}>
+          <span style={{ fontSize:12, color:'#999', lineHeight:1.6 }}>
             By continuing, you agree to Fi&apos;s{' '}
-            <a href="/terms" style={{ color:'#ccc', textDecoration:'underline', fontSize:11 }}>Terms of Service</a>
+            <a href="/terms" style={{ color:'#666', textDecoration:'underline', fontSize:12 }}>Terms of Service</a>
             {' '}and{' '}
-            <a href="/privacy" style={{ color:'#ccc', textDecoration:'underline', fontSize:11 }}>Privacy Policy</a>
+            <a href="/privacy" style={{ color:'#666', textDecoration:'underline', fontSize:12 }}>Privacy Policy</a>
           </span>
         </div>
       </div>

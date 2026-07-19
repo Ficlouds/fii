@@ -49,7 +49,7 @@ export const SignInEmailStep = ({
   useEffect(() => { emailInputRef.current?.focus(); }, []);
 
   return (
-    <AuthCard title={'Welcome back.'}>
+    <AuthCard>
       {!serverConfigInit && (
         <Flexbox gap={10}>
           <Skeleton.Button active block size="large" />

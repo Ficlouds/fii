@@ -9,7 +9,8 @@ import type { ResolveUsernameResponseData } from '@/app/(backend)/api/auth/resol
 import { useBusinessSignin } from '@/business/client/hooks/useBusinessSignin';
 import { message } from '@/components/AntdStaticMethods';
 import { trackLoginOrSignupClicked } from '@/features/User/UserLoginOrSignup/trackLoginOrSignupClicked';
-import { emailOtp, signIn } from '@/libs/better-auth/auth-client';
+import { emailOtp, signIn, signIn as betterSignIn } from '@/libs/better-auth/auth-client';
+import { authEnv } from '@/envs/auth';
 import { isBuiltinProvider, normalizeProviderId } from '@/libs/better-auth/utils/client';
 
 import { useAuthServerConfigStore } from '../_layout/AuthServerConfigProvider';
@@ -118,6 +119,22 @@ export const useSignIn = () => {
       }
 
       setEmail(targetEmail);
+
+      // Use magic link if enabled, otherwise fall back to OTP
+      const enableMagicLink = process.env.NEXT_PUBLIC_ENABLE_MAGIC_LINK === '1';
+      if (enableMagicLink) {
+        const result = await signIn.magicLink({
+          email: targetEmail,
+          callbackURL: searchParams.get('callbackUrl') || '/',
+        });
+        if (result?.error) {
+          message.error(result.error.message || t('betterAuth.signin.magicLinkError'));
+          return;
+        }
+        message.success(t('betterAuth.signin.magicLinkSent'));
+        return;
+      }
+
       await handleSendOtp(targetEmail);
       setStep('otp');
     } catch (error) {

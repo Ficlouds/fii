@@ -21,7 +21,7 @@ export const getMagicLinkEmailTemplate = (params: { expiresInSeconds: number; ur
 </head>
 <body style="margin:0;padding:0;background-color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:#111111;">
   <div style="max-width:560px;margin:0 auto;padding:48px 24px;">
-    <img src="https://ficlouds.com/logos/fi-logo.png" alt="Fi" style="height:28px;width:auto;display:block;margin-bottom:32px;">
+    <p style="font-size:22px;font-weight:700;color:#111111;margin:0 0 40px;letter-spacing:-0.5px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Fi</p>
     <p style="font-size:13px;font-weight:600;color:#111111;margin:0 0 8px;text-transform:uppercase;letter-spacing:0.05em;">Fi</p>
     <h1 style="font-size:20px;font-weight:600;color:#111111;margin:0 0 24px;line-height:1.3;">Sign-in link</h1>
     <p style="font-size:15px;color:#333333;margin:0 0 16px;line-height:1.6;">

@@ -119,22 +119,6 @@ export const useSignIn = () => {
       }
 
       setEmail(targetEmail);
-
-      // Use magic link if enabled, otherwise fall back to OTP
-      const enableMagicLink = process.env.NEXT_PUBLIC_ENABLE_MAGIC_LINK === '1';
-      if (enableMagicLink) {
-        const result = await signIn.magicLink({
-          email: targetEmail,
-          callbackURL: searchParams.get('callbackUrl') || '/',
-        });
-        if (result?.error) {
-          message.error(result.error.message || t('betterAuth.signin.magicLinkError'));
-          return;
-        }
-        message.success(t('betterAuth.signin.magicLinkSent'));
-        return;
-      }
-
       await handleSendOtp(targetEmail);
       setStep('otp');
     } catch (error) {

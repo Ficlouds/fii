@@ -1,13 +1,9 @@
 'use client';
 
-import { SiDiscord } from '@icons-pack/react-simple-icons';
-import { SOCIAL_URL } from '@ficlouds/business-const';
-import { Button, Flexbox, Icon, Text } from '@lobehub/ui';
-import { cssVar } from 'antd-style';
+import { Button, Flexbox } from '@lobehub/ui';
 import Link from 'next/link';
 import { parseAsString, useQueryState } from 'nuqs';
 import { memo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import AuthCard from '@/features/AuthCard';
 
@@ -15,39 +11,43 @@ const normalizeErrorCode = (code?: string | null) =>
   (code || 'UNKNOWN').trim().toUpperCase().replaceAll('-', '_');
 
 const AuthErrorPage = memo(() => {
-  const { t } = useTranslation('authError');
   const [error] = useQueryState('error', parseAsString);
-
   const code = normalizeErrorCode(error);
-  const description = t(`codes.${code}`, { defaultValue: t('codes.UNKNOWN') });
+  const isCancelled = error === 'access_denied' || error === 'OAuthCallback';
 
   return (
     <AuthCard
-      subtitle={description}
-      title={t('title')}
+      title={isCancelled ? 'Sign in incomplete.' : 'Something went wrong.'}
+      subtitle={
+        isCancelled
+          ? 'Try again when you are ready.'
+          : 'Fi could not complete the sign in. Try again or use a different method.'
+      }
       footer={
-        <Flexbox gap={12} justify="center" wrap="wrap">
-          <Link href="/signin">
+        <Flexbox gap={10}>
+          <Link href="/signin" style={{ width:'100%' }}>
             <Button block size={'large'} type="primary">
-              {t('actions.retry')}
+              {isCancelled ? 'Try again' : 'Back to sign in'}
             </Button>
           </Link>
-          <Link href="/">
+          <Link href="/signup" style={{ width:'100%' }}>
             <Button block size={'large'}>
-              {t('actions.home')}
+              Create an account
             </Button>
           </Link>
-          <Link href={SOCIAL_URL.discord} rel="noopener noreferrer" target="_blank">
-            <Button block icon={<Icon fill={cssVar.colorText} icon={SiDiscord} />} type="text">
-              {t('actions.discord')}
+          <Link href="/" style={{ width:'100%' }}>
+            <Button block size={'large'} type="text">
+              Back to home
             </Button>
           </Link>
         </Flexbox>
       }
     >
-      <Text style={{ fontFamily: cssVar.fontFamilyCode }} type={'secondary'}>
-        ErrorCode: {error || 'UNKNOWN'}
-      </Text>
+      {!isCancelled && (
+        <p style={{ fontSize: 12, color: '#aaa', margin: 0 }}>
+          Error: {code}
+        </p>
+      )}
     </AuthCard>
   );
 });

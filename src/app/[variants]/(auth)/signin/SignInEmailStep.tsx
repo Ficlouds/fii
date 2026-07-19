@@ -34,6 +34,15 @@ const GoogleIcon = () => (
   </svg>
 );
 
+
+const MicrosoftIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 21 21" style={{ marginRight: 8, flexShrink: 0 }}>
+    <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
+    <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
+    <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
+    <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+  </svg>
+);
 export const SignInEmailStep = ({
   disableEmailPassword,
   form,
@@ -49,7 +58,7 @@ export const SignInEmailStep = ({
   useEffect(() => { emailInputRef.current?.focus(); }, []);
 
   return (
-    <AuthCard>
+    <AuthCard title={'Ready, when you are.'}>
       {!serverConfigInit && (
         <Flexbox gap={10}>
           <Skeleton.Button active block size="large" />
@@ -68,6 +77,7 @@ export const SignInEmailStep = ({
               onClick={() => onSocialSignIn(provider)}
             >
               {provider === 'google' && <GoogleIcon />}
+              {provider === 'microsoft' && <MicrosoftIcon />}
               Continue with {provider.charAt(0).toUpperCase() + provider.slice(1)}
             </Button>
           ))}
@@ -135,7 +145,7 @@ export const SignInEmailStep = ({
       )}
 
       <div style={{ textAlign:'center', marginTop:20 }}>
-        <span style={{ fontSize:13, color:'#999' }}>
+        <span style={{ fontSize:13, color:'#666' }}>
           Don&apos;t have an account?{' '}
           <Link href="/signup" style={{ color:'#000', fontWeight:500 }}>
             Sign up

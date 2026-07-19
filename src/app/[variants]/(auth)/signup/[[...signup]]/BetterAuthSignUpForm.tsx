@@ -31,7 +31,7 @@ const BetterAuthSignUpForm = () => {
   }, [searchParams, form]);
 
   return (
-    <AuthCard title={'Create your Fi.'}>
+    <AuthCard title={'Nice to meet you.'}>
       <Form form={form} layout="vertical" onFinish={onSubmit}>
         <Form.Item
           name="email"
@@ -91,7 +91,7 @@ const BetterAuthSignUpForm = () => {
       </Form>
 
       <div style={{ textAlign: 'center', marginTop: 20 }}>
-        <span style={{ fontSize: 13, color: '#999' }}>
+        <span style={{ fontSize: 13, color: '#666' }}>
           Already have an account?{' '}
           <Link href={`/signin?${searchParams.toString()}`} style={{ color: '#000', fontWeight: 500 }}>
             Sign in

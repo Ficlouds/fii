@@ -17,8 +17,8 @@ export const AuthCard = memo<AuthCardProps>(({ children, title, subtitle, footer
       <Flexbox gap={16}>
         {title && (
           <h1 style={{
-            color: '#111111',
-            fontSize: 28,
+            color: '#111111', textAlign: 'center',
+            fontSize: 20,
             fontWeight: 600,
             lineHeight: 1.3,
             margin: '0 0 8px 0',
@@ -29,7 +29,7 @@ export const AuthCard = memo<AuthCardProps>(({ children, title, subtitle, footer
           </h1>
         )}
         {subtitle && (
-          <p style={{ color: '#a0a0a0', fontSize: 14, margin: 0 }}>
+          <p style={{ color: '#a0a0a0', fontSize: 14, margin: 0, textAlign: 'center' }}>
             {subtitle}
           </p>
         )}

@@ -50,11 +50,11 @@ const AuthContainer: FC<PropsWithChildren> = ({ children }) => {
           </div>
         </div>
         <div style={{ padding:'0 0 28px', textAlign:'center' }}>
-          <span style={{ fontSize:12, color:'#999', lineHeight:1.6 }}>
+          <span style={{ fontSize:12, color:'#666', lineHeight:1.6 }}>
             By continuing, you agree to Fi&apos;s{' '}
-            <a href="/terms" style={{ color:'#666', textDecoration:'underline', fontSize:12 }}>Terms of Service</a>
+            <a href="/terms" style={{ color:'#444', textDecoration:'underline', fontSize:12 }}>Terms of Service</a>
             {' '}and{' '}
-            <a href="/privacy" style={{ color:'#666', textDecoration:'underline', fontSize:12 }}>Privacy Policy</a>
+            <a href="/privacy" style={{ color:'#444', textDecoration:'underline', fontSize:12 }}>Privacy Policy</a>
           </span>
         </div>
       </div>

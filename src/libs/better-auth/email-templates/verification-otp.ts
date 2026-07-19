@@ -27,7 +27,7 @@ export const getVerificationOTPEmailTemplate = (params: {
 
     <!-- Logo -->
     <div style="margin-bottom:40px;">
-      <p style="font-size:22px;font-weight:700;color:#111111;margin:0 0 40px;letter-spacing:-0.5px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">Fi</p>
+      <img src="https://ficlouds.com/logos/fi-logo-email.png" alt="Fi" style="height:28px;width:auto;display:block;margin-bottom:40px;">
     </div>
 
     <!-- Heading -->

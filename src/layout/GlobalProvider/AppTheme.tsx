@@ -70,6 +70,20 @@ const styles = createStaticStyles(({ css, cssVar }) => ({
 
     ::-webkit-scrollbar-thumb {
       border-radius: 10px;
+
+
+
+  /* Remove empty space inside chat input */
+  [data-testid="chat-input"] > div:first-child {
+    display: none !important;
+  }
+
+  [data-testid="chat-input"] {
+    justify-content: center !important;
+  }
+
+  .lobe-chat-input-container { border-radius: 12px !important; }
+  [class*="inputContainer"] > div { border-radius: 12px !important; }
     }
 
     :hover::-webkit-scrollbar-thumb {

@@ -232,7 +232,7 @@ const Home = memo(() => {
       {incognitoBanner}
 
       {/* Pre-chat: centered logo + input */}
-      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', minHeight: 0, overflow: 'hidden', paddingBottom: 160, width: '100%' }}>
+      <div style={{ alignItems: 'center', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', minHeight: 0, overflow: 'hidden', marginTop: -80, width: '100%' }}>
         <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'column', paddingInline: 20, width: '100%', maxWidth: 860 }}>
           {/* Fi logo */}
           <div style={{ marginBottom: 28, textAlign: 'center', userSelect: 'none' }}>

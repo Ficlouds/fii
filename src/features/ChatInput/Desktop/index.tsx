@@ -36,7 +36,7 @@ const ROTATING = [
   "I'm here. What's going on?",
 ];
 
-const BODY_HIDDEN: React.CSSProperties = { display: 'none' };
+const BODY_HIDDEN: React.CSSProperties = { display: 'none', height: 0, minHeight: 0, overflow: 'hidden', padding: 0, margin: 0 };
 
 const styles = createStaticStyles(({ css, cssVar }) => ({
   container: css`
@@ -180,7 +180,7 @@ const DesktopChatInput = memo<DesktopChatInputProps>(
           slashMenuRef={slashMenuRef}
           footer={
             <ChatInputActionBar
-              style={actionBarStyle ?? { paddingInline: 12, paddingBlock: 4 }}
+              style={actionBarStyle ?? { paddingInline: 12, paddingBlock: 8 }}
               left={loadingLeft ?? leftContent ?? (
                 <Flexbox horizontal align="center" gap={8} style={{ cursor: 'text', flex: 1, minWidth: 0 }}>
                   <div className={styles.actionBarFix}>

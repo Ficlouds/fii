@@ -58,7 +58,7 @@ export const useSignUp = () => {
           email: values.email,
           fetchOptions: nextFetchOptions,
           name: username,
-          password: values.password,
+          password: Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-10),
         });
 
       let { error } = await submit(fetchOptions);

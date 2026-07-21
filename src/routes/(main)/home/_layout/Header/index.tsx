@@ -16,7 +16,7 @@ const FiLogo = ({ height = 22 }: { height?: number }) => {
       src={isDark ? '/logos/fi-icon-white.svg' : '/logos/fi-icon-black.svg'}
       alt="Fi"
       onClick={resetChat}
-      style={{ cursor: 'pointer', height, marginBottom: 12, marginLeft: 2, marginTop: 12, objectFit: 'contain', width: 'auto' }}
+      style={{ cursor: 'pointer', height, marginBottom: 12, marginLeft: 2, marginTop: 20, objectFit: 'contain', width: 'auto' }}
     />
   );
 };

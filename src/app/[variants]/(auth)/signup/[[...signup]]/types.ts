@@ -1,5 +1,5 @@
 export interface BaseSignUpFormValues {
-  confirmPassword: string;
+  confirmPassword?: string;
   email: string;
-  password: string;
+  password?: string;
 }

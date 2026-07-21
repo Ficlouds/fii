@@ -135,13 +135,12 @@ export const useSignIn = () => {
       const callbackUrl = searchParams.get('callbackUrl') || '/';
       const result = await signIn.emailOtp({ email, otp: code });
       if (result.error) {
-        message.error(result.error.message || 'Invalid code. Please try again.');
-        return;
+        throw new Error(result.error.message || 'Invalid code. Please try again.');
       }
       router.push(callbackUrl);
     } catch (error) {
       console.error('OTP verify error:', error);
-      message.error('Invalid code. Please try again.');
+      throw error;
     } finally {
       setLoading(false);
     }

@@ -2,7 +2,7 @@
 
 import { Button, Icon } from '@lobehub/ui';
 import { Form, Input, type InputRef } from 'antd';
-import { Lock, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
@@ -18,13 +18,11 @@ const BetterAuthSignUpForm = () => {
   const { t } = useTranslation('auth');
   const searchParams = useSearchParams();
   const emailInputRef = useRef<InputRef>(null);
-  const passwordInputRef = useRef<InputRef>(null);
 
   useEffect(() => {
     const email = searchParams.get('email');
     if (email) {
       form.setFieldsValue({ email });
-      passwordInputRef.current?.focus();
     } else {
       emailInputRef.current?.focus();
     }
@@ -32,8 +30,12 @@ const BetterAuthSignUpForm = () => {
 
   return (
     <AuthCard title={'Nice to meet you.'}>
+      <style>{`
+        .ant-form-item-explain-error { text-align: center !important; font-size: 12px !important; margin-top: 6px !important; }
+      `}</style>
       <Form form={form} layout="vertical" onFinish={onSubmit}>
         <Form.Item
+          style={{ marginBottom: 28 }}
           name="email"
           rules={[
             { message: t('betterAuth.errors.emailRequired'), required: true },
@@ -45,39 +47,6 @@ const BetterAuthSignUpForm = () => {
             ref={emailInputRef}
             size="large"
             prefix={<Icon icon={Mail} style={{ marginInline: 6, color: '#bbb' }} />}
-          />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[
-            { message: t('betterAuth.errors.passwordRequired'), required: true },
-            { message: t('betterAuth.errors.passwordMinLength'), min: 8 },
-          ]}
-        >
-          <Input.Password
-            placeholder="Password"
-            ref={passwordInputRef}
-            size="large"
-            prefix={<Icon icon={Lock} style={{ marginInline: 6, color: '#bbb' }} />}
-          />
-        </Form.Item>
-        <Form.Item
-          dependencies={['password']}
-          name="confirmPassword"
-          rules={[
-            { message: t('betterAuth.errors.confirmPasswordRequired'), required: true },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue('password') === value) return Promise.resolve();
-                return Promise.reject(new Error(t('betterAuth.errors.passwordMismatch')));
-              },
-            }),
-          ]}
-        >
-          <Input.Password
-            placeholder="Confirm password"
-            size="large"
-            prefix={<Icon icon={Lock} style={{ marginInline: 6, color: '#bbb' }} />}
           />
         </Form.Item>
 

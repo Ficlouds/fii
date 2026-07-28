@@ -36,7 +36,7 @@ const ROTATING = [
   "I'm here. What's going on?",
 ];
 
-const BODY_HIDDEN: React.CSSProperties = { display: 'none', height: 0, minHeight: 0, overflow: 'hidden', padding: 0, margin: 0 };
+const BODY_HIDDEN: React.CSSProperties = { display: 'none', height: 0, minHeight: 0, maxHeight: 0, overflow: 'hidden', padding: 0, margin: 0, position: 'absolute' };
 
 const styles = createStaticStyles(({ css, cssVar }) => ({
   container: css`
